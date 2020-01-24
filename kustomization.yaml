@@ -1,0 +1,9 @@
+namespace: keycloak
+
+bases:
+  - psql
+
+resources:
+  - namespace.yaml
+  - generate/generated.yaml
+  - networking/virtual-service.yaml

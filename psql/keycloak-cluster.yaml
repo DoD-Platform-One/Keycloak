@@ -1,0 +1,27 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: keycloak-cluster
+spec:
+  teamId: keycloak
+
+  # PSQL clusters come with their own SSL, don't stomp on it with istio
+  podAnnotations:
+    sidecar.istio.io/inject: "false"
+
+  volume:
+    size: 1Gi
+
+    # NOTE: Should just use default storage class
+    # storageClass: csi-cephfs
+  numberOfInstances: 3
+  users:
+    keycloak:  # database owner
+    - superuser
+    - createdb
+    foo_user: []  # role for application foo
+  databases:
+    # dbname: dbowner
+    keycloak: keycloak
+  postgresql:
+    version: "11"

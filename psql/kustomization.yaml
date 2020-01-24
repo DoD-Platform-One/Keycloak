@@ -1,0 +1,3 @@
+resources:
+  - keycloak-cluster.yaml
+  - destinationrule.yaml
