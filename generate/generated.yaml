@@ -30,7 +30,7 @@ data:
     set -o errexit
     set -o nounset
 
-    exec /opt/jboss/tools/docker-entrypoint.sh -b 0.0.0.0  -c standalone-ha.xml
+    exec /opt/jboss/tools/docker-entrypoint.sh -b 0.0.0.0  -c standalone.xml
 ---
 # Source: keycloak/templates/configmap-startup.yaml
 apiVersion: v1
@@ -44,7 +44,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 data:
   keycloak.cli: |
-    embed-server --server-config=standalone-ha.xml --std-out=echo
+    embed-server --std-out=echo
     batch
     ## Sets the node identifier to the node name (= pod name). Node identifiers have to be unique. They can have a
     ## maximum length of 23 characters. Thus, the chart's fullname template truncates its length accordingly.
@@ -72,17 +72,6 @@ data:
     
     # Configure datasource to try all other connections before failing
     /subsystem=datasources/data-source=KeycloakDS/:write-attribute(name=use-fast-fail,value=${env.DB_USE_CAST_FAIL:false})
-    
-    
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=clientSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineClientSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=loginFailures:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    /subsystem=infinispan/cache-container=keycloak/distributed-cache=actionTokens:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
-    
-    /subsystem=jgroups/channel=ee:write-attribute(name=stack, value=tcp)
     
     
 
@@ -122,10 +111,6 @@ spec:
     - name: https
       port: 8443
       targetPort: https
-      protocol: TCP
-    - name: jgroups
-      port: 7600
-      targetPort: jgroups
       protocol: TCP
   selector:
     app.kubernetes.io/name: keycloak
@@ -172,7 +157,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: keycloak
       app.kubernetes.io/instance: "keycloak"
-  replicas: 2
+  replicas: 1
   serviceName: keycloak-headless
   podManagementPolicy: Parallel
   updateStrategy:
@@ -183,8 +168,8 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: "keycloak"
       annotations:
-        checksum/config-sh: 9d7af04edab263ae818d1076bd5fff825154afafd0a59aecf5ff15b80113e015
-        checksum/config-startup: 0234436acdad12f6c2e6cfeed11ea55cae49f75489ee14efddeab28ff2158300
+        checksum/config-sh: 12a18d61fab8f9a8d27310cad67c0d663b10d1670e8ec149eae2935f7d6bbbce
+        checksum/config-startup: 62a1d0ec1b4cd8f67d52e0b20cbcdc8d9b176d4cbf8efaaf012648018c90248a
     spec:
       restartPolicy: Always
       serviceAccountName: keycloak
@@ -209,13 +194,6 @@ spec:
               value: keycloak
             - name: KEYCLOAK_PASSWORD_FILE
               value: /secrets/password
-            - name: JGROUPS_DISCOVERY_PROTOCOL
-              value: dns.DNS_PING
-            - name: JGROUPS_DISCOVERY_PROPERTIES
-              value: "dns_query=keycloak-headless.default.svc.cluster.local"
-
-            - name: KEYCLOAK_SERVICE_DNS_NAME
-              value: "keycloak-headless.default.svc.cluster.local"
             
             - name: DB_VENDOR
               value: "postgres"
@@ -263,9 +241,6 @@ spec:
               protocol: TCP
             - name: https
               containerPort: 8443
-              protocol: TCP
-            - name: jgroups
-              containerPort: 7600
               protocol: TCP
           livenessProbe:
             httpGet:

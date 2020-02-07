@@ -6,4 +6,4 @@ bases:
 resources:
   - namespace.yaml
   - generate/generated.yaml
-  - networking/virtual-service.yaml
+  - networking/aes-mapping.yaml
