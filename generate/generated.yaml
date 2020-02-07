@@ -6,7 +6,7 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
@@ -20,7 +20,7 @@ metadata:
   name: keycloak-sh
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -39,7 +39,7 @@ metadata:
   name: keycloak-startup
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -96,7 +96,7 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 ---
@@ -107,9 +107,10 @@ metadata:
   name: keycloak-headless
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
+    service: headless
 spec:
   type: ClusterIP
   clusterIP: None
@@ -137,9 +138,10 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
+    service: http
 spec:
   type: ClusterIP
   ports:
@@ -162,7 +164,7 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.1.0
+    helm.sh/chart: keycloak-6.2.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -181,8 +183,8 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: "keycloak"
       annotations:
-        checksum/config-sh: f7e6374cf95879a6169a766a39d74767f638ece7157aa9f8a4d054f994e2f0c7
-        checksum/config-startup: 1a51d7c9923019ab7d423a45aff09a0645bd9bbaf3109318e873a4cdb19adfaf
+        checksum/config-sh: 9d7af04edab263ae818d1076bd5fff825154afafd0a59aecf5ff15b80113e015
+        checksum/config-startup: 0234436acdad12f6c2e6cfeed11ea55cae49f75489ee14efddeab28ff2158300
     spec:
       restartPolicy: Always
       serviceAccountName: keycloak

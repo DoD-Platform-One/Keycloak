@@ -9,10 +9,13 @@
 init:
   image:
     pullPolicy: "IfNotPresent"
+
 test:
   enabled: false
+
 keycloak:
   replicas: 2
+
   serviceAccount:
     create: true
 
