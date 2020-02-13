@@ -4,7 +4,7 @@ metadata:
   name: keycloak
 spec:
   hosts:
-  - "*"
+  - "keycloak.kube.dev"
   gateways:
   - istio-system/public-gateway
   http:
