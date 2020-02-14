@@ -6,7 +6,7 @@ spec:
   hosts:
   - "keycloak.kube.dev"
   gateways:
-  - istio-system/public-gateway
+  - public-gateway.istio-system.svc.cluster.local
   http:
   - match:
     - uri:
