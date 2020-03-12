@@ -23,14 +23,6 @@ keycloak:
   #       It is expected that the user changes this after bootstrap
   password: keycloak123!@#
 
+postgresql:
   persistence:
-    deployPostgres: false
-    dbVendor: postgres
-
-    existingSecret: keycloak.keycloak-cluster.credentials
-    existingSecretKey: password
-
-    dbName: keycloak
-    dbHost: keycloak-cluster
-    dbPort: 5432
-    dbUser: keycloak
+    enabled: false

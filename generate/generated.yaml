@@ -1,4 +1,30 @@
 ---
+# Source: keycloak/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: keycloak
+  labels:
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-7.0.0
+    app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: keycloak/templates/secret-db.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-db
+  labels:
+    app.kubernetes.io/name: keycloak
+    helm.sh/chart: keycloak-7.0.0
+    app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  password: ""
+  username: "a2V5Y2xvYWs="
+---
 # Source: keycloak/templates/secret-keycloak.yaml
 apiVersion: v1
 kind: Secret
@@ -6,7 +32,7 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
+    helm.sh/chart: keycloak-7.0.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
@@ -20,7 +46,7 @@ metadata:
   name: keycloak-sh
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
+    helm.sh/chart: keycloak-7.0.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -39,7 +65,7 @@ metadata:
   name: keycloak-startup
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
+    helm.sh/chart: keycloak-7.0.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -78,17 +104,6 @@ data:
     run-batch
     stop-embedded-server
 ---
-# Source: keycloak/templates/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: keycloak
-  labels:
-    app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
-    app.kubernetes.io/instance: "keycloak"
-    app.kubernetes.io/managed-by: Helm
----
 # Source: keycloak/templates/service-headless.yaml
 apiVersion: v1
 kind: Service
@@ -96,7 +111,7 @@ metadata:
   name: keycloak-headless
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
+    helm.sh/chart: keycloak-7.0.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
     service: headless
@@ -123,7 +138,7 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
+    helm.sh/chart: keycloak-7.0.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
     service: http
@@ -149,7 +164,7 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-6.2.0
+    helm.sh/chart: keycloak-7.0.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -168,8 +183,8 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: "keycloak"
       annotations:
-        checksum/config-sh: 12a18d61fab8f9a8d27310cad67c0d663b10d1670e8ec149eae2935f7d6bbbce
-        checksum/config-startup: 62a1d0ec1b4cd8f67d52e0b20cbcdc8d9b176d4cbf8efaaf012648018c90248a
+        checksum/config-sh: 86e2fe8f92c3f52b1bb6d344c247cd6d07c28e5b3983802b9d725f81b78a9244
+        checksum/config-startup: 84938950cdb436a9c63e19b74d5f2098559f5a4b8934865a7d80ccd05c4d87c9
     spec:
       restartPolicy: Always
       serviceAccountName: keycloak
@@ -196,20 +211,7 @@ spec:
               value: /secrets/password
             
             - name: DB_VENDOR
-              value: "postgres"
-            - name: DB_ADDR
-              value: "keycloak-cluster"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_DATABASE
-              value: "keycloak"
-            - name: DB_USER
-              value: "keycloak"
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak.keycloak-cluster.credentials
-                  key: "password"
+              value: "h2"
             - name: PROXY_ADDRESS_FORWARDING
               value: "true"
             # - name: KEYCLOAK_LOGLEVEL

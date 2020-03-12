@@ -1,8 +1,5 @@
 namespace: keycloak
 
-bases:
-  - psql
-
 resources:
   - namespace.yaml
   - generate/generated.yaml
