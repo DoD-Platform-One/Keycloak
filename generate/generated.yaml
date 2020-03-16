@@ -197,24 +197,6 @@ spec:
             
             - name: DB_VENDOR
               value: "postgres"
-            - name: DB_ADDR
-              value: "mykeycloak"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_DATABASE
-              value: "keycloak"
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-psql-credentials
-                  key: "username"
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-psql-credentials
-                  key: "password"
-            - name: PROXY_ADDRESS_FORWARDING
-              value: "true"
             # - name: KEYCLOAK_LOGLEVEL
             #   value: DEBUG
             # - name: WILDFLY_LOGLEVEL
