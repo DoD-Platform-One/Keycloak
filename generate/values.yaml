@@ -23,6 +23,8 @@ keycloak:
   #       It is expected that the user changes this after bootstrap
   password: keycloak123!@#
 
-postgresql:
   persistence:
-    enabled: false
+    deployPostgres: false
+    dbVendor: postgres
+
+    existingSecret: keycloak-psql-credentials
