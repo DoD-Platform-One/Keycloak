@@ -6,24 +6,37 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 ---
-# Source: keycloak/templates/secret-db.yaml
+# Source: keycloak/charts/postgresql/templates/secrets.yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: keycloak-db
+  name: keycloak-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-6.3.13
+    release: "keycloak"
+    heritage: "Helm"
+type: Opaque
+data:
+  postgresql-password: "NWZ5VWdKR0dwRQ=="
+---
+# Source: keycloak/templates/secret-keycloak.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  password: ""
-  username: "a2V5Y2xvYWs="
+  password: "a2V5Y2xvYWsxMjMhQCM="
 ---
 # Source: keycloak/templates/configmap-sh.yaml
 apiVersion: v1
@@ -32,7 +45,7 @@ metadata:
   name: keycloak-sh
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -51,7 +64,7 @@ metadata:
   name: keycloak-startup
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -101,6 +114,48 @@ data:
     run-batch
     stop-embedded-server
 ---
+# Source: keycloak/charts/postgresql/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-postgresql-headless
+  labels:
+    app: postgresql
+    chart: postgresql-6.3.13
+    release: "keycloak"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: postgresql
+  selector:
+    app: postgresql
+    release: "keycloak"
+---
+# Source: keycloak/charts/postgresql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-6.3.13
+    release: "keycloak"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: postgresql
+  selector:
+    app: postgresql
+    release: "keycloak"
+    role: master
+---
 # Source: keycloak/templates/service-headless.yaml
 apiVersion: v1
 kind: Service
@@ -108,7 +163,7 @@ metadata:
   name: keycloak-headless
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
     service: headless
@@ -124,6 +179,10 @@ spec:
       port: 8443
       targetPort: https
       protocol: TCP
+    - name: jgroups
+      port: 7600
+      targetPort: jgroups
+      protocol: TCP
   selector:
     app.kubernetes.io/name: keycloak
     app.kubernetes.io/instance: "keycloak"
@@ -135,7 +194,7 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
     service: http
@@ -154,6 +213,99 @@ spec:
     app.kubernetes.io/name: keycloak
     app.kubernetes.io/instance: "keycloak"
 ---
+# Source: keycloak/charts/postgresql/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-6.3.13
+    release: "keycloak"
+    heritage: "Helm"
+spec:
+  serviceName: keycloak-postgresql-headless
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: postgresql
+      release: "keycloak"
+      role: master
+  template:
+    metadata:
+      name: keycloak-postgresql
+      labels:
+        app: postgresql
+        chart: postgresql-6.3.13
+        release: "keycloak"
+        heritage: "Helm"
+        role: master
+    spec:      
+      securityContext:
+        fsGroup: 1001
+      containers:
+      - name: keycloak-postgresql
+        image: docker.io/bitnami/postgresql:11.5.0-debian-9-r60
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        securityContext:
+          runAsUser: 1001
+        env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: POSTGRESQL_PORT_NUMBER
+          value: "5432"
+        - name: POSTGRESQL_VOLUME_DIR
+          value: "/bitnami/postgresql"
+        - name: PGDATA
+          value: "/bitnami/postgresql/data"
+        - name: POSTGRES_USER
+          value: "keycloak"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-postgresql
+              key: postgresql-password
+        - name: POSTGRES_DB
+          value: "keycloak"
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready -U "keycloak" -d "keycloak" -h 127.0.0.1 -p 5432
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - -e
+            - |
+              pg_isready -U "keycloak" -d "keycloak" -h 127.0.0.1 -p 5432
+              [ -f /opt/bitnami/postgresql/tmp/.initialized ]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        volumeMounts:
+      volumes:
+      - name: data
+        emptyDir: {}
+---
 # Source: keycloak/templates/statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
@@ -161,7 +313,7 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.0.0
+    helm.sh/chart: keycloak-7.5.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -180,16 +332,34 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: "keycloak"
       annotations:
-        checksum/config-sh: bb7cf79097a2c29a95e0806d6f2956ca6211675d765a7657de608915d55f9568
-        checksum/config-startup: 62a3431905167a80b877bf6724343e0845508b641482e2c37548683bbb58997d
+        checksum/config-sh: c76cfffee844e81f20b337a8e42e62a65e3128bcb02b747f91e6c804c584b1f2
+        checksum/config-startup: 509c95967c340f1e80d9ca68be3588f3d09987fa5369a222e2455a79afeb380a
     spec:
       restartPolicy: Always
       serviceAccountName: keycloak
       securityContext:
         fsGroup: 1000
+      initContainers:
+        - name: wait-for-postgresql
+          image: "busybox:1.31"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+          command:
+            - sh
+            - -c
+            - |
+              until printf "." && nc -z -w 2 keycloak-postgresql 5432; do
+                  sleep 2;
+              done;
+
+              echo 'PostgreSQL OK ✓'
+          resources:
+            {}
       containers:
         - name: keycloak
-          image: "jboss/keycloak:8.0.1"
+          image: "jboss/keycloak:9.0.2"
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsNonRoot: true
@@ -206,34 +376,32 @@ spec:
               value: keycloak
             - name: KEYCLOAK_PASSWORD_FILE
               value: /secrets/password
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0"
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"
             - name: JGROUPS_DISCOVERY_PROTOCOL
               value: dns.DNS_PING
             - name: JGROUPS_DISCOVERY_PROPERTIES
-              value: "dns_query=keycloak-headless.keycloak.svc.cluster.local"
-
+              value: dns_query=keycloak-headless.keycloak.svc.cluster.local
             - name: KEYCLOAK_SERVICE_DNS_NAME
-              value: "keycloak-headless.keycloak.svc.cluster.local"
+              value: "keycloak-headless.default.svc.cluster.local"
             
             - name: DB_VENDOR
-              value: "postgres"
+              value: postgres
             - name: DB_ADDR
-              value: "mykeycloak"
+              value: keycloak-postgresql
             - name: DB_PORT
               value: "5432"
             - name: DB_DATABASE
               value: "keycloak"
             - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-db
-                  key: "username"
+              value: "keycloak"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-db
-                  key: "password"
-            - name: PROXY_ADDRESS_FORWARDING
-              value: "true"
+                  name: keycloak-postgresql
+                  key: postgresql-password
             # - name: KEYCLOAK_LOGLEVEL
             #   value: DEBUG
             # - name: WILDFLY_LOGLEVEL
@@ -263,6 +431,9 @@ spec:
               protocol: TCP
             - name: https
               containerPort: 8443
+              protocol: TCP
+            - name: jgroups
+              containerPort: 7600
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -315,7 +486,7 @@ spec:
             defaultMode: 0555
         - name: secrets
           secret:
-            secretName: keycloak-psql-credentials
+            secretName: keycloak-http
         - name: startup
           configMap:
             name: keycloak-startup

@@ -1,39 +1,21 @@
 # Chart Details
     # repoURL: https://codecentric.github.io/helm-charts
-    # targetRevision: "6.1.0"
+    # targetRevision: "7.5.0"
     # chart: keycloak
 
 # Generated with:
 # helm template keycloak codecentric/keycloak -f values.yaml
 
-# IMPORTANT!! : If you are using istio, you must remove the jgroups port exposure from the generated helm yaml.
-# Failing to do so will result in Keycloak being unable to cluster itself.
-# This is a part of the helm chart and added whenever you have more than one replica of Keycloak.
-# In the future we may want to evaluate the use of JDBC_PING.
-# I believe with this current route we may run into a race condition with pods starting at the same time causing all initial pods to create their own cluster.
-# This can potentially be solved with JDBC_PING, but lets evaluate as this could have its own implications.
-# Feel free to track this issue on GitHub: https://github.com/codecentric/helm-charts/issues/188
-# I have spent way too much time on this, to whoever takes this on next: good luck. (ノಠ益ಠ)ノ彡┻━┻
-
-init:
-  image:
-    pullPolicy: "IfNotPresent"
-
-test:
-  enabled: false
-
 keycloak:
   replicas: 2
-
+  password: keycloak123!@#
+  jgroups:
+    discoveryProperties: "dns_query=keycloak-headless.keycloak.svc.cluster.local"
   serviceAccount:
     create: true
-
-  # NOTE: This exists to make initial deployment easier instead of fetching the random pw that is generated
-  #       It is expected that the user changes this after bootstrap
-  password: keycloak123!@#
-
   persistence:
-    deployPostgres: false
+    deployPostgres: true
     dbVendor: postgres
-    
-  existingSecret: keycloak-psql-credentials
+    enabled: true
+test:
+  enabled: false

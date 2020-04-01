@@ -3,4 +3,3 @@ namespace: keycloak
 resources:
   - namespace.yaml
   - generate/generated.yaml
-  - networking/virtual-service.yaml

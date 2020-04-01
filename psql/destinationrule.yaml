@@ -1,6 +1,0 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: keycloak-cluster-destination
-spec:
-  host: keycloak-cluster.keycloak.svc.cluster.local
