@@ -11,6 +11,7 @@ keycloak:
   password: keycloak123!@#
   jgroups:
     discoveryProperties: "dns_query=keycloak-headless.keycloak.svc.cluster.local"
+  affinity:
   serviceAccount:
     create: true
   persistence:

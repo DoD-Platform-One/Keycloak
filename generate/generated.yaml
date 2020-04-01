@@ -22,7 +22,7 @@ metadata:
     heritage: "Helm"
 type: Opaque
 data:
-  postgresql-password: "NWZ5VWdKR0dwRQ=="
+  postgresql-password: "dkJHYzVhYzNKWg=="
 ---
 # Source: keycloak/templates/secret-keycloak.yaml
 apiVersion: v1
@@ -451,33 +451,6 @@ spec:
             
           resources:
             {}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: keycloak
-                  app.kubernetes.io/instance: "keycloak"
-                matchExpressions:
-                  - key: role
-                    operator: NotIn
-                    values:
-                      - test
-              topologyKey: kubernetes.io/hostname
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: keycloak
-                    app.kubernetes.io/instance: "keycloak"
-                  matchExpressions:
-                    - key: role
-                      operator: NotIn
-                      values:
-                        - test
-                topologyKey: failure-domain.beta.kubernetes.io/zone
-        
       terminationGracePeriodSeconds: 60
       volumes:
         - name: sh
