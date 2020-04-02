@@ -15,8 +15,9 @@ keycloak:
   serviceAccount:
     create: true
   persistence:
-    deployPostgres: true
     dbVendor: postgres
-    enabled: true
+    existingSecret: keycloak-credentials
+    existingSecretPasswordKey: PGPASSWORD
+    existingSecretUsernameKey: PGUSER
 test:
   enabled: false
