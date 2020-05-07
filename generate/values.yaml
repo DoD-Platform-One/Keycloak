@@ -16,7 +16,7 @@ keycloak:
     create: true
   persistence:
     dbVendor: postgres
-    existingSecret: keycloak-credentials
+    existingSecret: db-credentials
     existingSecretPasswordKey: PGPASSWORD
     existingSecretUsernameKey: PGUSER
 test:

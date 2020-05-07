@@ -6,7 +6,7 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 ---
@@ -17,7 +17,7 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
@@ -31,7 +31,7 @@ metadata:
   name: keycloak-sh
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -50,7 +50,7 @@ metadata:
   name: keycloak-startup
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -107,7 +107,7 @@ metadata:
   name: keycloak-headless
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
     service: headless
@@ -138,7 +138,7 @@ metadata:
   name: keycloak-http
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
     service: http
@@ -164,7 +164,7 @@ metadata:
   name: keycloak
   labels:
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.5.0
+    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -183,8 +183,8 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: "keycloak"
       annotations:
-        checksum/config-sh: c76cfffee844e81f20b337a8e42e62a65e3128bcb02b747f91e6c804c584b1f2
-        checksum/config-startup: 509c95967c340f1e80d9ca68be3588f3d09987fa5369a222e2455a79afeb380a
+        checksum/config-sh: 8cee21d5ee0c76ce54ac61bf0687e61d30a334d5b280af80f548c3728e562769
+        checksum/config-startup: 1f253b47aa320eb35b01bb23e65885f3c5e86dd0787312b88891c0e10db724a0
     spec:
       restartPolicy: Always
       serviceAccountName: keycloak
@@ -231,12 +231,12 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-credentials
+                  name: db-credentials
                   key: "PGUSER"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-credentials
+                  name: db-credentials
                   key: "PGPASSWORD"
             # - name: KEYCLOAK_LOGLEVEL
             #   value: DEBUG
