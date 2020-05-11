@@ -1,6 +1,5 @@
 package dod.p1.keycloak.registration;
 
-import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
 import org.keycloak.authentication.forms.RegistrationProfile;
@@ -21,7 +20,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-public class RegistrationValidation extends RegistrationProfile implements FormAction {
+public class RegistrationValidation extends RegistrationProfile {
 
     public static final String PROVIDER_ID = "registration-validation-action";
 
@@ -42,7 +41,7 @@ public class RegistrationValidation extends RegistrationProfile implements FormA
 
     @Override
     public String getHelpText() {
-        return "Restrict user registration to specific top-level-domains.  Important: be user the use the format \".mil\"";
+        return "Restrict user registration to specific top-level-domains.  Important: the user must use the format \".mil\"";
     }
 
     private static final List<ProviderConfigProperty> CONFIG_PROPERTIES = new ArrayList<ProviderConfigProperty>();

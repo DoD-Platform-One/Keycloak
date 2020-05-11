@@ -11,7 +11,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class RegistrationProtection {
 
@@ -40,11 +42,9 @@ public class RegistrationProtection {
     @Produces(MediaType.APPLICATION_JSON)
     public InviteCode get() {
 
-        InviteCode code = new InviteCode();
-
         if (auth == null) {
             Response.status(Response.Status.BAD_REQUEST).build();
-            return code;
+            return new InviteCode();
         }
 
         AuthenticatorConfigModel authConfig = session.getContext().getRealm().getAuthenticatorConfigs()
@@ -53,24 +53,28 @@ public class RegistrationProtection {
                 .findFirst()
                 .orElse(null);
 
-        if (authConfig != null) {
-            String inviteSecret = authConfig.getConfig().get("inviteSecret");
-            String inviteDigest = RegistrationValidation.getInviteDigest(0, inviteSecret);
-            String invitedUrlEncoded = URLEncoder.encode(inviteDigest);
-            String realm = session.getContext().getRealm().getName();
-
-            code.success = true;
-            code.days = Integer.parseInt(authConfig.getConfig().get("inviteSecretDays"));
-            code.link = "/auth/realms/" + realm + "/protocol/openid-connect/registrations?client_id=account&response_type=code&invite=" + invitedUrlEncoded;
-            return code;
+        if (authConfig == null) {
+            Response.status(Response.Status.BAD_REQUEST).build();
+            return new InviteCode();
         }
+
+        InviteCode code = new InviteCode();
+
+        String inviteSecret = authConfig.getConfig().get("inviteSecret");
+        String inviteDigest = RegistrationValidation.getInviteDigest(0, inviteSecret);
+        String invitedUrlEncoded = URLEncoder.encode(inviteDigest, StandardCharsets.UTF_8);
+        String realm = session.getContext().getRealm().getName();
+
+        code.success = true;
+        code.days = Integer.parseInt(authConfig.getConfig().get("inviteSecretDays"));
+        code.link = "/auth/realms/" + realm + "/protocol/openid-connect/registrations?client_id=account&response_type=code&invite=" + invitedUrlEncoded;
 
         return code;
     }
 
     private static class InviteCode {
         public Boolean success = false;
-        public int days;
+        public Integer days;
         public String link = "";
     }
 
