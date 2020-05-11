@@ -1,3 +1,7 @@
+html {
+  background: rgb(3, 24, 33) !important;
+}
+
 .navbar-pf {
   background: rgba(0, 0, 0, 0.3);
   border: none;
@@ -560,8 +564,21 @@ ul#kc-totp-supported-apps {
     border-radius: 5px !important;
   }
 
+  textarea.form-control {
+    width: 100% !important;
+    height: 75px !important;
+  }
+
+  .has-error .control-label {
+    color: #c00 !important;
+  }
+
+  .has-error .form-control {
+    background-color: rgba(255, 0, 0, 0.2) !important;
+    color: white !important;
+  }
+
   .login-pf-page .card-pf p {
-    color: #72767b;
     font-weight: 600;
     font-size: 1.5rem;
     text-align: center;
@@ -570,4 +587,26 @@ ul#kc-totp-supported-apps {
     color: white;
     text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.8);
   }
+
+  .login-pf-page .card-pf #kc-totp-settings p {
+    font-weight: 100;
+    font-size: 1.25rem;
+    text-align: left;
+    line-height: inherit;
+    text-shadow: none;
+  }
+
+  #kc-totp-secret-key {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 5px;
+    font-weight: 600;
+    color: black;
+  }
+  
+}
+
+.g-recaptcha {
+  margin: 0 auto !important;
+  max-width: 300px !important;
 }

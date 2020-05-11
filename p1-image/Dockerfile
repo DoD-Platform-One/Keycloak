@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:9.0.3
+FROM quay.io/keycloak/keycloak:10.0.1
 
 COPY custom-theme /opt/custom-theme
 
