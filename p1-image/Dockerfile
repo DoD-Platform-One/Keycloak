@@ -8,9 +8,11 @@ RUN mvn clean install
 
 FROM quay.io/keycloak/keycloak:10.0.1 AS keycloak
 
+COPY baby-yoda.json /opt/baby-yoda.json
 COPY custom-theme /opt/custom-theme
-
 COPY --from=build /usr/src/maven/target/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
+
+ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
 
 USER root
 
