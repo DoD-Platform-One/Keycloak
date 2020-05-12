@@ -23,30 +23,8 @@ import java.util.*;
 public class RegistrationValidation extends RegistrationProfile {
 
     public static final String PROVIDER_ID = "registration-validation-action";
-
-    @Override
-    public String getDisplayType() {
-        return "Platform One Registration Validation";
-    }
-
-    @Override
-    public String getId() {
-        return PROVIDER_ID;
-    }
-
-    @Override
-    public boolean isConfigurable() {
-        return true;
-    }
-
-    @Override
-    public String getHelpText() {
-        return "Restrict user registration to specific top-level-domains.  Important: the user must use the format \".mil\"";
-    }
-
     private static final List<ProviderConfigProperty> CONFIG_PROPERTIES = new ArrayList<ProviderConfigProperty>();
-
-    private static HashMap<String, String> INVITE_CACHE = new HashMap<>();
+    private static final HashMap<String, String> INVITE_CACHE = new HashMap<>();
 
     static {
         // Add the domain list configuration
@@ -109,6 +87,26 @@ public class RegistrationValidation extends RegistrationProfile {
     }
 
     @Override
+    public String getDisplayType() {
+        return "Platform One Registration Validation";
+    }
+
+    @Override
+    public String getId() {
+        return PROVIDER_ID;
+    }
+
+    @Override
+    public boolean isConfigurable() {
+        return true;
+    }
+
+    @Override
+    public String getHelpText() {
+        return "Restrict user registration to specific top-level-domains.  Important: the user must use the format \".mil\"";
+    }
+
+    @Override
     public List<ProviderConfigProperty> getConfigProperties() {
         return CONFIG_PROPERTIES;
     }
@@ -123,10 +121,6 @@ public class RegistrationValidation extends RegistrationProfile {
         String inviteCode = formData.getFirst("invite");
         String email = formData.getFirst(Validation.FIELD_EMAIL);
 
-        formData.forEach((key, val) -> {
-            System.out.println(key + ": " + val);
-        });
-
         String eventError = Errors.INVALID_REGISTRATION;
 
         if (Validation.isBlank(formData.getFirst("firstName"))) {
@@ -137,10 +131,21 @@ public class RegistrationValidation extends RegistrationProfile {
             errors.add(new FormMessage("lastName", Messages.MISSING_LAST_NAME));
         }
 
+        if (Validation.isBlank(formData.getFirst("user.attributes.affiliation"))) {
+            errors.add(new FormMessage("user.attributes.affiliation", "Please specify your organization affiliation."));
+        }
+
+        if (Validation.isBlank(formData.getFirst("user.attributes.rank"))) {
+            errors.add(new FormMessage("user.attributes.rank", "Please specify your rank or choose n/a."));
+        }
+
+        if (Validation.isBlank(formData.getFirst("user.attributes.organization"))) {
+            errors.add(new FormMessage("user.attributes.organization", "Please specify your organization."));
+        }
 
         if (!isValidInviteCode(authenticatorConfig, inviteCode)) {
             context.getEvent().detail("invite", inviteCode);
-            errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, "Invalid or expired registration code."));
+            errors.add(new FormMessage("", "Invalid or expired registration code."));
         }
 
         if (!isValidEmailAddress(authenticatorConfig, email)) {
@@ -179,7 +184,6 @@ public class RegistrationValidation extends RegistrationProfile {
 
         encodedEmail = email.getBytes(StandardCharsets.US_ASCII);
         for (byte b : encodedEmail) {
-            System.out.println(b);
             emailByteTotal += b;
         }
 

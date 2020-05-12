@@ -5,7 +5,7 @@ import org.keycloak.services.resource.RealmResourceProvider;
 
 public class RegistrationProtectionProvider implements RealmResourceProvider {
 
-    private KeycloakSession session;
+    private final KeycloakSession session;
 
     public RegistrationProtectionProvider(KeycloakSession session) {
         this.session = session;
@@ -19,5 +19,4 @@ public class RegistrationProtectionProvider implements RealmResourceProvider {
     @Override
     public void close() {
     }
-
 }

@@ -11,14 +11,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class RegistrationProtection {
 
     private final AuthenticationManager.AuthResult auth;
-    private KeycloakSession session;
+    private final KeycloakSession session;
 
     public RegistrationProtection(KeycloakSession session) {
         this.session = session;
@@ -30,11 +29,7 @@ public class RegistrationProtection {
         RealmModel realm = keycloakSession.getContext().getRealm();
 
         AuthenticationManager.AuthResult authResult = appAuthManager.authenticateIdentityCookie(keycloakSession, realm);
-        if (authResult != null) {
-            return authResult;
-        }
-
-        return null;
+        return authResult;
     }
 
     @GET

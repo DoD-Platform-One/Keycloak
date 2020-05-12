@@ -41,8 +41,8 @@
 
                 <div class="col-sm-6 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}">
                     <label for="user.attributes.affiliation">Affiliation</label>
-                    <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control">
-                        <option></option>
+                    <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control" value="${(register.formData['user.attributes.affiliation']!'')}">
+                        <option selected disabled hidden>Select your org</option>	                	
                         <optgroup label="US Government">
                             <option>US Air Force</option>
                             <option>US Air Force Reserve</option>
@@ -73,8 +73,8 @@
 
                 <div class="col-sm-6 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}">
                     <label for="user.attributes.rank">Pay Grade</label>
-                    <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
-                        <option></option>
+                    <select id="user.attributes.rank" name="user.attributes.rank" class="form-control" value="${(register.formData['user.attributes.rank']!'')}">
+                        <option selected disabled hidden>Select your rank</option>	                	
                         <optgroup label="Enlisted">
                             <option>E-1</option>
                             <option>E-2</option>
@@ -133,6 +133,26 @@
 
             <br>
 
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('user.attributes.organization',properties.kcFormGroupErrorClass!)}">
+                <div class="${properties.kcLabelWrapperClass!}">
+                    <label for="user.attributes.organization" class="${properties.kcLabelClass!}">Unit, Organization or Company Name</label>
+                </div>
+                <div class="${properties.kcInputWrapperClass!}">
+                    <input type="text" id="user.attributes.organization" class="${properties.kcInputClass!}" name="user.attributes.organization" value="${(register.formData['user.attributes.organization']!'')}" autocomplete="email" />
+                </div>
+            </div>
+
+            <#if !realm.registrationEmailAsUsername>
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('username',properties.kcFormGroupErrorClass!)}">
+                    <div class="${properties.kcLabelWrapperClass!}">
+                        <label for="username" class="${properties.kcLabelClass!}">${msg("username")}</label>
+                    </div>
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <input type="text" id="username" class="${properties.kcInputClass!}" name="username" value="${(register.formData.username!'')}" autocomplete="username" />
+                    </div>
+                </div>
+            </#if>
+            
             <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('email',properties.kcFormGroupErrorClass!)}">
                 <div class="${properties.kcLabelWrapperClass!}">
                     <label for="email" class="${properties.kcLabelClass!}">${msg("email")}</label>
