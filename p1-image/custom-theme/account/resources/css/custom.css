@@ -28,6 +28,10 @@
   color: #112833 !important;
 }
 
+html.login-pf {
+  background: none!important;
+}
+
 body.admin-console.user .content-area {
   background: rgba(255, 255, 255, 0.05);
   /* For Chrome & Chromium 76+ */
