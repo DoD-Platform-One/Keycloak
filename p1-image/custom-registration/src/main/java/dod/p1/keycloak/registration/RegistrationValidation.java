@@ -1,11 +1,14 @@
 package dod.p1.keycloak.registration;
 
+import org.keycloak.authentication.FormContext;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
 import org.keycloak.authentication.forms.RegistrationProfile;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
 import org.keycloak.models.AuthenticatorConfigModel;
+import org.keycloak.models.GroupModel;
+import org.keycloak.models.UserModel;
 import org.keycloak.models.utils.FormMessage;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.services.messages.Messages;
@@ -19,23 +22,39 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class RegistrationValidation extends RegistrationProfile {
 
     public static final String PROVIDER_ID = "registration-validation-action";
-    private static final List<ProviderConfigProperty> CONFIG_PROPERTIES = new ArrayList<ProviderConfigProperty>();
+    private static final List<ProviderConfigProperty> CONFIG_PROPERTIES = new ArrayList<>();
     private static final HashMap<String, String> INVITE_CACHE = new HashMap<>();
+
+    private static final String PROPERTY_IL2_DOMAINS = "il2ApprovedDomains";
+    private static final String PROPERTY_IL4_DOMAINS = "il4ApprovedDomains";
+    private static final String IL2_GROUP_ID = "00eb8904-5b88-4c68-ad67-cec0d2e07aa6";
+    private static final String IL4_GROUP_ID = "191f836b-ec50-4819-ba10-1afaa5b99600";
+    private static final String IL5_GROUP_ID = "be8d20b3-8cd6-4d7e-9c98-5bb918f53c5c";
 
     static {
         // Add the domain list configuration
-        ProviderConfigProperty domainProperty;
-        domainProperty = new ProviderConfigProperty();
-        domainProperty.setName("validDomains");
-        domainProperty.setLabel("Authorized Email Domains");
-        domainProperty.setType(ProviderConfigProperty.MULTIVALUED_STRING_TYPE);
-        domainProperty.setDefaultValue(".mil");
-        domainProperty.setHelpText("List email domains authorized to register");
-        CONFIG_PROPERTIES.add(domainProperty);
+        ProviderConfigProperty il2DomainProperty;
+        il2DomainProperty = new ProviderConfigProperty();
+        il2DomainProperty.setName(PROPERTY_IL2_DOMAINS);
+        il2DomainProperty.setLabel("IL2 Approved Domains");
+        il2DomainProperty.setType(ProviderConfigProperty.MULTIVALUED_STRING_TYPE);
+        il2DomainProperty.setDefaultValue(".mil");
+        il2DomainProperty.setHelpText("List email domains authorized to register");
+        CONFIG_PROPERTIES.add(il2DomainProperty);
+
+        ProviderConfigProperty il4DomainProperty;
+        il4DomainProperty = new ProviderConfigProperty();
+        il4DomainProperty.setName(PROPERTY_IL4_DOMAINS);
+        il4DomainProperty.setLabel("IL4 Approved Domains");
+        il4DomainProperty.setType(ProviderConfigProperty.MULTIVALUED_STRING_TYPE);
+        il4DomainProperty.setDefaultValue(".mil");
+        il4DomainProperty.setHelpText("List email domains that will be auto-promoted to IL4");
+        CONFIG_PROPERTIES.add(il4DomainProperty);
 
         // Add the invited secret configuration
         ProviderConfigProperty inviteProperty;
@@ -60,6 +79,11 @@ public class RegistrationValidation extends RegistrationProfile {
         CONFIG_PROPERTIES.add(inviteDaysProperty);
     }
 
+    /**
+     * @param dayLookBack  Number of days from today to look back for a matching digest
+     * @param inviteSecret The secret used to generate the digest
+     * @return true if a valid digest was matched
+     */
     static String getInviteDigest(int dayLookBack, String inviteSecret) {
         Instant instant = Instant.now();
         Instant instantOffset = instant.minus(dayLookBack, ChronoUnit.DAYS);
@@ -68,7 +92,7 @@ public class RegistrationValidation extends RegistrationProfile {
         String dayKey = formatDate.format(day);
 
         if (!INVITE_CACHE.containsKey(dayKey)) {
-            MessageDigest digest = null;
+            MessageDigest digest;
 
             try {
                 digest = MessageDigest.getInstance("SHA-256");
@@ -84,6 +108,121 @@ public class RegistrationValidation extends RegistrationProfile {
         }
 
         return INVITE_CACHE.get(dayKey);
+    }
+
+    private static void joinValidUserToILGroups(FormContext context, UserModel user) {
+        String email = user.getEmail().toLowerCase();
+        AuthenticatorConfigModel authenticatorConfig = context.getAuthenticatorConfig();
+        Map<String, String> config = authenticatorConfig.getConfig();
+
+        GroupModel il2Group = context.getRealm().getGroupById(IL2_GROUP_ID);
+        GroupModel il4Group = context.getRealm().getGroupById(IL4_GROUP_ID);
+        GroupModel il5Group = context.getRealm().getGroupById(IL5_GROUP_ID);
+
+        String[] il4EmailDomains = config.getOrDefault(PROPERTY_IL4_DOMAINS, ".mil").split("##");
+        boolean isValidIL4Email = Stream.of(il4EmailDomains).anyMatch(email::endsWith);
+
+        // @todo: handle CAC registration group update to IL5
+        boolean isValidCACUser = false;
+
+        // All valid users should be joined to the IL2 group
+        user.joinGroup(il2Group);
+
+        if (isValidIL4Email) {
+            user.joinGroup(il4Group);
+        }
+
+        if (isValidCACUser) {
+            user.joinGroup(il5Group);
+        }
+    }
+
+    /**
+     * Add a custom user attribute (mattermostid) to enable direct mattermost <> keycloak auth on mattermost teams edition
+     *
+     * @param formData The user registration form data
+     */
+    private static void generateUniqueStringIdForMattermost(MultivaluedMap<String, String> formData, UserModel user) {
+        String email = formData.getFirst(Validation.FIELD_EMAIL);
+
+        byte[] encodedEmail;
+        int emailByteTotal = 0;
+        Date today = new Date();
+
+        encodedEmail = email.getBytes(StandardCharsets.US_ASCII);
+        for (byte b : encodedEmail) {
+            emailByteTotal += b;
+        }
+
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyDHmsS");
+
+        user.setSingleAttribute("mattermostid", formatDate.format(today) + emailByteTotal);
+    }
+
+    /**
+     * @param authenticatorConfig
+     * @param inviteCode
+     * @return
+     */
+    private static boolean isValidInviteCode(AuthenticatorConfigModel authenticatorConfig, String inviteCode) {
+
+        if (inviteCode == null) {
+            return false;
+        }
+
+        try {
+            // Fail if the invite isn't a valid Base64 string
+            Base64.getDecoder().decode(inviteCode);
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
+
+        // Load the configured secret
+        String inviteSecret = authenticatorConfig.getConfig().get("inviteSecret");
+        int inviteSecretDays = Integer.parseInt(authenticatorConfig.getConfig().get("inviteSecretDays")) + 1;
+
+        for (int dayOffset = 0; dayOffset < inviteSecretDays; dayOffset++) {
+            String inviteDigest = getInviteDigest(dayOffset, inviteSecret);
+            if (inviteCode.equals(inviteDigest)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Test a given email address for valid format and match against the IL2 & IL4 domain lists
+     *
+     * @param authenticatorConfig The current config model
+     * @param email               The email to test
+     * @return true if the email validates
+     */
+    private static boolean isValidEmailAddress(AuthenticatorConfigModel authenticatorConfig, String email) {
+        Map<String, String> config = authenticatorConfig.getConfig();
+
+        String[] il2EmailDomains = config.getOrDefault(PROPERTY_IL2_DOMAINS, ".mil").split("##");
+        String[] il4EmailDomains = config.getOrDefault(PROPERTY_IL4_DOMAINS, ".mil").split("##");
+
+        if (Validation.isBlank(email) || !Validation.isEmailValid(email)) {
+            return false;
+        }
+
+        String emailLowerCase = email.toLowerCase();
+
+        // validate email domain based on IL2 & IL4 domain lists
+        return Stream.of(il2EmailDomains, il4EmailDomains)
+                .flatMap(Stream::of)
+                .anyMatch(emailLowerCase::endsWith);
+    }
+
+    @Override
+    public void success(FormContext context) {
+        UserModel user = context.getUser();
+        MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
+
+        generateUniqueStringIdForMattermost(formData, user);
+        joinValidUserToILGroups(context, user);
     }
 
     @Override
@@ -164,68 +303,9 @@ public class RegistrationValidation extends RegistrationProfile {
             context.error(eventError);
             context.validationError(formData, errors);
         } else {
-            handleSuccess(context, formData);
+            context.success();
         }
 
-    }
-
-    private void handleSuccess(ValidationContext context, MultivaluedMap<String, String> formData) {
-        String email = formData.getFirst(Validation.FIELD_EMAIL);
-        String generatedUniqueId = generateUniqueId(email);
-
-        formData.add("user.attributes.mattermostid", generatedUniqueId);
-        context.success();
-    }
-
-    private String generateUniqueId(String email) {
-        byte[] encodedEmail;
-        int emailByteTotal = 0;
-        Date today = new Date();
-
-        encodedEmail = email.getBytes(StandardCharsets.US_ASCII);
-        for (byte b : encodedEmail) {
-            emailByteTotal += b;
-        }
-
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyDHmsS");
-
-        return formatDate.format(today) + emailByteTotal;
-    }
-
-    private boolean isValidInviteCode(AuthenticatorConfigModel authenticatorConfig, String inviteCode) {
-        // No code provided, abort
-        if (inviteCode == null) {
-            return false;
-        }
-
-        // Load the configured secret
-        String inviteSecret = authenticatorConfig.getConfig().get("inviteSecret");
-        int inviteSecretDays = Integer.parseInt(authenticatorConfig.getConfig().get("inviteSecretDays")) + 1;
-
-        for (int dayOffset = 0; dayOffset < inviteSecretDays; dayOffset++) {
-            String inviteDigest = getInviteDigest(dayOffset, inviteSecret);
-            if (inviteCode.equals(inviteDigest)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean isValidEmailAddress(AuthenticatorConfigModel authenticatorConfig, String email) {
-        String[] domains = authenticatorConfig.getConfig().getOrDefault("validDomains", ".mil").split("##");
-
-        if (Validation.isBlank(email) || !Validation.isEmailValid(email)) {
-            return false;
-        }
-
-        for (String domain : domains) {
-            if (email.endsWith(domain)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
 }
