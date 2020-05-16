@@ -18,18 +18,22 @@ public class RegistrationProtection {
 
     private final AuthenticationManager.AuthResult auth;
     private final KeycloakSession session;
+    private final AppAuthManager appAuthManager;
 
-    public RegistrationProtection(KeycloakSession session) {
+    public RegistrationProtection(KeycloakSession session, AppAuthManager authManager) {
         this.session = session;
+        this.appAuthManager = authManager;
         this.auth = resolveAuthentication(session);
     }
 
-    private AuthenticationManager.AuthResult resolveAuthentication(KeycloakSession keycloakSession) {
-        AppAuthManager appAuthManager = new AppAuthManager();
-        RealmModel realm = keycloakSession.getContext().getRealm();
+    // Used by RegistrationProtectionTest::testValidInviteCode
+    public RegistrationProtection(KeycloakSession session) {
+        this(session, new AppAuthManager());
+    }
 
-        AuthenticationManager.AuthResult authResult = appAuthManager.authenticateIdentityCookie(keycloakSession, realm);
-        return authResult;
+    private AuthenticationManager.AuthResult resolveAuthentication(KeycloakSession keycloakSession) {
+        RealmModel realm = keycloakSession.getContext().getRealm();
+        return appAuthManager.authenticateIdentityCookie(keycloakSession, realm);
     }
 
     @GET
@@ -67,7 +71,7 @@ public class RegistrationProtection {
         return code;
     }
 
-    private static class InviteCode {
+    public static class InviteCode {
         public Boolean success = false;
         public Integer days;
         public String link = "";

@@ -3,3 +3,7 @@ p1-image/custom-registration/target
 .DS_Store
 .idea
 *.iml
+.vscode
+**/.classpath
+**/.project
+**/.settings
