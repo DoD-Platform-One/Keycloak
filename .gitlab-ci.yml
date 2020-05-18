@@ -1,17 +1,4 @@
 include:
   - project: 'platform-one/private/big-bang/pipeline-templates'
     ref: 'feature/keycloak'
-    file: '/templates/keycloak.gitlab-ci.yml'
-
-# Set global variables below
-variables:
-  DOCKER_FILE_DIR: ${CI_PROJECT_DIR}/p1-image
-  CONTAINER_REGISTRY: registry.dsop.io/platform-one/private/big-bang/apps
-  PROJECT_NAME: keycloak
-  # TODO: This doens't work yet...
-  #m SKIP_PACKAGING: 'true'
-
-
-  # TF Vars
-  # TF_VAR_cluster_name: included from pipeline
-  # TF_VAR_vpc_cidr: calculated/included from pipeline
+    file: '/products/platform1/keycloak.gitlab-ci.yml'
