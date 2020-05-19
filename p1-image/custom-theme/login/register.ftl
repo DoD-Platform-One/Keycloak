@@ -41,7 +41,7 @@
 
                 <div class="col-sm-6 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}">
                     <label for="user.attributes.affiliation">Affiliation</label>
-                    <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control" value="${(register.formData['user.attributes.affiliation']!'')}">
+                    <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control">
                         <option selected disabled hidden>Select your org</option>	                	
                         <optgroup label="US Government">
                             <option>US Air Force</option>
@@ -73,7 +73,7 @@
 
                 <div class="col-sm-6 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}">
                     <label for="user.attributes.rank">Pay Grade</label>
-                    <select id="user.attributes.rank" name="user.attributes.rank" class="form-control" value="${(register.formData['user.attributes.rank']!'')}">
+                    <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
                         <option selected disabled hidden>Select your rank</option>	                	
                         <optgroup label="Enlisted">
                             <option>E-1</option>
@@ -138,7 +138,7 @@
                     <label for="user.attributes.organization" class="${properties.kcLabelClass!}">Unit, Organization or Company Name</label>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="user.attributes.organization" class="${properties.kcInputClass!}" name="user.attributes.organization" value="${(register.formData['user.attributes.organization']!'')}" autocomplete="email" />
+                    <input type="text" id="user.attributes.organization" class="${properties.kcInputClass!}" name="user.attributes.organization" value="${(register.formData['user.attributes.organization']!'')}" autocomplete="company" />
                 </div>
             </div>
 
@@ -221,4 +221,7 @@
     // Update session storage so keycloak doesn't ruin our day on error redirections
     sessionStorage.setItem('invite-code', inviteCode);
     inviteInput.value  = inviteCode || 'Missing invite code';
+
+    document.getElementById('user.attributes.affiliation').value = "${(register.formData['user.attributes.affiliation']!'')}";
+    document.getElementById('user.attributes.rank').value = "${(register.formData['user.attributes.rank']!'')}";
 </script>

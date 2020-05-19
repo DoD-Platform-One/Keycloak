@@ -1,5 +1,9 @@
 html {
-  background: rgb(3, 24, 33) !important;
+  background: none !important;
+}
+
+.login-pf-page {
+  margin-bottom: 100px;
 }
 
 .navbar-pf {
