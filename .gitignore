@@ -1,6 +1,6 @@
 p1-image/custom-auth/target
 p1-image/custom-registration/target
-.DS_Sgit tore
+.DS_Store
 .idea
 *.iml
 .vscode
