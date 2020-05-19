@@ -1,4 +1,4 @@
 include:
   - project: 'platform-one/private/big-bang/pipeline-templates'
     ref: 'feature/keycloak'
-    file: '/products/platform1/keycloak.gitlab-ci.yml'
+    file: '/products/platform1/keycloak.yml'
