@@ -9,6 +9,8 @@
 keycloak:
   replicas: 2
   password: keycloak123!@#
+  image:
+    tag: 10.0.1
   jgroups:
     discoveryProperties: "dns_query=keycloak-headless.keycloak.svc.cluster.local"
   affinity:

@@ -22,7 +22,6 @@ patchesJson6902:
 images:
   # Use our own custom image
   # NOTE: It is up to the "consumer" to provide the necssary ImagePullSecrets to pull this
-  - name: jboss/keycloak:9.0.2
+  - name: docker.io/jboss/keycloak:10.0.1
     newName: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
-    # TODO: Make this a real tag!
-    newTag: master
+    newTag: 10.0.1-0.1.0

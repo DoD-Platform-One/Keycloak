@@ -5,9 +5,10 @@ kind: ServiceAccount
 metadata:
   name: keycloak
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: keycloak/templates/secret-keycloak.yaml
@@ -16,9 +17,10 @@ kind: Secret
 metadata:
   name: keycloak-http
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
@@ -30,9 +32,10 @@ kind: ConfigMap
 metadata:
   name: keycloak-sh
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
 data:
   keycloak.sh: |
@@ -49,9 +52,10 @@ kind: ConfigMap
 metadata:
   name: keycloak-startup
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
 data:
   keycloak.cli: |
@@ -106,9 +110,10 @@ kind: Service
 metadata:
   name: keycloak-headless
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
     service: headless
 spec:
@@ -137,9 +142,10 @@ kind: Service
 metadata:
   name: keycloak-http
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
     service: http
 spec:
@@ -163,9 +169,10 @@ kind: StatefulSet
 metadata:
   name: keycloak
   labels:
+    helm.sh/chart: keycloak-8.1.0
     app.kubernetes.io/name: keycloak
-    helm.sh/chart: keycloak-7.7.0
     app.kubernetes.io/instance: "keycloak"
+    app.kubernetes.io/version: "10.0.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
@@ -183,8 +190,8 @@ spec:
         app.kubernetes.io/name: keycloak
         app.kubernetes.io/instance: "keycloak"
       annotations:
-        checksum/config-sh: 8cee21d5ee0c76ce54ac61bf0687e61d30a334d5b280af80f548c3728e562769
-        checksum/config-startup: 1f253b47aa320eb35b01bb23e65885f3c5e86dd0787312b88891c0e10db724a0
+        checksum/config-sh: e02b815225f7630477c90abba6ba27bca86a682e391a6e262711b051ca642fc3
+        checksum/config-startup: 10f7eeb9898c8443bf20df9866649e42dc5352a83128e32ff657e0d3223f5a33
     spec:
       restartPolicy: Always
       serviceAccountName: keycloak
@@ -192,7 +199,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: keycloak
-          image: "jboss/keycloak:9.0.2"
+          image: "docker.io/jboss/keycloak:10.0.1"
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsNonRoot: true
