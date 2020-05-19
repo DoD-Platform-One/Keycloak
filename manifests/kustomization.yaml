@@ -18,3 +18,11 @@ patchesJson6902:
       name: keycloak-headless
       namespace: keycloak
     path: patches/service-jgroups.yaml
+
+images:
+  # Use our own custom image
+  # NOTE: It is up to the "consumer" to provide the necssary ImagePullSecrets to pull this
+  - name: jboss/keycloak:9.0.2
+    newName: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
+    # TODO: Make this a real tag!
+    newTag: master
