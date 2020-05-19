@@ -12,8 +12,6 @@ COPY baby-yoda.json /opt/baby-yoda.json
 COPY custom-theme /opt/custom-theme
 COPY --from=build /usr/src/maven/target/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
 
-ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
-
 USER root
 
 RUN mv /opt/jboss/keycloak/themes/base /opt/jboss/keycloak/themes/base.bak && \
