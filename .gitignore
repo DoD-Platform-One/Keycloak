@@ -10,3 +10,6 @@ p1-image/custom-registration/target
 cypress/plugins
 cypress/support
 cypress/videos
+.gradle
+build
+out
