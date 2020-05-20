@@ -5,6 +5,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'jacoco'
 }
 
 repositories {
@@ -23,6 +24,15 @@ dependencies {
     implementation 'org.keycloak:keycloak-services:10.0.1'
     implementation 'org.keycloak:keycloak-server-spi:10.0.1'
     implementation 'org.keycloak:keycloak-server-spi-private:10.0.1'
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled false
+        csv.enabled false
+        xml.enabled true
+        xml.destination file("${buildDir}/jacoco/test.xml")
+    }
 }
 
 group = 'dod.p1.keycloak'
