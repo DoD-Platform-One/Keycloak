@@ -17,7 +17,7 @@ docker run -it \
   -e DISPLAY=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}'):0 \
   -v ~/.Xauthority:/root/.Xauthority:ro \
   --entrypoint cypress \
-  cypress/included:3.2.0 open --project .
+  cypress/included:3.2.0 open --project . --config baseUrl=http://host.docker.internal:8080
   ```
 
 ## Resources
@@ -31,4 +31,3 @@ https://sourabhbajaj.com/blog/2017/02/07/gui-applications-docker-mac/
 
 ### Different socket for mac
 https://stackoverflow.com/questions/59514234/viewing-the-interactive-cypress-test-runner-in-docker-on-linux#answer-59518537
-
