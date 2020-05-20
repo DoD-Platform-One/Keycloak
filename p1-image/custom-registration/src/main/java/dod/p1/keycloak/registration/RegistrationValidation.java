@@ -201,8 +201,8 @@ public class RegistrationValidation extends RegistrationProfile {
     private static boolean isValidEmailAddress(AuthenticatorConfigModel authenticatorConfig, String email) {
         Map<String, String> config = authenticatorConfig.getConfig();
 
-        String[] il2EmailDomains = config.getOrDefault(PROPERTY_IL2_DOMAINS, ".mil").split("##");
-        String[] il4EmailDomains = config.getOrDefault(PROPERTY_IL4_DOMAINS, ".mil").split("##");
+        String[] il2EmailDomains = config.getOrDefault(PROPERTY_IL2_DOMAINS, "mil").split("##");
+        String[] il4EmailDomains = config.getOrDefault(PROPERTY_IL4_DOMAINS, "mil").split("##");
 
         if (Validation.isBlank(email) || !Validation.isEmailValid(email)) {
             return false;
@@ -211,9 +211,14 @@ public class RegistrationValidation extends RegistrationProfile {
         String emailLowerCase = email.toLowerCase();
 
         // validate email domain based on IL2 & IL4 domain lists
-        return Stream.of(il2EmailDomains, il4EmailDomains)
-                .flatMap(Stream::of)
-                .anyMatch(emailLowerCase::endsWith);
+        return Stream.of(il2EmailDomains, il4EmailDomains).flatMap(Stream::of)
+                .anyMatch(domain -> {
+                    if(domain.contains(".")) {
+                       return emailLowerCase.endsWith("@" + domain) || emailLowerCase.endsWith("." + domain);
+                    } else {
+                        return emailLowerCase.endsWith("." + domain);
+                    }
+                });
     }
 
     @Override

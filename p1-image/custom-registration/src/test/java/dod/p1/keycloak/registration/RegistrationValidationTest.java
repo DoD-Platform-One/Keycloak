@@ -508,8 +508,8 @@ public class RegistrationValidationTest {
         HashMap<String, String> configMap = new HashMap<>();
         configMap.put("inviteSecret", inviteSecret);
         configMap.put("inviteSecretDays", "2");
-        configMap.put("il2ApprovedDomains", ".unicorns.com##.trex.scary");
-        configMap.put("il4ApprovedDomains", ".mil##.gov##.usafa.edu##.afit.edu");
+        configMap.put("il2ApprovedDomains", "unicorns.com##trex.scary");
+        configMap.put("il4ApprovedDomains", "mil##gov##usafa.edu##afit.edu");
         configModel.setConfig(configMap);
         ValidationContext context = setupVariables(errorEvent, errors, valueMap, configModel);
 
@@ -542,6 +542,18 @@ public class RegistrationValidationTest {
         Assert.assertNull(errorEvent[0]);
         Assert.assertEquals(0, errors.size());
 
+        //test invalid IL2 email with custom domains
+        valueMap.putSingle("email", "rando@supercoolunicorns.com");
+        errorEvent = new String[1];
+        errors = new ArrayList<>();
+        context = setupVariables(errorEvent, errors, valueMap, configModel);
+
+        validation = new RegistrationValidation();
+        validation.validate(context);
+        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
+        Assert.assertEquals(1, errors.size());
+        Assert.assertEquals(errors.get(0).getField(), "email");
+
         //test valid IL4 email with custom domains
         valueMap.putSingle("email", "test22@ss.usafa.edu");
         errorEvent = new String[1];
@@ -552,6 +564,18 @@ public class RegistrationValidationTest {
         validation.validate(context);
         Assert.assertNull(errorEvent[0]);
         Assert.assertEquals(0, errors.size());
+
+        //test invalid IL4 email with custom domains
+        valueMap.putSingle("email", "test22@mil");
+        errorEvent = new String[1];
+        errors = new ArrayList<>();
+        context = setupVariables(errorEvent, errors, valueMap, configModel);
+
+        validation = new RegistrationValidation();
+        validation.validate(context);
+        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
+        Assert.assertEquals(1, errors.size());
+        Assert.assertEquals(errors.get(0).getField(), "email");
     }
 
 
