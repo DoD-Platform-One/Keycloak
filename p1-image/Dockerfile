@@ -1,16 +1,16 @@
-FROM maven:3-openjdk AS build
+FROM gradle:jdk11 AS build
 
-WORKDIR /usr/src/maven
+WORKDIR /usr/src/gradle
 
-COPY custom-registration /usr/src/maven
+COPY custom-registration /usr/src/gradle
 
-RUN mvn clean install
+RUN gradle build
 
 FROM quay.io/keycloak/keycloak:10.0.1 AS keycloak
 
 COPY baby-yoda.json /opt/baby-yoda.json
 COPY custom-theme /opt/custom-theme
-COPY --from=build /usr/src/maven/target/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
+COPY --from=build /usr/src/gradle/build/libs/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
 
 USER root
 
