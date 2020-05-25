@@ -49,11 +49,11 @@
                       <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
                   </div>
                     
-                  <div class="word-line">or</div>
+                  <#--  <div class="word-line">or</div>
 
                   <div id="kc-form-buttons" class="${properties.kcFormGroupClass!}">
                       <span onclick="location.href = 'https://sso-pki.collab.cdl.af.mil'" tabindex="5" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">CAC Login</span>
-                  </div>
+                  </div>  -->
             </form>
         </#if>
         </div>

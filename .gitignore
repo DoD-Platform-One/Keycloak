@@ -1,4 +1,5 @@
 p1-image/custom-auth/target
+p1-image/custom-registration/bin
 p1-image/custom-registration/target
 .DS_Store
 .idea

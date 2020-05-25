@@ -6,6 +6,7 @@ import org.keycloak.authentication.forms.RegistrationPage;
 import org.keycloak.authentication.forms.RegistrationProfile;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
+import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.GroupModel;
 import org.keycloak.models.UserModel;
@@ -24,6 +25,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static dod.p1.keycloak.common.CommonConfig.*;
+
 public class RegistrationValidation extends RegistrationProfile {
 
     public static final String PROVIDER_ID = "registration-validation-action";
@@ -32,9 +35,9 @@ public class RegistrationValidation extends RegistrationProfile {
 
     private static final String PROPERTY_IL2_DOMAINS = "il2ApprovedDomains";
     private static final String PROPERTY_IL4_DOMAINS = "il4ApprovedDomains";
-    private static final String IL2_GROUP_ID = "00eb8904-5b88-4c68-ad67-cec0d2e07aa6";
-    private static final String IL4_GROUP_ID = "191f836b-ec50-4819-ba10-1afaa5b99600";
-    private static final String IL5_GROUP_ID = "be8d20b3-8cd6-4d7e-9c98-5bb918f53c5c";
+    private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
+            AuthenticationExecutionModel.Requirement.REQUIRED
+    };
 
     static {
         // Add the domain list configuration
@@ -162,7 +165,7 @@ public class RegistrationValidation extends RegistrationProfile {
     /**
      * @param authenticatorConfig
      * @param inviteCode
-     * @return
+     * @return boolean
      */
     private static boolean isValidInviteCode(AuthenticatorConfigModel authenticatorConfig, String inviteCode) {
 
@@ -213,8 +216,8 @@ public class RegistrationValidation extends RegistrationProfile {
         // validate email domain based on IL2 & IL4 domain lists
         return Stream.of(il2EmailDomains, il4EmailDomains).flatMap(Stream::of)
                 .anyMatch(domain -> {
-                    if(domain.contains(".")) {
-                       return emailLowerCase.endsWith("@" + domain) || emailLowerCase.endsWith("." + domain);
+                    if (domain.contains(".")) {
+                        return emailLowerCase.endsWith("@" + domain) || emailLowerCase.endsWith("." + domain);
                     } else {
                         return emailLowerCase.endsWith("." + domain);
                     }
@@ -243,6 +246,11 @@ public class RegistrationValidation extends RegistrationProfile {
     @Override
     public boolean isConfigurable() {
         return true;
+    }
+
+    @Override
+    public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {
+        return REQUIREMENT_CHOICES;
     }
 
     @Override
