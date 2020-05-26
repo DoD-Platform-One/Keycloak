@@ -3,9 +3,6 @@
     <#if section = "header">
         ${msg("doLogIn")}
     <#elseif section = "form">
-    <div id="need-account">
-        No account?  Contact your team admin or <a id="helpdesk" href="">email us</a>.
-    </div>
     <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
       <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
         <#if realm.password>
@@ -59,6 +56,9 @@
                   </div>  -->
             </form>
         </#if>
+         <div id="need-account">
+            No account?  Contact your team admin or <a id="helpdesk" href="">email us</a>.
+        </div>
         </div>
       </div>
     </#if>
