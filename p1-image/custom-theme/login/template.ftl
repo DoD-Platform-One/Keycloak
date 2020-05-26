@@ -42,20 +42,6 @@
     </div>
     <div class="${properties.kcFormCardClass!} <#if displayWide>${properties.kcFormCardAccountClass!}</#if>">
       <header class="${properties.kcFormHeaderClass!}">
-        <#if realm.internationalizationEnabled  && locale.supported?size gt 1>
-            <div id="kc-locale">
-                <div id="kc-locale-wrapper" class="${properties.kcLocaleWrapperClass!}">
-                    <div class="kc-dropdown" id="kc-locale-dropdown">
-                        <a href="#" id="kc-current-locale-link">${locale.current}</a>
-                        <ul>
-                            <#list locale.supported as l>
-                                <li class="kc-dropdown-item"><a href="${l.url}">${l.label}</a></li>
-                            </#list>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </#if>
         <#if !(auth?has_content && auth.showUsername() && !auth.showResetCredentials())>
             <#if displayRequiredFields>
                 <div class="${properties.kcContentWrapperClass!}">

@@ -607,10 +607,14 @@ ul#kc-totp-supported-apps {
     font-weight: 600;
     color: black;
   }
-  
 }
 
 .g-recaptcha {
   margin: 0 auto !important;
   max-width: 300px !important;
+}
+
+#need-account {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
 }
