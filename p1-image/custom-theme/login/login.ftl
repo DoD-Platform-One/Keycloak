@@ -4,9 +4,7 @@
         ${msg("doLogIn")}
     <#elseif section = "form">
     <div id="need-account">
-        No account?  Contact your team admin or email us:
-        <br>
-        <a id="helpdesk" href=""></a>
+        No account?  Contact your team admin or <a id="helpdesk" href="">email us</a>.
     </div>
     <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
       <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
@@ -69,6 +67,15 @@
 
 <script>
     const helpdeskLink = document.getElementById('helpdesk');
-    helpdeskLink.setAttribute('href', 'mailto:DOD_p1chat_Admin@afwerx.af.mil?subject=new-account');
-    helpdeskLink.innerText = 'DOD_p1chat_Admin@afwerx.af.mil';
+    helpdeskLink.setAttribute('href', [
+        'mailto',
+        ':',
+        'DOD_p1chat_Admin', 
+        '@', 
+        'afwerx.af.mil', 
+        '?', 
+        'subject', 
+        '=', 
+        'new-account'].join('')
+        );
 </script>
