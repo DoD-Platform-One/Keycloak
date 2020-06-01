@@ -11,9 +11,15 @@
             <p>${msg("loginTotpStep1")}</p>
 
             <ul id="kc-totp-supported-apps">
-                <#list totp.policy.supportedApplications as app>
-                <li>${app}</li>
-                </#list>
+                <#--  <#list totp.policy.supportedApplications as app>  -->
+                <#--  <li>${app}</li>  -->
+                <#--  </#list>  -->
+                <li>Google Authenticator</li>
+                <li>Authy</li>
+                <li>1Password</li>
+                <li>Bitwarden</li>
+                <li>LastPass</li>
+                <li>Yubico Authenticator</li>
             </ul>
         </li>
 

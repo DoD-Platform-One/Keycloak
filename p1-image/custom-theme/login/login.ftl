@@ -5,6 +5,12 @@
     <#elseif section = "form">
     <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
       <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
+        <div class="alert alert-warning">
+            <span class="${properties.kcFeedbackWarningIcon!}"></span>
+            <span style="font-weight: bold;">Do not use your previous Mattermost username, password and MFA token.</span> If you already setup your P1 SSO account, log in using your email address, password and MFA token that was created for P1 SSO. If you have not setup your P1 SSO account, <a href="https://dodplatformone.github.io/p1sso/" target="_blank">click here</a> for setup instructions.
+            
+        </div>
+       
         <#if realm.password>
             <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
                 <div class="${properties.kcFormGroupClass!}">

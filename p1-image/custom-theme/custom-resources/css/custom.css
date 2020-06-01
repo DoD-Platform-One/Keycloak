@@ -602,7 +602,7 @@ ul#kc-totp-supported-apps {
 
   #kc-totp-secret-key {
     background: rgba(255, 255, 255, 0.85);
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 5px;
     font-weight: 600;
     color: black;
