@@ -18,7 +18,7 @@ import static dod.p1.keycloak.common.CommonConfig.VALID_ENV_NAMES;
  */
 public class RequireGroupAuthenticator implements Authenticator {
 
-    private final String clientIdPatternMatch = "^group-protect-(\\w+)-\\w+$";
+    private final String clientIdPatternMatch = "^group-protect-(\\w+)-[\\w-]+$";
 
     @Override
     public void authenticate(AuthenticationFlowContext context) {
