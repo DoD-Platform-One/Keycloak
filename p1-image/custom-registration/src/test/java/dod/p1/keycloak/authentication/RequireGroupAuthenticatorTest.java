@@ -58,30 +58,31 @@ public class RequireGroupAuthenticatorTest {
 
     @Test
     public void testShouldRejectClientsWithWrongCase() {
-        when(client.getClientId()).thenReturn("group-protect-IL2-thingy");
+        when(client.getClientId()).thenReturn("test_3e47dd99-9ab6-492e-a341-3bafc371cb13_THINGY");
         subject.authenticate(context);
         verify(context).failure(AuthenticationFlowError.CLIENT_DISABLED);
     }
 
     @Test
-    public void testShouldRejectClientsWithUnknownEnvironments() {
-        when(client.getClientId()).thenReturn("group-protect-il99-test");
+    public void testShouldRejectClientsWithUnknownGroupUUID() {
+        when(client.getClientId()).thenReturn("test_c58fa397-4af8-49a7-9b73-5b1d85222884_test");
+        when(realm.getGroupById("c58fa397-4af8-49a7-9b73-5b1d85222884")).thenReturn(null);
         subject.authenticate(context);
         verify(context).failure(AuthenticationFlowError.CLIENT_DISABLED);
     }
 
     @Test
     public void testShouldRejectValidClientWithInvalidRealm() {
-        when(client.getClientId()).thenReturn("group-protect-il5-test");
+        when(client.getClientId()).thenReturn("test_38ac4deb-5aa4-4cc7-9174-bbbadd9070cf_test");
         // This user is not authorized
         when(context.getRealm()).thenReturn(null);
         subject.authenticate(context);
-        verify(context).failure(AuthenticationFlowError.INVALID_CLIENT_SESSION);
+        verify(context).failure(AuthenticationFlowError.CLIENT_DISABLED);
     }
 
     @Test
     public void testShouldRejectValidClientWithInvalidUser() {
-        when(client.getClientId()).thenReturn("group-protect-il4-test");
+        when(client.getClientId()).thenReturn("test_6e9a012a-556b-4b63-9b68-799b58c606fa_test");
         // This user is not authorized
         when(context.getUser()).thenReturn(null);
         subject.authenticate(context);
@@ -90,18 +91,22 @@ public class RequireGroupAuthenticatorTest {
 
     @Test
     public void testShouldRejectValidClientWithUserNotInGroup() {
-        when(client.getClientId()).thenReturn("group-protect-il2-test");
+        GroupModel group = mock(GroupModel.class);
+        when(realm.getGroupById("46062b74-bbd9-44a7-b1a4-64b7bf53cf22")).thenReturn(group);
+        when(client.getClientId()).thenReturn("test_46062b74-bbd9-44a7-b1a4-64b7bf53cf22_test");
         // This user is not authorized
-        when(user.isMemberOf(any(GroupModel.class))).thenReturn(false);
+        when(user.isMemberOf(group)).thenReturn(false);
         subject.authenticate(context);
         verify(context).failure(AuthenticationFlowError.INVALID_CLIENT_SESSION);
     }
 
     @Test
-    public void testShouldAcceptValidClientWithUserInTheGroup() {
-        when(client.getClientId()).thenReturn("group-protect-il2-test");
+    public void testShouldAcceptValidClientWithUserInValidGroup() {
+        GroupModel group = mock(GroupModel.class);
+        when(realm.getGroupById("f289ee42-3088-415d-bab6-e444d7d58c57")).thenReturn(group);
+        when(client.getClientId()).thenReturn("test_f289ee42-3088-415d-bab6-e444d7d58c57_valid-client-test");
         // This user IS authorized
-        when(user.isMemberOf(any(GroupModel.class))).thenReturn(true);
+        when(user.isMemberOf(group)).thenReturn(true);
         subject.authenticate(context);
         verify(context).success();
     }

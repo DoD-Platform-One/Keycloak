@@ -1,6 +1,7 @@
 p1-image/custom-auth/target
 p1-image/custom-registration/bin
 p1-image/custom-registration/target
+p1-image/tools/js-console/target
 .DS_Store
 .idea
 *.iml

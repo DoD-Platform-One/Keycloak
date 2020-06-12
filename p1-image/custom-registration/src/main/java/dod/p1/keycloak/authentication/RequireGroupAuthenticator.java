@@ -1,6 +1,5 @@
 package dod.p1.keycloak.authentication;
 
-import dod.p1.keycloak.common.CommonConfig;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
@@ -11,14 +10,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static dod.p1.keycloak.common.CommonConfig.VALID_BUILTIN_CLIENTS;
-import static dod.p1.keycloak.common.CommonConfig.VALID_ENV_NAMES;
 
 /**
  * Simple {@link Authenticator} that checks of a user is member of a given {@link GroupModel Group}.
  */
 public class RequireGroupAuthenticator implements Authenticator {
 
-    private final String clientIdPatternMatch = "^group-protect-(\\w+)-[\\w-]+$";
+    private final String clientIdPatternMatch = "^[a-z0-9-]+_([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})_[a-z0-9-]+$";
 
     @Override
     public void authenticate(AuthenticationFlowContext context) {
@@ -30,22 +28,27 @@ public class RequireGroupAuthenticator implements Authenticator {
         ClientModel client = authenticationSession.getClient();
         String clientId = client.getClientId();
 
-        // Match the pattern "group-protect-il2-mattermost" where "il2" is the environment name
+        // Match the pattern "test_b4e4ae70-5b78-47ff-ad5c-7ebf3c10e452_app"
+        // where "test" is the short name and "b4e4ae70-5b78-47ff-ad5c-7ebf3c10e452" is the group id
         Pattern pattern = Pattern.compile(clientIdPatternMatch);
         Matcher matcher = pattern.matcher(clientId);
 
         // Check for a valid match
         if (matcher.find() && matcher.groupCount() == 1) {
-            String environmentRestriction = matcher.group(1);
+            String groupId = matcher.group(1);
+
+            GroupModel group = null;
+
+            if (realm != null) {
+                group = realm.getGroupById(groupId);
+            }
 
             // Must be an valid environment name
-            if (!VALID_ENV_NAMES.contains(environmentRestriction)) {
+            if (groupId == null || group == null) {
                 context.failure(AuthenticationFlowError.CLIENT_DISABLED);
             } else {
-                String groupId = CommonConfig.getGroupIdByEnvironment(environmentRestriction);
-
                 // Check if the user is a member of the specified group
-                if (isMemberOfGroup(realm, user, groupId)) {
+                if (isMemberOfGroup(realm, user, group)) {
                     context.success();
                 } else {
                     context.failure(AuthenticationFlowError.INVALID_CLIENT_SESSION);
@@ -61,13 +64,12 @@ public class RequireGroupAuthenticator implements Authenticator {
 
     }
 
-    private boolean isMemberOfGroup(RealmModel realm, UserModel user, String groupId) {
+    private boolean isMemberOfGroup(RealmModel realm, UserModel user, GroupModel group) {
         // No on likes null pointers
-        if (realm == null || user == null || groupId == null) {
+        if (realm == null || user == null || group == null) {
             return false;
         }
 
-        GroupModel group = realm.getGroupById(groupId);
         return user.isMemberOf(group);
     }
 
