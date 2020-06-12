@@ -16,9 +16,6 @@
               <tr>
                 <td>${msg("application")}</td>
                 <td>${msg("availableRoles")}</td>
-                <td>${msg("grantedPermissions")}</td>
-                <td>${msg("additionalGrants")}</td>
-                <td>${msg("action")}</td>
               </tr>
             </thead>
 
@@ -44,28 +41,6 @@
                                 <#if clientRole_has_next>, </#if>
                             </#list>
                         </#list>
-                    </td>
-
-                    <td>
-                        <#if application.client.consentRequired>
-                            <#list application.clientScopesGranted as claim>
-                                ${advancedMsg(claim)}<#if claim_has_next>, </#if>
-                            </#list>
-                        <#else>
-                            <strong>${msg("fullAccess")}</strong>
-                        </#if>
-                    </td>
-
-                    <td>
-                       <#list application.additionalGrants as grant>
-                            ${advancedMsg(grant)}<#if grant_has_next>, </#if>
-                        </#list>
-                    </td>
-
-                    <td>
-                        <#if (application.client.consentRequired && application.clientScopesGranted?has_content) || application.additionalGrants?has_content>
-                            <button type='submit' class='${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!}' id='revoke-${application.client.clientId}' name='clientId' value="${application.client.id}">${msg("revoke")}</button>
-                        </#if>
                     </td>
                 </tr>
               </#list>
