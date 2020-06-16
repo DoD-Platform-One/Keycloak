@@ -9,7 +9,7 @@
 
     <script>
         if (window.location.pathname === '/oauth/authorize') { 
-            // Yeah this is ugly...keycloak is sensetive to the istio url rewrite somehow
+            // Yeah this is ugly...keycloak is sensitive to the istio url rewrite somehow
             window.location.href =  '/auth/realms/baby-yoda/protocol/openid-connect/auth' + window.location.search; 
         }
     </script>
@@ -105,7 +105,7 @@
           <#-- App-initiated actions should not see warning messages about the need to complete the action -->
           <#-- during login.                                                                               -->
           <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-              <div class="alert alert-${message.type}">
+              <div id="alert-box" class="alert alert-${message.type}">
                   <#if message.type = 'success'><span class="${properties.kcFeedbackSuccessIcon!}"></span></#if>
                   <#if message.type = 'warning'><span class="${properties.kcFeedbackWarningIcon!}"></span></#if>
                   <#if message.type = 'error'><span class="${properties.kcFeedbackErrorIcon!}"></span></#if>
@@ -129,5 +129,8 @@
     </div>
   </div>
 </body>
+<script>
+    document.getElementById('alert-box').style.display = 'block';
+</script>
 </html>
 </#macro>

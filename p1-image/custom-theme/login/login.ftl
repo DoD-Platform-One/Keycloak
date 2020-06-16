@@ -4,13 +4,7 @@
         ${msg("doLogIn")}
     <#elseif section = "form">
     <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
-      <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
-        <div class="alert alert-warning">
-            <span class="${properties.kcFeedbackWarningIcon!}"></span>
-            <span style="font-weight: bold;">Do not use your previous Mattermost username, password and MFA token.</span> If you already setup your P1 SSO account, log in using your email address, password and MFA token that was created for P1 SSO. If you have not setup your P1 SSO account, <a href="https://dodplatformone.github.io/p1sso/" target="_blank">click here</a> for setup instructions.
-            
-        </div>
-       
+      <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>      
         <#if realm.password>
             <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
                 <div class="${properties.kcFormGroupClass!}">
@@ -62,8 +56,8 @@
                   </div>  -->
             </form>
         </#if>
-         <div id="need-account">
-            No account?  Contact your team admin or <a id="helpdesk" href="">email us</a>.
+        <div id="need-account">
+            No account?  <a href="/auth/realms/baby-yoda/protocol/openid-connect/registrations?client_id=account&response_type=code">Click to register</a>.
         </div>
         </div>
       </div>
@@ -72,16 +66,13 @@
 </@layout.registrationLayout>
 
 <script>
-    const helpdeskLink = document.getElementById('helpdesk');
-    helpdeskLink.setAttribute('href', [
-        'mailto',
-        ':',
-        'DOD_p1chat_Admin', 
-        '@', 
-        'afwerx.af.mil', 
-        '?', 
-        'subject', 
-        '=', 
-        'new-account'].join('')
-        );
+    const feedback = document.getElementsByClassName('kc-feedback-text')[0];
+    if (feedback && feedback.innerHTML.indexOf('X509 certificate') > -1 && feedback.innerHTML.indexOf('Invalid user') > -1) {
+        feedback.parentElement.outerHTML = [
+            '<div class="alert alert-info" id="cac-info">',
+            '<h2>New DoD CAC Detected</h2>',
+            '<div style="line-height: 2rem;">If you do not have an account yet, <a href="/auth/realms/baby-yoda/protocol/openid-connect/registrations?client_id=account&amp;response_type=code">click to register</a> now.  Otherwise, please login with your username/password to associate this CAC with your existing account.',
+            '</div></div>'
+        ].join('');
+    }
 </script>

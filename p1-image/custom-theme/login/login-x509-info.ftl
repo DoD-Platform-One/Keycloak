@@ -20,7 +20,7 @@
                     </div>
                 </#if>
            </div>
-
+ 
             <div class="${properties.kcFormGroupClass!}">
 
                     <#if x509.formData.isUserEnabled??>

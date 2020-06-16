@@ -389,11 +389,12 @@ public class RegistrationValidationTest {
         Set<String> errorFields = errors.stream().map(FormMessage::getField).collect(Collectors.toSet());
         Assert.assertTrue(errorFields.contains("firstName"));
         Assert.assertTrue(errorFields.contains("lastName"));
+        Assert.assertTrue(errorFields.contains("username"));
         Assert.assertTrue(errorFields.contains("user.attributes.affiliation"));
         Assert.assertTrue(errorFields.contains("user.attributes.rank"));
         Assert.assertTrue(errorFields.contains("user.attributes.organization"));
         Assert.assertTrue(errorFields.contains("email"));
-        Assert.assertEquals(7, errors.size());
+        Assert.assertEquals(8, errors.size());
         Set<String> errorMessages = errors.stream().map(FormMessage::getMessage).collect(Collectors.toSet());
         Assert.assertTrue(errorMessages.contains("Invalid or expired registration code."));
     }
@@ -405,6 +406,7 @@ public class RegistrationValidationTest {
         MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
         valueMap.putSingle("firstName", "Jone");
         valueMap.putSingle("lastName", "Doe");
+        valueMap.putSingle("username", "tester");
         valueMap.putSingle("user.attributes.affiliation", "AF");
         valueMap.putSingle("user.attributes.rank", "E2");
         valueMap.putSingle("user.attributes.organization", "Com");
@@ -434,6 +436,7 @@ public class RegistrationValidationTest {
         MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
         valueMap.putSingle("firstName", "Jone");
         valueMap.putSingle("lastName", "Doe");
+        valueMap.putSingle("username", "tester");
         valueMap.putSingle("user.attributes.affiliation", "AF");
         valueMap.putSingle("user.attributes.rank", "E2");
         valueMap.putSingle("user.attributes.organization", "Com");
@@ -463,6 +466,7 @@ public class RegistrationValidationTest {
         MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
         valueMap.putSingle("firstName", "Jone");
         valueMap.putSingle("lastName", "Doe");
+        valueMap.putSingle("username", "tester");
         valueMap.putSingle("user.attributes.affiliation", "AF");
         valueMap.putSingle("user.attributes.rank", "E2");
         valueMap.putSingle("user.attributes.organization", "Com");
@@ -495,6 +499,7 @@ public class RegistrationValidationTest {
         MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
         valueMap.putSingle("firstName", "Jone");
         valueMap.putSingle("lastName", "Doe");
+        valueMap.putSingle("username", "tester");
         valueMap.putSingle("user.attributes.affiliation", "AF");
         valueMap.putSingle("user.attributes.rank", "E2");
         valueMap.putSingle("user.attributes.organization", "Com");

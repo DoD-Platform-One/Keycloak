@@ -6,6 +6,7 @@ import org.keycloak.authentication.forms.RegistrationPage;
 import org.keycloak.authentication.forms.RegistrationProfile;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
+import org.keycloak.forms.login.LoginFormsProvider;
 import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.GroupModel;
@@ -26,6 +27,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static dod.p1.keycloak.common.CommonConfig.*;
+import static dod.p1.keycloak.registration.X509Tools.getCACUsername;
+import static dod.p1.keycloak.registration.X509Tools.isCACRegistered;
 
 public class RegistrationValidation extends RegistrationProfile {
 
@@ -113,6 +116,13 @@ public class RegistrationValidation extends RegistrationProfile {
         return INVITE_CACHE.get(dayKey);
     }
 
+    private static void processX509UserAttribute(FormContext context, UserModel user) {
+        String cacUsername = getCACUsername(context);
+        if (cacUsername != null) {
+            user.setSingleAttribute(X509_USER_ATTRIBUTE, cacUsername);
+        }
+    }
+
     private static void joinValidUserToILGroups(FormContext context, UserModel user) {
         String email = user.getEmail().toLowerCase();
         AuthenticatorConfigModel authenticatorConfig = context.getAuthenticatorConfig();
@@ -125,9 +135,6 @@ public class RegistrationValidation extends RegistrationProfile {
         String[] il4EmailDomains = config.getOrDefault(PROPERTY_IL4_DOMAINS, ".mil").split("##");
         boolean isValidIL4Email = Stream.of(il4EmailDomains).anyMatch(email::endsWith);
 
-        // @todo: handle CAC registration group update to IL5
-        boolean isValidCACUser = false;
-
         // All valid users should be joined to the IL2 group
         user.joinGroup(il2Group);
 
@@ -135,7 +142,7 @@ public class RegistrationValidation extends RegistrationProfile {
             user.joinGroup(il4Group);
         }
 
-        if (isValidCACUser) {
+        if (getCACUsername(context) != null) {
             user.joinGroup(il5Group);
         }
     }
@@ -231,6 +238,17 @@ public class RegistrationValidation extends RegistrationProfile {
 
         generateUniqueStringIdForMattermost(formData, user);
         joinValidUserToILGroups(context, user);
+        processX509UserAttribute(context, user);
+    }
+
+    @Override
+    public void buildPage(FormContext context, LoginFormsProvider form) {
+        String cacUsername = getCACUsername(context);
+        if (cacUsername != null) {
+            form.setAttribute("cacIdentity", cacUsername);
+        } else {
+            form.setAttribute("passwordRequired", true);
+        }
     }
 
     @Override
@@ -275,6 +293,10 @@ public class RegistrationValidation extends RegistrationProfile {
 
         String eventError = Errors.INVALID_REGISTRATION;
 
+        if (Validation.isBlank(formData.getFirst("username"))) {
+            errors.add(new FormMessage("username", Messages.MISSING_USERNAME));
+        }
+
         if (Validation.isBlank(formData.getFirst("firstName"))) {
             errors.add(new FormMessage("firstName", Messages.MISSING_FIRST_NAME));
         }
@@ -295,9 +317,19 @@ public class RegistrationValidation extends RegistrationProfile {
             errors.add(new FormMessage("user.attributes.organization", "Please specify your organization."));
         }
 
-        if (!isValidInviteCode(authenticatorConfig, inviteCode)) {
-            context.getEvent().detail("invite", inviteCode);
-            errors.add(new FormMessage("", "Invalid or expired registration code."));
+        if (getCACUsername(context) != null) {
+            if (isCACRegistered(context)) {
+                // CAC auth, invite code not required
+                errors.add(new FormMessage(null, "Sorry, this CAC seems to already be registered."));
+                context.error(Errors.INVALID_REGISTRATION);
+                context.validationError(formData, errors);
+            }
+        } else {
+            // This is not a CAC auth, we need to verify the invite code
+            if (!isValidInviteCode(authenticatorConfig, inviteCode)) {
+                context.getEvent().detail("invite", inviteCode);
+                errors.add(new FormMessage("", "Invalid or expired registration code."));
+            }
         }
 
         if (!isValidEmailAddress(authenticatorConfig, email)) {

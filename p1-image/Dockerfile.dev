@@ -11,8 +11,9 @@ FROM quay.io/keycloak/keycloak:10.0.1 AS keycloak
 COPY baby-yoda.json /opt/baby-yoda.json
 COPY custom-theme /opt/custom-theme
 COPY --from=build /usr/src/gradle/build/libs/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
-COPY js-console.war /opt/jboss/keycloak/standalone/deployments/js-console.war
-COPY tools/cac /etc/x509/https
+COPY js-console/js-console.war /opt/jboss/keycloak/standalone/deployments/js-console.war
+COPY certs /etc/x509/https
+COPY tools /opt/jboss/tools
 
 ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
 ENV DB_VENDOR h2
@@ -33,4 +34,5 @@ RUN mv /opt/jboss/keycloak/themes/base /opt/jboss/keycloak/themes/base.bak && \
 
 RUN chown -R jboss /etc/x509/https && \
     chmod 400 /etc/x509/https/*
+
 USER jboss

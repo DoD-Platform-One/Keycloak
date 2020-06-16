@@ -5,13 +5,17 @@
     <#elseif section = "form">
         <form id="kc-register-form" class="${properties.kcFormClass!}" action="${url.registrationAction}" method="post">
             
-            <div id="kc-form-options">
-                <div class="${properties.kcFormOptionsWrapperClass!}">
-                    <span><a href="${url.loginUrl}">${kcSanitize(msg("backToLogin"))?no_esc}</a></span>
+            <#if !passwordRequired??>
+                <div class="alert alert-info" id="cac-info">
+                    <h2>DoD CAC User Registration</h2>
+                    <h4>${cacIdentity}</h4>
                 </div>
-            </div>
-            
-            <br>
+            <#else>
+                <div class="alert alert-warning" id="sad-panda" style="display:none">
+                    <span class="${properties.kcFeedbackWarningIcon!}"></span>
+                    <span style="font-weight: bold;">Sorry, you don't seem to be using a DoD CAC or registration invite link.</span>  You can self-register here if you use your CAC, otherwise you will need to get an invite link first.  Please contact your team admin or <a id="helpdesk" href="">email us</a>.  For more details, please <a href="sso-info.il2.dsop.io/" target="_blank">click here</a>.
+                </div>
+            </#if>
             
             <div class="row no-gutters" style="margin-left:-20px;margin-right:-20px">
 
@@ -171,34 +175,34 @@
                 </div>
             </div>
 
-            <hr>
-
             <#if passwordRequired??>
-            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="password" id="password" class="${properties.kcInputClass!}" name="password" autocomplete="new-password"/>
-                </div>
-            </div>
+                <hr>
 
-            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password-confirm',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
+                    <div class="${properties.kcLabelWrapperClass!}">
+                        <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
+                    </div>
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <input type="password" id="password" class="${properties.kcInputClass!}" name="password" autocomplete="new-password"/>
+                    </div>
                 </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="password" id="password-confirm" class="${properties.kcInputClass!}" name="password-confirm" />
+
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password-confirm',properties.kcFormGroupErrorClass!)}">
+                    <div class="${properties.kcLabelWrapperClass!}">
+                        <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
+                    </div>
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <input type="password" id="password-confirm" class="${properties.kcInputClass!}" name="password-confirm" />
+                    </div>
                 </div>
-            </div>
             </#if>
 
             <#if recaptchaRequired??>
-            <div class="form-group">
-                <div class="${properties.kcInputWrapperClass!}">
-                    <div class="g-recaptcha" data-theme="dark" data-size="normal" data-sitekey="${recaptchaSiteKey}"></div>
+                <div class="form-group">
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <div class="g-recaptcha" data-theme="dark" data-size="normal" data-sitekey="${recaptchaSiteKey}"></div>
+                    </div>
                 </div>
-            </div>
             </#if>
 
             <div class="${properties.kcFormGroupClass!}">
@@ -224,4 +228,22 @@
 
     document.getElementById('user.attributes.affiliation').value = "${(register.formData['user.attributes.affiliation']!'')}";
     document.getElementById('user.attributes.rank').value = "${(register.formData['user.attributes.rank']!'')}";
+
+    if (!inviteCode) {
+        const sadPanda = document.getElementById('sad-panda');
+        sadPanda.style.display = 'block';
+
+        const helpdeskLink = document.getElementById('helpdesk');
+        helpdeskLink.setAttribute('href', [
+            'mailto',
+            ':',
+            'DOD_p1chat_Admin', 
+            '@', 
+            'afwerx.af.mil', 
+            '?', 
+            'subject', 
+            '=', 
+            'new-account'].join('')
+            );
+    }
 </script>

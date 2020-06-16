@@ -104,20 +104,23 @@ body.admin-console.user .content-area {
 }
 
 .btn-primary {
-  background-color: #0fabf5 !important;
+  background-color: hsla(195, 61%, 67%, 0.85) !important;
   background-image: linear-gradient(
     to bottom,
-    #0dbffe 0,
-    #0671ba 100%
+    hsla(195, 61%, 60%, 0.95) 0,
+    hsla(195, 61%, 30%, 0.95) 100%
   ) !important;
   border-radius: 4px !important;
+  border-color: hsla(195, 60%, 25%, 1);
+  color: #fff;
 }
 
 .btn-primary:hover {
   background-image: none !important;
 }
 
-a {
+a,
+#certificate_subjectDN {
   color: #00ff7b !important;
   font-weight: 500;
   letter-spacing: 0.1rem;
@@ -140,6 +143,7 @@ body.admin-console.user,
   background-color: #ffffff;
   border-color: #cc0000;
   color: #333333;
+  display: none;
 }
 
 #kc-locale ul {
@@ -618,4 +622,17 @@ ul#kc-totp-supported-apps {
   font-size: 1.5rem;
   margin-top: 3rem;
   text-align: center;
+}
+
+#cac-info {
+  padding: 15px;
+  line-height: 0;
+  border-radius: 6px;
+  color: hsla(193, 100%, 70%, 1);
+  background-color: hsla(206, 61%, 61%, 0.15);
+  border-color: hsla(193, 90%, 44%, 1);
+}
+
+#cac-info h2 {
+  margin-top: 0;
 }
