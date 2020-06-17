@@ -7,13 +7,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="robots" content="noindex, nofollow">
 
-    <script>
-        if (window.location.pathname === '/oauth/authorize') { 
-            // Yeah this is ugly...keycloak is sensitive to the istio url rewrite somehow
-            window.location.href =  '/auth/realms/baby-yoda/protocol/openid-connect/auth' + window.location.search; 
-        }
-    </script>
-
     <#if properties.meta?has_content>
         <#list properties.meta?split(' ') as meta>
             <meta name="${meta?split('==')[0]}" content="${meta?split('==')[1]}"/>
@@ -130,7 +123,10 @@
   </div>
 </body>
 <script>
-    document.getElementById('alert-box').style.display = 'block';
+    const box = document.getElementById('alert-box');
+    if (box && box.style) {
+        box.style.display = 'block';
+    }
 </script>
 </html>
 </#macro>

@@ -1,5 +1,0 @@
-embed-server --server-config=$configuration_file --std-out=discard
-batch
-/subsystem=elytron/server-ssl-context=kcSSLContext:write-attribute(name=protocols,value=["TLSv1.1","TLSv1.2"])
-run-batch
-stop-embedded-server
