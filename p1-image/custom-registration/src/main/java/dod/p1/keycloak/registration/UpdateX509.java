@@ -25,7 +25,8 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
     @Override
     public void evaluateTriggers(RequiredActionContext context) {
         String ignore = context.getAuthenticationSession().getAuthNote(IGNORE_X509);
-        if (ignore != null && ignore.equals("true")) {
+        String cacUsername = getCACUsername(context);
+        if (cacUsername == null || ignore != null && ignore.equals("true")) {
             return;
         }
 
