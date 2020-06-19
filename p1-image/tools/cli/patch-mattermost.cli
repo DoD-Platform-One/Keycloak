@@ -1,14 +1,17 @@
 embed-server --server-config=$configuration_file --std-out=discard
 batch
-/subsystem=undertow/configuration=filter/expression-filter=mm-auth-user:add(expression="path-prefix('/api/v4/user') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/userinfo%{QUERY_STRING}')")
-/subsystem=undertow/configuration=filter/expression-filter=mm-auth-token:add(expression="path-prefix('/oauth/token') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/token%{QUERY_STRING}')")
-/subsystem=undertow/configuration=filter/expression-filter=mm-auth-login:add(expression="path-prefix('/oauth/authorize') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/auth%{QUERY_STRING}')")
-/subsystem=undertow/configuration=filter/expression-filter=baby-yoda:add(expression="path('/auth/') -> redirect('/auth/realms/baby-yoda/account')")
 
-/subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-user:add
-/subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-token:add
-/subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-login:add
+/subsystem=undertow/configuration=filter/expression-filter=baby-yoda:add(expression="path('/auth/') -> redirect('/auth/realms/baby-yoda/account')")
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=baby-yoda:add
+
+/subsystem=undertow/configuration=filter/expression-filter=mm-auth-login:add(expression="path-prefix('/oauth/authorize') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/auth%{QUERY_STRING}')")
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-login:add
+
+/subsystem=undertow/configuration=filter/rewrite==mm-auth-user:add(target="/auth/realms/baby-yoda/protocol/openid-connect/userinfo%{QUERY_STRING}")
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-user:add(predicate="path-prefix('/api/v4/user')")
+
+/subsystem=undertow/configuration=filter/rewrite==mm-auth-token:add(target="/auth/realms/baby-yoda/protocol/openid-connect/token%{QUERY_STRING}")
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-token:add(predicate="path-prefix('/oauth/token')")
 
 run-batch
 stop-embedded-server
