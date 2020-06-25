@@ -13,7 +13,7 @@
             <#else>
                 <div class="alert alert-warning" id="sad-panda" style="display:none">
                     <span class="${properties.kcFeedbackWarningIcon!}"></span>
-                    <span style="font-weight: bold;">Sorry, you don't seem to be using a DoD CAC or registration invite link.</span>  You can self-register here if you use your CAC, otherwise you will need to get an invite link first.  Please contact your team admin or <a id="helpdesk" href="">email us</a>.  For more details, please <a href="sso-info.il2.dsop.io/" target="_blank">click here</a>.
+                    <span style="font-weight: bold;">Sorry, you don't seem to be using a DoD CAC or registration invite link.</span>  You can self-register here if you use your CAC, otherwise you will need to get an invite link first.  Please contact your team admin or <a id="helpdesk" href="">email us</a>.  For more details, please <a href="https://sso-info.il2.dsop.io/" target="_blank">click here</a>.
                 </div>
             </#if>
             
