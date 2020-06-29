@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ensure-keycloak-rds-db
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    metadata:
+      name: ensure-keycloak-rds-db
+      annotations:
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers: 
+      - name: psql
+        image: "bitnami/postgresql"
+        command:
+        - /bin/bash
+        - -exc
+        - |
+          psql -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_NAME'" | grep -q 1 || psql -c "CREATE DATABASE $DB_NAME"
+        env:
+        - name: DB_NAME
+          value: keycloak
+        envFrom:
+        - secretRef:
+            name: db-credentials
+      restartPolicy: OnFailure

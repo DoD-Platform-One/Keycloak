@@ -2,26 +2,25 @@ namespace: keycloak
 
 resources:
   - namespace.yaml
-  - generate/generated.yaml
+  - networking/http-service.yaml
+  - networking/headless-service.yaml
+  - networking/network-policy.yaml
+  - networking/mtls-policy.yaml
+  - networking/virtual-service.yaml
+  - resources/db-provisioner.yaml
+  - resources/service-account.yaml
+  - resources/statefulset.yaml
 
-patchesJson6902:
-  - target:
-      group: apps
-      version: v1
-      kind: StatefulSet
-      name: keycloak
-      namespace: keycloak
-    path: patches/statefulset-jgroups.yaml
-  - target:
-      version: v1
-      kind: Service
-      name: keycloak-headless
-      namespace: keycloak
-    path: patches/service-jgroups.yaml
+configMapGenerator:
+  - name: keycloak-startup
+    files:
+      - resources/keycloak.cli
+  - name: keycloak-sh
+    files:
+      - resources/keycloak.sh
 
 images:
-  # Use our own custom image
   # NOTE: It is up to the "consumer" to provide the necessary ImagePullSecrets to pull this
   - name: docker.io/jboss/keycloak:10.0.1
     newName: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
-    newTag: 10.0.1-0.3.4
+    newTag: 10.0.1-0.4.1
