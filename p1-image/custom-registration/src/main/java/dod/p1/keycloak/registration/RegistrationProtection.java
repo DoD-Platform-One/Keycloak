@@ -62,11 +62,10 @@ public class RegistrationProtection {
         String inviteSecret = authConfig.getConfig().get("inviteSecret");
         String inviteDigest = RegistrationValidation.getInviteDigest(0, inviteSecret);
         String invitedUrlEncoded = URLEncoder.encode(inviteDigest, StandardCharsets.UTF_8);
-        String realm = session.getContext().getRealm().getName();
 
         code.success = true;
         code.days = Integer.parseInt(authConfig.getConfig().get("inviteSecretDays"));
-        code.link = "/auth/realms/" + realm + "/protocol/openid-connect/registrations?client_id=account&response_type=code&invite=" + invitedUrlEncoded;
+        code.link = "/register?invite=" + invitedUrlEncoded;
 
         return code;
     }

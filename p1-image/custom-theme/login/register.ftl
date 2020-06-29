@@ -229,7 +229,7 @@
     document.getElementById('user.attributes.affiliation').value = "${(register.formData['user.attributes.affiliation']!'')}";
     document.getElementById('user.attributes.rank').value = "${(register.formData['user.attributes.rank']!'')}";
 
-    if (!inviteCode) {
+    if (!inviteCode || inviteCode === 'none') {
         const sadPanda = document.getElementById('sad-panda');
         sadPanda.style.display = 'block';
 

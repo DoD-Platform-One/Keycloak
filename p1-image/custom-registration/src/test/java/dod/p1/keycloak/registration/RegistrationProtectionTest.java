@@ -92,7 +92,7 @@ public class RegistrationProtectionTest {
         Assert.assertEquals(Integer.parseInt(inviteSecretDays), inviteCode.days.intValue());
 
         Assert.assertEquals(
-                "/auth/realms/master-yoda/protocol/openid-connect/registrations?client_id=account&response_type=code&invite=crDqh1eTTQP3wnGhBDy2rmZprN3vSz1GjGdx2OItNSo%3D",
+                "/register?invite=crDqh1eTTQP3wnGhBDy2rmZprN3vSz1GjGdx2OItNSo%3D",
                 inviteCode.link);
 
     }

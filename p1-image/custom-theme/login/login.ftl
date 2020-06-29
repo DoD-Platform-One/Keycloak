@@ -49,11 +49,6 @@
                       <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
                   </div>
                     
-                  <#--  <div class="word-line">or</div>
-
-                  <div id="kc-form-buttons" class="${properties.kcFormGroupClass!}">
-                      <span onclick="location.href = 'https://sso-pki.collab.cdl.af.mil'" tabindex="5" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">CAC Login</span>
-                  </div>  -->
             </form>
         </#if>
         <div id="need-account">
@@ -71,7 +66,7 @@
         feedback.parentElement.outerHTML = [
             '<div class="alert alert-info" id="cac-info">',
             '<h2>New DoD CAC Detected</h2>',
-            '<div style="line-height: 2rem;">If you do not have an account yet, <a href="/auth/realms/baby-yoda/protocol/openid-connect/registrations?client_id=account&amp;response_type=code">click to register</a> now.  Otherwise, please login with your username/password to associate this CAC with your existing account.',
+            '<div style="line-height: 2rem;">If you do not have an account yet, <a href="/register?invite=none">click to register</a> now.  Otherwise, please login with your username/password to associate this CAC with your existing account.',
             '</div></div>'
         ].join('');
     }
