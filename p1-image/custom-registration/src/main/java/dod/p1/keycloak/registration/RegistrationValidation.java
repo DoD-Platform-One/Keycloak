@@ -7,10 +7,7 @@ import org.keycloak.authentication.forms.RegistrationProfile;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
 import org.keycloak.forms.login.LoginFormsProvider;
-import org.keycloak.models.AuthenticationExecutionModel;
-import org.keycloak.models.AuthenticatorConfigModel;
-import org.keycloak.models.GroupModel;
-import org.keycloak.models.UserModel;
+import org.keycloak.models.*;
 import org.keycloak.models.utils.FormMessage;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.services.messages.Messages;
@@ -116,14 +113,25 @@ public class RegistrationValidation extends RegistrationProfile {
         return INVITE_CACHE.get(dayKey);
     }
 
-    private static void processX509UserAttribute(FormContext context, UserModel user) {
-        String cacUsername = getCACUsername(context);
+    private static void bindRequiredActions(UserModel user, String cacUsername) {
+        // Default actions for all users
+        user.addRequiredAction(UserModel.RequiredAction.VERIFY_EMAIL);
+        user.addRequiredAction(UserModel.RequiredAction.TERMS_AND_CONDITIONS);
+
+        if (cacUsername == null) {
+            // This user must configure MFA for their login
+            user.addRequiredAction(UserModel.RequiredAction.CONFIGURE_TOTP);
+        }
+    }
+
+    private static void processX509UserAttribute(UserModel user, String cacUsername) {
         if (cacUsername != null) {
+            // Bind the cac attribute to the user
             user.setSingleAttribute(X509_USER_ATTRIBUTE, cacUsername);
         }
     }
 
-    private static void joinValidUserToILGroups(FormContext context, UserModel user) {
+    private static void joinValidUserToILGroups(FormContext context, UserModel user, String cacUsername) {
         String email = user.getEmail().toLowerCase();
         AuthenticatorConfigModel authenticatorConfig = context.getAuthenticatorConfig();
         Map<String, String> config = authenticatorConfig.getConfig();
@@ -142,7 +150,7 @@ public class RegistrationValidation extends RegistrationProfile {
             user.joinGroup(il4Group);
         }
 
-        if (getCACUsername(context) != null) {
+        if (cacUsername != null) {
             user.joinGroup(il5Group);
         }
     }
@@ -235,10 +243,12 @@ public class RegistrationValidation extends RegistrationProfile {
     public void success(FormContext context) {
         UserModel user = context.getUser();
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
+        String cacUsername = getCACUsername(context);
 
         generateUniqueStringIdForMattermost(formData, user);
-        joinValidUserToILGroups(context, user);
-        processX509UserAttribute(context, user);
+        joinValidUserToILGroups(context, user, cacUsername);
+        processX509UserAttribute(user, cacUsername);
+        bindRequiredActions(user, cacUsername);
     }
 
     @Override
@@ -246,8 +256,6 @@ public class RegistrationValidation extends RegistrationProfile {
         String cacUsername = getCACUsername(context);
         if (cacUsername != null) {
             form.setAttribute("cacIdentity", cacUsername);
-        } else {
-            form.setAttribute("passwordRequired", true);
         }
     }
 
@@ -293,16 +301,16 @@ public class RegistrationValidation extends RegistrationProfile {
 
         String eventError = Errors.INVALID_REGISTRATION;
 
-        if (Validation.isBlank(formData.getFirst("username"))) {
-            errors.add(new FormMessage("username", Messages.MISSING_USERNAME));
+        if (Validation.isBlank(formData.getFirst(Validation.FIELD_USERNAME))) {
+            errors.add(new FormMessage(Validation.FIELD_USERNAME, Messages.MISSING_USERNAME));
         }
 
-        if (Validation.isBlank(formData.getFirst("firstName"))) {
-            errors.add(new FormMessage("firstName", Messages.MISSING_FIRST_NAME));
+        if (Validation.isBlank(formData.getFirst(Validation.FIELD_FIRST_NAME))) {
+            errors.add(new FormMessage(Validation.FIELD_FIRST_NAME, Messages.MISSING_FIRST_NAME));
         }
 
-        if (Validation.isBlank(formData.getFirst("lastName"))) {
-            errors.add(new FormMessage("lastName", Messages.MISSING_LAST_NAME));
+        if (Validation.isBlank(formData.getFirst(Validation.FIELD_LAST_NAME))) {
+            errors.add(new FormMessage(Validation.FIELD_LAST_NAME, Messages.MISSING_LAST_NAME));
         }
 
         if (Validation.isBlank(formData.getFirst("user.attributes.affiliation"))) {
