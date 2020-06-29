@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: keycloak
   labels:
-    istio-injection: enabled
+    istio-injection: disabled-because-keycloak-hates-istio
