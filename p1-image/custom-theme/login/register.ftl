@@ -5,7 +5,7 @@
     <#elseif section = "form">
         <form id="kc-register-form" class="${properties.kcFormClass!}" action="${url.registrationAction}" method="post">
             
-            <#if !passwordRequired??>
+            <#if cacIdentity??>
                 <div class="alert alert-info" id="cac-info">
                     <h2>DoD CAC User Registration</h2>
                     <h4>${cacIdentity}</h4>
@@ -175,7 +175,7 @@
                 </div>
             </div>
 
-            <#if passwordRequired??>
+            <#if !cacIdentity??>
                 <hr>
 
                 <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
