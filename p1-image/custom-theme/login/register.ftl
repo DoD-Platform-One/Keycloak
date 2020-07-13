@@ -43,7 +43,7 @@
             
             <div class="row no-gutters" style="margin-left:-20px;margin-right:-20px">
 
-                <div class="col-sm-6 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}">
+                <div class="col-sm-6 ${messagesPerField.printIfExists('user.attributes.affiliation',properties.kcFormGroupErrorClass!)}">
                     <label for="user.attributes.affiliation">Affiliation</label>
                     <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control">
                         <option selected disabled hidden>Select your org</option>	                	
@@ -75,7 +75,7 @@
                     </select>
                 </div>
 
-                <div class="col-sm-6 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}">
+                <div class="col-sm-6 ${messagesPerField.printIfExists('user.attributes.rank',properties.kcFormGroupErrorClass!)}">
                     <label for="user.attributes.rank">Pay Grade</label>
                     <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
                         <option selected disabled hidden>Select your rank</option>	                	
