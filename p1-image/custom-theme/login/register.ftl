@@ -44,7 +44,7 @@
             <div class="row no-gutters" style="margin-left:-20px;margin-right:-20px">
 
                 <div class="col-sm-6 ${messagesPerField.printIfExists('user.attributes.affiliation',properties.kcFormGroupErrorClass!)}">
-                    <label for="user.attributes.affiliation">Affiliation</label>
+                    <label for="user.attributes.affiliation" class="${properties.kcLabelClass!}">Affiliation</label>
                     <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control">
                         <option selected disabled hidden>Select your org</option>	                	
                         <optgroup label="US Government">
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="col-sm-6 ${messagesPerField.printIfExists('user.attributes.rank',properties.kcFormGroupErrorClass!)}">
-                    <label for="user.attributes.rank">Pay Grade</label>
+                    <label for="user.attributes.rank" class="${properties.kcLabelClass!}">Pay Grade</label>
                     <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
                         <option selected disabled hidden>Select your rank</option>	                	
                         <optgroup label="Enlisted">
