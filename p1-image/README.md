@@ -16,7 +16,7 @@ Platform One Keycloak customizations.
     ... Keycloak 10.0.1 (WildFly Core 11.1.1.Final) started in 20825ms - Started 809 of 1116 services (721 services are lazy, passive or on-demand)
     ```
 
-2. Navigate Browser to `https://127.0.0.1:8443/admin/auth`
+2. Navigate Browser to `https://127.0.0.1:8443/auth/admin`
 3. Login with Username: `admin` and Password: `pass`
 4. Happy Debugging!
 5. To hot swap the custom-registration jar
