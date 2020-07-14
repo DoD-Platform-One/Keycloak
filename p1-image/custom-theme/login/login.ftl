@@ -52,7 +52,7 @@
             </form>
         </#if>
         <div id="need-account">
-            No account?  <a href="/auth/realms/baby-yoda/protocol/openid-connect/registrations?client_id=account&response_type=code">Click to register</a>.
+            No account? <a href="https://sso-info.il2.dsop.io/new_account.html">Click here</a> for information.
         </div>
         </div>
       </div>
