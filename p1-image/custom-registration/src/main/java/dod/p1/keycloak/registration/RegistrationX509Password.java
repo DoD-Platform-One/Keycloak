@@ -80,6 +80,7 @@ public class RegistrationX509Password extends RegistrationPassword {
             } catch (Exception me) {
                 user.addRequiredAction(UserModel.RequiredAction.UPDATE_PASSWORD);
             }
+            user.addRequiredAction(UserModel.RequiredAction.CONFIGURE_TOTP);
         }
     }
 

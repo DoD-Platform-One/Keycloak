@@ -179,7 +179,9 @@
                 <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
                     <div class="${properties.kcLabelWrapperClass!}">
                         <div class="note">
-                            ${msg("passwordCacMessage")}
+                            ${msg("passwordCacMessage1")}
+                            <span class="note-important">${msg("passwordCacMessage2")}</span>
+                            ${msg("passwordCacMessage3")}
                         </div>
                     </div>
                     <div class="${properties.kcLabelWrapperClass!}">
