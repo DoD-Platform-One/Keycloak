@@ -168,16 +168,37 @@
 
             <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('notes',properties.kcFormGroupErrorClass!)}">
                 <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="user.attributes.notes" class="${properties.kcLabelClass!}">Access Request Notes</label>
+                    <label for="user.attributes.notes" class="${properties.kcLabelClass!}">${msg("accessRequest")}</label>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
                     <textarea id="user.attributes.notes" class="${properties.kcInputClass!}" name="user.attributes.notes"></textarea>
                 </div>
             </div>
 
-            <#if !cacIdentity??>
-                <hr>
+            <#if cacIdentity??>
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
+                    <div class="${properties.kcLabelWrapperClass!}">
+                        <div class="note">
+                            ${msg("passwordCacMessage")}
+                        </div>
+                    </div>
+                    <div class="${properties.kcLabelWrapperClass!}">
+                        <label for="password" class="${properties.kcLabelClass!}">${msg("passwordOptional")}</label>
+                    </div>
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <input type="password" id="password" class="${properties.kcInputClass!}" name="password" autocomplete="new-password"/>
+                    </div>
+                </div>
 
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password-confirm',properties.kcFormGroupErrorClass!)}">
+                    <div class="${properties.kcLabelWrapperClass!}">
+                        <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
+                    </div>
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <input type="password" id="password-confirm" class="${properties.kcInputClass!}" name="password-confirm" />
+                    </div>
+                </div>
+            <#else>
                 <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
                     <div class="${properties.kcLabelWrapperClass!}">
                         <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
