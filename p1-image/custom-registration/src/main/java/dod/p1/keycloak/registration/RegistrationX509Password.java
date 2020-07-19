@@ -65,22 +65,15 @@ public class RegistrationX509Password extends RegistrationPassword {
 
     @Override
     public void success(FormContext context) {
-        if (getCACUsername(context) == null) {
-            super.success(context);
-            return;
-        }
-
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
         String password = formData.getFirst(RegistrationPage.FIELD_PASSWORD);
         UserModel user = context.getUser();
-        
-        if (!formData.getFirst("password").isEmpty()) {
-            try {
-                context.getSession().userCredentialManager().updateCredential(context.getRealm(), user, UserCredentialModel.password(formData.getFirst("password"), false));
-            } catch (Exception me) {
-                user.addRequiredAction(UserModel.RequiredAction.UPDATE_PASSWORD);
-            }
+
+        if ((getCACUsername(context) == null) || (!formData.getFirst("password").isEmpty())) {
+            super.success(context);
+            // TOTP also enforced in RegistrationValidation class for non-CAC registration
             user.addRequiredAction(UserModel.RequiredAction.CONFIGURE_TOTP);
+            return;
         }
     }
 
