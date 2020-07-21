@@ -54,11 +54,16 @@
     <ol>
         <li>
             <p>${msg("totpStep1")}</p>
-
             <ul>
-                <#list totp.policy.supportedApplications as app>
+                <#--  <#list totp.policy.supportedApplications as app>
                     <li>${app}</li>
-                </#list>
+                </#list>  -->
+                <li>Google Authenticator</li>
+                <li>Authy</li>
+                <li>1Password</li>
+                <li>Bitwarden</li>
+                <li>LastPass</li>
+                <li>Yubico Authenticator</li>
             </ul>
         </li>
 
@@ -84,13 +89,14 @@
         <#else>
             <li>
                 <p>${msg("totpStep2")}</p>
-                <p><img src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: Barcode"></p>
+                <div class="note">${msg("totpStep2Note")}</div>
+                <p><img src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: QR code"></p>
                 <p><a href="${totp.manualUrl}" id="mode-manual">${msg("totpUnableToScan")}</a></p>
             </li>
         </#if>
         <li>
             <p>${msg("totpStep3")}</p>
-            <p>${msg("totpStep3DeviceName")}</p>
+            <p><span class="note">${msg("totpStep3Note")}</span></p>
         </li>
     </ol>
 
@@ -102,13 +108,10 @@
             <div class="col-sm-2 col-md-2">
                 <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span class="required">*</span>
             </div>
-
             <div class="col-sm-10 col-md-10">
                 <input type="text" class="form-control" id="totp" name="totp" autocomplete="off" autofocus>
                 <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
             </div>
-
-
         </div>
 
         <div class="form-group" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}">
@@ -123,16 +126,14 @@
 
         <div class="form-group">
             <div id="kc-form-buttons" class="col-md-offset-2 col-md-10 submit">
-                <div class="">
-                    <button type="submit"
-                            class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
-                            id="saveTOTPBtn" name="submitAction" value="Save">${msg("doSave")}
-                    </button>
-                    <button type="submit"
-                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
-                            id="cancelTOTPBtn" name="submitAction" value="Cancel">${msg("doCancel")}
-                    </button>
-                </div>
+                <button type="submit"
+                        class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
+                        id="saveTOTPBtn" name="submitAction" value="Save">${msg("doSave")}
+                </button>
+                <button type="submit"
+                        class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
+                        id="cancelTOTPBtn" name="submitAction" value="Cancel">${msg("doCancel")}
+                </button>
             </div>
         </div>
     </form>

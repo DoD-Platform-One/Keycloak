@@ -31,7 +31,6 @@
             </li>
             <li>
                 <p>${msg("loginTotpManualStep3")}</p>
-                <p>
                     <ul>
                         <li id="kc-totp-type">${msg("loginTotpType")}: ${msg("loginTotp." + totp.policy.type)}</li>
                         <li id="kc-totp-algorithm">${msg("loginTotpAlgorithm")}: ${totp.policy.getAlgorithmKey()}</li>
@@ -42,18 +41,18 @@
                             <li id="kc-totp-counter">${msg("loginTotpCounter")}: ${totp.policy.initialCounter}</li>
                         </#if>
                     </ul>
-                </p>
             </li>
         <#else>
             <li>
                 <p>${msg("loginTotpStep2")}</p>
-                <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: Barcode"><br/>
+                <div class="note">${msg("loginTotpStep2Note")}</div>
+                <div><img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: Barcode"></div>
                 <p><a href="${totp.manualUrl}" id="mode-manual">${msg("loginTotpUnableToScan")}</a></p>
             </li>
         </#if>
         <li>
             <p>${msg("loginTotpStep3")}</p>
-            <p>${msg("loginTotpStep3DeviceName")}</p>
+            <div class="note">${msg("loginTotpStep3Note")}</div>
         </li>
     </ol>
 
@@ -71,7 +70,10 @@
 
         <div class="${properties.kcFormGroupClass!}" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}">
             <div class="${properties.kcInputWrapperClass!}">
-                <label for="userLabel" class="control-label">${msg("loginTotpDeviceName")}</label> <#if totp.otpCredentials?size gte 1><span class="required">*</span></#if>
+                <label for="userLabel" class="control-label">${msg("loginTotpDeviceName")}</label>
+                <#if totp.otpCredentials?size gte 1><span class="required">*</span>
+                <#else><span> (optional)</span>
+                </#if>
             </div>
 
             <div class="${properties.kcInputWrapperClass!}">
@@ -95,5 +97,7 @@
             />
         </#if>
     </form>
+    <br>
+    <p>Having issues? <a href="https://sso-info.il2.dsop.io/setup_mfa.html" target="_blank">Click here</a> for help.</p>
     </#if>
 </@layout.registrationLayout>

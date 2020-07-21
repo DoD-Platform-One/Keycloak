@@ -323,6 +323,12 @@ div.kc-logo-text span {
   color: #cb2915;
 }
 
+.note {
+  font-style: italic;
+  padding-left: 0.8em;
+  padding-bottom: 1.0em;
+}
+
 ol#kc-totp-settings {
   margin: 0;
   padding-left: 20px;
@@ -520,7 +526,7 @@ ul#kc-totp-supported-apps {
     max-width: none;
     margin-left: 0;
     margin-right: 0;
-    padding-top: 0;
+    padding-top: 5px;
   }
   .card-pf.login-pf-accounts {
     max-width: none;
@@ -606,7 +612,7 @@ ul#kc-totp-supported-apps {
 
   #kc-totp-secret-key {
     background: rgba(255, 255, 255, 0.85);
-    padding: 1.5rem;
+    padding: 0.8rem;
     border-radius: 5px;
     font-weight: 600;
     color: black;
