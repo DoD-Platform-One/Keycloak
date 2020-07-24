@@ -54,6 +54,9 @@
         <div id="need-account">
             No account? <a href="https://sso-info.il2.dsop.io/new_account.html">Click here</a> for information.
         </div>
+        <div id="help-email">
+            Need additional help? <a href=mailto:help@dsop.io>Email us.</a>
+        </div>
         </div>
       </div>
     </#if>
