@@ -12,8 +12,10 @@ import org.keycloak.forms.login.LoginFormsProvider;
 import org.keycloak.models.*;
 import org.keycloak.models.credential.PasswordCredentialModel;
 import org.keycloak.models.utils.FormMessage;
-import org.keycloak.services.messages.Messages;
+import org.keycloak.policy.PasswordPolicyManagerProvider;
+import org.keycloak.policy.PolicyError;
 import org.keycloak.provider.ProviderConfigProperty;
+import org.keycloak.services.messages.Messages;
 
 import org.keycloak.authentication.forms.RegistrationPage;
 
@@ -52,6 +54,12 @@ public class RegistrationX509Password extends RegistrationPassword {
             errors.add(new FormMessage(RegistrationPage.FIELD_PASSWORD_CONFIRM, Messages.INVALID_PASSWORD_CONFIRM));
         }
 
+        if (formData.getFirst(RegistrationPage.FIELD_PASSWORD) != null) {
+            PolicyError err = context.getSession().getProvider(PasswordPolicyManagerProvider.class).validate(context.getRealm().isRegistrationEmailAsUsername() ? formData.getFirst(RegistrationPage.FIELD_EMAIL) : formData.getFirst(RegistrationPage.FIELD_USERNAME), formData.getFirst(RegistrationPage.FIELD_PASSWORD));
+            if (err != null)
+                errors.add(new FormMessage(RegistrationPage.FIELD_PASSWORD, err.getMessage(), err.getParameters()));
+        }
+
         if (errors.size() > 0) {
             context.error(Errors.INVALID_REGISTRATION);
             formData.remove(RegistrationPage.FIELD_PASSWORD);
@@ -66,10 +74,9 @@ public class RegistrationX509Password extends RegistrationPassword {
     @Override
     public void success(FormContext context) {
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
-        String password = formData.getFirst(RegistrationPage.FIELD_PASSWORD);
         UserModel user = context.getUser();
 
-        if ((getCACUsername(context) == null) || (!formData.getFirst("password").isEmpty())) {
+        if ((getCACUsername(context) == null) || (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty())) {
             super.success(context);
             // TOTP also enforced in RegistrationValidation class for non-CAC registration
             user.addRequiredAction(UserModel.RequiredAction.CONFIGURE_TOTP);
