@@ -50,6 +50,11 @@ public class RegistrationX509Password extends RegistrationPassword {
         List<FormMessage> errors = new ArrayList<>();
         context.getEvent().detail(Details.REGISTER_METHOD, "form");
 
+        if (formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty() && formData.getFirst(RegistrationPage.FIELD_PASSWORD_CONFIRM).isEmpty()) {
+            context.success();
+            return;
+        }
+
         if (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).equals(formData.getFirst(RegistrationPage.FIELD_PASSWORD_CONFIRM))) {
             errors.add(new FormMessage(RegistrationPage.FIELD_PASSWORD_CONFIRM, Messages.INVALID_PASSWORD_CONFIRM));
         }
