@@ -139,13 +139,6 @@ body.admin-console.user,
   color: white;
 }
 
-.alert-error {
-  background-color: #ffffff;
-  border-color: #cc0000;
-  color: #333333;
-  display: none;
-}
-
 #kc-locale ul {
   display: none;
   position: absolute;
@@ -630,8 +623,8 @@ ul#kc-totp-supported-apps {
   max-width: 300px !important;
 }
 
-#need-account {
-  font-size: 1.5rem;
+#footer-text {
+  font-size: 1.25rem;
   margin-top: 3rem;
   text-align: center;
 }

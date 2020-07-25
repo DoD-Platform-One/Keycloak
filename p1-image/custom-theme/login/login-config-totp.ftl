@@ -97,7 +97,6 @@
             />
         </#if>
     </form>
-    <br>
-    <p>Having issues? <a href="https://sso-info.il2.dsop.io/setup_mfa.html" target="_blank">Click here</a> for help.</p>
+    <div id="footer-text">Having issues? <a href="https://sso-info.il2.dsop.io/setup_mfa.html" target="_blank">Click here</a> for help.</div>
     </#if>
 </@layout.registrationLayout>
