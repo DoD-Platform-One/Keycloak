@@ -53,6 +53,24 @@ public class X509Tools {
         return getCACUsername(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
+    public static Object getX509IdentityFromCertChain(X509Certificate[] certs, RealmModel realm) {
+        if (certs == null || certs.length == 0) {
+            return null;
+        }
+
+        if (realm.getAuthenticatorConfigs() != null) {
+            for (AuthenticatorConfigModel config : realm.getAuthenticatorConfigs()) {
+                X509ClientCertificateAuthenticator authenticator = new X509ClientCertificateAuthenticator();
+                if (config.getConfig().containsKey(AbstractX509ClientCertificateAuthenticator.CUSTOM_ATTRIBUTE_NAME)) {
+                    X509AuthenticatorConfigModel model = new X509AuthenticatorConfigModel(config);
+                    return authenticator.getUserIdentityExtractor(model).extractUserIdentity(certs);
+                }
+            }
+        }
+
+        return null;
+    }
+
     private static Object getX509Identity(KeycloakSession session, HttpRequest httpRequest, RealmModel realm) {
 
         try {
@@ -66,19 +84,8 @@ public class X509Tools {
             }
 
             X509Certificate[] certs = provider.getCertificateChain(httpRequest);
-            if (certs == null || certs.length == 0) {
-                return null;
-            }
 
-            if (realm.getAuthenticatorConfigs() != null) {
-                for (AuthenticatorConfigModel config : realm.getAuthenticatorConfigs()) {
-                    X509ClientCertificateAuthenticator authenticator = new X509ClientCertificateAuthenticator();
-                    if (config.getConfig().containsKey(AbstractX509ClientCertificateAuthenticator.CUSTOM_ATTRIBUTE_NAME)) {
-                        X509AuthenticatorConfigModel model = new X509AuthenticatorConfigModel(config);
-                        return authenticator.getUserIdentityExtractor(model).extractUserIdentity(certs);
-                    }
-                }
-            }
+            return getX509IdentityFromCertChain(certs, realm);
         } catch (GeneralSecurityException e) {
             System.err.println(e.getMessage());
         }

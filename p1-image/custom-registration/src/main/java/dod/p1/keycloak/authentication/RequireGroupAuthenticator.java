@@ -9,6 +9,7 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static dod.p1.keycloak.common.CommonConfig.ACTIVE_CAC_USER_ATTRIBUTE;
 import static dod.p1.keycloak.common.CommonConfig.VALID_BUILTIN_CLIENTS;
 
 /**
@@ -49,19 +50,25 @@ public class RequireGroupAuthenticator implements Authenticator {
             } else {
                 // Check if the user is a member of the specified group
                 if (isMemberOfGroup(realm, user, group)) {
-                    context.success();
+                    success(context, user);
                 } else {
                     context.failure(AuthenticationFlowError.INVALID_CLIENT_SESSION);
                 }
             }
         } else {
             if (VALID_BUILTIN_CLIENTS.contains(clientId)) {
-                context.success();
+                success(context, user);
             } else {
                 context.failure(AuthenticationFlowError.CLIENT_DISABLED);
             }
         }
 
+    }
+
+    private void success(AuthenticationFlowContext context, UserModel user) {
+        // Reset active-cac attribute per login event
+        user.setSingleAttribute(ACTIVE_CAC_USER_ATTRIBUTE, "");
+        context.success();
     }
 
     private boolean isMemberOfGroup(RealmModel realm, UserModel user, GroupModel group) {

@@ -1,24 +1,24 @@
 package dod.p1.keycloak.registration;
 
-import org.jboss.logging.Logger;
 import org.keycloak.Config;
 import org.keycloak.authentication.RequiredActionContext;
 import org.keycloak.authentication.RequiredActionFactory;
 import org.keycloak.authentication.RequiredActionProvider;
+import org.keycloak.models.GroupModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.security.cert.X509Certificate;
 
-import static dod.p1.keycloak.common.CommonConfig.X509_USER_ATTRIBUTE;
-import static dod.p1.keycloak.registration.X509Tools.getCACUsername;
-import static dod.p1.keycloak.registration.X509Tools.isCACRegistered;
+import static dod.p1.keycloak.common.CommonConfig.*;
+import static dod.p1.keycloak.registration.X509Tools.*;
+import static org.keycloak.services.x509.DefaultClientCertificateLookup.JAVAX_SERVLET_REQUEST_X509_CERTIFICATE;
 
 public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory {
 
-    private static final Logger logger = Logger.getLogger(UpdateX509.class);
     private static final String PROVIDER_ID = "UPDATE_X509";
     private static final String IGNORE_X509 = "IGNORE_X509";
 
@@ -30,9 +30,11 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
             return;
         }
 
-        if (isCACRegistered(context)) {
-            logger.error("X509 already bound");
-        } else {
+        X509Certificate[] certAttribute = (X509Certificate[]) context.getHttpRequest().getAttribute(JAVAX_SERVLET_REQUEST_X509_CERTIFICATE);
+        String identity = (String) getX509IdentityFromCertChain(certAttribute, context.getRealm());
+        context.getUser().setSingleAttribute(ACTIVE_CAC_USER_ATTRIBUTE, identity);
+
+        if (!isCACRegistered(context)) {
             context.getUser().addRequiredAction(PROVIDER_ID);
         }
 
@@ -40,7 +42,7 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
 
     @Override
     public void requiredActionChallenge(RequiredActionContext context) {
-        MultivaluedMap<String, String> formData = new MultivaluedHashMap<String, String>();
+        MultivaluedMap<String, String> formData = new MultivaluedHashMap<>();
         formData.add("username", context.getUser() != null ? context.getUser().getUsername() : "unknown user");
         formData.add("subjectDN", getCACUsername(context));
         formData.add("isUserEnabled", "true");
@@ -62,6 +64,15 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
         String username = getCACUsername(context);
         if (username != null) {
             context.getUser().setSingleAttribute(X509_USER_ATTRIBUTE, username);
+
+            // Add the user to the IL2/4/5 groups
+            GroupModel il2Group = context.getRealm().getGroupById(IL2_GROUP_ID);
+            GroupModel il4Group = context.getRealm().getGroupById(IL4_GROUP_ID);
+            GroupModel il5Group = context.getRealm().getGroupById(IL5_GROUP_ID);
+
+            context.getUser().joinGroup(il2Group);
+            context.getUser().joinGroup(il4Group);
+            context.getUser().joinGroup(il5Group);
         }
         context.success();
     }
