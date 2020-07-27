@@ -151,6 +151,8 @@ public class RegistrationValidation extends RegistrationProfile {
         }
 
         if (cacUsername != null) {
+            // CAC users should be in the IL2/4/5 groups regardless of their email address
+            user.joinGroup(il4Group);
             user.joinGroup(il5Group);
         }
     }
