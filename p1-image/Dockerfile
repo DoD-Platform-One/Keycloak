@@ -6,7 +6,7 @@ COPY custom-registration /usr/src/gradle
 
 RUN gradle build
 
-FROM quay.io/keycloak/keycloak:10.0.1 AS keycloak
+FROM registry.dsop.io/platform-one/private/big-bang/apps/keycloak:10.0.1-ironbank AS keycloak
 
 COPY baby-yoda.json /opt/baby-yoda.json
 COPY custom-theme /opt/custom-theme

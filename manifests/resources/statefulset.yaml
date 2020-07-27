@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: keycloak
     app.kubernetes.io/instance: "keycloak"
-    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/version: "10.0.1"
 
 spec:
   selector:
@@ -29,7 +29,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: keycloak
-          image: "docker.io/jboss/keycloak:10.0.1"
+          image: "docker.io/jboss/keycloak:10.0.1-ironbank"
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsNonRoot: true
@@ -128,4 +128,3 @@ spec:
         - name: https
           secret:
             secretName: keycloak-mtls
-

@@ -21,6 +21,6 @@ configMapGenerator:
 
 images:
   # NOTE: It is up to the "consumer" to provide the necessary ImagePullSecrets to pull this
-  - name: docker.io/jboss/keycloak:10.0.1
+  - name: docker.io/jboss/keycloak:10.0.1-ironbank
     newName: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
-    newTag: 10.0.1-0.5.1
+  #  newTag: 10.0.1-0.5.1
