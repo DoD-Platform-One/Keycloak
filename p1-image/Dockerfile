@@ -23,7 +23,7 @@ RUN mv /opt/jboss/keycloak/themes/base /opt/jboss/keycloak/themes/base.bak && \
     mv /opt/jboss/keycloak/themes/base.bak/admin /opt/jboss/keycloak/themes/base/admin && \
     rm -fr /opt/jboss/keycloak/themes/base.bak
 
-RUN chown -R jboss /etc/x509/https && \
+RUN chown -R keycloak /etc/x509/https && \
     chmod 400 /etc/x509/https/*
 
-USER jboss
+USER keycloak
