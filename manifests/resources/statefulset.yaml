@@ -29,7 +29,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: keycloak
-          image: "docker.io/jboss/keycloak:10.0.1-ironbank"
+          image: "keycloak-placeholder"
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsNonRoot: true
