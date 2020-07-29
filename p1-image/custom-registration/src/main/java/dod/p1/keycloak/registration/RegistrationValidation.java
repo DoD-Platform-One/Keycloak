@@ -299,12 +299,28 @@ public class RegistrationValidation extends RegistrationProfile {
 
         List<FormMessage> errors = new ArrayList<>();
         String inviteCode = formData.getFirst("invite");
+        String username = formData.getFirst(Validation.FIELD_USERNAME);
         String email = formData.getFirst(Validation.FIELD_EMAIL);
 
         String eventError = Errors.INVALID_REGISTRATION;
 
-        if (Validation.isBlank(formData.getFirst(Validation.FIELD_USERNAME))) {
+        if (Validation.isBlank(username)) {
             errors.add(new FormMessage(Validation.FIELD_USERNAME, Messages.MISSING_USERNAME));
+        }
+
+        // Username validation based on Mattermost requirements.
+        if (username != null) {
+            if (!username.matches("[A-Za-z0-9-_.]+")) {
+                errors.add(new FormMessage(Validation.FIELD_USERNAME, "Username can only contain alphanumeric, underscore, hyphen and period characters."));
+            }
+
+            if (!Character.isLetter(username.charAt(0))) {
+                errors.add(new FormMessage(Validation.FIELD_USERNAME, "Username must begin with a letter."));
+            }
+
+            if (username.length() < 3 || username.length() > 22) {
+                errors.add(new FormMessage(Validation.FIELD_USERNAME, "Username must be between 3 to 22 characters."));
+            }
         }
 
         if (Validation.isBlank(formData.getFirst(Validation.FIELD_FIRST_NAME))) {
