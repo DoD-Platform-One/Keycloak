@@ -138,6 +138,7 @@
                             <option>GS-6</option>
                             <option>GS-7</option>
                             <option>GS-8</option>
+                            <option>GS-9</option>
                             <option>GS-10</option>
                             <option>GS-11</option>
                             <option>GS-12</option>
