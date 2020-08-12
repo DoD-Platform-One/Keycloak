@@ -1,0 +1,37 @@
+x509:
+  # User attirbute to bind to when associating PKI with a user account
+  userIdentityAttribute: "usercertificate"
+  # Reset on every login to "", tracks if the current login session is using PKI at all, even if not bound to the user
+  userActive509Attribute: "activecac"
+  # When a user with valid PKI registers, join to the listed groups
+  autoJoinGroup:
+    - "/Impact Level 2 Authorized"
+    - "/Impact Level 4 Authorized"
+    - "/Impact Level 5 Authorized"
+
+# White-list clients that do not require P1 group protection logic
+groupProtectionIgnoreClients:
+  - "account"
+  - "account-console"
+  - "broker"
+  - "security-admin-console"
+
+# When a user registers wihtout matching any top-levvel domain in emailMatchAutoJoinGroup, join to the listed groups
+noEmailMatchAutoJoinGroup:
+  - "/Randos"
+
+# When a user registers with the given top-level domain, join to the listed groups
+emailMatchAutoJoinGroup:
+  - description: DoD IL4 Users
+    groups:
+      - "/Impact Level 2 Authorized"
+      - "/Impact Level 4 Authorized"
+    domains:
+      - gov
+      - mil
+
+  - description: DoD IL2 Users
+    groups:
+      - "/Impact Level 2 Authorized"
+    domains:
+      - test-domain.very-long-fake-tld

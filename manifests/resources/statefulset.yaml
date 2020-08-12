@@ -89,6 +89,9 @@ spec:
             - name: https
               mountPath: "/etc/x509/https"
               readOnly: true
+            - name: config
+              mountPath: "/opt/baby-yoda.yaml"
+              subPath: "baby-yoda.yaml"
           ports:
             - name: https
               containerPort: 8443
@@ -125,6 +128,9 @@ spec:
           configMap:
             name: keycloak-startup
             defaultMode: 0555
+        - name: config
+          configMap:
+            name: baby-yoda
         - name: https
           secret:
             secretName: keycloak-mtls
