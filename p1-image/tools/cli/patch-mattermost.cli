@@ -4,8 +4,8 @@ batch
 /subsystem=undertow/configuration=filter/expression-filter=baby-yoda:add(expression="path('/auth/') -> redirect('/auth/realms/baby-yoda/account')")
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=baby-yoda:add
 
-/subsystem=undertow/configuration=filter/expression-filter=invite-code:add(expression="path-prefix('/register') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/registrations%{QUERY_STRING}&client_id=account&response_type=code')")
-/subsystem=undertow/server=default-server/host=default-host/filter-ref=invite-code:add
+/subsystem=undertow/configuration=filter/expression-filter=register:add(expression="path('/register') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/registrations?client_id=account&response_type=code')")
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=register:add
 
 /subsystem=undertow/configuration=filter/expression-filter=mm-auth-login:add(expression="path-prefix('/oauth/authorize') -> redirect('/auth/realms/baby-yoda/protocol/openid-connect/auth%{QUERY_STRING}')")
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-login:add

@@ -1,7 +1,9 @@
 package dod.p1.keycloak.authentication;
 
+import dod.p1.keycloak.common.CommonConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.models.ClientModel;
@@ -9,11 +11,25 @@ import org.keycloak.models.GroupModel;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.sessions.AuthenticationSessionModel;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
+
+import static dod.p1.keycloak.utils.Utils.setupFileMocks;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({
+        Yaml.class,
+        FileInputStream.class,
+        File.class,
+        CommonConfig.class
+})
 public class RequireGroupAuthenticatorTest {
 
     private RequireGroupAuthenticator subject;
@@ -25,7 +41,10 @@ public class RequireGroupAuthenticatorTest {
     private ClientModel client;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
+
+        setupFileMocks();
+
         subject = new RequireGroupAuthenticator();
 
         context = mock(AuthenticationFlowContext.class);
@@ -51,7 +70,7 @@ public class RequireGroupAuthenticatorTest {
 
     @Test
     public void testShouldPermitBuiltinClient() {
-        when(client.getClientId()).thenReturn("account");
+        when(client.getClientId()).thenReturn("test-client");
         subject.authenticate(context);
         verify(context).success();
     }

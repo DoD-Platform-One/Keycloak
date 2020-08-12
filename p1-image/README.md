@@ -5,7 +5,7 @@ Platform One Keycloak customizations.
 # Running Local
 
 1. Build and Run   
-    `docker rm p1-keycloak;DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest . && docker run -p 8443:8443 --name p1-keycloak p1-keycloak:dev-latest`
+    `docker rm p1-keycloak;DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest . && docker run -p 5005:5005 -p 8443:8443 --name p1-keycloak p1-keycloak:dev-latest`
     ```
     # Console output, like this, indicates the server is up and running
 
@@ -22,7 +22,7 @@ Platform One Keycloak customizations.
 5. To hot swap the custom-registration jar
    ```sh
    cd custom-registration && \
-   ./gradlew build && docker cp build/libs/keycloak-registration-validation-1.2.jar p1-keycloak:/opt/jboss/keycloak/standalone/deployments/p1.jar && \
+   ./gradlew build && docker cp build/libs/keycloak-registration-validation-1.2-all.jar p1-keycloak:/opt/jboss/keycloak/standalone/deployments/p1.jar && \
    cd -
    ```
 

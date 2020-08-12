@@ -3,17 +3,20 @@
     <#if section = "header">
         ${msg("registerTitle")}
     <#elseif section = "form">
-        <form id="kc-register-form" class="${properties.kcFormClass!}" action="${url.registrationAction}" method="post">
+        <form id="kc-register-form" class="${properties.kcFormClass!}" action="/chuck-norris-calendar-goes-straight-from-march-31st-to-april-2nd-because-no-one-fools-chuck-norris" method="post">
             
             <#if cacIdentity??>
                 <div class="alert alert-info" id="cac-info">
-                    <h2>DoD CAC User Registration</h2>
+                    <h2>DoD PKI User Registration</h2>
                     <h4>${cacIdentity}</h4>
                 </div>
             <#else>
-                <div class="alert alert-warning" id="sad-panda" style="display:none">
-                    <span class="${properties.kcFeedbackWarningIcon!}"></span>
-                    <span style="font-weight: bold;">Sorry, you don't seem to be using a DoD CAC or registration invite link.</span>  You can self-register here if you use your CAC, otherwise you will need to get an invite link first.  Please contact your team admin or <a id="helpdesk" href="">email us</a>.  For more details, please <a href="https://sso-info.il2.dsop.io/" target="_blank">click here</a>.
+                <div class="alert alert-info" id="cac-info" style="line-height: 2.5rem">
+                    <h2>Regular User Registration</h2>
+                    Use your company or government email address as your access will be based off of your validated email address.  
+                    <br>
+                    <br>
+                    <span style="font-weight: bold;">For assistance contact your team admin, <a href="https://sso-info.il2.dsop.io/" target="_blank">click here</a> or <a id="helpdesk" href="mailto:help@dsop.io">email us</a>.</span>
                 </div>
             </#if>
             
@@ -147,6 +150,15 @@
                 </div>
             </div>
 
+            <div class="${properties.kcFormGroupClass!} location-input">
+                <div class="${properties.kcLabelWrapperClass!}">
+                    <label for="user.attributes.location" class="${properties.kcLabelClass!}">Location</label>
+                </div>
+                <div class="${properties.kcInputWrapperClass!}">
+                    <input tabindex="-1" type="text" id="user.attributes.location" class="${properties.kcInputClass!}" name="user.attributes.location" autocomplete="off"/>
+                </div>
+            </div>
+
             <#if !realm.registrationEmailAsUsername>
                 <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('username',properties.kcFormGroupErrorClass!)}">
                     <div class="${properties.kcLabelWrapperClass!}">
@@ -231,43 +243,61 @@
 
             <div class="${properties.kcFormGroupClass!}">
                 <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
-                    <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doRegister")}"/>
+                    <input id="do-register" disabled="disabled" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doRegister")}"/>
                 </div>
             </div>
 
-            <input class="form-control" id="invite" name="invite" type="hidden" />
         </form>
+
+        <div id="footer-text">
+            You must be a human to register, confidence is increased as you interact with this page.  
+            <br><br>
+            <a>Currently only <span id="confidence">1</span>% convinced you're not a robot.</a>
+        </div>
     </#if>
 </@layout.registrationLayout>
 
 <script>
-    // Try to find the invite code in the URL param or session storage
-    const inviteInput = document.getElementById('invite');
-    const urlParams = new URLSearchParams(window.location.search);
-    const inviteCode = urlParams.get('invite') || sessionStorage.getItem('invite-code');
-
-    // Update session storage so keycloak doesn't ruin our day on error redirections
-    sessionStorage.setItem('invite-code', inviteCode);
-    inviteInput.value  = inviteCode || 'Missing invite code';
-
     document.getElementById('user.attributes.affiliation').value = "${(register.formData['user.attributes.affiliation']!'')}";
     document.getElementById('user.attributes.rank').value = "${(register.formData['user.attributes.rank']!'')}";
 
-    if (!inviteCode || inviteCode === 'none') {
-        const sadPanda = document.getElementById('sad-panda');
-        sadPanda.style.display = 'block';
+    (function() {
+        const threshold = 250;
+        let count = 0;
+        let complete = false;
 
-        const helpdeskLink = document.getElementById('helpdesk');
-        helpdeskLink.setAttribute('href', [
-            'mailto',
-            ':',
-            'DOD_p1chat_Admin', 
-            '@', 
-            'afwerx.af.mil', 
-            '?', 
-            'subject', 
-            '=', 
-            'new-account'].join('')
-            );
-    }
+        window.onload = tracker;
+        window.onmousemove = tracker;
+        window.onmousedown = tracker;
+        window.ontouchstart = tracker;
+        window.onclick = tracker;
+        window.onkeypress = tracker;
+        window.addEventListener('scroll', tracker, true);
+        
+        const confidence = document.getElementById('confidence');
+        const footer = document.getElementById('footer-text');
+        
+        function tracker() {
+            if (complete) {
+                return;
+            }
+
+            count++;
+            confidence.innerText = Math.round((count / threshold) * 100);
+            
+            if (count > threshold) {
+                complete = true;
+
+                const form = document.getElementById('kc-register-form');
+                const register = document.getElementById('do-register');
+                const location = document.getElementById('user.attributes.location');
+
+                location.value = '42';
+
+                footer.parentNode.removeChild(footer);
+                form.setAttribute('action', '${url.registrationAction?no_esc}');
+                register.removeAttribute('disabled');
+            }
+        }
+    }());
 </script>

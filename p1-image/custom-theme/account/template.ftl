@@ -77,43 +77,9 @@
 
             <#nested "content">
         </div>
-
-        <div class="col-sm-4">&nbsp;</div>
-        <div class="col-sm-7 content-area" id="invite-code">
-            <h4>Invite Link</h4>
-            <div id="invite-code-text">Loading...</div>
-        </div>
     </div>
 
     <img src="${url.resourcesPath}/img/p1-logo.png" id="baby-yoda-watermark" />
-
-    <style>
-        #invite-code {
-            min-height: 0.5rem;
-            padding: 1.5rem;
-            padding-bottom: 2.5rem;
-        }
-
-        #invite-code div {
-            font-style: italic;
-            line-break: anywhere;
-            padding-right: 2rem;
-        }
-    </style>
-
-    <script>
-        async function getInvite() {
-            const element = document.getElementById('invite-code-text');
-            const invite = await fetch('/auth/realms/baby-yoda/generate-invite-link');
-            const data = await invite.json();
-
-            const {host, protocol} = window.location;
-
-            element.innerText = protocol + '//' + host + data.link;
-        }
-
-        getInvite();
-    </script>
 </body>
 </html>
 </#macro>

@@ -1,10 +1,10 @@
 package dod.p1.keycloak.registration;
 
-import org.jboss.logging.Logger;
 import org.keycloak.Config;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.FormContext;
 import org.keycloak.authentication.ValidationContext;
+import org.keycloak.authentication.forms.RegistrationPage;
 import org.keycloak.authentication.forms.RegistrationPassword;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
@@ -17,17 +17,15 @@ import org.keycloak.policy.PolicyError;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.services.messages.Messages;
 
-import org.keycloak.authentication.forms.RegistrationPage;
-
 import javax.ws.rs.core.MultivaluedMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dod.p1.keycloak.registration.X509Tools.getCACUsername;
-
 public class RegistrationX509Password extends RegistrationPassword {
-    private static final Logger logger = Logger.getLogger(RegistrationX509Password.class);
     public static final String PROVIDER_ID = "registration-x509-password-action";
+    private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
+            AuthenticationExecutionModel.Requirement.REQUIRED
+    };
 
     @Override
     public String getHelpText() {
@@ -41,7 +39,7 @@ public class RegistrationX509Password extends RegistrationPassword {
 
     @Override
     public void validate(ValidationContext context) {
-        if (getCACUsername(context) == null) {
+        if (X509Tools.getX509Username(context) == null) {
             super.validate(context);
             return;
         }
@@ -70,7 +68,6 @@ public class RegistrationX509Password extends RegistrationPassword {
             formData.remove(RegistrationPage.FIELD_PASSWORD);
             formData.remove(RegistrationPage.FIELD_PASSWORD_CONFIRM);
             context.validationError(formData, errors);
-            return;
         } else {
             context.success();
         }
@@ -81,17 +78,16 @@ public class RegistrationX509Password extends RegistrationPassword {
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
         UserModel user = context.getUser();
 
-        if ((getCACUsername(context) == null) || (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty())) {
+        if ((X509Tools.getX509Username(context) == null) || (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty())) {
             super.success(context);
             // TOTP also enforced in RegistrationValidation class for non-CAC registration
             user.addRequiredAction(UserModel.RequiredAction.CONFIGURE_TOTP);
-            return;
         }
     }
 
     @Override
     public void buildPage(FormContext context, LoginFormsProvider form) {
-        if (getCACUsername(context) == null) {
+        if (X509Tools.getX509Username(context) == null) {
             form.setAttribute("passwordRequired", true);
         }
     }
@@ -134,10 +130,6 @@ public class RegistrationX509Password extends RegistrationPassword {
     public boolean isConfigurable() {
         return false;
     }
-
-    private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
-            AuthenticationExecutionModel.Requirement.REQUIRED
-    };
 
     @Override
     public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {

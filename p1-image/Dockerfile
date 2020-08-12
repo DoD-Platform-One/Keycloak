@@ -9,12 +9,15 @@ RUN gradle build
 FROM registry.dsop.io/platform-one/private/big-bang/apps/keycloak:10.0.1-ironbank AS keycloak
 
 COPY baby-yoda.json /opt/baby-yoda.json
+COPY baby-yoda.yaml /opt/baby-yoda.yaml
 COPY custom-theme /opt/custom-theme
-COPY --from=build /usr/src/gradle/build/libs/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
+COPY --from=build /usr/src/gradle/build/libs/keycloak-registration-validation-1.2-all.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
 COPY certs/dod_cas.pem /etc/x509/https/dod_cas.pem
 COPY tools /opt/jboss/tools
 
+ENV CUSTOM_REGISTRATION_CONFIG /opt/baby-yoda.yaml
 ENV X509_CA_BUNDLE /etc/x509/https/dod_cas.pem
+ENV _JAVA_OPTIONS "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
 
 USER root
 

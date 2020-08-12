@@ -1,5 +1,6 @@
 package dod.p1.keycloak.authentication;
 
+import dod.p1.keycloak.common.CommonConfig;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
@@ -8,9 +9,6 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static dod.p1.keycloak.common.CommonConfig.ACTIVE_CAC_USER_ATTRIBUTE;
-import static dod.p1.keycloak.common.CommonConfig.VALID_BUILTIN_CLIENTS;
 
 /**
  * Simple {@link Authenticator} that checks of a user is member of a given {@link GroupModel Group}.
@@ -56,7 +54,7 @@ public class RequireGroupAuthenticator implements Authenticator {
                 }
             }
         } else {
-            if (VALID_BUILTIN_CLIENTS.contains(clientId)) {
+            if (CommonConfig.getInstance(realm).getIgnoredGroupProtectionClients().contains(clientId)) {
                 success(context, user);
             } else {
                 context.failure(AuthenticationFlowError.CLIENT_DISABLED);
@@ -66,8 +64,9 @@ public class RequireGroupAuthenticator implements Authenticator {
     }
 
     private void success(AuthenticationFlowContext context, UserModel user) {
-        // Reset active-cac attribute per login event
-        user.setSingleAttribute(ACTIVE_CAC_USER_ATTRIBUTE, "");
+        // Reset X509 attribute per login event
+        RealmModel realm = context.getRealm();
+        user.setSingleAttribute(CommonConfig.getInstance(realm).getUserActive509Attribute(), "");
         context.success();
     }
 

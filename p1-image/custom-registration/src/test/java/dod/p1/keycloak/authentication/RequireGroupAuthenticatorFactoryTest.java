@@ -1,16 +1,31 @@
 package dod.p1.keycloak.authentication;
 
+import dod.p1.keycloak.common.CommonConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.KeycloakSession;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Arrays;
 
+import static dod.p1.keycloak.utils.Utils.setupFileMocks;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({
+        Yaml.class,
+        FileInputStream.class,
+        File.class,
+        CommonConfig.class
+})
 public class RequireGroupAuthenticatorFactoryTest {
 
     public static final String EXPECTED_ID = "p1-group-restriction";
@@ -19,7 +34,9 @@ public class RequireGroupAuthenticatorFactoryTest {
     private RequireGroupAuthenticatorFactory subjectUnderTest;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
+        setupFileMocks();
+
         subjectUnderTest = new RequireGroupAuthenticatorFactory();
     }
 

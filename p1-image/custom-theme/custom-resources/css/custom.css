@@ -66,6 +66,11 @@ body.admin-console.user .content-area {
   z-index: -1;
 }
 
+.location-input {
+  position: absolute;
+  left: -500vw;
+}
+
 .word-line {
   text-align: center;
   width: 100%;
@@ -319,13 +324,13 @@ div.kc-logo-text span {
 .note {
   font-style: italic;
   padding-left: 0.8em;
-  padding-bottom: 1.0em;
+  padding-bottom: 1em;
 }
 
 .note-important {
   font-style: italic bold;
   font-size: larger;
-  color:#FF2400;
+  color: #ff2400;
 }
 
 ol#kc-totp-settings {

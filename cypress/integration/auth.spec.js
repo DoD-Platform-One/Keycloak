@@ -1,7 +1,6 @@
 describe('Login via MFA', () => {
     it('Logs the admin user in to Keycloak', () => {
-        cy.visit('')
-        cy.contains('Administration Console').click()
+        cy.visit('auth/admin')
 
         cy.url().should('include', '/auth/realms')
 

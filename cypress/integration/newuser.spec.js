@@ -16,8 +16,7 @@ describe('Test new user actions', () => {
         //     form: true
         // })
 
-        cy.visit('')
-        cy.contains('Administration Console').click()
+        cy.visit('/auth/admin')
 
         cy.url().should('include', '/auth/realms')
 

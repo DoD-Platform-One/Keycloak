@@ -4,16 +4,17 @@ import org.keycloak.Config;
 import org.keycloak.authentication.RequiredActionContext;
 import org.keycloak.authentication.RequiredActionFactory;
 import org.keycloak.authentication.RequiredActionProvider;
-import org.keycloak.models.GroupModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
+import org.keycloak.models.RealmModel;
+import org.keycloak.models.UserModel;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.security.cert.X509Certificate;
 
-import static dod.p1.keycloak.common.CommonConfig.*;
+import static dod.p1.keycloak.common.CommonConfig.getInstance;
 import static dod.p1.keycloak.registration.X509Tools.*;
 import static org.keycloak.services.x509.DefaultClientCertificateLookup.JAVAX_SERVLET_REQUEST_X509_CERTIFICATE;
 
@@ -25,16 +26,18 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
     @Override
     public void evaluateTriggers(RequiredActionContext context) {
         String ignore = context.getAuthenticationSession().getAuthNote(IGNORE_X509);
-        String cacUsername = getCACUsername(context);
-        if (cacUsername == null || ignore != null && ignore.equals("true")) {
+        String x509Username = getX509Username(context);
+        if (x509Username == null || ignore != null && ignore.equals("true")) {
             return;
         }
 
-        X509Certificate[] certAttribute = (X509Certificate[]) context.getHttpRequest().getAttribute(JAVAX_SERVLET_REQUEST_X509_CERTIFICATE);
-        String identity = (String) getX509IdentityFromCertChain(certAttribute, context.getRealm());
-        context.getUser().setSingleAttribute(ACTIVE_CAC_USER_ATTRIBUTE, identity);
+        RealmModel realm = context.getRealm();
 
-        if (!isCACRegistered(context)) {
+        X509Certificate[] certAttribute = (X509Certificate[]) context.getHttpRequest().getAttribute(JAVAX_SERVLET_REQUEST_X509_CERTIFICATE);
+        String identity = (String) getX509IdentityFromCertChain(certAttribute, realm);
+        context.getUser().setSingleAttribute(getInstance(realm).getUserActive509Attribute(), identity);
+
+        if (!isX509Registered(context)) {
             context.getUser().addRequiredAction(PROVIDER_ID);
         }
 
@@ -44,7 +47,7 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
     public void requiredActionChallenge(RequiredActionContext context) {
         MultivaluedMap<String, String> formData = new MultivaluedHashMap<>();
         formData.add("username", context.getUser() != null ? context.getUser().getUsername() : "unknown user");
-        formData.add("subjectDN", getCACUsername(context));
+        formData.add("subjectDN", getX509Username(context));
         formData.add("isUserEnabled", "true");
         context.form().setFormData(formData);
 
@@ -61,18 +64,12 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
             return;
         }
 
-        String username = getCACUsername(context);
+        String username = getX509Username(context);
+        RealmModel realm = context.getRealm();
         if (username != null) {
-            context.getUser().setSingleAttribute(X509_USER_ATTRIBUTE, username);
-
-            // Add the user to the IL2/4/5 groups
-            GroupModel il2Group = context.getRealm().getGroupById(IL2_GROUP_ID);
-            GroupModel il4Group = context.getRealm().getGroupById(IL4_GROUP_ID);
-            GroupModel il5Group = context.getRealm().getGroupById(IL5_GROUP_ID);
-
-            context.getUser().joinGroup(il2Group);
-            context.getUser().joinGroup(il4Group);
-            context.getUser().joinGroup(il5Group);
+            UserModel user = context.getUser();
+            user.setSingleAttribute(getInstance(realm).getUserIdentityAttribute(), username);
+            getInstance(realm).getAutoJoinGroupX509().forEach(user::joinGroup);
         }
         context.success();
     }

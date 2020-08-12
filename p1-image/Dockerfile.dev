@@ -4,13 +4,14 @@ WORKDIR /usr/src/gradle
 
 COPY custom-registration /usr/src/gradle
 
-RUN gradle build
+RUN gradle build --no-daemon
 
 FROM quay.io/keycloak/keycloak:10.0.1 AS keycloak
 
 COPY baby-yoda.json /opt/baby-yoda.json
+COPY baby-yoda.yaml /opt/baby-yoda.yaml
 COPY custom-theme /opt/custom-theme
-COPY --from=build /usr/src/gradle/build/libs/keycloak-registration-validation-1.2.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
+COPY --from=build /usr/src/gradle/build/libs/keycloak-registration-validation-1.2-all.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
 COPY js-console/js-console.war /opt/jboss/keycloak/standalone/deployments/js-console.war
 COPY certs /etc/x509/https
 COPY tools /opt/jboss/tools
@@ -19,10 +20,12 @@ ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
 ENV DB_VENDOR h2
 ENV KEYCLOAK_USER admin 
 ENV KEYCLOAK_PASSWORD pass
-ENV _JAVA_OPTIONS "-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n -Dkeycloak.profile=preview"
+ENV JAVA_OPTIONS "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
+ENV JAVA_TOOL_OPTIONS "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
 ENV KEYCLOAK_LOGLEVEL DEBUG
 ENV WILDFLY_LOGLEVEL DEBUG
 
+ENV CUSTOM_REGISTRATION_CONFIG /opt/baby-yoda.yaml
 ENV X509_CA_BUNDLE /etc/x509/https/dod_cas.pem
 
 USER root

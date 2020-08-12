@@ -1,17 +1,22 @@
 package dod.p1.keycloak.registration;
 
+import dod.p1.keycloak.common.CommonConfig;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.ResteasyAsynchronousContext;
 import org.jboss.resteasy.spi.ResteasyUriInfo;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.keycloak.authentication.FormContext;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
 import org.keycloak.common.ClientConnection;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.events.Errors;
 import org.keycloak.events.EventBuilder;
+import org.keycloak.forms.login.LoginFormsProvider;
 import org.keycloak.models.*;
 import org.keycloak.models.cache.UserCache;
 import org.keycloak.models.utils.FormMessage;
@@ -20,25 +25,42 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 import org.keycloak.sessions.AuthenticationSessionProvider;
 import org.keycloak.storage.federated.UserFederatedStorageProvider;
 import org.keycloak.vault.VaultTranscriber;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static dod.p1.keycloak.utils.Utils.setupFileMocks;
+import static dod.p1.keycloak.utils.Utils.setupX509Mocks;
+import static org.mockito.Mockito.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({
+        Yaml.class,
+        FileInputStream.class,
+        File.class,
+        CommonConfig.class,
+        X509Tools.class
+})
 public class RegistrationValidationTest {
 
-    public ValidationContext setupVariables(String[] errorEvent, List<FormMessage> errors, MultivaluedMap<String, String> multivaluedMap,
-                                            AuthenticatorConfigModel configModel) {
+    @Before
+    public void setup() throws Exception {
+        setupX509Mocks();
+        setupFileMocks();
+    }
+
+    public ValidationContext setupVariables(String[] errorEvent, List<FormMessage> errors, MultivaluedMap<String, String> multivaluedMap) {
         return new ValidationContext() {
             final RealmModel realmModel = mock(RealmModel.class);
 
@@ -371,8 +393,9 @@ public class RegistrationValidationTest {
 
             @Override
             public AuthenticatorConfigModel getAuthenticatorConfig() {
-                return configModel;
+                return null;
             }
+
         };
     }
 
@@ -381,8 +404,7 @@ public class RegistrationValidationTest {
         String[] errorEvent = new String[1];
         List<FormMessage> errors = new ArrayList<>();
         MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
-        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
-        ValidationContext context = setupVariables(errorEvent, errors, valueMap, configModel);
+        ValidationContext context = setupVariables(errorEvent, errors, valueMap);
         RegistrationValidation validation = new RegistrationValidation();
         validation.validate(context);
         Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
@@ -395,105 +417,10 @@ public class RegistrationValidationTest {
         Assert.assertTrue(errorFields.contains("user.attributes.organization"));
         Assert.assertTrue(errorFields.contains("email"));
         Assert.assertEquals(8, errors.size());
-        Set<String> errorMessages = errors.stream().map(FormMessage::getMessage).collect(Collectors.toSet());
-        Assert.assertTrue(errorMessages.contains("Invalid or expired registration code."));
-    }
-
-    @Test
-    public void testInvalidInviteCode() {
-        String[] errorEvent = new String[1];
-        List<FormMessage> errors = new ArrayList<>();
-        MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
-        valueMap.putSingle("firstName", "Jone");
-        valueMap.putSingle("lastName", "Doe");
-        valueMap.putSingle("username", "tester");
-        valueMap.putSingle("user.attributes.affiliation", "AF");
-        valueMap.putSingle("user.attributes.rank", "E2");
-        valueMap.putSingle("user.attributes.organization", "Com");
-        valueMap.putSingle("email", "test@af.mil");
-        valueMap.putSingle("invite", "invitecode");
-
-        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
-        HashMap<String, String> configMap = new HashMap<>();
-        configMap.put("inviteSecret", "wFLZTdbSqBLO2gb2AjtFNc8aM76iAaSHK7F55JLJajeOblBnaThajQLrtcYB90N");
-        configMap.put("inviteSecretDays", "2");
-        configModel.setConfig(configMap);
-        ValidationContext context = setupVariables(errorEvent, errors, valueMap, configModel);
-        RegistrationValidation validation = new RegistrationValidation();
-        validation.validate(context);
-        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
-        FormMessage invalidInviteError = errors.get(0);
-        Assert.assertTrue(invalidInviteError.getField().isEmpty());
-        Assert.assertEquals("Invalid or expired registration code.", invalidInviteError.getMessage());
-        Assert.assertEquals(1, errors.size());
-    }
-
-    @Test
-    public void testValidInviteCode() {
-        String inviteSecret = "wFLZTdbSqBLO2gb2AjtFNc8aM76iAaSHK7F55JLJajeOblBnaThajQLrtcYB90N";
-        String[] errorEvent = new String[1];
-        List<FormMessage> errors = new ArrayList<>();
-        MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
-        valueMap.putSingle("firstName", "Jone");
-        valueMap.putSingle("lastName", "Doe");
-        valueMap.putSingle("username", "tester");
-        valueMap.putSingle("user.attributes.affiliation", "AF");
-        valueMap.putSingle("user.attributes.rank", "E2");
-        valueMap.putSingle("user.attributes.organization", "Com");
-        valueMap.putSingle("email", "test@af.mil");
-        String inviteDigest = RegistrationValidation.getInviteDigest(0, inviteSecret);
-        String invitedUrlEncoded = URLEncoder.encode(inviteDigest, StandardCharsets.UTF_8);
-        String invitedUrlDecoded = URLDecoder.decode(invitedUrlEncoded, StandardCharsets.UTF_8);
-        valueMap.putSingle("invite", invitedUrlDecoded);
-
-        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
-        HashMap<String, String> configMap = new HashMap<>();
-        configMap.put("inviteSecret", inviteSecret);
-        configMap.put("inviteSecretDays", "2");
-        configModel.setConfig(configMap);
-        ValidationContext context = setupVariables(errorEvent, errors, valueMap, configModel);
-        RegistrationValidation validation = new RegistrationValidation();
-        validation.validate(context);
-        Assert.assertNull(errorEvent[0]);
-        Assert.assertEquals(0, errors.size());
-    }
-
-    @Test
-    public void testExpiredInviteCode() {
-        String inviteSecret = "wFLZTdbSqBLO2gb2AjtFNc8aM76iAaSHK7F55JLJajeOblBnaThajQLrtcYB90N";
-        String[] errorEvent = new String[1];
-        List<FormMessage> errors = new ArrayList<>();
-        MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
-        valueMap.putSingle("firstName", "Jone");
-        valueMap.putSingle("lastName", "Doe");
-        valueMap.putSingle("username", "tester");
-        valueMap.putSingle("user.attributes.affiliation", "AF");
-        valueMap.putSingle("user.attributes.rank", "E2");
-        valueMap.putSingle("user.attributes.organization", "Com");
-        valueMap.putSingle("email", "test@af.mil");
-        String inviteDigest = RegistrationValidation.getInviteDigest(20, inviteSecret);
-        String invitedUrlEncoded = URLEncoder.encode(inviteDigest, StandardCharsets.UTF_8);
-        String invitedUrlDecoded = URLDecoder.decode(invitedUrlEncoded, StandardCharsets.UTF_8);
-        valueMap.putSingle("invite", invitedUrlDecoded);
-
-        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
-        HashMap<String, String> configMap = new HashMap<>();
-        configMap.put("inviteSecret", inviteSecret);
-        configMap.put("inviteSecretDays", "2");
-        configModel.setConfig(configMap);
-        ValidationContext context = setupVariables(errorEvent, errors, valueMap, configModel);
-        RegistrationValidation validation = new RegistrationValidation();
-        validation.validate(context);
-        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
-        FormMessage invalidInviteError = errors.get(0);
-        Assert.assertTrue(invalidInviteError.getField().isEmpty());
-        Assert.assertEquals("Invalid or expired registration code.", invalidInviteError.getMessage());
-        Assert.assertEquals(1, errors.size());
     }
 
     @Test
     public void testEmailValidation() {
-        String inviteSecret = "wFLZTdbSqBLO2gb2AjtFNc8aM76iAaSHK7F55JLJajeOblBnaThajQLrtcYB90N";
         String[] errorEvent = new String[1];
         List<FormMessage> errors = new ArrayList<>();
         MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
@@ -503,32 +430,25 @@ public class RegistrationValidationTest {
         valueMap.putSingle("user.attributes.affiliation", "AF");
         valueMap.putSingle("user.attributes.rank", "E2");
         valueMap.putSingle("user.attributes.organization", "Com");
+        valueMap.putSingle("user.attributes.location", "42");
         valueMap.putSingle("email", "test@gmail.com");
-        String inviteDigest = RegistrationValidation.getInviteDigest(0, inviteSecret);
-        String invitedUrlEncoded = URLEncoder.encode(inviteDigest, StandardCharsets.UTF_8);
-        String invitedUrlDecoded = URLDecoder.decode(invitedUrlEncoded, StandardCharsets.UTF_8);
-        valueMap.putSingle("invite", invitedUrlDecoded);
 
         AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
         HashMap<String, String> configMap = new HashMap<>();
-        configMap.put("inviteSecret", inviteSecret);
-        configMap.put("inviteSecretDays", "2");
         configMap.put("il2ApprovedDomains", "unicorns.com##trex.scary");
         configMap.put("il4ApprovedDomains", "mil##gov##usafa.edu##afit.edu");
         configModel.setConfig(configMap);
-        ValidationContext context = setupVariables(errorEvent, errors, valueMap, configModel);
+        ValidationContext context = setupVariables(errorEvent, errors, valueMap);
 
         RegistrationValidation validation = new RegistrationValidation();
         validation.validate(context);
-        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
-        Assert.assertEquals(1, errors.size());
-        Assert.assertEquals(errors.get(0).getField(), "email");
+        Assert.assertEquals(0, errors.size());
 
         // test an email address already in use
         valueMap.putSingle("email", "test@ss.usafa.edu");
         errorEvent = new String[1];
         errors = new ArrayList<>();
-        context = setupVariables(errorEvent, errors, valueMap, configModel);
+        context = setupVariables(errorEvent, errors, valueMap);
 
         validation = new RegistrationValidation();
         validation.validate(context);
@@ -536,52 +456,106 @@ public class RegistrationValidationTest {
         Assert.assertEquals(1, errors.size());
         Assert.assertEquals(RegistrationPage.FIELD_EMAIL, errors.get(0).getField());
 
+    }
+
+    @Test
+    public void testGroupAutoJoinByEmail() {
+        String[] errorEvent = new String[1];
+        List<FormMessage> errors = new ArrayList<>();
+        MultivaluedMapImpl<String, String> valueMap = new MultivaluedMapImpl<>();
+        valueMap.putSingle("firstName", "Jone");
+        valueMap.putSingle("lastName", "Doe");
+        valueMap.putSingle("username", "tester");
+        valueMap.putSingle("user.attributes.affiliation", "AF");
+        valueMap.putSingle("user.attributes.rank", "E2");
+        valueMap.putSingle("user.attributes.organization", "Com");
+        valueMap.putSingle("user.attributes.location", "42");
+        valueMap.putSingle("email", "test@gmail.com");
+
+        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
+        HashMap<String, String> configMap = new HashMap<>();
+        configMap.put("il2ApprovedDomains", "unicorns.com##trex.scary");
+        configMap.put("il4ApprovedDomains", "mil##gov##usafa.edu##afit.edu");
+        configModel.setConfig(configMap);
+        ValidationContext context = setupVariables(errorEvent, errors, valueMap);
+
+        RegistrationValidation validation = new RegistrationValidation();
+        validation.validate(context);
+        Assert.assertEquals(0, errors.size());
+
         //test valid IL2 email with custom domains
         valueMap.putSingle("email", "rando@supercool.unicorns.com");
         errorEvent = new String[1];
         errors = new ArrayList<>();
-        context = setupVariables(errorEvent, errors, valueMap, configModel);
+        context = setupVariables(errorEvent, errors, valueMap);
 
         validation = new RegistrationValidation();
         validation.validate(context);
         Assert.assertNull(errorEvent[0]);
         Assert.assertEquals(0, errors.size());
-
-        //test invalid IL2 email with custom domains
-        valueMap.putSingle("email", "rando@supercoolunicorns.com");
-        errorEvent = new String[1];
-        errors = new ArrayList<>();
-        context = setupVariables(errorEvent, errors, valueMap, configModel);
-
-        validation = new RegistrationValidation();
-        validation.validate(context);
-        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
-        Assert.assertEquals(1, errors.size());
-        Assert.assertEquals(errors.get(0).getField(), "email");
 
         //test valid IL4 email with custom domains
         valueMap.putSingle("email", "test22@ss.usafa.edu");
         errorEvent = new String[1];
         errors = new ArrayList<>();
-        context = setupVariables(errorEvent, errors, valueMap, configModel);
+        context = setupVariables(errorEvent, errors, valueMap);
 
         validation = new RegistrationValidation();
         validation.validate(context);
         Assert.assertNull(errorEvent[0]);
         Assert.assertEquals(0, errors.size());
 
-        //test invalid IL4 email with custom domains
-        valueMap.putSingle("email", "test22@mil");
+        // Test existing x509 registration
         errorEvent = new String[1];
         errors = new ArrayList<>();
-        context = setupVariables(errorEvent, errors, valueMap, configModel);
+        context = setupVariables(errorEvent, errors, valueMap);
+
+        PowerMockito.when(X509Tools.isX509Registered(any(FormContext.class))).thenReturn(true);
 
         validation = new RegistrationValidation();
         validation.validate(context);
-        Assert.assertEquals(errorEvent[0], Errors.INVALID_REGISTRATION);
-        Assert.assertEquals(1, errors.size());
-        Assert.assertEquals(errors.get(0).getField(), "email");
+        Assert.assertEquals(Errors.INVALID_REGISTRATION, errorEvent[0]);
     }
 
+    @Test
+    public void testSuccess() {
+    }
+
+    @Test
+    public void testBuildPage() {
+        RegistrationValidation subject = new RegistrationValidation();
+        FormContext context = mock(FormContext.class);
+        LoginFormsProvider form = mock(LoginFormsProvider.class);
+        subject.buildPage(context, form);
+
+        verify(form).setAttribute("cacIdentity", "thing");
+    }
+
+    @Test
+    public void testGetDisplayType() {
+        RegistrationValidation subject = new RegistrationValidation();
+        Assert.assertEquals(subject.getDisplayType(), "Platform One Registration Validation");
+    }
+
+    @Test
+    public void testGetId() {
+        RegistrationValidation subject = new RegistrationValidation();
+        Assert.assertEquals(subject.getId(), "registration-validation-action");
+    }
+
+    @Test
+    public void testIsConfigurable() {
+        RegistrationValidation subject = new RegistrationValidation();
+        Assert.assertFalse(subject.isConfigurable());
+    }
+
+    @Test
+    public void testGetRequirementChoices() {
+        RegistrationValidation subject = new RegistrationValidation();
+        AuthenticationExecutionModel.Requirement[] expected = {
+                AuthenticationExecutionModel.Requirement.REQUIRED
+        };
+        Assert.assertEquals(subject.getRequirementChoices(), expected);
+    }
 
 }

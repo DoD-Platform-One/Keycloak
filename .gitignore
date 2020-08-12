@@ -24,6 +24,8 @@ p1-image/js-console/target
 cypress/plugins
 cypress/support
 cypress/videos
+cypress/screenshots
 .gradle
 build
 out
+node_modules

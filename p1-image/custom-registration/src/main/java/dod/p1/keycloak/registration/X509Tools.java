@@ -1,5 +1,6 @@
 package dod.p1.keycloak.registration;
 
+import dod.p1.keycloak.common.CommonConfig;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.keycloak.authentication.FormContext;
 import org.keycloak.authentication.RequiredActionContext;
@@ -16,28 +17,26 @@ import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
-import static dod.p1.keycloak.common.CommonConfig.X509_USER_ATTRIBUTE;
-
 public class X509Tools {
 
-    private static boolean isCACRegistered(KeycloakSession session, HttpRequest httpRequest, RealmModel realm) {
-        String username = getCACUsername(session, httpRequest, realm);
+    private static boolean isX509Registered(KeycloakSession session, HttpRequest httpRequest, RealmModel realm) {
+        String username = getX509Username(session, httpRequest, realm);
         if (username != null) {
-            List<UserModel> users = session.users().searchForUserByUserAttribute(X509_USER_ATTRIBUTE, username, realm);
+            List<UserModel> users = session.users().searchForUserByUserAttribute(CommonConfig.getInstance(realm).getUserIdentityAttribute(), username, realm);
             return users != null && users.size() > 0;
         }
         return false;
     }
 
-    public static boolean isCACRegistered(FormContext context) {
-        return isCACRegistered(context.getSession(), context.getHttpRequest(), context.getRealm());
+    public static boolean isX509Registered(FormContext context) {
+        return isX509Registered(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
-    public static boolean isCACRegistered(RequiredActionContext context) {
-        return isCACRegistered(context.getSession(), context.getHttpRequest(), context.getRealm());
+    public static boolean isX509Registered(RequiredActionContext context) {
+        return isX509Registered(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
-    private static String getCACUsername(KeycloakSession session, HttpRequest httpRequest, RealmModel realm) {
+    private static String getX509Username(KeycloakSession session, HttpRequest httpRequest, RealmModel realm) {
         Object identity = getX509Identity(session, httpRequest, realm);
         if (identity != null && !identity.toString().isEmpty()) {
             return identity.toString();
@@ -45,12 +44,12 @@ public class X509Tools {
         return null;
     }
 
-    public static String getCACUsername(FormContext context) {
-        return getCACUsername(context.getSession(), context.getHttpRequest(), context.getRealm());
+    public static String getX509Username(FormContext context) {
+        return getX509Username(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
-    public static String getCACUsername(RequiredActionContext context) {
-        return getCACUsername(context.getSession(), context.getHttpRequest(), context.getRealm());
+    public static String getX509Username(RequiredActionContext context) {
+        return getX509Username(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
     public static Object getX509IdentityFromCertChain(X509Certificate[] certs, RealmModel realm) {

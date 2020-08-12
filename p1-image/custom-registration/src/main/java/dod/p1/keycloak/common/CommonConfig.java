@@ -1,22 +1,97 @@
 package dod.p1.keycloak.common;
 
-import java.util.Arrays;
+import org.keycloak.models.GroupModel;
+import org.keycloak.models.RealmModel;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.lang.System.exit;
+import static jdk.nashorn.internal.runtime.Context.err;
+import static org.keycloak.models.utils.KeycloakModelUtils.findGroupByPath;
 
 public final class CommonConfig {
 
-    public static final String IL2_GROUP_ID = "00eb8904-5b88-4c68-ad67-cec0d2e07aa6";
-    public static final String IL4_GROUP_ID = "191f836b-ec50-4819-ba10-1afaa5b99600";
-    public static final String IL5_GROUP_ID = "be8d20b3-8cd6-4d7e-9c98-5bb918f53c5c";
+    private static CommonConfig INSTANCE;
 
-    public static final String X509_USER_ATTRIBUTE = "usercertificate";
-    public static final String ACTIVE_CAC_USER_ATTRIBUTE = "activecac";
+    private final YAMLConfig config;
+    private final List<GroupModel> autoJoinGroupX509;
+    private final List<GroupModel> noEmailMatchAutoJoinGroup;
 
-    public static final List<String> VALID_BUILTIN_CLIENTS = Arrays.asList(
-            "account",
-            "account-console",
-            "broker",
-            "security-admin-console"
-    );
+    private CommonConfig(RealmModel realm) {
+
+        config = loadConfigFile();
+
+        autoJoinGroupX509 = convertPathsToGroupModels(realm, config.getX509().getAutoJoinGroup());
+        noEmailMatchAutoJoinGroup = convertPathsToGroupModels(realm, config.getNoEmailMatchAutoJoinGroup());
+
+        config.getEmailMatchAutoJoinGroup().forEach(match -> {
+            match.setGroupModels(convertPathsToGroupModels(realm, match.getGroups()));
+        });
+    }
+
+    public static CommonConfig getInstance(RealmModel realm) {
+        if (INSTANCE == null) {
+            INSTANCE = new CommonConfig(realm);
+        }
+
+        return INSTANCE;
+    }
+
+    private YAMLConfig loadConfigFile() {
+        String configFilePath = System.getenv("CUSTOM_REGISTRATION_CONFIG");
+        File file = new File(configFilePath);
+        FileInputStream fileInputStream = null;
+
+        try {
+            fileInputStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            err("Invalid or missing YAML Config, aborting.");
+            exit(1);
+            return null;
+        }
+
+        Yaml yaml = new Yaml(new Constructor(YAMLConfig.class));
+        return yaml.load(fileInputStream);
+    }
+
+    private List<GroupModel> convertPathsToGroupModels(RealmModel realm, List<String> paths) {
+        return paths
+                .stream()
+                .map(group -> findGroupByPath(realm, group))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    public Stream<YAMLConfigEmailAutoJoin> getEmailMatchAutoJoinGroup() {
+        return config.getEmailMatchAutoJoinGroup().stream();
+    }
+
+    public String getUserIdentityAttribute() {
+        return config.getX509().getUserIdentityAttribute();
+    }
+
+    public String getUserActive509Attribute() {
+        return config.getX509().getUserActive509Attribute();
+    }
+
+    public Stream<GroupModel> getAutoJoinGroupX509() {
+        return autoJoinGroupX509.stream();
+    }
+
+    public Stream<GroupModel> getNoEmailMatchAutoJoinGroup() {
+        return noEmailMatchAutoJoinGroup.stream();
+    }
+
+    public List<String> getIgnoredGroupProtectionClients() {
+        return config.getGroupProtectionIgnoreClients();
+    }
 
 }
