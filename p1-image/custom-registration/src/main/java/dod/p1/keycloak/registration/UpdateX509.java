@@ -8,6 +8,7 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
+import org.keycloak.sessions.AuthenticationSessionModel;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
@@ -32,9 +33,10 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
         }
 
         RealmModel realm = context.getRealm();
+        AuthenticationSessionModel authenticationSession = context.getAuthenticationSession();
 
         X509Certificate[] certAttribute = (X509Certificate[]) context.getHttpRequest().getAttribute(JAVAX_SERVLET_REQUEST_X509_CERTIFICATE);
-        String identity = (String) getX509IdentityFromCertChain(certAttribute, realm);
+        String identity = (String) getX509IdentityFromCertChain(certAttribute, realm, authenticationSession);
         context.getUser().setSingleAttribute(getInstance(realm).getUserActive509Attribute(), identity);
 
         if (!isX509Registered(context)) {

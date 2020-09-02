@@ -53,7 +53,7 @@
         </#if>
         <div id="footer-text">
             No account? <a href="/register">Click here</a> to register now.<br>
-            Need additional help? <a href="mailto:help@dsop.io">Email us.</a>
+            Need additional help? <a href="https://sso-info.il2.dsop.io/" target="_blank">Click here</a> or <a id="helpdesk" href="mailto:help@dsop.io">email us</a>
         </div>
         </div>
       </div>
@@ -66,7 +66,7 @@
     if (feedback && feedback.innerHTML.indexOf('X509 certificate') > -1 && feedback.innerHTML.indexOf('Invalid user') > -1) {
         feedback.parentElement.outerHTML = [
             '<div class="alert alert-info" id="cac-info">',
-            '<h2>New DoD CAC Detected</h2>',
+            '<h2>New DoD PKI Detected</h2>',
             '<div style="line-height: 2rem;">If you do not have an account yet, <a href="/register">click to register</a> now.  Otherwise, please login with your username/password to associate this CAC with your existing account.',
             '</div></div>'
         ].join('');
