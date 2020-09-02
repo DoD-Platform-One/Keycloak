@@ -86,6 +86,10 @@ public final class CommonConfig {
         return autoJoinGroupX509.stream();
     }
 
+    public Stream<String> getRequiredCertificatePolicies() {
+        return config.getX509().getRequiredCertificatePolicies().stream();
+    }
+
     public Stream<GroupModel> getNoEmailMatchAutoJoinGroup() {
         return noEmailMatchAutoJoinGroup.stream();
     }

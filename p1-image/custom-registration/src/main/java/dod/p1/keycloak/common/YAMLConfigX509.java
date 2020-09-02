@@ -14,5 +14,6 @@ public class YAMLConfigX509 {
     private String userIdentityAttribute;
     private String userActive509Attribute;
     private List<String> autoJoinGroup;
+    private List<String> requiredCertificatePolicies;
 
 }

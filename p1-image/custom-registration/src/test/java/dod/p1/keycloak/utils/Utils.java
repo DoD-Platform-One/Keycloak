@@ -32,6 +32,8 @@ public class Utils {
                 "  userActive509Attribute: \"activecac\"\n" +
                 "  autoJoinGroup:\n" +
                 "    - \"/test-group\"\n" +
+                "  requiredCertificatePolicies:\n" +
+                "    - \"2.16.840.1.101.2.1.11.36\"\n" +
                 "groupProtectionIgnoreClients:\n" +
                 "  - \"test-client\"\n" +
                 "noEmailMatchAutoJoinGroup:\n" +
