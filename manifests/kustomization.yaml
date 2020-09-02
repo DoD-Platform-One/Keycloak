@@ -26,4 +26,4 @@ images:
   # NOTE: It is up to the "consumer" to provide the necessary ImagePullSecrets to pull this
   - name: keycloak-placeholder
     newName: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
-    newTag: 10.0.1-1.0.2
+    newTag: 10.0.1-1.1.0
