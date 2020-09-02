@@ -11,6 +11,7 @@ import org.keycloak.models.GroupModel;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.sessions.AuthenticationSessionModel;
+import org.keycloak.sessions.RootAuthenticationSessionModel;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.yaml.snakeyaml.Yaml;
@@ -38,6 +39,7 @@ public class RequireGroupAuthenticatorTest {
     private UserModel user;
     private GroupModel group;
     private AuthenticationSessionModel authenticationSession;
+    private RootAuthenticationSessionModel parentAuthenticationSession;
     private ClientModel client;
 
     @Before
@@ -52,12 +54,15 @@ public class RequireGroupAuthenticatorTest {
         user = mock(UserModel.class);
         group = mock(GroupModel.class);
         authenticationSession = mock(AuthenticationSessionModel.class);
+        parentAuthenticationSession = mock(RootAuthenticationSessionModel.class);
         client = mock(ClientModel.class);
 
         when(context.getRealm()).thenReturn(realm);
         when(context.getUser()).thenReturn(user);
         when(context.getAuthenticationSession()).thenReturn(authenticationSession);
         when(authenticationSession.getClient()).thenReturn(client);
+        when(authenticationSession.getParentSession()).thenReturn(parentAuthenticationSession);
+        when(parentAuthenticationSession.getId()).thenReturn("bleh");
         when(realm.getGroupById(anyString())).thenReturn(group);
     }
 
