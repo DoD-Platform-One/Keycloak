@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'jacoco'
+    id "io.freefair.lombok" version "5.1.1"
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2')
+    }
+}
+
+dependencies {
+    testCompile 'org.powermock:powermock-module-junit4:2.0.7'
+    testCompile 'org.powermock:powermock-api-mockito2:2.0.7'
+    testCompile 'org.mockito:mockito-core:3.3.3'
+    testCompile 'junit:junit:4.13'
+    implementation 'org.yaml:snakeyaml:1.20'
+    implementation 'org.keycloak:keycloak-core:11.0.1'
+    implementation 'org.keycloak:keycloak-services:11.0.1'
+    implementation 'org.keycloak:keycloak-server-spi:11.0.1'
+    implementation 'org.keycloak:keycloak-server-spi-private:11.0.1'
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled false
+        csv.enabled false
+        xml.enabled true
+        xml.destination file("${buildDir}/jacoco/test.xml")
+    }
+}
+
+group = 'dod.p1.keycloak'
+version = '1.2'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+build.dependsOn shadowJar

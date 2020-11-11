@@ -1,0 +1,36 @@
+# Cannot pull from IB in dev due to removing H2 
+FROM quay.io/keycloak/keycloak:11.0.1 AS keycloak
+
+# Add the plugin config files
+COPY baby-yoda.json /opt/baby-yoda.json
+COPY baby-yoda.yaml /opt/baby-yoda.yaml
+
+# Iinclude JS Console in dev
+COPY js-console.war /opt/jboss/keycloak/standalone/deployments/js-console.war
+
+# Include the mTLS certs
+COPY certs /etc/x509/https  
+
+# Include the keycloak overrides
+COPY tools /opt/jboss/tools
+
+# Disable theme caching
+COPY tools/cli/disable-theme-cache.cli /opt/jboss/startup-scripts/disable-theme-cache.cli
+
+ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
+ENV DB_VENDOR h2
+ENV KEYCLOAK_USER admin 
+ENV KEYCLOAK_PASSWORD pass
+ENV JAVA_OPTIONS "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
+ENV JAVA_TOOL_OPTIONS "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
+ENV KEYCLOAK_LOGLEVEL DEBUG
+ENV WILDFLY_LOGLEVEL DEBUG
+ENV CUSTOM_REGISTRATION_CONFIG /opt/baby-yoda.yaml
+ENV X509_CA_BUNDLE /etc/x509/https/dod_cas.pem
+
+USER root
+
+RUN chown -R jboss /etc/x509/https && \
+    chmod 400 /etc/x509/https/*
+
+USER jboss

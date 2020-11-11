@@ -1,7 +1,0 @@
-{
-  "realm" : "baby-yoda",
-  "auth-server-url" : "/auth",
-  "ssl-required" : "external",
-  "resource" : "test-il4_741e5b7b-6918-4179-9d88-a147b4f31d0b_jsconsole",
-  "public-client" : true
-}
