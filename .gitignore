@@ -13,18 +13,16 @@
 # VIM Session
 Session.vim
 
-p1-image/custom-auth/target
-p1-image/custom-registration/bin
-p1-image/custom-registration/target
-p1-image/js-console/target
+development/plugin/bin
+development/plugin/target
 *.iml
 **/.classpath
 **/.project
 **/.settings
-cypress/plugins
-cypress/support
-cypress/videos
-cypress/screenshots
+development/cypress/plugins
+development/cypress/support
+development/cypress/videos
+development/cypress/screenshots
 .gradle
 build
 out
