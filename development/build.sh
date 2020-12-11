@@ -16,7 +16,6 @@ function build() {
 
     docker run -p 443:8443 -p 5005:5005 \
     --name p1-keycloak \
-    -v $PWD/themes:/opt/jboss/keycloak/themes \
     -v $PWD/plugin/build/docker:/opt/jboss/keycloak/standalone/deployments \
     p1-keycloak:dev-latest
 }
