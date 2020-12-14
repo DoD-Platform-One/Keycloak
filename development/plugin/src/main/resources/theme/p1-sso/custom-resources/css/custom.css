@@ -247,28 +247,22 @@ div.kc-logo-text span {
 }
 
 #kc-header-wrapper {
-  font-size: 29px;
+  font-size: 32px;
   letter-spacing: 3px;
-  line-height: 1.2em;
-  padding: 62px 10px 20px;
+  line-height: 1.45em;
   white-space: normal;
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.8);
   align-items: center;
   display: flex;
   justify-content: center;
-}
-
-#kc-header-wrapper span {
+  background: url(../img/p1-logo.png) no-repeat;
+  background-size: contain;
+  max-width: 500px;
+  margin: 50px auto;
+  height: 200px;
   text-align: left;
-  margin-left: 2rem;
-  text-transform: none;
-  line-height: 4.5rem;
-  font-size: 30px;
-  letter-spacing: 0.5rem;
-}
-
-#kc-header-wrapper span b {
-  font-size: 5rem;
+  padding-left: 229px;
+  background-position-x: 20px;
 }
 
 #kc-content {
@@ -438,13 +432,33 @@ ul#kc-totp-supported-apps {
     margin-top: -35px;
   }
 
-  #kc-header-wrapper span {
-    display: none;
+  body {
+    background: rgb(0 39 67) !important;
+  }
+
+  #kc-header-wrapper {
+    font-size: 0;
+    background-position: center;
+    background-image: url(../img/p1-logo-tall.png);
+    background-size: 250px;
+    height: 250px;
   }
 
   .card-pf {
     border-radius: 0 !important;
     box-shadow: none !important;
+    background: none !important;
+  }
+
+  #kc-login,
+  #do-register {
+    padding: 15px;
+    line-height: 0;
+    border-radius: 6px !important;
+    color: hsla(193, 100%, 70%, 1);
+    background-color: hsla(206, 61%, 61%, 0.15) !important;
+    border-color: hsla(193, 90%, 44%, 1);
+    background-image: none !important;
   }
 
   #kc-form {
