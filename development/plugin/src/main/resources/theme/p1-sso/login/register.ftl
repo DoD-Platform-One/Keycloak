@@ -16,7 +16,7 @@
                     Use your company or government email address as your access will be based off of your validated email address.  
                     <br>
                     <br>
-                    <span style="font-weight: bold;">For assistance contact your team admin, <a href="https://sso-info.il2.dsop.io/" target="_blank">click here</a> or <a id="helpdesk" href="mailto:help@dsop.io">email us</a>.</span>
+                    <span style="font-weight: bold;">For assistance contact your team admin, <a href="https://sso-info.il2.dso.mil/" target="_blank">click here</a> or <a id="helpdesk" href="mailto:help@dso.mil">email us</a>.</span>
                 </div>
             </#if>
             

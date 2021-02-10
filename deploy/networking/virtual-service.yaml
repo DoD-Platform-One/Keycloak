@@ -5,7 +5,7 @@ metadata:
 spec:
   # Override both hosts entries as needed, note the tls: match should be completely replaced in overlays since its an array
   hosts:
-  - "login.dsop.io"
+  - "login.dso.mil"
   gateways:
   - public-gateway.istio-system.svc.cluster.local
   http:
@@ -16,7 +16,7 @@ spec:
   - match:
     - port: 443
       sniHosts:
-      - login.dsop.io
+      - login.dso.mil
     route:
     - destination:
         host: keycloak-http

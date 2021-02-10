@@ -31,7 +31,7 @@ public class RequireGroupAuthenticator implements Authenticator {
 ```
 
 First, a keycloak admin creates groups and users.   
-Second, when a logged in user attempts to access code.il2.dsop.io (for example) the custom authenticate method is called under the hood.  
+Second, when a logged in user attempts to access code.il2.dso.mil (for example) the custom authenticate method is called under the hood.  
 
 This custom logic grants/denies access via the context.
 
