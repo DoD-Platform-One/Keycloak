@@ -47,93 +47,96 @@
             </#list>
             </tbody>
         </table>
-        <#else>
+    <#else>
 
-    <hr/>
+        <hr/>
 
-    <ol>
-        <li>
-            <p>${msg("totpStep1")}</p>
-            <ul>
-                <li>Google Authenticator</li>
-                <li>Authy</li>
-                <li>1Password</li>
-                <li>Bitwarden</li>
-                <li>LastPass</li>
-                <li>Yubico Authenticator</li>
-            </ul>
-        </li>
-
-        <#if mode?? && mode = "manual">
+        <ol>
             <li>
-                <p>${msg("totpManualStep2")}</p>
-                <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
-                <p><a href="${totp.qrUrl}" id="mode-barcode">${msg("totpScanBarcode")}</a></p>
-            </li>
-            <li>
-                <p>${msg("totpManualStep3")}</p>
+                <p>${msg("totpStep1")}</p>
                 <ul>
-                    <li id="kc-totp-type">${msg("totpType")}: ${msg("totp." + totp.policy.type)}</li>
-                    <li id="kc-totp-algorithm">${msg("totpAlgorithm")}: ${totp.policy.getAlgorithmKey()}</li>
-                    <li id="kc-totp-digits">${msg("totpDigits")}: ${totp.policy.digits}</li>
-                    <#if totp.policy.type = "totp">
-                        <li id="kc-totp-period">${msg("totpInterval")}: ${totp.policy.period}</li>
-                    <#elseif totp.policy.type = "hotp">
-                        <li id="kc-totp-counter">${msg("totpCounter")}: ${totp.policy.initialCounter}</li>
-                    </#if>
+                    <li>Google Authenticator</li>
+                    <li>Authy</li>
+                    <li>1Password</li>
+                    <li>Bitwarden</li>
+                    <li>LastPass</li>
+                    <li>Yubico Authenticator</li>
                 </ul>
             </li>
-        <#else>
+
+            <#if mode?? && mode = "manual">
+                <li>
+                    <p>${msg("totpManualStep2")}</p>
+                    <p><span id="kc-totp-secret-key">${totp.totpSecretEncoded}</span></p>
+                    <p><a href="${totp.qrUrl}" id="mode-barcode">${msg("totpScanBarcode")}</a></p>
+                </li>
+                <li>
+                    <p>${msg("totpManualStep3")}</p>
+                    <ul>
+                        <li id="kc-totp-type">${msg("totpType")}: ${msg("totp." + totp.policy.type)}</li>
+                        <li id="kc-totp-algorithm">${msg("totpAlgorithm")}: ${totp.policy.getAlgorithmKey()}</li>
+                        <li id="kc-totp-digits">${msg("totpDigits")}: ${totp.policy.digits}</li>
+                        <#if totp.policy.type = "totp">
+                            <li id="kc-totp-period">${msg("totpInterval")}: ${totp.policy.period}</li>
+                        <#elseif totp.policy.type = "hotp">
+                            <li id="kc-totp-counter">${msg("totpCounter")}: ${totp.policy.initialCounter}</li>
+                        </#if>
+                    </ul>
+                </li>
+            <#else>
+                <li>
+                    <p>${msg("totpStep2")}</p>
+                    <div class="note">${msg("totpStep2Note")}</div>
+                    <p><img src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: QR code"></p>
+                    <p><a href="${totp.manualUrl}" id="mode-manual">${msg("totpUnableToScan")}</a></p>
+                </li>
+            </#if>
             <li>
-                <p>${msg("totpStep2")}</p>
-                <div class="note">${msg("totpStep2Note")}</div>
-                <p><img src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="Figure: QR code"></p>
-                <p><a href="${totp.manualUrl}" id="mode-manual">${msg("totpUnableToScan")}</a></p>
+                <p>${msg("totpStep3")}</p>
+                <p><span class="note">${msg("totpStep3Note")}</span></p>
             </li>
-        </#if>
-        <li>
-            <p>${msg("totpStep3")}</p>
-            <p><span class="note">${msg("totpStep3Note")}</span></p>
-        </li>
-    </ol>
+        </ol>
 
-    <hr/>
+        <hr/>
 
-    <form action="${url.totpUrl}" class="form-horizontal" method="post">
-        <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
-        <div class="form-group">
-            <div class="col-sm-2 col-md-2">
-                <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span class="required">*</span>
+        <form action="${url.totpUrl}" class="form-horizontal" method="post">
+            <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
+            <div class="form-group">
+                <div class="col-sm-2 col-md-2">
+                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span
+                            class="required">*</span>
+                </div>
+                <div class="col-sm-10 col-md-10">
+                    <input type="text" class="form-control" id="totp" name="totp" autocomplete="off" autofocus>
+                    <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
+                </div>
             </div>
-            <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="totp" name="totp" autocomplete="off" autofocus>
-                <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
-            </div>
-        </div>
 
-        <div class="form-group" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}">
+            <div class="form-group" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}">
             <div class="col-sm-2 col-md-2">
-                <label for="userLabel" class="control-label">${msg("totpDeviceName")}</label> <#if totp.otpCredentials?size gte 1><span class="required">*</span></#if>
+                <label for="userLabel"
+                       class="control-label">${msg("totpDeviceName")}</label> <#if totp.otpCredentials?size gte 1><span
+                        class="required">*</span></#if>
             </div>
 
             <div class="col-sm-10 col-md-10">
                 <input type="text" class="form-control" id="userLabel" name="userLabel" autocomplete="off">
             </div>
-        </div>
-
-        <div class="form-group">
-            <div id="kc-form-buttons" class="col-md-offset-2 col-md-10 submit">
-                <button type="submit"
-                        class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
-                        id="saveTOTPBtn" name="submitAction" value="Save">${msg("doSave")}
-                </button>
-                <button type="submit"
-                        class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
-                        id="cancelTOTPBtn" name="submitAction" value="Cancel">${msg("doCancel")}
-                </button>
             </div>
-        </div>
-    </form>
+
+            <div class="form-group">
+                <div id="kc-form-buttons" class="col-md-offset-2 col-md-10 submit">
+                    <button type="submit"
+                            class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
+                            id="saveTOTPBtn" name="submitAction" value="Save">${msg("doSave")}
+                    </button>
+                    <button type="submit"
+                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
+                            id="cancelTOTPBtn" name="submitAction" value="Cancel">${msg("doCancel")}
+                    </button>
+                </div>
+            </div>
+        </form>
     </#if>
 
 </@layout.mainLayout>

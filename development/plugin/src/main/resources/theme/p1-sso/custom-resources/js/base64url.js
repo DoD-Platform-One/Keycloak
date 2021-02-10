@@ -1,15 +1,15 @@
 // for embedded scripts, quoted and modified from https://github.com/swansontec/rfc4648.js by William Swanson
 'use strict';
 var base64url = base64url || {};
-(function(base64url) {
+(function (base64url) {
 
-    function parse (string, encoding, opts = {}) {
+    function parse(string, encoding, opts = {}) {
         // Build the character lookup table:
         if (!encoding.codes) {
-              encoding.codes = {};
-              for (let i = 0; i < encoding.chars.length; ++i) {
-                  encoding.codes[encoding.chars[i]] = i;
-              }
+            encoding.codes = {};
+            for (let i = 0; i < encoding.chars.length; ++i) {
+                encoding.codes[encoding.chars[i]] = i;
+            }
         }
 
         // The string must have a whole number of bytes:
@@ -61,8 +61,8 @@ var base64url = base64url || {};
         return out
     }
 
-    function stringify (data, encoding, opts = {}) {
-        const { pad = true } = opts;
+    function stringify(data, encoding, opts = {}) {
+        const {pad = true} = opts;
         const mask = (1 << encoding.bits) - 1;
         let out = '';
 

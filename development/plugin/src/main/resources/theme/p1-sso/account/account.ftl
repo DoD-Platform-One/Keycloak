@@ -17,22 +17,26 @@
         <#if !realm.registrationEmailAsUsername>
             <div class="form-group ${messagesPerField.printIfExists('username','has-error')}">
                 <div class="col-sm-2 col-md-2">
-                    <label for="username" class="control-label">${msg("username")}</label> <#if realm.editUsernameAllowed><span class="required">*</span></#if>
+                    <label for="username"
+                           class="control-label">${msg("username")}</label> <#if realm.editUsernameAllowed><span
+                            class="required">*</span></#if>
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="username" name="username" <#if !realm.editUsernameAllowed>disabled="disabled"</#if> value="${(account.username!'')}"/>
+                    <input type="text" class="form-control" id="username" name="username"
+                           <#if !realm.editUsernameAllowed>disabled="disabled"</#if> value="${(account.username!'')}"/>
                 </div>
             </div>
         </#if>
 
         <div class="form-group ${messagesPerField.printIfExists('email','has-error')}">
             <div class="col-sm-2 col-md-2">
-            <label for="email" class="control-label">${msg("email")}</label> <span class="required">*</span>
+                <label for="email" class="control-label">${msg("email")}</label> <span class="required">*</span>
             </div>
 
             <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="email" name="email" autofocus value="${(account.email!'')}"/>
+                <input type="text" class="form-control" id="email" name="email" autofocus
+                       value="${(account.email!'')}"/>
             </div>
         </div>
 
@@ -42,7 +46,8 @@
             </div>
 
             <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="firstName" name="firstName" value="${(account.firstName!'')}"/>
+                <input type="text" class="form-control" id="firstName" name="firstName"
+                       value="${(account.firstName!'')}"/>
             </div>
         </div>
 
@@ -62,9 +67,11 @@
             </div>
 
             <div class="col-sm-10 col-md-10">
-                <div class="col-sm-8 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}" style="padding:0">
-                    <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control" value="${(account.attributes.affiliation!'')}">
-                        <option selected disabled hidden>Select your org</option>	                	
+                <div class="col-sm-8 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}"
+                     style="padding:0">
+                    <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control"
+                            value="${(account.attributes.affiliation!'')}">
+                        <option selected disabled hidden>Select your org</option>
                         <optgroup label="US Government">
                             <option>US Air Force</option>
                             <option>US Air Force Reserve</option>
@@ -93,9 +100,10 @@
                     </select>
                 </div>
 
-                <div class="col-sm-4 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}" style="padding-right:0">
+                <div class="col-sm-4 ${messagesPerField.printIfExists('rank',properties.kcFormGroupErrorClass!)}"
+                     style="padding-right:0">
                     <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
-                        <option selected disabled hidden>Select your rank</option>	                	
+                        <option selected disabled hidden>Select your rank</option>
                         <optgroup label="Enlisted">
                             <option>E-1</option>
                             <option>E-2</option>
@@ -155,20 +163,27 @@
 
         <div class="form-group">
             <div class="col-sm-2 col-md-2">
-                <label for="user.attributes.organization" class="control-label">Unit, Organization or Company Name</label>
+                <label for="user.attributes.organization" class="control-label">Unit, Organization or Company
+                    Name</label>
             </div>
 
             <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="user.attributes.organization" name="user.attributes.organization" value="${(account.attributes.organization!'')}"/>
+                <input type="text" class="form-control" id="user.attributes.organization"
+                       name="user.attributes.organization" value="${(account.attributes.organization!'')}"/>
             </div>
         </div>
 
         <div class="form-group">
             <div id="kc-form-buttons" class="col-md-offset-2 col-md-10 submit">
                 <div class="">
-                    <#if url.referrerURI??><a href="${url.referrerURI}">${kcSanitize(msg("backToApplication")?no_esc)}</a></#if>
-                    <button type="submit" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}" name="submitAction" value="Save">${msg("doSave")}</button>
-                    <button type="submit" class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}" name="submitAction" value="Cancel">${msg("doCancel")}</button>
+                    <#if url.referrerURI??><a
+                        href="${url.referrerURI}">${kcSanitize(msg("backToApplication")?no_esc)}</a></#if>
+                    <button type="submit"
+                            class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
+                            name="submitAction" value="Save">${msg("doSave")}</button>
+                    <button type="submit"
+                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
+                            name="submitAction" value="Cancel">${msg("doCancel")}</button>
                 </div>
             </div>
         </div>

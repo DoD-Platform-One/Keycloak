@@ -13,21 +13,21 @@
 
         <table class="table table-striped table-bordered">
             <thead>
-              <tr>
+            <tr>
                 <td>${msg("application")}</td>
-              </tr>
+            </tr>
             </thead>
 
             <tbody>
-              <#list applications.applications as application>
+            <#list applications.applications as application>
                 <tr>
                     <td>
-                            <#if application.client.name?has_content>${advancedMsg(application.client.name)}<#else>${application.client.clientId}</#if>
+                        <#if application.client.name?has_content>${advancedMsg(application.client.name)}<#else>${application.client.clientId}</#if>
                         <#--  <#if application.effectiveUrl?has_content><a href="${application.effectiveUrl}"></#if>
                         <#if application.effectiveUrl?has_content></a></#if>  -->
                     </td>
                 </tr>
-              </#list>
+            </#list>
             </tbody>
         </table>
     </form>
