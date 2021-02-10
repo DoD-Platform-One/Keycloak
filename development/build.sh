@@ -2,17 +2,22 @@
 
 function update_java() {
     pushd plugin
-    ./gradlew build
+    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk11 gradle build
     mkdir -p build/docker
     cp build/libs/keycloak-registration-validation-1.2-all.jar build/docker/p1.jar
     popd
+}
+
+function release() {
+    update_java
+    cp plugin/build/docker/p1.jar ../deploy/resources/p1-sso-plugin.jar
 }
 
 function build() {
     docker kill p1-keycloak
     docker rm p1-keycloak
 
-    DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest . 
+    DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest ../ 
 
     docker run -p 443:8443 -p 5005:5005 \
     --name p1-keycloak \
@@ -20,10 +25,20 @@ function build() {
     p1-keycloak:dev-latest
 }
 
+case "$1" in
 
-if [[ $1 == "update" ]]; then
-    update_java
-else
-    update_java
-    build
-fi
+    update)     
+        update_java
+        ;;
+
+    release)
+        update_java
+        release
+        ;;
+
+    *)
+        update_java
+        build
+        ;;
+        
+esac

@@ -9,11 +9,8 @@ RUN gradle build
 
 FROM registry1.dsop.io/ironbank/opensource/keycloak/keycloak:11.0.1 AS keycloak
 
-RUN rm -fr /opt/jboss/keycloak/themes
-
 COPY --from=build /opt/gradle/build/libs/keycloak-registration-validation-1.2-all.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
 
-COPY themes /opt/jboss/keycloak/themes
 COPY tools /opt/jboss/tools
 
 USER keycloak

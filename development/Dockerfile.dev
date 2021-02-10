@@ -2,20 +2,20 @@
 FROM quay.io/keycloak/keycloak:11.0.1 AS keycloak
 
 # Add the plugin config files
-COPY baby-yoda.json /opt/baby-yoda.json
-COPY baby-yoda.yaml /opt/baby-yoda.yaml
+COPY development/baby-yoda.json /opt/baby-yoda.json
+COPY development/baby-yoda.yaml /opt/baby-yoda.yaml
 
 # Iinclude JS Console in dev
-COPY js-console.war /opt/jboss/keycloak/standalone/deployments/js-console.war
+COPY development/js-console.war /opt/jboss/keycloak/standalone/deployments/js-console.war
 
 # Include the mTLS certs
-COPY certs /etc/x509/https  
-
-# Include the keycloak overrides
-COPY tools /opt/jboss/tools
+COPY development/certs /etc/x509/https  
 
 # Disable theme caching
-COPY tools/cli/disable-theme-cache.cli /opt/jboss/startup-scripts/disable-theme-cache.cli
+COPY development/disable-theme-cache.cli /opt/jboss/startup-scripts/disable-theme-cache.cli
+
+# Add keycloak initializer
+COPY deploy/resources/keycloak.cli /opt/jboss/startup-scripts/keycloak-init.cli
 
 ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
 ENV DB_VENDOR h2

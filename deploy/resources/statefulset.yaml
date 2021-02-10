@@ -82,6 +82,9 @@ spec:
             - name: startup
               mountPath: /opt/jboss/startup-scripts
               readOnly: true
+            - name: plugin
+              mountPath: /opt/jboss/keycloak/standalone/deployments
+              readOnly: true
             - name: https
               mountPath: "/etc/x509/https"
               readOnly: true
@@ -124,6 +127,10 @@ spec:
           configMap:
             name: keycloak-startup
             defaultMode: 0555
+        - name: plugin
+          configMap:
+            name: p1-sso-plugin
+            defaultMode: 0444
         - name: config
           configMap:
             name: baby-yoda

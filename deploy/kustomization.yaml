@@ -26,8 +26,11 @@ configMapGenerator:
   - name: baby-yoda
     files:
       - resources/baby-yoda.yaml
+  - name: p1-sso-plugin
+    files:
+      - resources/p1-sso-plugin.jar
 
 images:
   - name: keycloak-placeholder
-    newName: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
-    newTag: 11.0.1-0.1.0
+    newName: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
+    newTag: 11.0.1
