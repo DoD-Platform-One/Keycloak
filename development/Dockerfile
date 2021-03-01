@@ -10,6 +10,4 @@ FROM registry1.dso.mil/ironbank/opensource/keycloak/keycloak:11.0.1 AS keycloak
 
 COPY --from=build /opt/gradle/build/libs/keycloak-registration-validation-1.2-all.jar /opt/jboss/keycloak/standalone/deployments/p1.jar
 
-COPY tools /opt/jboss/tools
-
 USER keycloak
