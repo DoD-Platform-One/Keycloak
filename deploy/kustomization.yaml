@@ -32,5 +32,5 @@ configMapGenerator:
 
 images:
   - name: keycloak-placeholder
-    newName: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
+    newName: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/test-keycloak-ib
     newTag: 11.0.1
