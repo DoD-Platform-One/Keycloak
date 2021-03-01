@@ -1,9 +1,8 @@
-FROM registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk11:latest AS build
+FROM registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk11 AS build
 
 # IB work-around
 USER root
 
-WORKDIR /opt/gradle
 COPY plugin /opt/gradle
 RUN gradle build 
 
