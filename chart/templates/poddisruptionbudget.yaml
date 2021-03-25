@@ -5,6 +5,7 @@ metadata:
   name: {{ include "keycloak.fullname" . }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   selector:
     matchLabels:

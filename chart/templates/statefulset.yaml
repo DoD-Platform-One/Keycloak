@@ -11,8 +11,9 @@ metadata:
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
     {{- range $key, $value := .Values.statefulsetLabels }}
-    {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
+    {{- printf "%s: %s" $key (tpl $value $) | nindent 4 }}
     {{- end }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   selector:
     matchLabels:
@@ -28,7 +29,11 @@ spec:
     metadata:
       annotations:
         checksum/config-startup: {{ include (print .Template.BasePath "/configmap-startup.yaml") . | sha256sum }}
+        checksum/config-sh: {{ include (print .Template.BasePath "/configmap-sh.yaml") . | sha256sum }}
+        checksum/config-realm: {{ include (print .Template.BasePath "/configmap-realm.yaml") . | sha256sum }}
+        {{- if .Values.secrets }}
         checksum/secrets: {{ tpl (toYaml .Values.secrets) . | sha256sum }}
+        {{- end }}
         {{- range $key, $value := .Values.podAnnotations }}
         {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 8 }}
         {{- end }}
@@ -73,10 +78,14 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.command }}
           command:
             {{- toYaml .Values.command | nindent 12 }}
+          {{- end }}
+          {{- if .Values.args }}
           args:
             {{- toYaml .Values.args | nindent 12 }}
+          {{- end }}
           {{- with .Values.lifecycleHooks }}
           lifecycle:
           {{- tpl . $ | nindent 12 }}
@@ -102,22 +111,18 @@ spec:
             {{- with .Values.extraEnv }}
             {{- tpl . $ | nindent 12 }}
             {{- end }}
+            {{- if .Values.extraEnvFrom }}
           envFrom:
             {{- with .Values.extraEnvFrom }}
             {{- tpl . $ | nindent 12 }}
             {{- end }}
+            {{- end }}
           ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
             - name: https
               containerPort: 8443
               protocol: TCP
-            - name: http-management
-              containerPort: 9990
-              protocol: TCP
             {{- with .Values.extraPorts }}
-            {{- toYaml . | nindent 12 }}
+            {{- tpl . $ | nindent 12 }}
             {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
@@ -127,12 +132,20 @@ spec:
           readinessProbe:
             {{- tpl . $ | nindent 12 }}
           {{- end }}
+          {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
           volumeMounts:
             {{- range $key, $value := .Values.startupScripts }}
             - name: startup
-              mountPath: "/opt/jboss/startup-scripts/{{ $key }}"
+              mountPath: "/opt/jboss/{{ $key }}"
+              subPath: "{{ $key }}"
+              readOnly: true
+            {{- end }}
+            {{- range $key, $value := .Values.scripts }}
+            - name: sh
+              mountPath: "/scripts/{{ $key }}"
               subPath: "{{ $key }}"
               readOnly: true
             {{- end }}
@@ -176,7 +189,18 @@ spec:
         - name: startup
           configMap:
             name: {{ include "keycloak.fullname" $ }}-startup
-            defaultMode: 0555
+            defaultMode: 365
+            items:
+              {{- range $key, $value := . }}
+              - key: {{ $key }}
+                path: {{ $key }}
+              {{- end }}
+        {{- end }}
+        {{- with .Values.scripts }}
+        - name: sh
+          configMap:
+            name: {{ include "keycloak.fullname" $ }}-sh
+            defaultMode: 365
             items:
               {{- range $key, $value := . }}
               - key: {{ $key }}

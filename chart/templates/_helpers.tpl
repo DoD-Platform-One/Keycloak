@@ -37,7 +37,6 @@ Common labels
 {{- define "keycloak.labels" -}}
 helm.sh/chart: {{ include "keycloak.chart" . }}
 {{ include "keycloak.selectorLabels" . }}
-app.kubernetes.io/version: {{ .Values.image.tag | default .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
@@ -47,6 +46,7 @@ Selector labels
 {{- define "keycloak.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "keycloak.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/version: {{ .Values.image.tag | default .Chart.AppVersion | quote }}
 {{- end }}
 
 {{/*
@@ -57,6 +57,17 @@ Create the name of the service account to use
 {{- default (include "keycloak.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "keycloak.extraServiceAccountName" -}}
+{{- if .Values.extraServiceAccount.create }}
+{{- default (include "keycloak.fullname" .) .Values.extraServiceAccount.name }}
+{{- else }}
+{{- default "default" .Values.extraServiceAccount.name }}
 {{- end }}
 {{- end }}
 

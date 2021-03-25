@@ -15,6 +15,7 @@ metadata:
     {{- range $key, $value := $route.labels }}
     {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
     {{- end }}
+  namespace: {{ $.Release.Namespace }}
 spec:
 {{- if $route.host }}
   host: {{ tpl $route.host $ | quote }}

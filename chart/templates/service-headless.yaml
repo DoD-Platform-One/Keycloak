@@ -6,13 +6,28 @@ metadata:
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
     app.kubernetes.io/component: headless
+  namespace: {{ $.Release.Namespace }}
 spec:
   type: ClusterIP
   clusterIP: None
   ports:
+    {{- if .Values.service.httpPort }}
     - name: http
       port: {{ .Values.service.httpPort }}
       targetPort: http
       protocol: TCP
+    {{- end }}
+    {{- if .Values.service.httpsPort }}
+    - name: https
+      port: {{ .Values.service.httpsPort }}
+      targetPort: https
+      protocol: TCP
+    {{- end }}
+    {{- if .Values.service.jgroupsPort }}
+    - name: jgroups
+      port: {{ .Values.service.jgroupsPort }}
+      targetPort: jgroups
+      protocol: TCP
+    {{- end }}
   selector:
     {{- include "keycloak.selectorLabels" . | nindent 4 }}

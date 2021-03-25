@@ -20,6 +20,7 @@ metadata:
   {{- range $key, $value := .labels }}
   {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
   {{- end }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   {{- with .namespaceSelector }}
   namespaceSelector:

@@ -1,0 +1,62 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+    {{- range $key, $value := .Values.networkPolicy.labels }}
+    {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
+    {{- end }}
+  name: default-deny
+  namespace: {{ $.Release.Namespace }}
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+    {{- range $key, $value := .Values.networkPolicy.labels }}
+    {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
+    {{- end }}
+  name: inbound-https
+  namespace: {{ $.Release.Namespace }}
+spec:
+  ingress:
+  - ports:
+    - port: {{ .Values.service.httpsPort }}
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      {{- include "keycloak.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+    {{- range $key, $value := .Values.networkPolicy.labels }}
+    {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 4 }}
+    {{- end }}
+  name: inbound-jgroups
+  namespace: {{ $.Release.Namespace }}
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          {{- include "keycloak.selectorLabels" . | nindent 12 }}
+    ports:
+    - port: {{ .Values.service.jgroupsPort }}
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      {{- include "keycloak.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  - Ingress
+{{- end }}

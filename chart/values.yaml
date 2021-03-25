@@ -1,3 +1,5 @@
+# Values updated throughout for BB deployment
+
 # Optionally override the fully qualified name
 fullnameOverride: ""
 
@@ -5,13 +7,18 @@ fullnameOverride: ""
 nameOverride: ""
 
 # The number of replicas to create (has no effect if autoscaling enabled)
-replicas: 1
+replicas: 2
+
+namespace:
+  # Additional labels for the namespace
+  labels:
+    istio-injection: disabled-because-keycloak-hates-istio
 
 image:
   # The Keycloak image repository
-  repository: docker.io/jboss/keycloak
+  repository: registry.dsop.io/platform-one/private/big-bang/apps/keycloak
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: ""
+  tag: "11.0.1-0.1.0"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -45,7 +52,22 @@ serviceAccount:
   # Additional labels for the ServiceAccount
   labels: {}
   # Image pull secrets that are attached to the ServiceAccount
-  imagePullSecrets: []
+  imagePullSecrets:
+    - name: private-registry
+
+extraServiceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "default"
+  # Additional annotations for the ServiceAccount
+  annotations: {}
+  # Additional labels for the ServiceAccount
+  labels: {}
+  # Image pull secrets that are attached to the ServiceAccount
+  imagePullSecrets:
+    - name: private-registry
 
 rbac:
   create: false
@@ -90,21 +112,51 @@ terminationGracePeriodSeconds: 60
 clusterDomain: cluster.local
 
 ## Overrides the default entrypoint of the Keycloak container
-command: []
+command:
+  - /scripts/keycloak.sh
 
 ## Overrides the default args for the Keycloak container
 args: []
 
 # Additional environment variables for Keycloak
-extraEnv: ""
-  # - name: KEYCLOAK_LOGLEVEL
-  #   value: DEBUG
-  # - name: WILDFLY_LOGLEVEL
-  #   value: DEBUG
-  # - name: CACHE_OWNERS_COUNT
-  #   value: "2"
-  # - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
-  #   value: "2"
+extraEnv: |
+  - name: JAVA_TOOL_OPTIONS
+    value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
+  - name: _JAVA_OPTIONS
+    value: -Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled
+  - name: PROXY_ADDRESS_FORWARDING
+    value: "true"
+  - name: JGROUPS_DISCOVERY_PROTOCOL
+    value: dns.DNS_PING
+  - name: JGROUPS_DISCOVERY_PROPERTIES
+    value: dns_query=keycloak-headless.keycloak.svc.cluster.local
+  - name: KEYCLOAK_SERVICE_DNS_NAME
+    value: keycloak-headless.keycloak.svc.cluster.local
+  - name: X509_CA_BUNDLE
+    value: /etc/x509/https/dod_cas.pem
+  - name: CUSTOM_REGISTRATION_CONFIG
+    value: /opt/baby-yoda.yaml
+  - name: DB_VENDOR
+    value: postgres
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_DATABASE
+    value: keycloak
+  - name: DB_ADDR
+    valueFrom:
+      secretKeyRef:
+        key: PGHOST
+        name: db-credentials
+  - name: DB_USER
+    valueFrom:
+      secretKeyRef:
+        key: PGUSER
+        name: db-credentials
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: PGPASSWORD
+        name: db-credentials
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
 extraEnvFrom: ""
@@ -123,7 +175,7 @@ affinity: |
             - key: app.kubernetes.io/component
               operator: NotIn
               values:
-                - test
+                - keycloak
         topologyKey: kubernetes.io/hostname
     preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100
@@ -135,7 +187,7 @@ affinity: |
               - key: app.kubernetes.io/component
                 operator: NotIn
                 values:
-                  - test
+                  - keycloak
           topologyKey: failure-domain.beta.kubernetes.io/zone
 
 # Node labels for Pod assignment
@@ -152,19 +204,24 @@ podAnnotations: {}
 
 # Liveness probe configuration
 livenessProbe: |
+  failureThreshold: 15
   httpGet:
-    path: /auth/
-    port: http
-  initialDelaySeconds: 300
+    path: /auth/realms/master
+    port: https
+    scheme: HTTPS
+  initialDelaySeconds: 120
+  periodSeconds: 15
   timeoutSeconds: 5
 
 # Readiness probe configuration
 readinessProbe: |
+  failureThreshold: 15
   httpGet:
     path: /auth/realms/master
-    port: http
-  initialDelaySeconds: 30
-  timeoutSeconds: 1
+    port: https
+    scheme: HTTPS
+  initialDelaySeconds: 120
+  timeoutSeconds: 2
 
 # Pod resource requests and limits
 resources: {}
@@ -185,14 +242,44 @@ startupScripts:
   #
   # echo 'Hello from my custom startup script!'
 
+# Additional scripts to be used by keycloak
+scripts:
+  # This script is used to override the command endpoint
+  keycloak.sh: |
+    {{- .Files.Get "scripts/keycloak.sh" }}
+
+# Initial realm configuration for Keycloak
+realmConfig:
+  name: baby-yoda
+  content:
+    # baby-yoda realm configuration file
+    baby-yoda.yaml: |
+      {{- .Files.Get "resources/baby-yoda.yaml" }}
+
 # Add additional volumes, e. g. for custom themes
-extraVolumes: ""
+extraVolumes: |
+  - name: realm
+    configMap:
+      name: baby-yoda
+  - name: https
+    secret:
+      defaultMode: 400
+      secretName: keycloak-mtls
 
 # Add additional volumes mounts, e. g. for custom themes
-extraVolumeMounts: ""
+extraVolumeMounts: |
+  - mountPath: /opt/baby-yoda.yaml
+    name: realm
+    subPath: baby-yoda.yaml
+  - mountPath: /etc/x509/https
+    name: https
+    readOnly: true
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
-extraPorts: []
+extraPorts: |
+  - name: jgroups
+    containerPort: {{ .Values.service.jgroupsPort }}
+    protocol: TCP
 
 # Pod disruption budget
 podDisruptionBudget: {}
@@ -203,7 +290,8 @@ podDisruptionBudget: {}
 statefulsetAnnotations: {}
 
 # Additional labels for the StatefulSet
-statefulsetLabels: {}
+statefulsetLabels:
+  app.kubernetes.io/component: keycloak
 
 # Configuration for secrets that should be created
 secrets: {}
@@ -225,7 +313,7 @@ service:
   # Optional IP for the load balancer. Used for services of type LoadBalancer only
   loadBalancerIP: ""
   # The http Service port
-  httpPort: 80
+  httpPort: null
   # The HTTP Service node port if type is NodePort
   httpNodePort: null
   # The HTTPS Service port
@@ -233,9 +321,11 @@ service:
   # The HTTPS Service node port if type is NodePort
   httpsNodePort: null
   # The WildFly management Service port
-  httpManagementPort: 9990
+  httpManagementPort: null
   # The WildFly management Service node port if type is NodePort
   httpManagementNodePort: null
+  # The jgroups port to be used
+  jgroupsPort: 7600
   # Additional Service ports, e. g. for custom admin console
   extraPorts: []
   # When using Service type LoadBalancer, you can restrict source ranges allowed
@@ -247,6 +337,19 @@ service:
   sessionAffinity: ""
   # Session affinity config
   sessionAffinityConfig: {}
+
+virtualService:
+  # If `true`, a virtual service will be created
+  enabled: true
+  # Override both hosts entries as needed, note the tls: match should be completely replaced in overlays since its an array
+  hosts:
+    - "login.dsop.io"
+  sniHosts:
+    - "login.dsop.io"
+  # Override gateway entries as needed
+  gateways:
+    - public-gateway.istio-system.svc.cluster.local
+  port: 443
 
 ingress:
   # If `true`, an Ingress is created
@@ -290,17 +393,24 @@ ingress:
         paths:
           - /auth/admin/
 
-## Network policy configuration
+# Network policy configuration
 networkPolicy:
   # If true, the Network policies are deployed
-  enabled: false
+  enabled: true
 
   # Additional Network policy labels
   labels: {}
 
-  # Define all other external allowed source
-  # See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#networkpolicypeer-v1-networking-k8s-io
-  extraFrom: []
+# Peer Authentication policy
+mtlsPolicy:
+  # If true, enable the peer authentication policy
+  enabled: true
+
+  # The name of the policy
+  name: default
+
+  # PERMISSIVE, STRICT, or DISABLED
+  mode: STRICT
 
 route:
   # If `true`, an OpenShift Route is created
@@ -347,7 +457,7 @@ pgchecker:
 
 postgresql:
   # If `true`, the Postgresql dependency is enabled
-  enabled: true
+  enabled: false
   # PostgreSQL User to create
   postgresqlUsername: keycloak
   # PostgreSQL Password for the new user
@@ -357,6 +467,31 @@ postgresql:
   # PostgreSQL network policy configuration
   networkPolicy:
     enabled: false
+
+dbProvisioner:
+  # If `true`, enables a job that ensures that the keycloak db is created
+  enabled: true
+  image:
+    # The image for the postgresql pod
+    repository: registry1.dsop.io/ironbank/opensource/postgres/postgresql12
+    # The tag for the test Pod image
+    tag: latest
+    # The image pull policy for the test Pod image
+    pullPolicy: IfNotPresent
+  # Pod restart policy. One of `Always`, `OnFailure`, or `Never`
+  restartPolicy: Always
+  # The db provisioner command to run
+  command:
+    - /bin/bash
+    - -exc
+    - |
+      psql -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_NAME'" | grep -q 1 || psql -c "CREATE DATABASE $DB_NAME"
+  env:
+    - name: DB_NAME
+      value: keycloak
+  envFrom:
+    - secretRef:
+        name: db-credentials
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created

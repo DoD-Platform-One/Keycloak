@@ -65,7 +65,7 @@
       "type": "string"
     },
     "extraPorts": {
-      "type": "array"
+      "type": ["array", "string"]
     },
     "extraVolumeMounts": {
       "type": "string"
@@ -272,7 +272,7 @@
             "type": "object"
           },
           "extraPorts": {
-            "type": "array"
+            "type": ["array", "string"]
           },
           "loadBalancerSourceRanges": {
             "type": "array"

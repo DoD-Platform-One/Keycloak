@@ -1,0 +1,12 @@
+{{- if .Values.mtlsPolicy.enabled }}
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: {{ .Values.mtlsPolicy.name }}
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  mtls:
+    mode: {{ .Values.mtlsPolicy.mode }}
+{{- end }}
