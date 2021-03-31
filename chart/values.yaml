@@ -338,19 +338,6 @@ service:
   # Session affinity config
   sessionAffinityConfig: {}
 
-virtualService:
-  # If `true`, a virtual service will be created
-  enabled: true
-  # Override both hosts entries as needed, note the tls: match should be completely replaced in overlays since its an array
-  hosts:
-    - "login.dsop.io"
-  sniHosts:
-    - "login.dsop.io"
-  # Override gateway entries as needed
-  gateways:
-    - public-gateway.istio-system.svc.cluster.local
-  port: 443
-
 ingress:
   # If `true`, an Ingress is created
   enabled: false
@@ -608,3 +595,20 @@ test:
   securityContext:
     runAsUser: 1000
     runAsNonRoot: true
+
+# Big Bang Additions
+## Your FQDN will be ${ .Values.subdomain }.${ .Values.hostname }
+hostname: bigbang.dev
+istio:
+  # Toggle istio integration 
+  enabled: true
+  keycloak:
+    # Toggle vs creation
+    enabled: true
+    annotations: {}
+    labels: {}
+    gateways:
+      - istio-system/main
+    hosts:
+      - keycloak.{{ .Values.hostname }}
+
