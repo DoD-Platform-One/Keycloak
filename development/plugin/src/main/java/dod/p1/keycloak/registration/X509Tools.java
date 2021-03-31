@@ -14,7 +14,7 @@ import org.keycloak.authentication.RequiredActionContext;
 import org.keycloak.authentication.authenticators.x509.AbstractX509ClientCertificateAuthenticator;
 import org.keycloak.authentication.authenticators.x509.X509AuthenticatorConfigModel;
 import org.keycloak.authentication.authenticators.x509.X509ClientCertificateAuthenticator;
-import org.keycloak.common.util.OCSPUtils;
+import org.keycloak.authentication.authenticators.x509.OCSPUtils;
 import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -79,7 +79,7 @@ public class X509Tools {
         return getX509Username(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
-    public static OCSPUtils.OCSPRevocationStatus check(X509Certificate cert,
+    public static OCSPUtils.OCSPRevocationStatus check(KeycloakSession session, X509Certificate cert,
                                                        X509Certificate issuerCert)
             throws CertPathValidatorException, CertificateException {
         URI responderURI = null;
@@ -90,7 +90,7 @@ public class X509Tools {
             throw new CertPathValidatorException
                     ("No OCSP Responder URI in certificate");
         }
-        return OCSPUtils.check(cert, issuerCert, responderURI, cert, null);
+        return OCSPUtils.check(session, cert, issuerCert, responderURI, cert, null);
     }
 
 

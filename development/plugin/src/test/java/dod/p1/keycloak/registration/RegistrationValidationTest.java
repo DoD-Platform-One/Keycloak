@@ -139,6 +139,36 @@ public class RegistrationValidationTest {
                     }
 
                     @Override
+                    public RoleProvider roleLocalStorage() {
+                        return null;
+                    }
+
+                    @Override
+                    public GroupProvider groupLocalStorage() {
+                        return null;
+                    }
+
+                    @Override
+                    public GroupProvider groups() {
+                        return null;
+                    }
+
+                    @Override
+                    public GroupProvider groupStorageManager() {
+                        return null;
+                    }
+
+                    @Override
+                    public RoleProvider roleStorageManager() {
+                        return null;
+                    }
+
+                    @Override
+                    public RoleProvider roles() {
+                        return null;
+                    }
+
+                    @Override
                     public KeycloakTransactionManager getTransactionManager() {
                         return null;
                     }

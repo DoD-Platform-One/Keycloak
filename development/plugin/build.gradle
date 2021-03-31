@@ -25,10 +25,10 @@ dependencies {
     testCompile 'org.mockito:mockito-core:3.3.3'
     testCompile 'junit:junit:4.13'
     implementation 'org.yaml:snakeyaml:1.20'
-    implementation 'org.keycloak:keycloak-core:11.0.1'
-    implementation 'org.keycloak:keycloak-services:11.0.1'
-    implementation 'org.keycloak:keycloak-server-spi:11.0.1'
-    implementation 'org.keycloak:keycloak-server-spi-private:11.0.1'
+    implementation 'org.keycloak:keycloak-core:12.0.4'
+    implementation 'org.keycloak:keycloak-services:12.0.4'
+    implementation 'org.keycloak:keycloak-server-spi:12.0.4'
+    implementation 'org.keycloak:keycloak-server-spi-private:12.0.4'
 }
 
 jacocoTestReport {
