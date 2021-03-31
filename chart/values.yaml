@@ -601,10 +601,10 @@ test:
 hostname: bigbang.dev
 istio:
   # Toggle istio integration 
-  enabled: true
+  enabled: false
   keycloak:
     # Toggle vs creation
-    enabled: true
+    enabled: false
     annotations: {}
     labels: {}
     gateways:
