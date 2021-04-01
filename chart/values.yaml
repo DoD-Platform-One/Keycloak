@@ -444,7 +444,7 @@ pgchecker:
 
 postgresql:
   # If `true`, the Postgresql dependency is enabled
-  enabled: false
+  enabled: true
   # PostgreSQL User to create
   postgresqlUsername: keycloak
   # PostgreSQL Password for the new user
@@ -454,31 +454,6 @@ postgresql:
   # PostgreSQL network policy configuration
   networkPolicy:
     enabled: false
-
-dbProvisioner:
-  # If `true`, enables a job that ensures that the keycloak db is created
-  enabled: true
-  image:
-    # The image for the postgresql pod
-    repository: registry1.dsop.io/ironbank/opensource/postgres/postgresql12
-    # The tag for the test Pod image
-    tag: latest
-    # The image pull policy for the test Pod image
-    pullPolicy: IfNotPresent
-  # Pod restart policy. One of `Always`, `OnFailure`, or `Never`
-  restartPolicy: Always
-  # The db provisioner command to run
-  command:
-    - /bin/bash
-    - -exc
-    - |
-      psql -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_NAME'" | grep -q 1 || psql -c "CREATE DATABASE $DB_NAME"
-  env:
-    - name: DB_NAME
-      value: keycloak
-  envFrom:
-    - secretRef:
-        name: db-credentials
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created
