@@ -11,13 +11,14 @@ function update_java() {
 function release() {
     update_java
     cp plugin/build/docker/p1.jar ../deploy/resources/p1-sso-plugin.jar
+    cp plugin/build/docker/p1.jar ../chart/resources/p1-sso-plugin.jar
 }
 
 function build() {
     docker kill p1-keycloak
     docker rm p1-keycloak
 
-    DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest ../ 
+    DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest ../
 
     docker run -p 8443:8443 -p 5005:5005 \
     --name p1-keycloak \
@@ -27,7 +28,7 @@ function build() {
 
 case "$1" in
 
-    update)     
+    update)
         update_java
         ;;
 
@@ -40,5 +41,5 @@ case "$1" in
         update_java
         build
         ;;
-        
+
 esac

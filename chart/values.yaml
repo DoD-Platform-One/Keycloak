@@ -256,11 +256,23 @@ realmConfig:
     baby-yoda.yaml: |
       {{- .Files.Get "resources/baby-yoda.yaml" }}
 
+# P1 SSO Plugin configuration for Keycloak
+pluginConfig:
+  name: p1-sso-plugin
+  binaryContent:
+    # p1-sso-plugin jar
+    p1-sso-plugin.jar: |
+      {{- .Files.Get "resources/p1-sso-plugin.jar" | b64enc }}
+
 # Add additional volumes, e. g. for custom themes
 extraVolumes: |
+  - name: plugin
+    configMap:
+      defaultMode: 292
+      name: keycloak-p1-sso-plugin
   - name: realm
     configMap:
-      name: baby-yoda
+      name: keycloak-baby-yoda
   - name: https
     secret:
       defaultMode: 400
@@ -268,6 +280,9 @@ extraVolumes: |
 
 # Add additional volumes mounts, e. g. for custom themes
 extraVolumeMounts: |
+  - mountPath: /opt/jboss/keycloak/standalone/deployments
+    name: plugin
+    readOnly: true
   - mountPath: /opt/baby-yoda.yaml
     name: realm
     subPath: baby-yoda.yaml
@@ -575,7 +590,7 @@ test:
 ## Your FQDN will be ${ .Values.subdomain }.${ .Values.hostname }
 hostname: bigbang.dev
 istio:
-  # Toggle istio integration 
+  # Toggle istio integration
   enabled: false
   keycloak:
     # Toggle vs creation
