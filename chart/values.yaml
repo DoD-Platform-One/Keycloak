@@ -93,7 +93,9 @@ clusterDomain: cluster.local
 command: []
 
 ## Overrides the default args for the Keycloak container
-args: []
+args:
+  # Big Bang addition - possibly needed because of hardened image running as non-root
+  - "-b 0.0.0.0"
 
 # Additional environment variables for Keycloak
 extraEnv: ""
