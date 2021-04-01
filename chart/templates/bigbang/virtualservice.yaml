@@ -1,5 +1,5 @@
 {{- if and .Values.istio.enabled .Values.istio.keycloak.enabled -}}
-{{- $serviceName := include "keycloak.fullname" . -}}
+{{- $serviceName := printf "%s-http" (include "keycloak.fullname" .) -}}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -23,6 +23,6 @@ spec:
     - route:
         - destination:
             port:
-              number: {{ .Values.service.externalPort }}
+              number: {{ .Values.service.httpPort }}
             host: {{ $serviceName }}
 {{- end }}
