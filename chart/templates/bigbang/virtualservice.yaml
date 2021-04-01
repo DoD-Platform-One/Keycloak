@@ -21,8 +21,20 @@ spec:
   {{- end }}
   http:
     - route:
-        - destination:
-            port:
-              number: {{ .Values.service.httpPort }}
-            host: {{ $serviceName }}
+      - destination:
+          port:
+            number: {{ .Values.service.httpPort }}
+          host: {{ $serviceName }}
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      {{- range .Values.istio.keycloak.hosts }}
+      - {{ tpl . $}}
+      {{- end }}
+    route:
+    - destination:
+        host: {{ $serviceName }}
+        port:
+          number: {{ .Values.service.httpsPort }}
 {{- end }}
