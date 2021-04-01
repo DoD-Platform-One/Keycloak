@@ -3,6 +3,7 @@
 - disable all internal services other than postgres
 - add BigBang additional values at bottom of values.yaml
 - add IronBank hardened image
+- add default argument of "-b 0.0.0.0" to bind to localhost
 
 ##  chart/charts/*.tgz
 - run ```helm dependency update``` and commit the downloaded archives
