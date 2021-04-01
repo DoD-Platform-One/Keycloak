@@ -473,3 +473,19 @@ test:
   securityContext:
     runAsUser: 1000
     runAsNonRoot: true
+
+# Big Bang Additions
+## Your FQDN will be ${ .Values.subdomain }.${ .Values.hostname }
+hostname: bigbang.dev
+istio:
+  # Toggle istio integration
+  enabled: false
+  keycloak:
+    # Toggle vs creation
+    enabled: false
+    annotations: {}
+    labels: {}
+    gateways:
+      - istio-system/main
+    hosts:
+      - keycloak.{{ .Values.hostname }}
