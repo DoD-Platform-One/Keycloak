@@ -19,7 +19,7 @@ function build() {
 
     DOCKER_BUILDKIT=1 docker build -f Dockerfile.dev -t p1-keycloak:dev-latest ../ 
 
-    docker run -p 443:8443 -p 5005:5005 \
+    docker run -p 8443:8443 -p 5005:5005 \
     --name p1-keycloak \
     -v $PWD/plugin/build/docker:/opt/jboss/keycloak/standalone/deployments \
     p1-keycloak:dev-latest
