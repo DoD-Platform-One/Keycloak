@@ -4,7 +4,7 @@ function update_java() {
     pushd plugin
     docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk11 gradle build
     mkdir -p build/docker
-    cp build/libs/keycloak-registration-validation-1.2-all.jar build/docker/p1.jar
+    cp build/libs/keycloak-registration-validation-1.3-all.jar build/docker/p1.jar
     popd
 }
 
