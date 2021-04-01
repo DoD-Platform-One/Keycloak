@@ -9,15 +9,15 @@ replicas: 1
 
 image:
   # The Keycloak image repository
-  repository: docker.io/jboss/keycloak
+  repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib-p1
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: ""
+  tag: "12.0.4"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
 # Image pull secrets for the Pod
 imagePullSecrets: []
-# - name: myRegistrKeySecretName
+# - name: private-registry
 
 # Mapping between IPs and hostnames that will be injected as entries in the Pod's hosts files
 hostAliases: []
