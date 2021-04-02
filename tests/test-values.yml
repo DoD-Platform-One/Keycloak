@@ -9,10 +9,24 @@ extraVolumes: |
   - name: certificates
     secret:
       secretName: {{ include "keycloak.fullname" . }}-certificates
+  - name: customreg
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-customreg
+  - name: realm
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-realm
 
 extraVolumeMounts: |
   - name: certificates
     mountPath: /etc/x509/https
+    readOnly: true
+  - name: customreg
+    mountPath: /opt/jboss/keycloak/customreg.yaml
+    subPath: customreg.yaml
+    readOnly: true
+  - name: realm
+    mountPath: /opt/jboss/keycloak/realm.json
+    subPath: realm.json
     readOnly: true
 
 # - KEYCLOAK_USER/KEYCLOAK_PASSWORD: credentials for admin user to be created
@@ -45,6 +59,10 @@ extraEnv: |
     value: "2"
   - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
     value: "2"
+  - name: CUSTOM_REGISTRATION_CONFIG
+    value: /opt/jboss/keycloak/customreg.yaml
+  - name: KEYCLOAK_IMPORT
+    value: /opt/jboss/keycloak/realm.json
 
 secrets:
   # Default admin user credentials
@@ -59,3 +77,15 @@ secrets:
       tls.crt: '{{ .Files.Get "resources/tls.crt" }}'
       tls.key: '{{ .Files.Get "resources/tls.key" }}'
       cas.pem: '{{ .Files.Get "resources/dod_cas.pem" }}'
+  # Custom realm configuration
+  customreg:
+    stringData:
+      customreg.yaml: '{{ .Files.Get "resources/baby-yoda.yaml" }}'
+  # Custom realm configuration
+  realm:
+    stringData:
+      realm.json: '{{ .Files.Get "resources/baby-yoda.json" }}'
+
+startupScripts:
+  bigbang.cli: |
+    {{- .Files.Get "scripts/bigbang.cli" }}
