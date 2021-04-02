@@ -29,6 +29,18 @@ extraVolumeMounts: |
     subPath: realm.json
     readOnly: true
 
+# JGroups port
+extraPorts:
+  - name: jgroup
+    containerPort: 7600
+    protocol: TCP
+service:
+  extraPorts:
+  - name: jgroup
+    port: 7600
+    targetPort: jgroup
+    protocol: TCP
+
 # - KEYCLOAK_USER/KEYCLOAK_PASSWORD: credentials for admin user to be created
 # - PROXY_ADDRESS_FORWARDING: See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#running-keycloak-behind-a-reverse-proxy
 # - JGROUPS_*, KEYCLOAK_SERVICE_DNS_NAME, CACHE_OWNERS: For HA/Clustering.  See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#high-availability-and-clustering
@@ -86,6 +98,7 @@ secrets:
     stringData:
       realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
 
+# Add additional configuration for Platform One
 startupScripts:
   bigbang.cli: |
     {{- .Files.Get "scripts/bigbang.cli" }}
