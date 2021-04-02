@@ -15,7 +15,12 @@ extraVolumeMounts: |
     mountPath: /etc/x509/https
     readOnly: true
 
+# - KEYCLOAK_USER/KEYCLOAK_PASSWORD: credentials for admin user to be created
+# - PROXY_ADDRESS_FORWARDING: See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#running-keycloak-behind-a-reverse-proxy
+# - JGROUPS_*, KEYCLOAK_SERVICE_DNS_NAME, CACHE_OWNERS: For HA/Clustering.  See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#high-availability-and-clustering
 extraEnv: |
+  - name: JAVA_TOOL_OPTIONS
+    value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
   - name: KEYCLOAK_USER
     valueFrom:
       secretKeyRef:
@@ -30,6 +35,16 @@ extraEnv: |
     value: "true"
   - name: X509_CA_BUNDLE
     value: /etc/x509/https/cas.pem
+  - name: JGROUPS_DISCOVERY_PROTOCOL
+    value: dns.DNS_PING
+  - name: JGROUPS_DISCOVERY_PROPERTIES
+    value: 'dns_query={{ include "keycloak.serviceDnsName" . }}'
+  - name: KEYCLOAK_SERVICE_DNS_NAME
+    value: '{{ include "keycloak.serviceDnsName" . }}'
+  - name: CACHE_OWNERS_COUNT
+    value: "2"
+  - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
+    value: "2"
 
 secrets:
   # Default admin user credentials
