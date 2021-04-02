@@ -80,11 +80,11 @@ secrets:
   # Custom realm configuration
   customreg:
     stringData:
-      customreg.yaml: '{{ .Files.Get "resources/baby-yoda.yaml" }}'
+      customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
   # Custom realm configuration
   realm:
     stringData:
-      realm.json: '{{ .Files.Get "resources/baby-yoda.json" }}'
+      realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
 
 startupScripts:
   bigbang.cli: |
