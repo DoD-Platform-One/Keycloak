@@ -8,7 +8,7 @@ replicas: 1
 extraVolumes: |
   - name: certificates
     secret:
-      secretName: keycloak-certificates
+      secretName: {{ include "keycloak.fullname" . }}-certificates
 
 extraVolumeMounts: |
   - name: certificates
@@ -29,7 +29,7 @@ extraEnv: |
   - name: PROXY_ADDRESS_FORWARDING
     value: "true"
   - name: X509_CA_BUNDLE
-    value: /etc/x509/https/dod_cas.pem
+    value: /etc/x509/https/cas.pem
 
 secrets:
   # Default admin user credentials
