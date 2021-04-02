@@ -100,5 +100,5 @@ secrets:
 
 # Add additional configuration for Platform One
 startupScripts:
-  bigbang.cli: |
+  keycloak.cli: |
     {{- .Files.Get "scripts/bigbang.cli" }}
