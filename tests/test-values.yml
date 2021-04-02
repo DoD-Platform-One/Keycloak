@@ -74,8 +74,8 @@ secrets:
   # The values below are for development and should not be used in production
   certificates:
     stringData:
-      tls.crt: '{{ .Files.Get "resources/tls.crt" }}'
-      tls.key: '{{ .Files.Get "resources/tls.key" }}'
+      tls.crt: '{{ .Files.Get "resources/dev/tls.crt" }}'
+      tls.key: '{{ .Files.Get "resources/dev/tls.key" }}'
       cas.pem: '{{ .Files.Get "resources/dod_cas.pem" }}'
   # Custom realm configuration
   customreg:
