@@ -1,0 +1,46 @@
+istio:
+  enabled: true
+  keycloak:
+    enabled: true
+
+replicas: 1
+
+extraVolumes: |
+  - name: certificates
+    secret:
+      secretName: keycloak-certificates
+
+extraVolumeMounts: |
+  - name: certificates
+    mountPath: /etc/x509/https
+    readOnly: true
+
+extraEnv: |
+  - name: KEYCLOAK_USER
+    valueFrom:
+      secretKeyRef:
+        key: adminuser
+        name: {{ include "keycloak.fullname" . }}-credentials
+  - name: KEYCLOAK_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: {{ include "keycloak.fullname" . }}-credentials
+  - name: PROXY_ADDRESS_FORWARDING
+    value: "true"
+  - name: X509_CA_BUNDLE
+    value: /etc/x509/https/dod_cas.pem
+
+secrets:
+  # Default admin user credentials
+  credentials:
+    stringData:
+      adminuser: admin
+      password: password
+  # Mutual TLS certificates
+  # The values below are for development and should not be used in production
+  certificates:
+    stringData:
+      tls.crt: '{{ .Files.Get "resources/tls.crt" }}'
+      tls.key: '{{ .Files.Get "resources/tls.key" }}'
+      cas.pem: '{{ .Files.Get "resources/dod_cas.pem" }}'
