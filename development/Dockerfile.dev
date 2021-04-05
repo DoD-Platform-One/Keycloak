@@ -1,5 +1,5 @@
 # Cannot pull from IB in dev due to removing H2 
-FROM quay.io/keycloak/keycloak:12.0.4 AS keycloak
+FROM quay.io/keycloak/keycloak:11.0.1 AS keycloak
 
 # Add the plugin config files
 COPY development/baby-yoda.json /opt/baby-yoda.json

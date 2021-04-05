@@ -9,9 +9,9 @@ replicas: 1
 
 image:
   # The Keycloak image repository
-  repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib-p1
+  repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/test-keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: "12.0.4"
+  tag: "11.0.1"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
