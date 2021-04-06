@@ -55,12 +55,32 @@ The secrets will be volume mounted at `/etc/x509/https`, where [Keycloak will lo
 
 ## Database
 
-By default, the helm chart uses an internal PostgreSQL database.  To point to an external database, use the [Keycloak container documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#database-setup) to set the required environmental variables.  In the helm chart, environmental variables can be set by the following:
+By default, the helm chart uses an internal PostgreSQL database.  To point to an external database, use the [Keycloak container documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#database-setup). Example of helm chart values:
 
 ```yaml
+postgresql:
+  # Disable PostgreSQL dependency
+  enabled: false
+
 extraEnv: |
-  - name: <ENV_VAR_NAME>
-    value: <ENV_VAR_VALUE>
+  - name: DB_VENDOR
+    value: postgres
+  - name: DB_ADDR
+    value: mypostgres
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_DATABASE
+    value: mydb
+
+extraEnvFrom: |
+  - secretRef:
+      name: '{{ include "keycloak.fullname" . }}-db'
+
+secrets:
+  db:
+    stringData:
+      DB_USER:  myDBuser
+      DB_PASSWORD: myDBpassword
 ```
 
 > This setting is a single string.  So, by overriding it, you will eliminate upstream settings for `extraEnv`.  Be careful with your settings.
