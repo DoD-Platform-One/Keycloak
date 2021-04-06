@@ -331,7 +331,7 @@ route:
 pgchecker:
   image:
     # Docker image used to check Postgresql readiness at startup
-    repository: docker.io/busybox
+    repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/busybox
     # Image tag for the pgchecker image
     tag: 1.32
     # Image pull policy for the pgchecker image
@@ -363,6 +363,15 @@ postgresql:
   # PostgreSQL network policy configuration
   networkPolicy:
     enabled: false
+  # added by BigBang
+  # change bitnami sub-chart upstream image to pull from registry.dso.mil
+  # this image is only used for dev and CI pipelines
+  image:
+    ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
+    registry: registry.dso.mil
+    repository: platform-one/big-bang/apps/security-tools/keycloak/postgresql
+    tag: 11.8.0-debian-10-r61
+
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created
