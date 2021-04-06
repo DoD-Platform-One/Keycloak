@@ -55,7 +55,7 @@ The secrets will be volume mounted at `/etc/x509/https`, where [Keycloak will lo
 
 ## Database
 
-By default, the helm chart uses an internal PostgreSQL database.  To point to an external database, use the [Keycloak container documentation](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md#database) to set the required environmental variables.  In the helm chart, environmental variables can be set by the following:
+By default, the helm chart uses an internal PostgreSQL database.  To point to an external database, use the [Keycloak container documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#database-setup) to set the required environmental variables.  In the helm chart, environmental variables can be set by the following:
 
 ```yaml
 extraEnv: |
