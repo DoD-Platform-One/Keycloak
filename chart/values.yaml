@@ -129,7 +129,7 @@ extraEnv: |-
     value: /opt/jboss/keycloak/customreg.yaml
   - name: KEYCLOAK_IMPORT
     value: /opt/jboss/keycloak/realm.json
-  {{- if .Values.monitoring.enabled }}
+  {{- if .Values.serviceMonitor.enabled }}
   - name: KEYCLOAK_STATISTICS
     value: all
   {{- end }}
