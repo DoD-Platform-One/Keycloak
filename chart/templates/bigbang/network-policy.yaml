@@ -20,7 +20,7 @@ spec:
   ingress:
     - ports:
         - protocol: TCP
-          port: 8443
+          port: {{ .Values.service.httpsPort }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -34,9 +34,9 @@ spec:
       app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
   ingress:
     - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
       ports:
         - protocol: TCP
           port: 7600
@@ -45,7 +45,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: dev-database
+  name: inbound-database-dev
 spec:
   policyTypes:
     - Ingress
@@ -53,7 +53,35 @@ spec:
     matchLabels:
       app.kubernetes.io/name: postgresql
   ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
     - ports:
         - protocol: TCP
           port: 5432
+{{- end }}
+---
+{{- if .Values.monitoring.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: inbound-prometheus
+spec:
+  policyTypes:
+    - Ingress
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            app.kubernetes.io/name: monitoring
+        podSelector:
+          matchLabels:
+            app: prometheus
+    - ports:
+        - protocol: TCP
+          port: {{ .Values.service.httpManagementPort }}
 {{- end }}
