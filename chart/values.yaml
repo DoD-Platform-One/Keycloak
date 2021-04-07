@@ -98,9 +98,19 @@ args:
   - "-b 0.0.0.0"
 
 # Additional environment variables for Keycloak
+#### Big Bang Additions ####
+# - JAVA_OPTIONS: Enables fine grained admin control
+# - KEYCLOAK_USER/KEYCLOAK_PASSWORD: credentials for admin user to be created
+# - PROXY_ADDRESS_FORWARDING: See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#running-keycloak-behind-a-reverse-proxy
+# - JGROUPS_*, KEYCLOAK_SERVICE_DNS_NAME, CACHE_OWNERS: For HA/Clustering.  See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#high-availability-and-clustering
+# - CUSTOM_REGISTRATION_CONFIG: Custom registration configuration for new users (.yaml)
+# - KEYCLOAK_IMPORT: Custom realm configuration (.json)
+# - KEYCLOAK_STATISTICS: Enabling Prometheus metrics to be produced
 extraEnv: |-
   - name: JAVA_TOOL_OPTIONS
     value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
+  - name: JAVA_OPTIONS
+    value: -Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled
   - name: KEYCLOAK_USER
     valueFrom:
       secretKeyRef:
