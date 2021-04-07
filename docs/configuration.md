@@ -112,6 +112,22 @@ The helm chart will create a secret named `customreg` containing the configurati
 
 Setting up a custom realm using a `.json` file can be done using a volume mount of a file and an environmental variable.  However, it is **NOT** recommended that this be done in production because it will reset the credentials in Keycloak every time a deployment happens.  If you need to set this for development or testing purposes, see the [official documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#setting-a-custom-realm) and the [test-values.yml](../tests/test-values.yml) for a working example.
 
+## Monitoring
+
+The helm chart is setup to perform monitoring of metrics using Prometheus.  This can be enabled by setting the following in `values.yaml`:
+
+```yaml
+serviceMonitor:
+  enabled: true
+```
+
+In addition, if integrating with BigBang's Prometheus, you should set the following to deploy a NetworkPolicy allowing access from Prometheus to Keycloak's metrics endpoint.
+
+```yaml
+monitoring:
+  enabled: true
+```
+
 ## Additional Documentation
 
 - [Keycloak Container Settings](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md)
