@@ -27,7 +27,7 @@ spec:
           host: {{ $serviceName }}
   tls:
   - match:
-    - port: 443
+    - port: 8443
       sniHosts:
       {{- range .Values.istio.keycloak.hosts }}
       - {{ tpl . $}}
