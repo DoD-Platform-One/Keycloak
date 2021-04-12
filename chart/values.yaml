@@ -592,7 +592,7 @@ istio:
     annotations: {}
     labels: {}
     gateways:
-      - istio-system/passthrough
+      - istio-system/main
     hosts:
       - keycloak.{{ .Values.hostname }}
 monitoring:
