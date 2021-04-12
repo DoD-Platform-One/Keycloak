@@ -594,6 +594,6 @@ istio:
     gateways:
       - istio-system/passthrough
     hosts:
-      - keycloak.dev.{{ .Values.hostname }}
+      - keycloak.{{ .Values.hostname }}
 monitoring:
   enabled: false
