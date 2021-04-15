@@ -225,10 +225,6 @@ startupScripts:
   #### Updated for Big Bang ####
   keycloak.cli: |
     {{- .Files.Get "scripts/bigbang.cli" }}
-  # mystartup.sh: |
-  #   #!/bin/sh
-  #
-  # echo 'Hello from my custom startup script!'
 
 # Add additional volumes, e. g. for custom themes
 #### Added by Big Bang ####
