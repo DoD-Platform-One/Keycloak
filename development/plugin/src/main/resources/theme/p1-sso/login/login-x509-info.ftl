@@ -5,7 +5,7 @@
     <#elseif section = "form">
 
         <form id="kc-x509-login-info" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="form-group">
 
                 <div class="${properties.kcLabelWrapperClass!}">
                     <label for="certificate_subjectDN"
@@ -24,7 +24,7 @@
                 </#if>
             </div>
 
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="form-group">
 
                 <#if x509.formData.isUserEnabled??>
                     <div class="${properties.kcLabelWrapperClass!}">
@@ -37,7 +37,7 @@
 
             </div>
 
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="form-group">
                 <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
                     <div class="${properties.kcFormOptionsWrapperClass!}">
                     </div>

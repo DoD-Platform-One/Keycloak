@@ -53,7 +53,7 @@
         </ol>
 
         <form action="${url.loginAction}" class="${properties.kcFormClass!}" id="kc-totp-settings-form" method="post">
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="form-group">
                 <div class="${properties.kcInputWrapperClass!}">
                     <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span
                             class="required">*</span>
@@ -65,7 +65,7 @@
                 <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/></#if>
             </div>
 
-            <div class="${properties.kcFormGroupClass!}" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}
+            <div class="form-group" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}
             ">
             <div class="${properties.kcInputWrapperClass!}">
                 <label for="userLabel"

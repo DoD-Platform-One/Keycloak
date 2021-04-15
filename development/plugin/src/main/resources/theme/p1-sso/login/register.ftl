@@ -1,60 +1,51 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout; section>
-    <#if section = "header">
-        ${msg("registerTitle")}
-    <#elseif section = "form">
-        <form id="kc-register-form" class="${properties.kcFormClass!}"
-              action="/chuck-norris-calendar-goes-straight-from-march-31st-to-april-2nd-because-no-one-fools-chuck-norris"
-              method="post">
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('firstName','lastName','email','username','password','password-confirm'); section>
+    <#if section = "form">
+        <form action="/chuck-norris-calendar-goes-straight-from-march-31st-to-april-2nd-because-no-one-fools-chuck-norris"
+              id="baby-yoda-form" method="post">
 
             <#if cacIdentity??>
-                <div class="alert alert-info" id="cac-info">
+                <div class="alert alert-info cac-info">
                     <h2>DoD PKI User Registration</h2>
                     <h4>${cacIdentity}</h4>
                 </div>
             <#else>
-                <div class="alert alert-info" id="cac-info" style="line-height: 2.5rem">
+                <div class="alert alert-info cac-info">
                     <h2>Regular User Registration</h2>
-                    Use your company or government email address as your access will be based off of your validated
-                    email address.
-                    <br>
-                    <br>
-                    <span style="font-weight: bold;">For assistance contact your team admin, <a
+                    <p>Use your company or government email address as your access will be based off of your validated email address.</p>
+                    <p class="font-weight-bold">For assistance contact your team admin, <a
                                 href="https://sso-info.il2.dso.mil/" target="_blank">click here</a> or <a id="helpdesk"
-                                                                                                          href="mailto:help@dso.mil">email us</a>.</span>
+                                                                                                          href="mailto:help@dso.mil">email us</a>.
+                    </p>
                 </div>
             </#if>
 
-            <div class="row no-gutters" style="margin-left:-20px;margin-right:-20px">
+            <div class="row">
 
-                <div class="col-sm-6 ${messagesPerField.printIfExists('firstName',properties.kcFormGroupErrorClass!)}">
-                    <div>
-                        <label for="firstName" class="${properties.kcLabelClass!}">${msg("firstName")}</label>
-                    </div>
-                    <div>
-                        <input type="text" id="firstName" class="${properties.kcInputClass!}" name="firstName"
-                               value="${(register.formData.firstName!'')}"/>
-                    </div>
+                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('firstName','has-error')}">
+                    <label for="firstName" class="form-label">${msg("firstName")}</label>
+                    <input type="text" id="firstName" class="form-control" name="firstName"
+                           value="${(register.formData.firstName!'')}"/>
+                    <#if messagesPerField.existsError('firstName')>
+                        <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('firstName'))?no_esc}</span>
+                    </#if>
                 </div>
 
-                <div class="col-sm-6 ${messagesPerField.printIfExists('lastName',properties.kcFormGroupErrorClass!)}">
-                    <div>
-                        <label for="lastName" class="${properties.kcLabelClass!}">${msg("lastName")}</label>
-                    </div>
-                    <div>
-                        <input type="text" id="lastName" class="${properties.kcInputClass!}" name="lastName"
-                               value="${(register.formData.lastName!'')}"/>
-                    </div>
+                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('lastName','has-error')}">
+                    <label for="lastName" class="form-label">${msg("lastName")}</label>
+                    <input type="text" id="lastName" class="form-control" name="lastName"
+                            value="${(register.formData.lastName!'')}"/>
+                    <#if messagesPerField.existsError('lastName')>
+                        <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('lastName'))?no_esc}</span>
+                    </#if>
                 </div>
 
             </div>
 
-            <br>
+            <div class="row">
 
-            <div class="row no-gutters" style="margin-left:-20px;margin-right:-20px">
-
-                <div class="col-sm-6 ${messagesPerField.printIfExists('user.attributes.affiliation',properties.kcFormGroupErrorClass!)}">
-                    <label for="user.attributes.affiliation" class="${properties.kcLabelClass!}">Affiliation</label>
+                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('user.attributes.affiliation','has-error')}">
+                    <label for="user.attributes.affiliation" class="form-label">Affiliation</label>
                     <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control">
                         <option selected disabled hidden>Select your org</option>
                         <optgroup label="US Government">
@@ -83,10 +74,13 @@
                             <option>Other</option>
                         </optgroup>
                     </select>
+                    <#if messagesPerField.existsError('user.attributes.affiliation')>
+                        <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('user.attributes.affiliation'))?no_esc}</span>
+                    </#if>  
                 </div>
 
-                <div class="col-sm-6 ${messagesPerField.printIfExists('user.attributes.rank',properties.kcFormGroupErrorClass!)}">
-                    <label for="user.attributes.rank" class="${properties.kcLabelClass!}">Pay Grade</label>
+                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('user.attributes.rank','has-error')}">
+                    <label for="user.attributes.rank" class="form-label">Pay Grade</label>
                     <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
                         <option selected disabled hidden>Select your rank</option>
                         <optgroup label="Enlisted">
@@ -142,118 +136,80 @@
                         </optgroup>
                         <option>N/A</option>
                     </select>
+                    <#if messagesPerField.existsError('user.attributes.rank')>
+                        <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('user.attributes.rank'))?no_esc}</span>
+                    </#if>                      
                 </div>
 
             </div>
 
-            <br>
-
-            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('user.attributes.organization',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="user.attributes.organization" class="${properties.kcLabelClass!}">Unit, Organization or
-                        Company Name</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="user.attributes.organization" class="${properties.kcInputClass!}"
-                           name="user.attributes.organization"
-                           value="${(register.formData['user.attributes.organization']!'')}" autocomplete="company"/>
-                </div>
+            <div class="form-group ${messagesPerField.printIfExists('user.attributes.organization','has-error')}">
+                <label for="user.attributes.organization" class="form-label">Unit, Organization or Company Name</label>
+                <input id="user.attributes.organization" class="form-control" name="user.attributes.organization" type="text"
+                        value="${(register.formData['user.attributes.organization']!'')}" autocomplete="company"/>
+                <#if messagesPerField.existsError('user.attributes.organization')>
+                    <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('user.attributes.organization'))?no_esc}</span>
+                </#if>                    
             </div>
-
-            <div class="${properties.kcFormGroupClass!} location-input">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="user.attributes.location" class="${properties.kcLabelClass!}">Location</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input tabindex="-1" type="text" id="user.attributes.location" class="${properties.kcInputClass!}"
-                           name="user.attributes.location" autocomplete="off"/>
+            <div class="location-input">
+                <div class="form-group">
+                    <label for="user.attributes.location" class="form-label">Location</label>
+                    <input id="user.attributes.location" class="form-control" name="user.attributes.location" tabindex="-1 type="text" />
                 </div>
             </div>
 
             <#if !realm.registrationEmailAsUsername>
-                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('username',properties.kcFormGroupErrorClass!)}">
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <label for="username" class="${properties.kcLabelClass!}">${msg("username")}</label>
-                    </div>
-                    <div class="${properties.kcInputWrapperClass!}">
-                        <input type="text" id="username" class="${properties.kcInputClass!}" name="username"
-                               value="${(register.formData.username!'')}" autocomplete="username"/>
-                    </div>
+                <div class="form-group ${messagesPerField.printIfExists('username','has-error')}">
+                    <label for="username" class="form-label">${msg("username")}</label>
+                    <input id="username" class="form-control" name="username" type="text"
+                            value="${(register.formData.username!'')}" autocomplete="username"/>
                 </div>
+                <#if messagesPerField.existsError('username')>
+                    <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('username'))?no_esc}</span>
+                </#if>    
             </#if>
 
-            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('email',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="email" class="${properties.kcLabelClass!}">${msg("email")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="email" class="${properties.kcInputClass!}" name="email"
-                           value="${(register.formData.email!'')}" autocomplete="email"/>
-                </div>
+            <div class="form-group ${messagesPerField.printIfExists('email','has-error')}">
+                <label for="email" class="form-label">${msg("email")}</label>
+                <input id="email" class="form-control" name="email" type="text"
+                        value="${(register.formData.email!'')}" autocomplete="email"/>
+                <#if messagesPerField.existsError('email')>
+                    <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('email'))?no_esc}</span>
+                </#if>                    
             </div>
 
-            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('notes',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="user.attributes.notes"
-                           class="${properties.kcLabelClass!}">${msg("accessRequest")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <textarea id="user.attributes.notes" class="${properties.kcInputClass!}"
-                              name="user.attributes.notes"></textarea>
-                </div>
+            <div class="form-group ${messagesPerField.printIfExists('notes','has-error')}">
+                <label for="user.attributes.notes" class="form-label ">${msg("accessRequest")}</label>
+                <textarea id="user.attributes.notes" class="form-control " name="user.attributes.notes"></textarea>
+            </div>                       
+        
+            <div class="form-group ${messagesPerField.printIfExists('password','has-error')}">
+                <#if cacIdentity??>
+                    <div class="alert alert-info cac-info text-white">
+                        ${msg("passwordCacMessage1")}
+                        <span class="note-important">${msg("passwordCacMessage2")}</span>
+                        ${msg("passwordCacMessage3")}
+                    </div>
+                    <label for="password" class="form-label ">${msg("passwordOptional")}</label>
+                <#else>
+                    <label for="password" class="form-label ">${msg("password")}</label>
+                </#if>
+                <input id="password" class="form-control " name="password"
+                        type="password" autocomplete="new-password"/>
+                <#if messagesPerField.existsError('password')>
+                    <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('password'))?no_esc}</span>
+                </#if>                        
             </div>
 
-            <#if cacIdentity??>
-                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <div class="note">
-                            ${msg("passwordCacMessage1")}
-                            <span class="note-important">${msg("passwordCacMessage2")}</span>
-                            ${msg("passwordCacMessage3")}
-                        </div>
-                    </div>
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <label for="password" class="${properties.kcLabelClass!}">${msg("passwordOptional")}</label>
-                    </div>
-                    <div class="${properties.kcInputWrapperClass!}">
-                        <input type="password" id="password" class="${properties.kcInputClass!}" name="password"
-                               autocomplete="new-password"/>
-                    </div>
-                </div>
-
-                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password-confirm',properties.kcFormGroupErrorClass!)}">
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <label for="password-confirm"
-                               class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
-                    </div>
-                    <div class="${properties.kcInputWrapperClass!}">
-                        <input type="password" id="password-confirm" class="${properties.kcInputClass!}"
-                               name="password-confirm"/>
-                    </div>
-                </div>
-            <#else>
-                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
-                    </div>
-                    <div class="${properties.kcInputWrapperClass!}">
-                        <input type="password" id="password" class="${properties.kcInputClass!}" name="password"
-                               autocomplete="new-password"/>
-                    </div>
-                </div>
-
-                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password-confirm',properties.kcFormGroupErrorClass!)}">
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <label for="password-confirm"
-                               class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
-                    </div>
-                    <div class="${properties.kcInputWrapperClass!}">
-                        <input type="password" id="password-confirm" class="${properties.kcInputClass!}"
-                               name="password-confirm"/>
-                    </div>
-                </div>
-            </#if>
-
+            <div class="form-group ${messagesPerField.printIfExists('password-confirm','has-error')}">
+                <label for="password-confirm" class="form-label ">${msg("passwordConfirm")}</label>
+                <input id="password-confirm" class="form-control " name="password-confirm"
+                        type="password" autocomplete="new-password"/>
+                <#if messagesPerField.existsError('password-confirm')>
+                    <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}</span>
+                </#if>                                                
+            </div>
+                            
             <#if recaptchaRequired??>
                 <div class="form-group">
                     <div class="${properties.kcInputWrapperClass!}">
@@ -263,21 +219,22 @@
                 </div>
             </#if>
 
-            <div class="${properties.kcFormGroupClass!}">
+            <div class="form-group">
                 <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
                     <input id="do-register" disabled="disabled"
-                           class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
+                           class="btn btn-primary btn-block"
                            type="submit" value="${msg("doRegister")}"/>
                 </div>
             </div>
 
         </form>
 
-        <div id="footer-text">
+        <div class="footer-text" id="footer-text">
             You must be a human to register, confidence is increased as you interact with this page.
             <br><br>
             <a>Currently only <span id="confidence">1</span>% convinced you're not a robot.</a>
         </div>
+
     </#if>
 </@layout.registrationLayout>
 
@@ -312,7 +269,7 @@
             if (count > threshold) {
                 complete = true;
 
-                const form = document.getElementById('kc-register-form');
+                const form = document.getElementById('baby-yoda-form');
                 const register = document.getElementById('do-register');
                 const location = document.getElementById('user.attributes.location');
 
