@@ -1212,9 +1212,9 @@
       "ssl": "",
       "user": ""
     },
-    "loginTheme": "p1-sso",
-    "accountTheme": "p1-sso",
-    "adminTheme": "p1-sso",
+    "loginTheme": "p1-sso-live-dev",
+    "accountTheme": "p1-sso-live-dev",
+    "adminTheme": "p1-sso-live-dev",
     "emailTheme": "keycloak",
     "eventsEnabled": false,
     "eventsExpiration": 1800,
