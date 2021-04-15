@@ -17,10 +17,24 @@ This will create an endpoint at https://keycloak.<your_domain_name>.com.  You wi
 > Keycloak requires that Istio be setup as passthrough.  To do this, set the following in Istio's `values.yaml`:
 >
 > ```yaml
-> tls:
->   mode: PASSTHROUGH
+> extraServers:
+> - port:
+>     name: https-keycloak
+>     protocol: TLS
+>     number: 8443
+>   hosts:
+>     - keycloak.bigbang.dev
+>   tls:
+>     mode: PASSTHROUGH
 > ```
 
+> If you also need Istio to terminate TLS for other apps, like logging, security, or monitoring tools, in the same cluster as Keycloak, you will need to do one of the following:
+>
+> - Create certificates for Istio TLS termination and Keycloak TLS that do not overlap
+> - Use different ingress ports for Keycloak and Istio TLS termination apps
+> - Provide two proxys (e.g. load balancers) with different IPs into the cluster, one for keycloak, and one for TLS terminated apps.
+>
+> The reason this is needed is because [browsers reuse connections that have the same IP:Port and a valid certificate](https://httpwg.org/specs/rfc7540.html#rfc.section.9.1.1).  [Istio should attempt to detect and return a 421 response](https://github.com/istio/istio/issues/13589) to not reuse the connection, but it doesn't (yet), which results in a [data leak vulnerability](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-11767) to the wrong application, and typically a 404 error.  This happens when you go to one of the TLS terminated apps first, then attempt to connect to keycloak second.
 ## Admin user
 
 The administrative user's credentials are pulled from a secret named `credentials` created by the helm chart.  To override the default username and password, set the following in your `values.yaml`:
