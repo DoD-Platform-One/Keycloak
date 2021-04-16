@@ -2308,7 +2308,7 @@
         "config": {}
       }
     ],
-    "browserFlow": "P1 Authentication",
+    "browserFlow": "browser",
     "registrationFlow": "P1 Registration",
     "directGrantFlow": "direct grant",
     "resetCredentialsFlow": "P1 Reset Credentials",

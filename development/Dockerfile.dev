@@ -19,7 +19,7 @@ COPY chart/scripts/bigbang.cli /opt/jboss/startup-scripts/keycloak-init.cli
 
 COPY development/x509.sh /opt/jboss/tools/x509.sh
 
-# ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
+ENV KEYCLOAK_IMPORT /opt/baby-yoda.json
 ENV DB_VENDOR h2
 ENV KEYCLOAK_USER admin 
 ENV KEYCLOAK_PASSWORD pass
