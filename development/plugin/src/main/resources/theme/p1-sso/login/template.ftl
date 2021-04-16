@@ -33,21 +33,28 @@
 
 <body class="${properties.kcBodyClass!} row justify-content-center h100">
        
-      <div class="col-lg-8 col-md-10 col-sm-12 my-auto">
+    <div class="col-lg-8 col-md-10 col-sm-12 my-auto">
         <div class="card align-self-center mx-auto">
 
-            <div class="card-header">
-                <#if client?? && client.name?has_content>
-                    <h2 class="client-unique-name">${client.name}</h2>
-                <#else>
-                    <h2>${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</h2>
-                </#if>
-                <#if client?? && client.description?has_content>
-                    <img src="${client.description}" class="client-unique-logo"/>
-                <#else>
-                    <div class="baby-yoda-logo">&nbsp;</div>
-                </#if>
+            <div class="card-header branding row">
+                <div class="col-sm-5 p-0">
+                    <#if client?? && client.description?has_content>
+                        <img src="${client.description}"/>
+                    <#else>
+                        <img src="${url.resourcesPath}/img/p1-logo.png"/>
+                    </#if>
+                </div>
+                <div class="col-sm-1">&nbsp;</div>
+                <div class="col-sm-6 my-auto">
+                    <#if client?? && client.name?has_content>
+                        <h2 class="client-unique-name">${client.name?no_esc}</h2>
+                    <#else>
+                        <h2>${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</h2>
+                    </#if>
+                </div>
             </div>
+            
+            <br>
 
             <div class="card-body">
                 <#-- App-initiated actions should not see warning messages about the need to complete the action -->
@@ -79,7 +86,12 @@
                 </#if>
             </div>
         </div>
-    
+    </div>
+
+    <footer class="fixed-footer">
+        <img src="${url.resourcesPath}/img/yoda-mission-obsessed.png" />
+        Powered by DoD Platform One 
+    </footer>
 </body>
 </html>
 </#macro>

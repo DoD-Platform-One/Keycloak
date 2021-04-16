@@ -7,7 +7,7 @@
             <#if cacIdentity??>
                 <div class="alert alert-info cac-info">
                     <h2>DoD PKI User Registration</h2>
-                    <h4>${cacIdentity}</h4>
+                    <p>${cacIdentity}</p>
                 </div>
             <#else>
                 <div class="alert alert-info cac-info">
@@ -163,10 +163,10 @@
                     <label for="username" class="form-label">${msg("username")}</label>
                     <input id="username" class="form-control" name="username" type="text"
                             value="${(register.formData.username!'')}" autocomplete="username"/>
+                    <#if messagesPerField.existsError('username')>
+                        <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('username'))?no_esc}</span>
+                    </#if>    
                 </div>
-                <#if messagesPerField.existsError('username')>
-                    <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('username'))?no_esc}</span>
-                </#if>    
             </#if>
 
             <div class="form-group ${messagesPerField.printIfExists('email','has-error')}">

@@ -50,7 +50,7 @@
     const feedback = document.getElementsByClassName('kc-feedback-text')[0];
     if (feedback && feedback.innerHTML.indexOf('X509 certificate') > -1 && feedback.innerHTML.indexOf('Invalid user') > -1) {
         feedback.parentElement.outerHTML = [
-            '<div class="alert alert-info" id="cac-info">',
+            '<div class="alert alert-info cac-info">',
             '<h2>New DoD PKI Detected</h2>',
             '<div style="line-height: 2rem;">If you do not have an account yet, <a href="/register">click to register</a> now.  Otherwise, please login with your username/password to associate this CAC with your existing account.',
             '</div></div>'
