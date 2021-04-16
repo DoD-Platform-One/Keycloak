@@ -10,7 +10,7 @@ Platform One Keycloak customizations.
     Keycloak 11.0.1 (WildFly Core 11.1.1.Final) started in 20825ms - Started 809 of 1116 services (721 services are lazy, passive or on-demand)
     ```
 
-2. Navigate Browser to `https://keycloak.bigbang.dev:8443/auth/admin`
+2. Navigate Browser to `https://keycloak.bigbang.run:8443/auth/admin`
 3. Login with Username: `admin` and Password: `pass`
 4. Happy Debugging!
 5. Inline re-builds: `./build.sh update`

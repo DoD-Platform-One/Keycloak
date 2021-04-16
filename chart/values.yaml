@@ -578,7 +578,7 @@ test:
 
 # Big Bang Additions
 ## Your FQDN will be ${ .Values.subdomain }.${ .Values.hostname }
-hostname: bigbang.dev
+hostname: bigbang.run
 istio:
   # Toggle istio integration
   enabled: false
