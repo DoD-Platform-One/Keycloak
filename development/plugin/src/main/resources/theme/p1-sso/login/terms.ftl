@@ -5,10 +5,10 @@
     <#elseif section = "form">
         <div id="kc-terms-text">
             <div>
-                <h1>You are accessing a U.S. Government (USG) Information System (IS) that is provided for
-                    USG-authorized use only.</h1>
-                <h2>By using this IS (which includes any device attached to this IS), you consent to the following
-                    conditions:</h2>
+                <h4>You are accessing a U.S. Government (USG) Information System (IS) that is provided for
+                    USG-authorized use only.</h4>
+                <h5>By using this IS (which includes any device attached to this IS), you consent to the following
+                    conditions:</h5>
                 <ul>
                     <li>The USG routinely intercepts and monitors communications on this IS for purposes including, but
                         not limited to, penetration testing, COMSEC monitoring, network operations and defense,

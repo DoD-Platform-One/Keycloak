@@ -636,7 +636,7 @@ The headless service that governs the StatefulSet is used for DNS discovery via 
 
 ### From chart < 10.0.0
 
-* Keycloak is updated to 12.0.4
+* Keycloak is updated to 13.0.0
 
 The upgrade should be seemless.
 No special care has to be taken.
