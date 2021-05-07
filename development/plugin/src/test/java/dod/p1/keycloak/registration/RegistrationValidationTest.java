@@ -301,6 +301,21 @@ public class RegistrationValidationTest {
                     }
 
                     @Override
+                    public ClientScopeProvider clientScopeLocalStorage() {
+                        return null;
+                    }
+
+                    @Override
+                    public ClientScopeProvider clientScopeStorageManager() {
+                        return null;
+                    }
+
+                    @Override
+                    public ClientScopeProvider clientScopes() {
+                        return null;
+                    }
+
+                    @Override
                     public UserFederatedStorageProvider userFederatedStorage() {
                         return null;
                     }
@@ -329,6 +344,12 @@ public class RegistrationValidationTest {
                     public ClientPolicyManager clientPolicy() {
                         return null;
                     }
+
+                    @Override
+                    public UserLoginFailureProvider loginFailures() {
+                        return null;
+                    }
+
                 };
             }
 
