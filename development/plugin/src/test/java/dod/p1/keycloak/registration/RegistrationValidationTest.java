@@ -184,6 +184,11 @@ public class RegistrationValidationTest {
                     }
 
                     @Override
+                    public <T extends Provider> T getComponentProvider(Class<T> clazz, String componentId) {
+                        return null;
+                    }
+
+                    @Override
                     public <T extends Provider> T getProvider(Class<T> aClass, ComponentModel componentModel) {
                         return null;
                     }
@@ -220,6 +225,11 @@ public class RegistrationValidationTest {
 
                     @Override
                     public void setAttribute(String s, Object o) {
+
+                    }
+
+                    @Override
+                    public void invalidate(InvalidableObjectType type, Object... ids) {
 
                     }
 
