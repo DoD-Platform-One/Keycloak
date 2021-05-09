@@ -1,17 +1,16 @@
 package dod.p1.keycloak.authentication;
 
+import java.util.List;
+
 import org.keycloak.Config;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.authentication.AuthenticatorFactory;
-import org.keycloak.authentication.ConfigurableAuthenticatorFactory;
 import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.provider.ProviderConfigProperty;
 
-import java.util.List;
-
-public class RequireGroupAuthenticatorFactory implements AuthenticatorFactory, ConfigurableAuthenticatorFactory {
+public class RequireGroupAuthenticatorFactory implements AuthenticatorFactory {
 
     public static final String PROVIDER_ID = "p1-group-restriction";
     public static final RequireGroupAuthenticator GROUP_AUTHENTICATOR = new RequireGroupAuthenticator();

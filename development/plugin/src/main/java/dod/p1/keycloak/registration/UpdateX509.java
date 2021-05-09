@@ -1,5 +1,17 @@
 package dod.p1.keycloak.registration;
 
+import static dod.p1.keycloak.common.CommonConfig.getInstance;
+import static dod.p1.keycloak.registration.X509Tools.getX509IdentityFromCertChain;
+import static dod.p1.keycloak.registration.X509Tools.getX509Username;
+import static dod.p1.keycloak.registration.X509Tools.isX509Registered;
+import static org.keycloak.services.x509.DefaultClientCertificateLookup.JAVAX_SERVLET_REQUEST_X509_CERTIFICATE;
+
+import java.security.cert.X509Certificate;
+
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
 import org.keycloak.Config;
 import org.keycloak.authentication.RequiredActionContext;
 import org.keycloak.authentication.RequiredActionFactory;
@@ -9,15 +21,6 @@ import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.sessions.AuthenticationSessionModel;
-
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import java.security.cert.X509Certificate;
-
-import static dod.p1.keycloak.common.CommonConfig.getInstance;
-import static dod.p1.keycloak.registration.X509Tools.*;
-import static org.keycloak.services.x509.DefaultClientCertificateLookup.JAVAX_SERVLET_REQUEST_X509_CERTIFICATE;
 
 public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory {
 
@@ -35,7 +38,8 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
         RealmModel realm = context.getRealm();
         AuthenticationSessionModel authenticationSession = context.getAuthenticationSession();
 
-        X509Certificate[] certAttribute = (X509Certificate[]) context.getHttpRequest().getAttribute(JAVAX_SERVLET_REQUEST_X509_CERTIFICATE);
+        X509Certificate[] certAttribute = (X509Certificate[]) context.getHttpRequest()
+                .getAttribute(JAVAX_SERVLET_REQUEST_X509_CERTIFICATE);
         String identity = (String) getX509IdentityFromCertChain(certAttribute, realm, authenticationSession);
         context.getUser().setSingleAttribute(getInstance(realm).getUserActive509Attribute(), identity);
 
@@ -109,5 +113,3 @@ public class UpdateX509 implements RequiredActionProvider, RequiredActionFactory
     }
 
 }
-
-

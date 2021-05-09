@@ -1,6 +1,15 @@
 package dod.p1.keycloak.registration;
 
-import dod.p1.keycloak.common.CommonConfig;
+import static dod.p1.keycloak.common.CommonConfig.getInstance;
+
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.keycloak.authentication.FormContext;
 import org.keycloak.authentication.ValidationContext;
 import org.keycloak.authentication.forms.RegistrationPage;
@@ -15,22 +24,14 @@ import org.keycloak.models.utils.FormMessage;
 import org.keycloak.services.messages.Messages;
 import org.keycloak.services.validation.Validation;
 
-import javax.ws.rs.core.MultivaluedMap;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static dod.p1.keycloak.common.CommonConfig.getInstance;
+import dod.p1.keycloak.common.CommonConfig;
 
 public class RegistrationValidation extends RegistrationProfile {
 
     public static final String PROVIDER_ID = "registration-validation-action";
 
     private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
-            AuthenticationExecutionModel.Requirement.REQUIRED
-    };
+            AuthenticationExecutionModel.Requirement.REQUIRED };
 
     private static void bindRequiredActions(UserModel user, String x509Username) {
         // Default actions for all users
@@ -59,8 +60,7 @@ public class RegistrationValidation extends RegistrationProfile {
 
         long domainMatchCount = config.getEmailMatchAutoJoinGroup()
                 .filter(collection -> collection.getDomains().stream().anyMatch(email::endsWith))
-                .peek(collection -> collection.getGroupModels().forEach(user::joinGroup))
-                .count();
+                .peek(collection -> collection.getGroupModels().forEach(user::joinGroup)).count();
 
         if (x509Username != null) {
             config.getAutoJoinGroupX509().forEach(user::joinGroup);
@@ -72,7 +72,8 @@ public class RegistrationValidation extends RegistrationProfile {
     }
 
     /**
-     * Add a custom user attribute (mattermostid) to enable direct mattermost <> keycloak auth on mattermost teams edition
+     * Add a custom user attribute (mattermostid) to enable direct mattermost <>
+     * keycloak auth on mattermost teams edition
      *
      * @param formData The user registration form data
      */
@@ -156,7 +157,8 @@ public class RegistrationValidation extends RegistrationProfile {
         // Username validation based on Mattermost requirements.
         if (!Validation.isBlank(username)) {
             if (!username.matches("[A-Za-z0-9-_.]+")) {
-                errors.add(new FormMessage(Validation.FIELD_USERNAME, "Username can only contain alphanumeric, underscore, hyphen and period characters."));
+                errors.add(new FormMessage(Validation.FIELD_USERNAME,
+                        "Username can only contain alphanumeric, underscore, hyphen and period characters."));
             }
 
             if (!Character.isLetter(username.charAt(0))) {
@@ -199,10 +201,11 @@ public class RegistrationValidation extends RegistrationProfile {
 
         if (Validation.isBlank(email) || !Validation.isEmailValid(email)) {
             context.getEvent().detail(Details.EMAIL, email);
-            errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL, "Please check your email address, it seems to be invalid"));
+            errors.add(new FormMessage(RegistrationPage.FIELD_EMAIL,
+                    "Please check your email address, it seems to be invalid"));
         }
 
-        if (context.getSession().users().getUserByEmail(email, context.getRealm()) != null) {
+        if (context.getSession().users().getUserByEmail(context.getRealm(), email) != null) {
             eventError = Errors.EMAIL_IN_USE;
             formData.remove("email");
             context.getEvent().detail("email", email);

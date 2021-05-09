@@ -1,6 +1,15 @@
 package dod.p1.keycloak.authentication;
 
-import dod.p1.keycloak.common.CommonConfig;
+import static dod.p1.keycloak.utils.Utils.setupFileMocks;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,21 +20,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.Arrays;
-
-import static dod.p1.keycloak.utils.Utils.setupFileMocks;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import dod.p1.keycloak.common.CommonConfig;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({
-        Yaml.class,
-        FileInputStream.class,
-        File.class,
-        CommonConfig.class
-})
+@PrepareForTest({ Yaml.class, FileInputStream.class, File.class, CommonConfig.class })
 public class RequireGroupAuthenticatorFactoryTest {
 
     public static final String EXPECTED_ID = "p1-group-restriction";
@@ -62,7 +60,8 @@ public class RequireGroupAuthenticatorFactoryTest {
     @Test
     public void testShouldForceAuthenticatorAsRequired() {
         AuthenticationExecutionModel.Requirement[] actualRequirementChoices = subjectUnderTest.getRequirementChoices();
-        AuthenticationExecutionModel.Requirement actionChoices = Arrays.stream(actualRequirementChoices).findFirst().orElse(null);
+        AuthenticationExecutionModel.Requirement actionChoices = Arrays.stream(actualRequirementChoices).findFirst()
+                .orElse(null);
         assertEquals(actualRequirementChoices.length, 1);
         assertEquals(actionChoices, AuthenticationExecutionModel.Requirement.REQUIRED);
     }

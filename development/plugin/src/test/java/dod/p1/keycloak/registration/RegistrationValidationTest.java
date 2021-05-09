@@ -1,6 +1,27 @@
 package dod.p1.keycloak.registration;
 
-import dod.p1.keycloak.common.CommonConfig;
+import static dod.p1.keycloak.utils.Utils.setupFileMocks;
+import static dod.p1.keycloak.utils.Utils.setupX509Mocks;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
+
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.ResteasyAsynchronousContext;
@@ -17,7 +38,26 @@ import org.keycloak.component.ComponentModel;
 import org.keycloak.events.Errors;
 import org.keycloak.events.EventBuilder;
 import org.keycloak.forms.login.LoginFormsProvider;
-import org.keycloak.models.*;
+import org.keycloak.models.AuthenticationExecutionModel;
+import org.keycloak.models.AuthenticatorConfigModel;
+import org.keycloak.models.ClientProvider;
+import org.keycloak.models.ClientScopeProvider;
+import org.keycloak.models.GroupProvider;
+import org.keycloak.models.KeyManager;
+import org.keycloak.models.KeycloakContext;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.KeycloakSessionFactory;
+import org.keycloak.models.KeycloakTransactionManager;
+import org.keycloak.models.RealmModel;
+import org.keycloak.models.RealmProvider;
+import org.keycloak.models.RoleProvider;
+import org.keycloak.models.ThemeManager;
+import org.keycloak.models.TokenManager;
+import org.keycloak.models.UserCredentialManager;
+import org.keycloak.models.UserLoginFailureProvider;
+import org.keycloak.models.UserModel;
+import org.keycloak.models.UserProvider;
+import org.keycloak.models.UserSessionProvider;
 import org.keycloak.models.cache.UserCache;
 import org.keycloak.models.utils.FormMessage;
 import org.keycloak.provider.Provider;
@@ -31,28 +71,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static dod.p1.keycloak.utils.Utils.setupFileMocks;
-import static dod.p1.keycloak.utils.Utils.setupX509Mocks;
-import static org.mockito.Mockito.*;
+import dod.p1.keycloak.common.CommonConfig;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({
-        Yaml.class,
-        FileInputStream.class,
-        File.class,
-        CommonConfig.class,
-        X509Tools.class
-})
+@PrepareForTest({ Yaml.class, FileInputStream.class, File.class, CommonConfig.class, X509Tools.class })
 public class RegistrationValidationTest {
 
     @Before
@@ -61,7 +83,8 @@ public class RegistrationValidationTest {
         setupFileMocks();
     }
 
-    public ValidationContext setupVariables(String[] errorEvent, List<FormMessage> errors, MultivaluedMap<String, String> multivaluedMap) {
+    public ValidationContext setupVariables(String[] errorEvent, List<FormMessage> errors,
+            MultivaluedMap<String, String> multivaluedMap) {
         return new ValidationContext() {
             final RealmModel realmModel = mock(RealmModel.class);
 
@@ -276,7 +299,8 @@ public class RegistrationValidationTest {
                     @Override
                     public UserProvider users() {
                         UserProvider userProvider = mock(UserProvider.class);
-                        when(userProvider.getUserByEmail("test@ss.usafa.edu", realmModel)).thenReturn(mock(UserModel.class));
+                        when(userProvider.getUserByEmail(realmModel, "test@ss.usafa.edu"))
+                                .thenReturn(mock(UserModel.class));
                         return userProvider;
                     }
 
@@ -555,7 +579,7 @@ public class RegistrationValidationTest {
         validation.validate(context);
         Assert.assertEquals(0, errors.size());
 
-        //test valid IL2 email with custom domains
+        // test valid IL2 email with custom domains
         valueMap.putSingle("email", "rando@supercool.unicorns.com");
         errorEvent = new String[1];
         errors = new ArrayList<>();
@@ -566,7 +590,7 @@ public class RegistrationValidationTest {
         Assert.assertNull(errorEvent[0]);
         Assert.assertEquals(0, errors.size());
 
-        //test valid IL4 email with custom domains
+        // test valid IL4 email with custom domains
         valueMap.putSingle("email", "test22@ss.usafa.edu");
         errorEvent = new String[1];
         errors = new ArrayList<>();
@@ -624,9 +648,7 @@ public class RegistrationValidationTest {
     @Test
     public void testGetRequirementChoices() {
         RegistrationValidation subject = new RegistrationValidation();
-        AuthenticationExecutionModel.Requirement[] expected = {
-                AuthenticationExecutionModel.Requirement.REQUIRED
-        };
+        AuthenticationExecutionModel.Requirement[] expected = { AuthenticationExecutionModel.Requirement.REQUIRED };
         Assert.assertEquals(subject.getRequirementChoices(), expected);
     }
 

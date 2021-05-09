@@ -1,6 +1,13 @@
 package dod.p1.keycloak.registration;
 
-import dod.p1.keycloak.common.CommonConfig;
+import static dod.p1.keycloak.common.CommonConfig.getInstance;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.cert.X509Certificate;
+import java.util.stream.Stream;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -14,26 +21,13 @@ import org.keycloak.authentication.RequiredActionContext;
 import org.keycloak.authentication.authenticators.x509.AbstractX509ClientCertificateAuthenticator;
 import org.keycloak.authentication.authenticators.x509.X509AuthenticatorConfigModel;
 import org.keycloak.authentication.authenticators.x509.X509ClientCertificateAuthenticator;
-import org.keycloak.authentication.authenticators.x509.OCSPUtils;
-import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.services.x509.X509ClientCertificateLookup;
 import org.keycloak.sessions.AuthenticationSessionModel;
-import sun.security.x509.X509CertImpl;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.security.GeneralSecurityException;
-import java.security.cert.CertPathValidatorException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.List;
-
-import static dod.p1.keycloak.common.CommonConfig.getInstance;
-import static sun.security.provider.certpath.OCSP.getResponderURI;
+import dod.p1.keycloak.common.CommonConfig;
 
 public class X509Tools {
 
@@ -49,8 +43,9 @@ public class X509Tools {
         String username = getX509Username(session, httpRequest, realm);
         logger.info(logPrefix + " X509 ID: " + username);
         if (username != null) {
-            List<UserModel> users = session.users().searchForUserByUserAttribute(CommonConfig.getInstance(realm).getUserIdentityAttribute(), username, realm);
-            return users != null && users.size() > 0;
+            Stream<UserModel> users = session.users().searchForUserByUserAttributeStream(realm,
+                    CommonConfig.getInstance(realm).getUserIdentityAttribute(), username);
+            return users != null && users.count() > 0;
         }
         return false;
     }
@@ -79,21 +74,6 @@ public class X509Tools {
         return getX509Username(context.getSession(), context.getHttpRequest(), context.getRealm());
     }
 
-    public static OCSPUtils.OCSPRevocationStatus check(KeycloakSession session, X509Certificate cert,
-                                                       X509Certificate issuerCert)
-            throws CertPathValidatorException, CertificateException {
-        URI responderURI = null;
-
-        X509CertImpl certImpl = X509CertImpl.toImpl(cert);
-        responderURI = getResponderURI(certImpl);
-        if (responderURI == null) {
-            throw new CertPathValidatorException
-                    ("No OCSP Responder URI in certificate");
-        }
-        return OCSPUtils.check(session, cert, issuerCert, responderURI, cert, null);
-    }
-
-
     public static String getCertificatePolicyId(X509Certificate cert, int certificatePolicyPos, int policyIdentifierPos)
             throws IOException {
         byte[] extPolicyBytes = cert.getExtensionValue(CERTIFICATE_POLICY_OID);
@@ -101,14 +81,16 @@ public class X509Tools {
             return null;
         }
 
-        DEROctetString oct = (DEROctetString) (new ASN1InputStream(new ByteArrayInputStream(extPolicyBytes)).readObject());
+        DEROctetString oct = (DEROctetString) (new ASN1InputStream(new ByteArrayInputStream(extPolicyBytes))
+                .readObject());
         ASN1Sequence seq = (ASN1Sequence) new ASN1InputStream(new ByteArrayInputStream(oct.getOctets())).readObject();
 
         if (seq.size() <= (certificatePolicyPos)) {
             return null;
         }
 
-        CertificatePolicies certificatePolicies = new CertificatePolicies(PolicyInformation.getInstance(seq.getObjectAt(certificatePolicyPos)));
+        CertificatePolicies certificatePolicies = new CertificatePolicies(
+                PolicyInformation.getInstance(seq.getObjectAt(certificatePolicyPos)));
         if (certificatePolicies.getPolicyInformation().length <= policyIdentifierPos) {
             return null;
         }
@@ -117,7 +99,8 @@ public class X509Tools {
         return policyInformation[policyIdentifierPos].getPolicyIdentifier().getId();
     }
 
-    public static Object getX509IdentityFromCertChain(X509Certificate[] certs, RealmModel realm, AuthenticationSessionModel authenticationSession) {
+    public static Object getX509IdentityFromCertChain(X509Certificate[] certs, RealmModel realm,
+            AuthenticationSessionModel authenticationSession) {
 
         String logPrefix = getLogPrefix(authenticationSession, "GET_X509_IDENTITY_FROM_CHAIN");
 
@@ -137,7 +120,8 @@ public class X509Tools {
                     break;
                 }
                 logger.info(logPrefix + " checking cert policy " + certificatePolicyId);
-                hasValidPolicy = getInstance(realm).getRequiredCertificatePolicies().anyMatch(s -> s.equals(certificatePolicyId));
+                hasValidPolicy = getInstance(realm).getRequiredCertificatePolicies()
+                        .anyMatch(s -> s.equals(certificatePolicyId));
                 index++;
             } catch (Exception ignored) {
                 logger.warn(logPrefix + " error parsing cert policies");
@@ -151,14 +135,14 @@ public class X509Tools {
             return null;
         }
 
-        if (realm.getAuthenticatorConfigs() != null) {
-            for (AuthenticatorConfigModel config : realm.getAuthenticatorConfigs()) {
+        if (realm.getAuthenticatorConfigsStream().count() > 0) {
+            return realm.getAuthenticatorConfigsStream().filter(config -> {
+                return config.getConfig().containsKey(AbstractX509ClientCertificateAuthenticator.CUSTOM_ATTRIBUTE_NAME);
+            }).map(config -> {
                 X509ClientCertificateAuthenticator authenticator = new X509ClientCertificateAuthenticator();
-                if (config.getConfig().containsKey(AbstractX509ClientCertificateAuthenticator.CUSTOM_ATTRIBUTE_NAME)) {
-                    X509AuthenticatorConfigModel model = new X509AuthenticatorConfigModel(config);
-                    return authenticator.getUserIdentityExtractor(model).extractUserIdentity(certs);
-                }
-            }
+                X509AuthenticatorConfigModel model = new X509AuthenticatorConfigModel(config);
+                return authenticator.getUserIdentityExtractor(model).extractUserIdentity(certs);
+            }).findFirst().orElse(null);
         }
 
         return null;

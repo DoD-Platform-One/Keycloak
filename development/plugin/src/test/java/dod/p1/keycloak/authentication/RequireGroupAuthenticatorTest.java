@@ -1,6 +1,16 @@
 package dod.p1.keycloak.authentication;
 
-import dod.p1.keycloak.common.CommonConfig;
+import static dod.p1.keycloak.utils.Utils.setupFileMocks;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.io.FileInputStream;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,21 +26,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileInputStream;
-
-import static dod.p1.keycloak.utils.Utils.setupFileMocks;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import dod.p1.keycloak.common.CommonConfig;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({
-        Yaml.class,
-        FileInputStream.class,
-        File.class,
-        CommonConfig.class
-})
+@PrepareForTest({ Yaml.class, FileInputStream.class, File.class, CommonConfig.class })
 public class RequireGroupAuthenticatorTest {
 
     private RequireGroupAuthenticator subject;

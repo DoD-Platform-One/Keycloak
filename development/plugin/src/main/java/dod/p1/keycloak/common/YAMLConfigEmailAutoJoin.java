@@ -1,11 +1,12 @@
 package dod.p1.keycloak.common;
 
+import java.util.List;
+
+import org.keycloak.models.GroupModel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.keycloak.models.GroupModel;
-
-import java.util.List;
 
 @Getter
 @Setter

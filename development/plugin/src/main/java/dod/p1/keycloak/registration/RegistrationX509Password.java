@@ -1,5 +1,10 @@
 package dod.p1.keycloak.registration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.keycloak.Config;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.FormContext;
@@ -9,7 +14,11 @@ import org.keycloak.authentication.forms.RegistrationPassword;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
 import org.keycloak.forms.login.LoginFormsProvider;
-import org.keycloak.models.*;
+import org.keycloak.models.AuthenticationExecutionModel;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.KeycloakSessionFactory;
+import org.keycloak.models.RealmModel;
+import org.keycloak.models.UserModel;
 import org.keycloak.models.credential.PasswordCredentialModel;
 import org.keycloak.models.utils.FormMessage;
 import org.keycloak.policy.PasswordPolicyManagerProvider;
@@ -17,15 +26,10 @@ import org.keycloak.policy.PolicyError;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.services.messages.Messages;
 
-import javax.ws.rs.core.MultivaluedMap;
-import java.util.ArrayList;
-import java.util.List;
-
 public class RegistrationX509Password extends RegistrationPassword {
     public static final String PROVIDER_ID = "registration-x509-password-action";
     private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
-            AuthenticationExecutionModel.Requirement.REQUIRED
-    };
+            AuthenticationExecutionModel.Requirement.REQUIRED };
 
     @Override
     public String getHelpText() {
@@ -48,17 +52,22 @@ public class RegistrationX509Password extends RegistrationPassword {
         List<FormMessage> errors = new ArrayList<>();
         context.getEvent().detail(Details.REGISTER_METHOD, "form");
 
-        if (formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty() && formData.getFirst(RegistrationPage.FIELD_PASSWORD_CONFIRM).isEmpty()) {
+        if (formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty()
+                && formData.getFirst(RegistrationPage.FIELD_PASSWORD_CONFIRM).isEmpty()) {
             context.success();
             return;
         }
 
-        if (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).equals(formData.getFirst(RegistrationPage.FIELD_PASSWORD_CONFIRM))) {
+        if (!formData.getFirst(RegistrationPage.FIELD_PASSWORD)
+                .equals(formData.getFirst(RegistrationPage.FIELD_PASSWORD_CONFIRM))) {
             errors.add(new FormMessage(RegistrationPage.FIELD_PASSWORD_CONFIRM, Messages.INVALID_PASSWORD_CONFIRM));
         }
 
         if (formData.getFirst(RegistrationPage.FIELD_PASSWORD) != null) {
-            PolicyError err = context.getSession().getProvider(PasswordPolicyManagerProvider.class).validate(context.getRealm().isRegistrationEmailAsUsername() ? formData.getFirst(RegistrationPage.FIELD_EMAIL) : formData.getFirst(RegistrationPage.FIELD_USERNAME), formData.getFirst(RegistrationPage.FIELD_PASSWORD));
+            PolicyError err = context.getSession().getProvider(PasswordPolicyManagerProvider.class).validate(
+                    context.getRealm().isRegistrationEmailAsUsername() ? formData.getFirst(RegistrationPage.FIELD_EMAIL)
+                            : formData.getFirst(RegistrationPage.FIELD_USERNAME),
+                    formData.getFirst(RegistrationPage.FIELD_PASSWORD));
             if (err != null)
                 errors.add(new FormMessage(RegistrationPage.FIELD_PASSWORD, err.getMessage(), err.getParameters()));
         }
@@ -78,7 +87,8 @@ public class RegistrationX509Password extends RegistrationPassword {
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
         UserModel user = context.getUser();
 
-        if ((X509Tools.getX509Username(context) == null) || (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty())) {
+        if ((X509Tools.getX509Username(context) == null)
+                || (!formData.getFirst(RegistrationPage.FIELD_PASSWORD).isEmpty())) {
             super.success(context);
             // TOTP also enforced in RegistrationValidation class for non-CAC registration
             user.addRequiredAction(UserModel.RequiredAction.CONFIGURE_TOTP);

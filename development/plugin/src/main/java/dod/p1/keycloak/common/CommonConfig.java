@@ -1,9 +1,8 @@
 package dod.p1.keycloak.common;
 
-import org.keycloak.models.GroupModel;
-import org.keycloak.models.RealmModel;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
+import static java.lang.System.exit;
+import static jdk.nashorn.internal.runtime.Context.err;
+import static org.keycloak.models.utils.KeycloakModelUtils.findGroupByPath;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +12,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.lang.System.exit;
-import static jdk.nashorn.internal.runtime.Context.err;
-import static org.keycloak.models.utils.KeycloakModelUtils.findGroupByPath;
+import org.keycloak.models.GroupModel;
+import org.keycloak.models.RealmModel;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 public final class CommonConfig {
 

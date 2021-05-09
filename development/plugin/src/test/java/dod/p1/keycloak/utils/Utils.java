@@ -1,11 +1,7 @@
 package dod.p1.keycloak.utils;
 
-import dod.p1.keycloak.common.YAMLConfig;
-import dod.p1.keycloak.registration.X509Tools;
-import org.keycloak.authentication.FormContext;
-import org.powermock.api.mockito.PowerMockito;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -13,8 +9,13 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import org.keycloak.authentication.FormContext;
+import org.powermock.api.mockito.PowerMockito;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+
+import dod.p1.keycloak.common.YAMLConfig;
+import dod.p1.keycloak.registration.X509Tools;
 
 public class Utils {
 

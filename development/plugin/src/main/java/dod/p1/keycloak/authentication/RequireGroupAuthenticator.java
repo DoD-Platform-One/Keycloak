@@ -1,17 +1,22 @@
 package dod.p1.keycloak.authentication;
 
-import dod.p1.keycloak.common.CommonConfig;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
-import org.keycloak.models.*;
+import org.keycloak.models.ClientModel;
+import org.keycloak.models.GroupModel;
+import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.RealmModel;
+import org.keycloak.models.UserModel;
 import org.keycloak.sessions.AuthenticationSessionModel;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import dod.p1.keycloak.common.CommonConfig;
 
 /**
  * Simple {@link Authenticator} that checks of a user is member of a given {@link GroupModel Group}.
@@ -95,7 +100,7 @@ public class RequireGroupAuthenticator implements Authenticator {
             return false;
         }
 
-        String groupList = user.getGroups().stream()
+        String groupList = user.getGroupsStream()
                 .map(GroupModel::getId)
                 .collect(Collectors.joining(","));
 

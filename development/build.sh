@@ -2,9 +2,9 @@
 
 function update_java() {
     pushd plugin
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk11 gradle build
+    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk8 gradle build
     mkdir -p build/docker
-    cp build/libs/keycloak-registration-validation-1.3-all.jar build/docker/p1.jar
+    cp build/libs/platform-one-sso-1.0.0-all.jar build/docker/p1.jar
     popd
 }
 
@@ -13,6 +13,10 @@ function release() {
     cp plugin/build/docker/p1.jar ../deploy/resources/p1-sso-plugin.jar
     cp plugin/build/docker/p1.jar ../chart/resources/p1-sso-plugin.jar
 }
+
+# function buildProd() {
+    
+# }
 
 function build() {
     docker kill p1-keycloak
