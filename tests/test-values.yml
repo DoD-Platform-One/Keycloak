@@ -1,3 +1,9 @@
+# Custom realm configuration
+secrets:
+  realm:
+    stringData:
+      realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
+
 istio:
   enabled: true
   keycloak:

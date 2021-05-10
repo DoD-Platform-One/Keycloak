@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/test-keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: "11.0.1"
+  tag: "13.0.0"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -111,20 +111,26 @@ extraEnv: |-
     value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
   - name: JAVA_OPTIONS
     value: -Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled
+  {{- if .Values.secrets.credentials.stringData.adminuser }}
   - name: KEYCLOAK_USER
     valueFrom:
       secretKeyRef:
         key: adminuser
         name: {{ include "keycloak.fullname" . }}-credentials
+  {{- end }}
+  {{- if .Values.secrets.credentials.stringData.password }}
   - name: KEYCLOAK_PASSWORD
     valueFrom:
       secretKeyRef:
         key: password
         name: {{ include "keycloak.fullname" . }}-credentials
+  {{- end }}
   - name: PROXY_ADDRESS_FORWARDING
     value: "true"
+  {{- if index .Values.secrets.certificates.stringData "cas.pem" }}
   - name: X509_CA_BUNDLE
     value: /etc/x509/https/cas.pem
+  {{- end }}
   - name: JGROUPS_DISCOVERY_PROTOCOL
     value: dns.DNS_PING
   - name: JGROUPS_DISCOVERY_PROPERTIES
@@ -135,10 +141,14 @@ extraEnv: |-
     value: "2"
   - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
     value: "2"
+  {{- if index .Values.secrets.customreg.stringData "customreg.yaml" }}
   - name: CUSTOM_REGISTRATION_CONFIG
     value: /opt/jboss/keycloak/customreg.yaml
+  {{- end }}
+  {{- if index .Values.secrets.realm.stringData "realm.json" }}
   - name: KEYCLOAK_IMPORT
     value: /opt/jboss/keycloak/realm.json
+  {{- end }}
   {{- if .Values.serviceMonitor.enabled }}
   - name: KEYCLOAK_STATISTICS
     value: all
@@ -193,8 +203,8 @@ podAnnotations: {}
 livenessProbe: |
   httpGet:
     path: /auth/realms/master
-    port: https
-    scheme: HTTPS
+    port: http
+    scheme: HTTP
   initialDelaySeconds: 120
   failureThreshold: 15
   periodSeconds: 15
@@ -204,8 +214,8 @@ livenessProbe: |
 readinessProbe: |
   httpGet:
     path: /auth/realms/master
-    port: https
-    scheme: HTTPS
+    port: http
+    scheme: HTTP
   initialDelaySeconds: 120
   failureThreshold: 15
   timeoutSeconds: 2
@@ -225,34 +235,50 @@ startupScripts:
   #### Updated for Big Bang ####
   keycloak.cli: |
     {{- .Files.Get "scripts/bigbang.cli" }}
+  # mystartup.sh: |
+  #   #!/bin/sh
+  #
+  # echo 'Hello from my custom startup script!'
 
 # Add additional volumes, e. g. for custom themes
 #### Added by Big Bang ####
 extraVolumes: |-
+  {{- if or (index .Values.secrets.certificates.stringData "cas.pem") (and (index .Values.secrets.certificates.stringData "tls.crt") (index .Values.secrets.certificates.stringData "tls.key")) }}
   - name: certificates
     secret:
       secretName: {{ include "keycloak.fullname" . }}-certificates
+  {{- end }}
+  {{- if index .Values.secrets.customreg.stringData "customreg.yaml" }}
   - name: customreg
     secret:
       secretName: {{ include "keycloak.fullname" . }}-customreg
+  {{- end }}
+  {{- if index .Values.secrets.realm.stringData "realm.json" }}
   - name: realm
     secret:
       secretName: {{ include "keycloak.fullname" . }}-realm
+  {{- end }}
 
 # Add additional volumes mounts, e. g. for custom themes
 #### Added by Big Bang ####
 extraVolumeMounts: |-
+  {{- if or (index .Values.secrets.certificates.stringData "cas.pem") (and (index .Values.secrets.certificates.stringData "tls.crt") (index .Values.secrets.certificates.stringData "tls.key")) }}
   - name: certificates
     mountPath: /etc/x509/https
     readOnly: true
+  {{- end }}
+  {{- if index .Values.secrets.customreg.stringData "customreg.yaml" }}
   - name: customreg
     mountPath: /opt/jboss/keycloak/customreg.yaml
     subPath: customreg.yaml
     readOnly: true
+  {{- end }}
+  {{- if index .Values.secrets.realm.stringData "realm.json" }}
   - name: realm
     mountPath: /opt/jboss/keycloak/realm.json
     subPath: realm.json
     readOnly: true
+  {{- end }}
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts:
@@ -286,12 +312,11 @@ secrets:
     stringData:
       adminuser: admin
       password: password
-  # Mutual TLS certificates
-  # The values below are for development and should not be used in production
+  # TLS certificates
   certificates:
     stringData:
-      tls.crt: '{{ .Files.Get "resources/dev/tls.crt" }}'
-      tls.key: '{{ .Files.Get "resources/dev/tls.key" }}'
+      tls.crt: ""
+      tls.key: ""
       cas.pem: '{{ .Files.Get "resources/dod_cas.pem" }}'
   # Custom realm configuration
   customreg:
@@ -300,7 +325,7 @@ secrets:
   # Custom realm configuration
   realm:
     stringData:
-      realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
+      realm.json: "" # See tests/test-values.yml for example
 
 service:
   # Annotations for headless and HTTP Services
@@ -330,7 +355,7 @@ service:
   - name: jgroup
     port: 7600
     targetPort: jgroup
-    protocol: TCP  
+    protocol: TCP
   # When using Service type LoadBalancer, you can restrict source ranges allowed
   # to connect to the LoadBalancer, e. g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
@@ -459,7 +484,6 @@ postgresql:
     repository: platform-one/big-bang/apps/security-tools/keycloak/postgresql
     tag: 11.8.0-debian-10-r61
 
-
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created
   enabled: false
@@ -578,7 +602,7 @@ test:
 
 # Big Bang Additions
 ## Your FQDN will be ${ .Values.subdomain }.${ .Values.hostname }
-hostname: bigbang.run
+hostname: bigbang.dev
 istio:
   # Toggle istio integration
   enabled: false
