@@ -23,7 +23,7 @@ This will create an endpoint at https://keycloak.<your_domain_name>.com.  You wi
 >     protocol: TLS
 >     number: 8443
 >   hosts:
->     - keycloak.bigbang.run
+>     - keycloak.bigbang.dev
 >   tls:
 >     mode: PASSTHROUGH
 > ```
@@ -86,7 +86,7 @@ secrets:
       DB_USER: "myDBUser"
       DB_PASSWORD: "myDBPassword"
       DB_VENDOR: postgres
-      DB_ADDR: mypostgres.bigbang.run
+      DB_ADDR: mypostgres.bigbang.dev
       DB_PORT: "5432"
       DB_DATABASE: mydb
 ```
