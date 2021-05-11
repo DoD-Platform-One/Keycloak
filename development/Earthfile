@@ -1,0 +1,23 @@
+ARG PLUGIN_VERSION=1.0.0
+ARG KEYCLOAK_VERSION=13.0.0
+
+ARG PLUGIN_JAR=platform-one-sso-$PLUGIN_VERSION-all.jar
+
+build-plugin:
+    FROM registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk8
+
+    COPY plugin .
+    RUN gradle build
+
+    SAVE ARTIFACT build/libs/$PLUGIN_JAR
+
+build-local:
+    FROM +build-plugin
+    SAVE ARTIFACT build/libs/$PLUGIN_JAR AS LOCAL plugin/build/docker/p1.jar
+
+build-image:
+    FROM registry1.dso.mil/ironbank/opensource/keycloak/keycloak:$KEYCLOAK_VERSION
+
+    COPY +build-plugin/* /opt/jboss/keycloak/standalone/deployments/
+
+    SAVE IMAGE registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/test-keycloak-ib:$KEYCLOAK_VERSION-$PLUGIN_VERSION

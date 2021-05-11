@@ -1,23 +1,5 @@
 #!/bin/bash
 
-function update_java() {
-    pushd plugin
-    docker run --rm -u gradle -v "$PWD":/home/gradle/project -w /home/gradle/project registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk8 gradle build
-    mkdir -p build/docker
-    cp build/libs/platform-one-sso-1.0.0-all.jar build/docker/p1.jar
-    popd
-}
-
-function release() {
-    update_java
-    cp plugin/build/docker/p1.jar ../deploy/resources/p1-sso-plugin.jar
-    cp plugin/build/docker/p1.jar ../chart/resources/p1-sso-plugin.jar
-}
-
-# function buildProd() {
-    
-# }
-
 function build() {
     docker kill p1-keycloak
     docker rm p1-keycloak
@@ -34,16 +16,15 @@ function build() {
 case "$1" in
 
     update)
-        update_java
+        earthly +build-local
         ;;
 
     release)
-        update_java
-        release
+        earthly +build-image
         ;;
 
     *)
-        update_java
+        earthly +build-local
         build
         ;;
 
