@@ -1,22 +1,22 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
+<@layout.registrationLayout displayMessage=true displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "form">
         <#if realm.password>
             <form onsubmit="login.disabled=true;return true;" action="${url.loginAction}" method="post">
                 
                 <div class="form-group">
-                    <label class="form-label ${properties.kcLabelClass!}" for="username">
+                    <label class="form-label" for="username">
                         <#if !realm.loginWithEmailAllowed>${msg("username")}
                         <#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}
                         <#else>${msg("email")}</#if>
                     </label>
-                    <input tabindex="1" id="username" class="form-control ${properties.kcInputClass!}" name="username"
+                    <input tabindex="1" id="username" class="form-control " name="username"
                             value="${(login.username!'')}" type="text" autofocus autocomplete="off"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="password" class="form-label ${properties.kcLabelClass!}">${msg("password")}</label>
-                    <input tabindex="2" id="password" class="form-control ${properties.kcInputClass!}" name="password"
+                    <label for="password" class="form-label">${msg("password")}</label>
+                    <input tabindex="2" id="password" class="form-control " name="password"
                             type="password" autocomplete="off"/>
                 </div>
 
@@ -47,9 +47,9 @@
 </@layout.registrationLayout>
 
 <script>
-    const feedback = document.getElementsByClassName('kc-feedback-text')[0];
+    const feedback = document.getElementById('alert-error');
     if (feedback && feedback.innerHTML.indexOf('X509 certificate') > -1 && feedback.innerHTML.indexOf('Invalid user') > -1) {
-        feedback.parentElement.outerHTML = [
+        feedback.outerHTML = [
             '<div class="alert alert-info cac-info">',
             '<h2>New DoD PKI Detected</h2>',
             '<div style="line-height: 2rem;">If you do not have an account yet, <a href="/register">click to register</a> now.  Otherwise, please login with your username/password to associate this CAC with your existing account.',

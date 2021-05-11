@@ -60,26 +60,16 @@
                 <#-- App-initiated actions should not see warning messages about the need to complete the action -->
                 <#-- during login.                                                                               -->
                 <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-                    <div class="error-messages alert alert-${message.type} ${properties.kcAlertClass!} alert-<#if message.type = 'error'>danger<#else>${message.type}</#if>">
+                    <div id="alert-error" class="error-messages alert alert-${message.type} ${properties.kcAlertClass!} alert-<#if message.type = 'error'>danger<#else>${message.type}</#if>">
                         <span class="${properties.kcAlertTitleClass!}">${kcSanitize(message.summary)?no_esc}</span>
                     </div>
                 </#if>
 
                 <#nested "form">
 
-                    <#if auth?has_content && auth.showTryAnotherWayLink() && showAnotherWayIfPresent>
-                        <form id="kc-select-try-another-way-form" action="${url.loginAction}" method="post">
-                            <div class="form-group">
-                                <input type="hidden" name="tryAnotherWay" value="on"/>
-                                <a href="#" id="try-another-way"
-                                onclick="document.forms['kc-select-try-another-way-form'].submit();return false;">${msg("doTryAnotherWay")}</a>
-                            </div>
-                        </form>
-                    </#if>
-
                 <#if displayInfo>
                     <div id="kc-info" class="${properties.kcSignUpClass!}">
-                        <div id="kc-info-wrapper" class="${properties.kcInfoAreaWrapperClass!}">
+                        <div id="kc-info-wrapper">
                             <#nested "info">
                         </div>
                     </div>

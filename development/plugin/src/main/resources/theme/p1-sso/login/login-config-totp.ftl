@@ -1,10 +1,6 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=true displayRequiredFields=true; section>
-
-    <#if section = "header">
-        ${msg("loginTotpTitle")}
-
-    <#elseif section = "form">
+    <#if section = "form">
 
         <ol id="kc-totp-settings">
             <li>
@@ -59,7 +55,7 @@
                             class="required">*</span>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="totp" name="totp" autocomplete="off" class="${properties.kcInputClass!}"/>
+                    <input type="text" id="totp" name="totp" autocomplete="off" class="form-control"/>
                 </div>
                 <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
                 <#if mode??><input type="hidden" id="mode" name="mode" value="${mode}"/></#if>

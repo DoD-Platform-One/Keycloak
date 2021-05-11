@@ -212,7 +212,7 @@
                             
             <#if recaptchaRequired??>
                 <div class="form-group">
-                    <div class="${properties.kcInputWrapperClass!}">
+                    <div>
                         <div class="g-recaptcha" data-theme="dark" data-size="normal"
                              data-sitekey="${recaptchaSiteKey}"></div>
                     </div>
@@ -220,7 +220,7 @@
             </#if>
 
             <div class="form-group">
-                <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
+                <div id="kc-form-buttons">
                     <input id="do-register" disabled="disabled"
                            class="btn btn-primary btn-block"
                            type="submit" value="${msg("doRegister")}"/>

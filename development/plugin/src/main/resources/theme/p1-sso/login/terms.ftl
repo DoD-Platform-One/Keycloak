@@ -1,8 +1,6 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=false; section>
-    <#if section = "header">
-        ${msg("termsTitle")}
-    <#elseif section = "form">
+    <#if section = "form">
         <div id="kc-terms-text">
             <div>
                 <h4>You are accessing a U.S. Government (USG) Information System (IS) that is provided for
@@ -39,10 +37,10 @@
                 </ul>
             </div>
         </div>
-        <form class="form-actions" action="${url.loginAction}" method="POST">
-            <input class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
+        <form class="form-actions text-right" action="${url.loginAction}" method="POST">
+            <input class="btn btn-primary"
                    name="accept" id="kc-accept" type="submit" value="${msg("doAccept")}"/>
-            <input class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
+            <input class="btn btn-light"
                    name="cancel" id="kc-decline" type="submit" value="${msg("doDecline")}"/>
         </form>
         <div class="clearfix"></div>

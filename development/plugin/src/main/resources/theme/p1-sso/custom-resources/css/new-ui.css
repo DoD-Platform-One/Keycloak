@@ -288,10 +288,8 @@ a {
 }
 
 body.row {
-  background-attachment: fixed;
-  background-color: #031821;
-  background-image: url(../img/tech-bg.jpg);
-  background-size: cover;
+  background-size: cover!important;
+  background: #010d17 url(../img/tech-bg.jpg) no-repeat center center fixed;
   color: #fff;
   height: 100vh;
   width: 100vw;
@@ -307,7 +305,8 @@ body.row {
   bottom: 0;
   height: 65px;
   border-top: 1px solid #747474;
-  background-color: #021928 !important;
+  backdrop-filter: blur(4px);
+  background-color: rgba(2, 25, 40, 0.85) !important;
   z-index: 1;
 }
 
