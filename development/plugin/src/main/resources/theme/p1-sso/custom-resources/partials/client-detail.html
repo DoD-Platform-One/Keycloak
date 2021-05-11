@@ -21,14 +21,14 @@
                 <div class="col-sm-6">
                     <input class="form-control" type="text" id="name" name="name" data-ng-model="clientEdit.name" autofocus>
                 </div>
-                <kc-tooltip>{{:: 'client.name.tooltip' | translate}}</kc-tooltip>
+                <kc-tooltip>(optional) Replace the SSO public-facing header text for this client.  HTML is permitted.</kc-tooltip>
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label" for="description">SSO Display Image URL </label>
                 <div class="col-sm-6">
                     <input class="form-control" type="text" id="description" name="description" data-ng-model="clientEdit.description">
                 </div>
-                <kc-tooltip>{{:: 'client.description.tooltip' | translate}}</kc-tooltip>
+                <kc-tooltip>(optional) Replace the SSO public-facing header logo for this client.  Only use a full URL.</kc-tooltip>
             </div>
             <div class="form-group clearfix block">
                 <label class="col-md-2 control-label" for="enabled">{{:: 'enabled' | translate}}</label>

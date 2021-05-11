@@ -478,7 +478,8 @@
     {
       "id": "b6d2395b-3e78-4d61-96cd-3ab2ae0ef7ed",
       "clientId": "account",
-      "name": "${client_account}",
+      "name": "<h1>Developer</h1><h4>Account Login</h4>",
+      "description": "https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/-/raw/main/development/plugin/src/main/resources/theme/p1-sso/custom-resources/img/nerd.png",
       "rootUrl": "${authBaseUrl}",
       "baseUrl": "/realms/baby-yoda/account/",
       "surrogateAuthRequired": false,
