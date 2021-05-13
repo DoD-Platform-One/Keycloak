@@ -41,7 +41,6 @@ jacocoTestReport {
 }
 
 group = 'dod.p1.keycloak'
-version = '1.0.0'
 
 publishing {
     publications {

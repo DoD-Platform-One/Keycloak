@@ -9,9 +9,9 @@ replicas: 1
 
 image:
   # The Keycloak image repository
-  repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/test-keycloak-ib
+  repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: "13.0.0-1.0.0"
+  tag: "13.0.0-1.0.1"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -228,17 +228,6 @@ resources: {}
   # limits:
   #   cpu: "500m"
   #   memory: "1024Mi"
-
-# Startup scripts to run before Keycloak starts up
-startupScripts:
-  # WildFly CLI script for configuring the node-identifier
-  #### Updated for Big Bang ####
-  keycloak.cli: |
-    {{- .Files.Get "scripts/bigbang.cli" }}
-  # mystartup.sh: |
-  #   #!/bin/sh
-  #
-  # echo 'Hello from my custom startup script!'
 
 # Add additional volumes, e. g. for custom themes
 #### Added by Big Bang ####
