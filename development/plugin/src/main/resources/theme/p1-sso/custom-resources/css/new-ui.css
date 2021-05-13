@@ -28,37 +28,19 @@
   color: #ec7a08;
 }
 
-.bs-sidebar {
-  background: 0 0;
-}
-
-.bs-sidebar ul li a {
-  border-color: rgba(255, 255, 255, 0.4);
-  border-radius: 6px 0 0 6px;
-  color: #fff !important;
-  margin-bottom: 15px;
-  padding: 5px;
-}
-
-.bs-sidebar ul li.active a {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: #fff;
-  color: #112833 !important;
-}
-
 .instruction {
   font-weight: 100 !important;
   line-height: unset !important;
   text-shadow: none !important;
 }
 
-.navbar-pf {
+.navbar {
   background: #002743 !important;
   border: 0;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.95), 0 10px 10px rgba(0, 0, 0, 0.92);
 }
 
-.navbar-pf .navbar-title {
+.navbar .navbar-title {
   background-image: url(../img/p1-logo-alt.png);
   background-repeat: no-repeat;
   background-size: contain;
@@ -68,13 +50,18 @@
   width: 100%;
 }
 
-.navbar-pf .navbar-utility {
-  top: -72px;
+.navbar .nav-item > a {
+  color: #fff !important;
 }
 
-.navbar-pf .navbar-utility > li > a {
+.navbar .nav-item.active > a {
   color: #bdc931 !important;
-  font-size: 18px;
+  border-bottom: 1px solid;
+}
+
+.navbar .upper-logo img {
+  max-height: 75px;
+  margin-right: 15px;
 }
 
 .note-important {
@@ -164,7 +151,7 @@ ul#kc-totp-supported-apps {
     rgba(91, 184, 215, 0.95) 0,
     rgba(30, 100, 123, 0.95) 100%
   ) !important;
-  border-color: #195266;
+  border-color: #195266 !important;
   border-radius: 4px !important;
   color: #fff;
 }
@@ -188,8 +175,8 @@ ul#kc-totp-supported-apps {
   text-align: right;
 }
 
-#certificate_subjectdn,
-a {
+.card #certificate_subjectdn,
+.card a {
   color: #00ff7b !important;
   font-weight: 500;
   letter-spacing: 0.1rem;
@@ -274,9 +261,7 @@ a {
   background: none;
   border: 0;
 }
-.card .card-header {
-  /* border: 1px solid green; */
-}
+
 .card .card-body {
   backdrop-filter: blur(4px);
   background: rgba(255, 255, 255, 0.05);
@@ -287,8 +272,19 @@ a {
   text-align: left;
 }
 
-body.row {
-  background-size: cover!important;
+.card.card-wide {
+  max-width: 650px;
+}
+
+.card .table {
+  color: white;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+body {
+  background-size: cover !important;
   background: #010d17 url(../img/tech-bg.jpg) no-repeat center center fixed;
   color: #fff;
   height: 100vh;
@@ -317,4 +313,19 @@ body.row {
 
 .branding.card-header img {
   max-width: 100%;
+}
+
+#logout-all-sessions {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  float: right;
+}
+
+body.password .subtitle {
+  display: none;
+}
+
+.card hr {
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
 }
