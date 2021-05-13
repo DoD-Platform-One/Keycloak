@@ -4,12 +4,7 @@
     <div class="row">
         <div class="col-md-10">
             <h2>${msg("authenticatorTitle")}</h2>
-        </div>
-        <#if totp.otpCredentials?size == 0>
-            <div class="col-md-2 subtitle">
-                <span class="subtitle"><span class="required">*</span> ${msg("requiredFields")}</span>
-            </div>
-        </#if>
+        </div>    
     </div>
 
     <#if totp.enabled>
@@ -49,7 +44,9 @@
         </table>
     <#else>
 
-        <hr/>
+    <div class="row">
+
+        <br>
 
         <ol>
             <li>
@@ -93,50 +90,38 @@
             </#if>
             <li>
                 <p>${msg("totpStep3")}</p>
-                <p><span class="note">${msg("totpStep3Note")}</span></p>
+                <p><span class="font-italic">Note: The six digit code changes every 30 seconds. You will need the newly generated code each time you log in.</span></p>
             </li>
         </ol>
 
-        <hr/>
+    </div>
+        
+    <form action="${url.totpUrl}" class="form-horizontal" method="post">
+        <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
+        <div class="form-group">
+            <label for="totp" class="control-label">${msg("authenticatorCode")}</label> 
+            <input type="text" class="form-control" id="totp" name="totp" autocomplete="off" autofocus>
+            <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
+        </div>
 
-        <form action="${url.totpUrl}" class="form-horizontal" method="post">
-            <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
-            <div class="form-group">
-                <div class="col-sm-2 col-md-2">
-                    <label for="totp" class="control-label">${msg("authenticatorCode")}</label> <span
-                            class="required">*</span>
-                </div>
-                <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="totp" name="totp" autocomplete="off" autofocus>
-                    <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
-                </div>
-            </div>
+        <div class="form-group" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}">
+            <label for="userLabel" class="control-label">${msg("totpDeviceName")}</label>
+            <input type="text" class="form-control" id="userLabel" name="userLabel" autocomplete="off">
+        </div>
 
-            <div class="form-group" ${messagesPerField.printIfExists('userLabel',properties.kcFormGroupErrorClass!)}">
-            <div class="col-sm-2 col-md-2">
-                <label for="userLabel"
-                       class="control-label">${msg("totpDeviceName")}</label> <#if totp.otpCredentials?size gte 1><span
-                        class="required">*</span></#if>
+        <div class="form-group">
+            <div id="kc-form-buttons" class="text-right submit">
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="saveTOTPBtn" name="submitAction" value="Save">${msg("doSave")}
+                </button>
+                <button type="submit"
+                        class="btn btn-light"
+                        id="cancelTOTPBtn" name="submitAction" value="Cancel">${msg("doCancel")}
+                </button>
             </div>
-
-            <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="userLabel" name="userLabel" autocomplete="off">
-            </div>
-            </div>
-
-            <div class="form-group">
-                <div id="kc-form-buttons" class="col-md-offset-2 col-md-10 submit">
-                    <button type="submit"
-                            class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}"
-                            id="saveTOTPBtn" name="submitAction" value="Save">${msg("doSave")}
-                    </button>
-                    <button type="submit"
-                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
-                            id="cancelTOTPBtn" name="submitAction" value="Cancel">${msg("doCancel")}
-                    </button>
-                </div>
-            </div>
-        </form>
+        </div>
+    </form>
     </#if>
 
 </@layout.mainLayout>
