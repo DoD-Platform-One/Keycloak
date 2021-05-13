@@ -1,0 +1,3 @@
+{{- include "bb-test-lib.cypress-configmap.base" . }}
+---
+{{- include "bb-test-lib.cypress-runner.base" . }}
