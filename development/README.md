@@ -1,10 +1,14 @@
 # Platform One SSO
 
-Platform One Keycloak customizations.
+Platform One Keycloak customizations.  This repo uses [Earthly](https://earthly.dev/) for repeatable builds.
+
+# Production Build
+
+1. Build: `earthly +build-image`
 
 # Local Development
 
-1. Build and Run: `./build.sh`
+1. Build and Run: `earthly +run-dev`
     ### Console output, like this, indicates the server is up and running
     ```
     Keycloak 11.0.1 (WildFly Core 11.1.1.Final) started in 20825ms - Started 809 of 1116 services (721 services are lazy, passive or on-demand)
@@ -13,7 +17,7 @@ Platform One Keycloak customizations.
 2. Navigate Browser to `https://keycloak.bigbang.run:8443/auth/admin`
 3. Login with Username: `admin` and Password: `pass`
 4. Happy Debugging!
-5. Inline re-builds: `./build.sh update`
+5. Inline re-builds: `earthly +build-local`
 
 ## Groups and Users and Such
 
