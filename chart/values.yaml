@@ -205,8 +205,8 @@ livenessProbe: |
     path: /auth/realms/master
     port: http
     scheme: HTTP
-  initialDelaySeconds: 120
   failureThreshold: 15
+  timeoutSeconds: 2
   periodSeconds: 15
 
 # Readiness probe configuration
@@ -216,9 +216,19 @@ readinessProbe: |
     path: /auth/realms/master
     port: http
     scheme: HTTP
-  initialDelaySeconds: 120
   failureThreshold: 15
   timeoutSeconds: 2
+
+# Startup probe configuration
+#### Updated for Big Bang ####
+startupProbe: |
+  httpGet:
+    path: /auth/realms/master
+    port: http
+  initialDelaySeconds: 90
+  timeoutSeconds: 2
+  failureThreshold: 60
+  periodSeconds: 5
 
 # Pod resource requests and limits
 resources: {}
@@ -275,6 +285,7 @@ extraPorts:
   - name: jgroup
     containerPort: 7600
     protocol: TCP
+
 
 # Pod disruption budget
 podDisruptionBudget: {}
@@ -349,6 +360,10 @@ service:
   # to connect to the LoadBalancer, e. g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
   loadBalancerSourceRanges: []
+  # When using Service type LoadBalancer, you can preserve the source IP seen in the container
+  # by changing the default (Cluster) to be Local.
+  # See https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  externalTrafficPolicy: "Cluster"
   # Session affinity
   # See https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace
   sessionAffinity: ""
@@ -446,11 +461,11 @@ pgchecker:
   # Resource requests and limits for the pgchecker container
   resources:
     requests:
-      cpu: "10m"
-      memory: "16Mi"
+      cpu: "20m"
+      memory: "32Mi"
     limits:
-      cpu: "10m"
-      memory: "16Mi"
+      cpu: "20m"
+      memory: "32Mi"
 
 postgresql:
   # If `true`, the Postgresql dependency is enabled
@@ -464,7 +479,7 @@ postgresql:
   # PostgreSQL network policy configuration
   networkPolicy:
     enabled: false
-  # added by BigBang
+  # Added by BigBang
   # change bitnami sub-chart upstream image to pull from registry.dso.mil
   # this image is only used for dev and CI pipelines
   image:
