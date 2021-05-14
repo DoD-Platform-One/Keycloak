@@ -1,4 +1,4 @@
-ARG PLUGIN_VERSION=1.0.2
+ARG PLUGIN_VERSION=1.0.3
 ARG KEYCLOAK_VERSION=13.0.0
 
 ARG PLUGIN_JAR=platform-one-sso-$PLUGIN_VERSION-all.jar
@@ -7,11 +7,11 @@ build-plugin:
     FROM registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk8
 
     COPY plugin .
-    RUN gradle build -P version=$PLUGIN_VERSION
+    RUN gradle build --info -P version=$PLUGIN_VERSION
 
     SAVE ARTIFACT build/libs/$PLUGIN_JAR
 
-build-local:
+build-jar:
     FROM +build-plugin
     SAVE ARTIFACT build/libs/$PLUGIN_JAR AS LOCAL plugin/build/docker/p1.jar
 
@@ -68,6 +68,9 @@ build-dev-image:
 run-dev:
     LOCALLY
 
+    RUN rm -fr plugin/build
+
+    RUN earthly +build-jar
     RUN earthly +build-dev-image
 
     RUN docker run -p 8443:8443 -p 5005:5005 \
