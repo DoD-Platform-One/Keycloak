@@ -1,5 +1,4 @@
 plugins {
-    id 'java'
     id 'java-library'
     id 'maven-publish'
     id 'jacoco'
@@ -20,10 +19,10 @@ repositories {
 }
 
 dependencies {
-    testCompile 'org.powermock:powermock-module-junit4:2.0.9'
-    testCompile 'org.powermock:powermock-api-mockito2:2.0.9'
-    testCompile 'org.mockito:mockito-core:3.8.0'
-    testCompile 'junit:junit:4.13.2'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.9'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.9'
+    testImplementation 'org.mockito:mockito-core:3.8.0'
+    testImplementation 'junit:junit:4.13.2'
     implementation 'org.yaml:snakeyaml:1.28'
     implementation 'org.keycloak:keycloak-core:13.0.0'
     implementation 'org.keycloak:keycloak-services:13.0.0'

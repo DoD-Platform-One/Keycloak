@@ -45,14 +45,15 @@ public class Utils {
                 "      - \"/test-group-1-a\"\n" +
                 "      - \"/test-group-1-b\"\n" +
                 "    domains:\n" +
-                "      - gov\n" +
-                "      - mil\n" +
+                "      - \".gov\"\n" +
+                "      - \".mil\"\n" +
+                "      - \"@afit.edu\"\n" +
                 "  - description: Test thing 2\n" +
                 "    groups:\n" +
                 "      - \"/test-group-2-a\"\n" +
                 "    domains:\n" +
-                "      - unicorns.com\n" +
-                "      - merica.test";
+                "      - \"@unicorns.com\"\n" +
+                "      - \"@merica.test\"";
 
         final File fileMock = PowerMockito.mock(File.class);
         final FileInputStream fileInputStreamMock = PowerMockito.mock(FileInputStream.class);

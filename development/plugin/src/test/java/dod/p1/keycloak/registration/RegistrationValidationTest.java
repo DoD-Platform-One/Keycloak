@@ -529,11 +529,6 @@ public class RegistrationValidationTest {
         valueMap.putSingle("user.attributes.location", "42");
         valueMap.putSingle("email", "test@gmail.com");
 
-        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
-        HashMap<String, String> configMap = new HashMap<>();
-        configMap.put("il2ApprovedDomains", "unicorns.com##trex.scary");
-        configMap.put("il4ApprovedDomains", "mil##gov##usafa.edu##afit.edu");
-        configModel.setConfig(configMap);
         ValidationContext context = setupVariables(errorEvent, errors, valueMap);
 
         RegistrationValidation validation = new RegistrationValidation();
@@ -568,11 +563,6 @@ public class RegistrationValidationTest {
         valueMap.putSingle("user.attributes.location", "42");
         valueMap.putSingle("email", "test@gmail.com");
 
-        AuthenticatorConfigModel configModel = new AuthenticatorConfigModel();
-        HashMap<String, String> configMap = new HashMap<>();
-        configMap.put("il2ApprovedDomains", "unicorns.com##trex.scary");
-        configMap.put("il4ApprovedDomains", "mil##gov##usafa.edu##afit.edu");
-        configModel.setConfig(configMap);
         ValidationContext context = setupVariables(errorEvent, errors, valueMap);
 
         RegistrationValidation validation = new RegistrationValidation();

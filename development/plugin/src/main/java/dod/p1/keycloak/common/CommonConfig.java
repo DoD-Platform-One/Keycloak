@@ -1,21 +1,25 @@
 package dod.p1.keycloak.common;
 
 import static java.lang.System.exit;
-import static jdk.nashorn.internal.runtime.Context.err;
 import static org.keycloak.models.utils.KeycloakModelUtils.findGroupByPath;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.keycloak.models.GroupModel;
 import org.keycloak.models.RealmModel;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+
+import dod.p1.keycloak.authentication.RequireGroupAuthenticator;
 
 public final class CommonConfig {
 
@@ -25,6 +29,8 @@ public final class CommonConfig {
     private final List<GroupModel> autoJoinGroupX509;
     private final List<GroupModel> noEmailMatchAutoJoinGroup;
 
+    private static final Logger logger = LogManager.getLogger(RequireGroupAuthenticator.class);
+
     private CommonConfig(RealmModel realm) {
 
         config = loadConfigFile();
@@ -33,7 +39,15 @@ public final class CommonConfig {
         noEmailMatchAutoJoinGroup = convertPathsToGroupModels(realm, config.getNoEmailMatchAutoJoinGroup());
 
         config.getEmailMatchAutoJoinGroup().forEach(match -> {
-            match.setGroupModels(convertPathsToGroupModels(realm, match.getGroups()));
+            boolean hasInvalidDomain = match.getDomains().stream()
+                    .anyMatch(domain -> domain.matches("^[^\\.\\@][\\w\\-\\.]+$"));
+            if (hasInvalidDomain) {
+                logger.warn(
+                        "Invalid email domain config.  All email domain matches should begin with a \".\" or \"@\".");
+                match.setDomains(new ArrayList<String>());
+            } else {
+                match.setGroupModels(convertPathsToGroupModels(realm, match.getGroups()));
+            }
         });
     }
 
@@ -53,7 +67,7 @@ public final class CommonConfig {
         try {
             fileInputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            err("Invalid or missing YAML Config, aborting.");
+            logger.fatal("Invalid or missing YAML Config, aborting.");
             exit(1);
             return null;
         }
@@ -71,7 +85,10 @@ public final class CommonConfig {
     }
 
     public Stream<YAMLConfigEmailAutoJoin> getEmailMatchAutoJoinGroup() {
-        return config.getEmailMatchAutoJoinGroup().stream();
+        return config
+                .getEmailMatchAutoJoinGroup()
+                .stream()
+                .filter(group -> group.getDomains().size() < 1);
     }
 
     public String getUserIdentityAttribute() {
