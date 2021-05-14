@@ -70,11 +70,11 @@ emailMatchAutoJoinGroup:
       - "/Impact Level 2 Authorized"
       - "/Impact Level 4 Authorized"
     domains:
-      - gov
-      - mil
+      - ".gov"
+      - ".mil"
 
   - description: DoD IL2 Users
     groups:
       - "/Impact Level 2 Authorized"
     domains:
-      - test-domain.very-long-fake-tld
+      - "@test-domain.very-long-fake-tld"
