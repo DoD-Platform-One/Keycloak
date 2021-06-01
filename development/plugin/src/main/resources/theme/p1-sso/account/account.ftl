@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    
+
     <form action="${url.accountUrl}" class="form-horizontal" method="post">
 
         <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
@@ -68,7 +68,7 @@
                 </select>
                 <#if messagesPerField.existsError('user.attributes.affiliation')>
                     <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('user.attributes.affiliation'))?no_esc}</span>
-                </#if>  
+                </#if>
             </div>
 
             <div class="col-sm-6 form-group ${messagesPerField.printIfExists('user.attributes.rank','has-error')}">
@@ -130,7 +130,7 @@
                 </select>
                 <#if messagesPerField.existsError('user.attributes.rank')>
                     <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('user.attributes.rank'))?no_esc}</span>
-                </#if>                      
+                </#if>
             </div>
 
         </div>
@@ -141,7 +141,7 @@
                     value="${(account.attributes.organization!'')}" />
             <#if messagesPerField.existsError('user.attributes.organization')>
                 <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('user.attributes.organization'))?no_esc}</span>
-            </#if>                    
+            </#if>
         </div>
 
         <#if !realm.registrationEmailAsUsername>
@@ -151,7 +151,7 @@
                             <#if !realm.editUsernameAllowed>disabled="disabled"</#if> value="${(account.username!'')}"/>
                 <#if messagesPerField.existsError('username')>
                     <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('username'))?no_esc}</span>
-                </#if>    
+                </#if>
             </div>
         </#if>
 
@@ -161,9 +161,9 @@
                     value="${(account.email!'')}" />
             <#if messagesPerField.existsError('email')>
                 <span class="message-details" aria-live="polite">${kcSanitize(messagesPerField.get('email'))?no_esc}</span>
-            </#if>                    
+            </#if>
         </div>
-                        
+
         <div class="form-group">
             <div class="submit">
                 <div class="">
@@ -173,7 +173,7 @@
                             class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!} btn-block"
                             name="submitAction" value="Save">${msg("doSave")}</button>
                     <button type="submit"
-                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}"
+                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!} btn-block"
                             name="submitAction" value="Cancel">${msg("doCancel")}</button>
                 </div>
             </div>
