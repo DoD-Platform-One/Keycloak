@@ -45,23 +45,7 @@ We define UUIDs for IL2, IL4, IL5. [CommonConfig.java](plugin/src/main/java/dod/
     public static final String IL4_GROUP_ID = "191f836b-ec50-4819-ba10-1afaa5b99600";
     public static final String IL5_GROUP_ID = "be8d20b3-8cd6-4d7e-9c98-5bb918f53c5c";
 ```
-### Group Structuring
 
-Assumptions:
-- Explicit allow, least privilege
-
-| Group Name | Description | Example |
-| --- | --- | --- |
-| Impact Level 2 Authorized | Default Group for IL2 users | Brand new user that can login to Client Software and see no data |
-| Impact Level 4 Authorized | Default Group for IL4 users | Brand new user that can login to Client Software and see no data |
-| Impact Level 5 Authorized | Default Group for IL5 users | Brand new user that can login to Client Software and see no data |
-| {Optional Hierarchy}/{Team}-{Qualifier} | Organizational Hierarchy down to a team level | DoD/PlatformOne/IronBank/VAT-PartyBus |
-| MissionApps/{SoftwareNode}/{Product} | Hierarchy for end users | AirForce/AirCombatCommand/67th/OpsSupport/ProductX |
-
-Qualifiers
-- PartyBus: Users in this group have full access to CI/CD tools, Collaboration Tools, and intent of C-ATO for the specified group.
-- ToeDipper: Users in this group have full access to CI/CD tools, but no intent of a C-ATO.
-- Collaborators: Users in this group have full access to Collaboration tools (Mattermost, Jira, Confluence, Jitsi) for their team.
 
 ## Creating a test Case
 
