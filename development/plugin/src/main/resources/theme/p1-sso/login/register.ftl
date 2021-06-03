@@ -22,7 +22,7 @@
 
             <div class="row">
 
-                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('firstName','has-error')}">
+                <div class="col-lg-6 form-group ${messagesPerField.printIfExists('firstName','has-error')}">
                     <label for="firstName" class="form-label">${msg("firstName")}</label>
                     <input type="text" id="firstName" class="form-control" name="firstName"
                            value="${(register.formData.firstName!'')}"/>
@@ -31,7 +31,7 @@
                     </#if>
                 </div>
 
-                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('lastName','has-error')}">
+                <div class="col-lg-6 form-group ${messagesPerField.printIfExists('lastName','has-error')}">
                     <label for="lastName" class="form-label">${msg("lastName")}</label>
                     <input type="text" id="lastName" class="form-control" name="lastName"
                             value="${(register.formData.lastName!'')}"/>
@@ -44,7 +44,7 @@
 
             <div class="row">
 
-                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('user.attributes.affiliation','has-error')}">
+                <div class="col-lg-6 form-group ${messagesPerField.printIfExists('user.attributes.affiliation','has-error')}">
                     <label for="user.attributes.affiliation" class="form-label">Affiliation</label>
                     <select id="user.attributes.affiliation" name="user.attributes.affiliation" class="form-control">
                         <option selected disabled hidden>Select your org</option>
@@ -79,7 +79,7 @@
                     </#if>  
                 </div>
 
-                <div class="col-sm-6 form-group ${messagesPerField.printIfExists('user.attributes.rank','has-error')}">
+                <div class="col-lg-6 form-group ${messagesPerField.printIfExists('user.attributes.rank','has-error')}">
                     <label for="user.attributes.rank" class="form-label">Pay Grade</label>
                     <select id="user.attributes.rank" name="user.attributes.rank" class="form-control">
                         <option selected disabled hidden>Select your rank</option>

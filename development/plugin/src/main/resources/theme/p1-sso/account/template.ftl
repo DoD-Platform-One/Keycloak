@@ -27,7 +27,7 @@
 <body class="admin-console user ${bodyClass}">
         
     <nav class="navbar navbar-expand-md fixed-top bg-dark">
-        <div class="container">
+        <div class="container-fluid">
             <div class="upper-logo"><img src="${url.resourcesPath}/img/p1-logo-tall.png" /></div>
             <h3 class="mb-0"><a>${realm.displayName}</a></h3>
             <div class="collapse navbar-collapse flex-column align-items-start ml-lg-2 ml-0" id="navbarCollapse">
@@ -45,18 +45,23 @@
         </div>
     </nav>
 
-    <div class="card card-wide">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-8 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <#if message?has_content>
+                            <div class="alert alert-${message.type}">
+                                <#if message.type=='success' ><span class="pficon pficon-ok"></span></#if>
+                                <#if message.type=='error' ><span class="pficon pficon-error-circle-o"></span></#if>
+                                <span class="kc-feedback-text">${kcSanitize(message.summary)?no_esc}</span>
+                            </div>
+                        </#if>
 
-        <div class="card-body">
-            <#if message?has_content>
-                <div class="alert alert-${message.type}">
-                    <#if message.type=='success' ><span class="pficon pficon-ok"></span></#if>
-                    <#if message.type=='error' ><span class="pficon pficon-error-circle-o"></span></#if>
-                    <span class="kc-feedback-text">${kcSanitize(message.summary)?no_esc}</span>
+                        <#nested "content">
+                    </div>
                 </div>
-            </#if>
-
-            <#nested "content">
+            </div>
         </div>
     </div>
 

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-10">
             <h2>${msg("authenticatorTitle")}</h2>
-        </div>    
+        </div>
     </div>
 
     <#if totp.enabled>
@@ -33,8 +33,8 @@
                             <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
                             <input type="hidden" id="submitAction" name="submitAction" value="Delete">
                             <input type="hidden" id="credentialId" name="credentialId" value="${credential.id}">
-                            <button id="remove-mobile" class="btn btn-default">
-                                <i class="pficon pficon-delete"></i>
+                            <button id="remove-mobile" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Remove Authenticator">
+                                <img src="${url.resourcesPath}/img/trash-fill.svg" alt="delete"></i>
                             </button>
                         </form>
                     </td>
@@ -95,11 +95,11 @@
         </ol>
 
     </div>
-        
+
     <form action="${url.totpUrl}" class="form-horizontal" method="post">
         <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
         <div class="form-group">
-            <label for="totp" class="control-label">${msg("authenticatorCode")}</label> 
+            <label for="totp" class="control-label">${msg("authenticatorCode")}</label>
             <input type="text" class="form-control" id="totp" name="totp" autocomplete="off" autofocus>
             <input type="hidden" id="totpSecret" name="totpSecret" value="${totp.totpSecret}"/>
         </div>
