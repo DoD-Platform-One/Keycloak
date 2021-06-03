@@ -26,7 +26,7 @@
             <div class="form-group">
                 <div id="kc-form-buttons" class="">
                     <div class="text-right">
-                        <input class="btn btn-primary" name="login" id="kc-login" type="submit" value="${msg("doContinue")}" />
+                        <input class="btn btn-primary" name="login" id="kc-login" type="submit" value="${msg("doContinue")}" autofocus />
                         <#if x509.formData.isUserEnabled??>
                             <input class="btn btn-light" name="cancel" id="kc-cancel" type="submit" value="${msg("doIgnore")}" />
                         </#if>

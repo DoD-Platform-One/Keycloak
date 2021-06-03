@@ -31,56 +31,59 @@
     </#if>
 </head>
 
-<body class="${properties.kcBodyClass!} row justify-content-center h100">
-       
-    <div class="col-lg-8 col-md-10 col-sm-12 my-auto">
-        <div class="card align-self-center mx-auto">
+<body class="${properties.kcBodyClass!}">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-8 col-md-12">
+                <div class="card">
 
-            <div class="card-header branding row">
-                <div class="col-sm-5 p-0">
-                    <#if client?? && client.description?has_content>
-                        <img src="${client.description}"/>
-                    <#else>
-                        <img src="${url.resourcesPath}/img/p1-logo.png"/>
-                    </#if>
-                </div>
-                <div class="col-sm-1">&nbsp;</div>
-                <div class="col-sm-6 my-auto">
-                    <#if client?? && client.name?has_content>
-                        <h2 class="client-unique-name">${client.name?no_esc}</h2>
-                    <#else>
-                        <h2>${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</h2>
-                    </#if>
-                </div>
-            </div>
-            
-            <br>
-
-            <div class="card-body">
-                <#-- App-initiated actions should not see warning messages about the need to complete the action -->
-                <#-- during login.                                                                               -->
-                <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-                    <div id="alert-error" class="error-messages alert alert-${message.type} ${properties.kcAlertClass!} alert-<#if message.type = 'error'>danger<#else>${message.type}</#if>">
-                        <span class="${properties.kcAlertTitleClass!}">${kcSanitize(message.summary)?no_esc}</span>
-                    </div>
-                </#if>
-
-                <#nested "form">
-
-                <#if displayInfo>
-                    <div id="kc-info" class="${properties.kcSignUpClass!}">
-                        <div id="kc-info-wrapper">
-                            <#nested "info">
+                    <div class="card-header branding row">
+                        <div class="col-sm-5 p-0">
+                            <#if client?? && client.description?has_content>
+                                <img src="${client.description}"/>
+                            <#else>
+                                <img src="${url.resourcesPath}/img/p1-logo.png"/>
+                            </#if>
+                        </div>
+                        <div class="col-sm-1">&nbsp;</div>
+                        <div class="col-sm-6 my-auto">
+                            <#if client?? && client.name?has_content>
+                                <h2 class="client-unique-name">${client.name?no_esc}</h2>
+                            <#else>
+                                <h2>${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</h2>
+                            </#if>
                         </div>
                     </div>
-                </#if>
+
+                    <br>
+
+                    <div class="card-body">
+                        <#-- App-initiated actions should not see warning messages about the need to complete the action -->
+                        <#-- during login.                                                                               -->
+                        <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
+                            <div id="alert-error" class="error-messages alert alert-${message.type} ${properties.kcAlertClass!} alert-<#if message.type = 'error'>danger<#else>${message.type}</#if>">
+                                <span class="${properties.kcAlertTitleClass!}">${kcSanitize(message.summary)?no_esc}</span>
+                            </div>
+                        </#if>
+
+                        <#nested "form">
+
+                        <#if displayInfo>
+                            <div id="kc-info" class="${properties.kcSignUpClass!}">
+                                <div id="kc-info-wrapper">
+                                    <#nested "info">
+                                </div>
+                            </div>
+                        </#if>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <footer class="fixed-footer">
         <img src="${url.resourcesPath}/img/yoda-mission-obsessed.png" />
-        Powered by DoD Platform One 
+        Powered by DoD Platform One
     </footer>
 </body>
 </html>

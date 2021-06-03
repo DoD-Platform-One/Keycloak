@@ -1,8 +1,11 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=false; section>
     <#if section = "form">
-        <div id="kc-terms-text">
+        <div id="kc-terms-text" onclick="javscript:document.getElementById('kc-accept').focus()">
             <div>
+                <div class="alert alert-info cac-info">
+                    <span>Click anywhere on the terms below to move to [accept] and [cancel] actions.</span>
+                </div>
                 <h4>You are accessing a U.S. Government (USG) Information System (IS) that is provided for
                     USG-authorized use only.</h4>
                 <h5>By using this IS (which includes any device attached to this IS), you consent to the following
@@ -37,6 +40,7 @@
                 </ul>
             </div>
         </div>
+        <hr>
         <form class="form-actions text-right" action="${url.loginAction}" method="POST">
             <input class="btn btn-primary"
                    name="accept" id="kc-accept" type="submit" value="${msg("doAccept")}"/>

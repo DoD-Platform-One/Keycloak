@@ -253,13 +253,9 @@ ul#kc-totp-supported-apps {
 }
 
 .card {
-  max-width: 500px;
-  margin: 100px auto;
-}
-
-.card {
   background: none;
   border: 0;
+  margin: 30px auto;
 }
 
 .card .card-body {
@@ -274,6 +270,7 @@ ul#kc-totp-supported-apps {
 
 .card.card-wide {
   max-width: 650px;
+  margin-top: 100px;
 }
 
 .card .table {
@@ -292,6 +289,10 @@ body {
   margin: 0;
   padding: 0;
   position: absolute;
+}
+
+body > .container-fluid {
+  padding-bottom: 65px;
 }
 
 .fixed-footer {
