@@ -1,0 +1,23 @@
+{{- if .Values.monitoring.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: inbound-prometheus
+spec:
+  policyTypes:
+    - Ingress
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            app.kubernetes.io/name: monitoring
+        podSelector:
+          matchLabels:
+            app: prometheus
+    - ports:
+        - protocol: TCP
+          port: {{ .Values.service.httpManagementPort }}
+{{- end }}

@@ -621,3 +621,8 @@ istio:
       - keycloak.{{ .Values.hostname }}
 monitoring:
   enabled: false
+networkPolicies:
+  enabled: false
+  ingressLabels:
+    app: istio-ingressgateway
+    istio: ingressgateway
