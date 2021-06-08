@@ -92,13 +92,11 @@ secrets:
         vfkczrrBlKbNp5wxPgjcAZd7
         -----END PRIVATE KEY-----
 
-istio:
-  enabled: true
-  keycloak:
-    enabled: true
-
 bbtests:
+  enabled: true
   cypress:
     artifacts: true
     envs:
       cypress_url: "https://keycloak-http.keycloak.svc.cluster.local:8443"
+networkPolicies:
+  enabled: true

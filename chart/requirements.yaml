@@ -3,6 +3,6 @@ dependencies:
     version: 10.3.13
     repository: file://./charts/postgresql-10.3.13.tgz
     condition: postgresql.enabled
-  - name: bb-test-lib
-    version: "0.4.0"
-    repository: file://./charts/bb-test-lib-0.4.0.tgz
+  - name: gluon
+    version: "0.1.1"
+    repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
