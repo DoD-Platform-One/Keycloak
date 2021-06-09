@@ -98,64 +98,22 @@ args:
   - "-b 0.0.0.0"
 
 # Additional environment variables for Keycloak
-#### Big Bang Additions ####
-# - JAVA_OPTIONS: Enables fine grained admin control
-# - KEYCLOAK_USER/KEYCLOAK_PASSWORD: credentials for admin user to be created
-# - PROXY_ADDRESS_FORWARDING: See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#running-keycloak-behind-a-reverse-proxy
-# - JGROUPS_*, KEYCLOAK_SERVICE_DNS_NAME, CACHE_OWNERS: For HA/Clustering.  See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#high-availability-and-clustering
-# - CUSTOM_REGISTRATION_CONFIG: Custom registration configuration for new users (.yaml)
-# - KEYCLOAK_IMPORT: Custom realm configuration (.json)
-# - KEYCLOAK_STATISTICS: Enabling Prometheus metrics to be produced
-extraEnv: |-
-  - name: JAVA_TOOL_OPTIONS
-    value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
-  - name: JAVA_OPTIONS
-    value: -Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled
-  {{- if .Values.secrets.credentials.stringData.adminuser }}
-  - name: KEYCLOAK_USER
-    valueFrom:
-      secretKeyRef:
-        key: adminuser
-        name: {{ include "keycloak.fullname" . }}-credentials
-  {{- end }}
-  {{- if .Values.secrets.credentials.stringData.password }}
-  - name: KEYCLOAK_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        key: password
-        name: {{ include "keycloak.fullname" . }}-credentials
-  {{- end }}
-  - name: PROXY_ADDRESS_FORWARDING
-    value: "true"
-  {{- if index .Values.secrets.certificates.stringData "cas.pem" }}
-  - name: X509_CA_BUNDLE
-    value: /etc/x509/https/cas.pem
-  {{- end }}
-  - name: JGROUPS_DISCOVERY_PROTOCOL
-    value: dns.DNS_PING
-  - name: JGROUPS_DISCOVERY_PROPERTIES
-    value: 'dns_query={{ include "keycloak.serviceDnsName" . }}'
-  - name: KEYCLOAK_SERVICE_DNS_NAME
-    value: '{{ include "keycloak.serviceDnsName" . }}'
-  - name: CACHE_OWNERS_COUNT
-    value: "2"
-  - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
-    value: "2"
-  {{- if index .Values.secrets.customreg.stringData "customreg.yaml" }}
-  - name: CUSTOM_REGISTRATION_CONFIG
-    value: /opt/jboss/keycloak/customreg.yaml
-  {{- end }}
-  {{- if index .Values.secrets.realm.stringData "realm.json" }}
-  - name: KEYCLOAK_IMPORT
-    value: /opt/jboss/keycloak/realm.json
-  {{- end }}
-  {{- if .Values.serviceMonitor.enabled }}
-  - name: KEYCLOAK_STATISTICS
-    value: all
-  {{- end }}
+extraEnv: ""
+  # - name: KEYCLOAK_LOGLEVEL
+  #   value: DEBUG
+  # - name: WILDFLY_LOGLEVEL
+  #   value: DEBUG
+  # - name: CACHE_OWNERS_COUNT
+  #   value: "2"
+  # - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
+  #   value: "2"
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
-extraEnvFrom: ""
+#### Updated for Big Bang ####
+extraEnvFrom: |
+  - secretRef:
+      name: '{{ include "keycloak.fullname" . }}-env'
+
 
 #  Pod priority class name
 priorityClassName: ""
@@ -239,45 +197,58 @@ resources: {}
   #   cpu: "500m"
   #   memory: "1024Mi"
 
+#### starupScripts removed to discourange use in Big Bang ####
+
 # Add additional volumes, e. g. for custom themes
-#### Added by Big Bang ####
-extraVolumes: |-
-  {{- if or (index .Values.secrets.certificates.stringData "cas.pem") (and (index .Values.secrets.certificates.stringData "tls.crt") (index .Values.secrets.certificates.stringData "tls.key")) }}
-  - name: certificates
-    secret:
-      secretName: {{ include "keycloak.fullname" . }}-certificates
-  {{- end }}
-  {{- if index .Values.secrets.customreg.stringData "customreg.yaml" }}
-  - name: customreg
-    secret:
-      secretName: {{ include "keycloak.fullname" . }}-customreg
-  {{- end }}
-  {{- if index .Values.secrets.realm.stringData "realm.json" }}
-  - name: realm
-    secret:
-      secretName: {{ include "keycloak.fullname" . }}-realm
-  {{- end }}
+#### comments added by Big Bang ####
+# Note: this value is a string block, not individual yaml keys
+# operational delployments must override this value
+# See tests/test-values.yaml for development example
+extraVolumes: ""
+  # - name: certauthority
+  #   secret:
+  #     secretName: {{ include "keycloak.fullname" . }}-certauthority
+  # - name: customreg
+  #   secret:
+  #     secretName: {{ include "keycloak.fullname" . }}-customreg
+  # - name: tlscert
+  #   secret:
+  #     secretName: {{ include "keycloak.fullname" . }}-tlscert
+  # - name: tlskey
+  #   secret:
+  #     secretName: {{ include "keycloak.fullname" . }}-tlskey
+  ## the realm config should not be mounted for existing operational deployments. The database contains the production conifguration.
+  # - name: realm
+  #   secret:
+  #     secretName: {{ include "keycloak.fullname" . }}-realm
 
 # Add additional volumes mounts, e. g. for custom themes
-#### Added by Big Bang ####
-extraVolumeMounts: |-
-  {{- if or (index .Values.secrets.certificates.stringData "cas.pem") (and (index .Values.secrets.certificates.stringData "tls.crt") (index .Values.secrets.certificates.stringData "tls.key")) }}
-  - name: certificates
-    mountPath: /etc/x509/https
-    readOnly: true
-  {{- end }}
-  {{- if index .Values.secrets.customreg.stringData "customreg.yaml" }}
-  - name: customreg
-    mountPath: /opt/jboss/keycloak/customreg.yaml
-    subPath: customreg.yaml
-    readOnly: true
-  {{- end }}
-  {{- if index .Values.secrets.realm.stringData "realm.json" }}
-  - name: realm
-    mountPath: /opt/jboss/keycloak/realm.json
-    subPath: realm.json
-    readOnly: true
-  {{- end }}
+#### comments added added by Big Bang ####
+# Note: this value is a string block, not individual yaml keys
+# operational deployments must override this value
+# See tests/test-values.yaml for development example
+extraVolumeMounts: ""
+  # - name: certauthority
+  #   mountPath: /etc/x509/https/cas.pem
+  #   subPath: cas.pem
+  #   readOnly: true
+  # - name: customreg
+  #   mountPath: /opt/jboss/keycloak/customreg.yaml
+  #   subPath: customreg.yaml
+  #   readOnly: true
+  # - name: tlscert
+  #   mountPath: /etc/x509/https/tls.crt
+  #   subPath: tls.crt
+  #   readOnly: true
+  # - name: tlskey
+  #   mountPath: /etc/x509/https/tls.key
+  #   subPath: tls.key
+  #   readOnly: true
+  ## the realm config should not be mounted for existing operational deployments. The database contains the production conifguration.
+  # - name: realm
+  #   mountPath: /opt/jboss/keycloak/realm.json
+  #   subPath: realm.json
+  #   readOnly: true
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts:
@@ -285,7 +256,6 @@ extraPorts:
   - name: jgroup
     containerPort: 7600
     protocol: TCP
-
 
 # Pod disruption budget
 podDisruptionBudget: {}
@@ -299,6 +269,8 @@ statefulsetAnnotations: {}
 statefulsetLabels: {}
 
 # Configuration for secrets that should be created
+## The secrets can also be independently created separate from this helm chart.
+## for examlpe with a gitops tool like flux with a kustomize overlay.
 secrets:
   # mysecret:
   #   type: {}
@@ -307,25 +279,72 @@ secrets:
   #   stringData: {}
   #   data: {}
   #### Added for Big Bang ####
+  # Environmental variables
+  env:
+    stringData:
+      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0"
+
+      # Enables fine grained admin control
+      JAVA_OPTIONS: "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
+
+      # Credentials to setup for default admin user.
+      KEYCLOAK_USER: "{{ .Values.secrets.credentials.stringData.adminuser }}"
+      KEYCLOAK_PASSWORD: "{{ .Values.secrets.credentials.stringData.password }}"
+
+      # See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#running-keycloak-behind-a-reverse-proxy
+      PROXY_ADDRESS_FORWARDING: "true"
+
+      # For HA/Clustering.  See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#high-availability-and-clustering
+      JGROUPS_DISCOVERY_PROTOCOL: dns.DNS_PING
+      JGROUPS_DISCOVERY_PROPERTIES: 'dns_query={{ include "keycloak.serviceDnsName" . }}'
+      KEYCLOAK_SERVICE_DNS_NAME: '{{ include "keycloak.serviceDnsName" . }}'
+      CACHE_OWNERS_COUNT: "2"
+      CACHE_OWNERS_AUTH_SESSIONS_COUNT: "2"
+
+      # Enable Prometheus metrics to be produced
+      KEYCLOAK_STATISTICS: "{{ if .Values.serviceMonitor.enabled }}all{{ end }}"
+
+      # Example custom registration
+      # CUSTOM_REGISTRATION_CONFIG: "/opt/jboss/keycloak/customreg.yaml"
+
+      # Example custom realm
+      # KEYCLOAK_IMPORT: "/opt/jboss/keycloak/realm.json"
+
+      # Example custom certificate authorities
+      # X509_CA_BUNDLE: "/etc/x509/https/cas.pem"
+
   # Default admin user credentials
   credentials:
     stringData:
       adminuser: admin
       password: password
-  # TLS certificates
-  certificates:
-    stringData:
-      tls.crt: ""
-      tls.key: ""
-      cas.pem: '{{ .Files.Get "resources/dod_cas.pem" }}'
-  # Custom realm configuration
-  customreg:
-    stringData:
-      customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
-  # Custom realm configuration
-  realm:
-    stringData:
-      realm.json: "" # See tests/test-values.yml for example
+
+  # Example inline TLS certificates
+  # tlscert:
+  #   stringData:
+  #     tls.crt: ""
+  # tlskey:
+  #   stringData:
+  #     tls.key: ""
+  # certauthority:
+  #   stringData
+  #     cas.pem: ""
+
+  # Example inline custom registration configuration
+  # See docs/configuration.md for info about how to create this secret in operational deployments
+  # Using this chart value to create the secret should only be used for development and pipeline tests
+  # See tests/test-values.yml for development example
+  # customreg:
+  #   stringData:
+  #     customreg.yaml: ""
+
+  # Example inline custom realm configuration
+  # See docs/configuration.md for info about how to create this secret in operational deployments
+  # Using this chart to create the secret should only be used for development and pipeline tests
+  # See tests/test-values.yml for development example
+  # realm:
+  #   stringData:
+  #     realm.json: ""
 
 service:
   # Annotations for headless and HTTP Services
