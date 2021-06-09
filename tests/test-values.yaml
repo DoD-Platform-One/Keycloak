@@ -1,9 +1,20 @@
-# Custom realm configuration
+# Custom dev secret configuration
 secrets:
+  env:
+    stringData:
+      CUSTOM_REGISTRATION_CONFIG: /opt/jboss/keycloak/customreg.yaml
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/realm.json
+      X509_CA_BUNDLE: /etc/x509/https/cas.pem
+  certauthority:
+    stringData:
+      cas.pem: '{{ .Files.Get "resources/dev/dod_cas.pem" }}'
+  customreg:
+    stringData:
+      customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
   realm:
     stringData:
       realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
-  certificates:
+  tlscert:
     stringData:
       tls.crt: |
         -----BEGIN CERTIFICATE-----
@@ -62,6 +73,8 @@ secrets:
         O5b85o3AM/OJ+CktFBQtfvBhcJVd9wvlwPsk+uyOy2HI7mNxKKgsBTt375teA2Tw
         UdHkhVNcsAKX1H7GNNLOEADksd86wuoXvg==
         -----END CERTIFICATE-----
+  tlskey:
+    stringData:
       tls.key: |
         -----BEGIN PRIVATE KEY-----
         MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDl7oIecDHRb8XB
@@ -92,11 +105,56 @@ secrets:
         vfkczrrBlKbNp5wxPgjcAZd7
         -----END PRIVATE KEY-----
 
+extraVolumes: |-
+  - name: certauthority
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-certauthority
+  - name: customreg
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-customreg
+  - name: realm
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-realm
+  - name: tlscert
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-tlscert
+  - name: tlskey
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-tlskey
+
+extraVolumeMounts: |-
+  - name: certauthority
+    mountPath: /etc/x509/https/cas.pem
+    subPath: cas.pem
+    readOnly: true
+  - name: customreg
+    mountPath: /opt/jboss/keycloak/customreg.yaml
+    subPath: customreg.yaml
+    readOnly: true
+  - name: realm
+    mountPath: /opt/jboss/keycloak/realm.json
+    subPath: realm.json
+    readOnly: true
+  - name: tlscert
+    mountPath: /etc/x509/https/tls.crt
+    subPath: tls.crt
+    readOnly: true
+  - name: tlskey
+    mountPath: /etc/x509/https/tls.key
+    subPath: tls.key
+    readOnly: true
+
+istio:
+  enabled: true
+  keycloak:
+    enabled: true
+
 bbtests:
   enabled: true
   cypress:
     artifacts: true
     envs:
       cypress_url: "https://keycloak-http.keycloak.svc.cluster.local:8443"
+
 networkPolicies:
   enabled: true
