@@ -115,12 +115,14 @@ extraVolumes: |-
   - name: realm
     secret:
       secretName: {{ include "keycloak.fullname" . }}-realm
+
+extraVolumesBigBang:
   - name: tlscert
     secret:
-      secretName: {{ include "keycloak.fullname" . }}-tlscert
+      secretName: keycloak-tlscert
   - name: tlskey
     secret:
-      secretName: {{ include "keycloak.fullname" . }}-tlskey
+      secretName: keycloak-tlskey
 
 extraVolumeMounts: |-
   - name: certauthority
@@ -135,6 +137,8 @@ extraVolumeMounts: |-
     mountPath: /opt/jboss/keycloak/realm.json
     subPath: realm.json
     readOnly: true
+
+extraVolumeMountsBigBang:
   - name: tlscert
     mountPath: /etc/x509/https/tls.crt
     subPath: tls.crt

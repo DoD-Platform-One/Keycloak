@@ -200,55 +200,18 @@ resources: {}
 #### starupScripts removed to discourange use in Big Bang ####
 
 # Add additional volumes, e. g. for custom themes
-#### comments added by Big Bang ####
-# Note: this value is a string block, not individual yaml keys
-# operational delployments must override this value
-# See tests/test-values.yaml for development example
 extraVolumes: ""
-  # - name: certauthority
-  #   secret:
-  #     secretName: {{ include "keycloak.fullname" . }}-certauthority
-  # - name: customreg
-  #   secret:
-  #     secretName: {{ include "keycloak.fullname" . }}-customreg
-  # - name: tlscert
-  #   secret:
-  #     secretName: {{ include "keycloak.fullname" . }}-tlscert
-  # - name: tlskey
-  #   secret:
-  #     secretName: {{ include "keycloak.fullname" . }}-tlskey
-  ## the realm config should not be mounted for existing operational deployments. The database contains the production conifguration.
-  # - name: realm
-  #   secret:
-  #     secretName: {{ include "keycloak.fullname" . }}-realm
+
+#### added by Big Bang ####
+# This values key is reserved for integration with BigBang chart 
+extraVolumesBigBang: {}
 
 # Add additional volumes mounts, e. g. for custom themes
-#### comments added added by Big Bang ####
-# Note: this value is a string block, not individual yaml keys
-# operational deployments must override this value
-# See tests/test-values.yaml for development example
 extraVolumeMounts: ""
-  # - name: certauthority
-  #   mountPath: /etc/x509/https/cas.pem
-  #   subPath: cas.pem
-  #   readOnly: true
-  # - name: customreg
-  #   mountPath: /opt/jboss/keycloak/customreg.yaml
-  #   subPath: customreg.yaml
-  #   readOnly: true
-  # - name: tlscert
-  #   mountPath: /etc/x509/https/tls.crt
-  #   subPath: tls.crt
-  #   readOnly: true
-  # - name: tlskey
-  #   mountPath: /etc/x509/https/tls.key
-  #   subPath: tls.key
-  #   readOnly: true
-  ## the realm config should not be mounted for existing operational deployments. The database contains the production conifguration.
-  # - name: realm
-  #   mountPath: /opt/jboss/keycloak/realm.json
-  #   subPath: realm.json
-  #   readOnly: true
+
+#### added by Big Bang ####
+# This values key is reserved for integration with BigBang chart 
+extraVolumeMountsBigBang: {}
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts:

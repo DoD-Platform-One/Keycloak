@@ -14,6 +14,10 @@
 - add BigBang test library
 - change all external dependency links to point to the local file system
 
+## chart/templates/StatefulSet.yaml
+- add extraVolumesBigBang (lines 196-189)
+- add extraVolumeMountsBigBang (lines 146-148)
+
 ## chart/templates/bigbang/*
 - add istio virtual service
 - add NetworkPolicies to restrict traffic
@@ -21,10 +25,6 @@
 ## chart/resources/
 - add /dev directory to hold the the baby-yoda configuration files
 - add the DoD certificate bundle pem file
-
-## chart/templates/bigbang
-- add network policy yaml
-- add vertualservice yaml
 
 ## chart/tests
 - add directory with cypress test files
@@ -48,6 +48,9 @@
 # Changelog
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [11.0.0-bb.4] - 2021-06-10
+- modify upstream chart to add custom volumes and volumemounts for BigBang integration
 
 ## [11.0.0-bb.3] - 2021-06-09
 - new custom image with various UI fixes
