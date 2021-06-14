@@ -189,13 +189,13 @@ startupProbe: |
   periodSeconds: 5
 
 # Pod resource requests and limits
-resources: {}
-  # requests:
-  #   cpu: "500m"
-  #   memory: "1024Mi"
-  # limits:
-  #   cpu: "500m"
-  #   memory: "1024Mi"
+resources:
+  requests:
+    cpu: "500m"
+    memory: "1024Mi"
+  limits:
+    cpu: "500m"
+    memory: "1024Mi"
 
 #### starupScripts removed to discourange use in Big Bang ####
 
