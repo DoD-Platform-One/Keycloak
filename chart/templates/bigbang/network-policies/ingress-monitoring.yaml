@@ -1,8 +1,8 @@
-{{- if .Values.monitoring.enabled }}
+{{- if and .Values.networkPolicies.enabled .Values.monitoring.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: inbound-prometheus
+  name: ingress-monitoring
 spec:
   policyTypes:
     - Ingress
