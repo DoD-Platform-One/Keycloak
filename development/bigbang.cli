@@ -50,5 +50,10 @@ batch
 /subsystem=undertow/configuration=filter/rewrite==mm-auth-token:add(target="/auth/realms/baby-yoda/protocol/openid-connect/token%{QUERY_STRING}")
 /subsystem=undertow/server=default-server/host=default-host/filter-ref=mm-auth-token:add(predicate="path-prefix('/oauth/token')")
 
+# Enable Declarative User Profile to support modifying attributes aka usercertificate (Version 14 only)
+/subsystem=keycloak-server/spi=userProfile:add(default-provider=declarative-user-profile)
+
+
+
 run-batch
 stop-embedded-server

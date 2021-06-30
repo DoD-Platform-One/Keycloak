@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: "13.0.0-1.0.4"
+  tag: "14.0.0-1.0.4-1"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -94,8 +94,10 @@ command: []
 
 ## Overrides the default args for the Keycloak container
 args:
-  # Big Bang addition - possibly needed because of hardened image running as non-root
+  # Big Bang additions 
   - "-b 0.0.0.0"
+  - "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
+  - "-Dkeycloak.profile.feature.declarative_user_profile=enabled"
 
 # Additional environment variables for Keycloak
 extraEnv: ""
@@ -203,14 +205,14 @@ resources:
 extraVolumes: ""
 
 #### added by Big Bang ####
-# This values key is reserved for integration with BigBang chart 
+# This values key is reserved for integration with BigBang chart
 extraVolumesBigBang: {}
 
 # Add additional volumes mounts, e. g. for custom themes
 extraVolumeMounts: ""
 
 #### added by Big Bang ####
-# This values key is reserved for integration with BigBang chart 
+# This values key is reserved for integration with BigBang chart
 extraVolumeMountsBigBang: {}
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
@@ -246,9 +248,6 @@ secrets:
   env:
     stringData:
       JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0"
-
-      # Enables fine grained admin control
-      JAVA_OPTIONS: "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
 
       # Credentials to setup for default admin user.
       KEYCLOAK_USER: "{{ .Values.secrets.credentials.stringData.adminuser }}"
