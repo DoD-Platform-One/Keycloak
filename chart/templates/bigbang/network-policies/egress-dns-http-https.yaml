@@ -16,4 +16,8 @@ spec:
         protocol: TCP
       - port: 443
         protocol: TCP
+      {{- if .Values.openshift }}  
+      - port: 5353
+        protocol: UDP
+      {{- end }} 
 {{- end }}
