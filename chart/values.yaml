@@ -191,7 +191,7 @@ startupProbe: |
   periodSeconds: 5
 
 # Pod resource requests and limits
-resources:
+resources: 
   requests:
     cpu: "500m"
     memory: "1024Mi"
@@ -468,6 +468,14 @@ postgresql:
     registry: registry.dso.mil
     repository: platform-one/big-bang/apps/security-tools/keycloak/postgresql
     tag: 11.8.0-debian-10-r61
+  
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "256Mi"
+    limits:
+      cpu: "250m"
+      memory: "256Mi"
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created

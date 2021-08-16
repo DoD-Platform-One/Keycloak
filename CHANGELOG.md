@@ -49,6 +49,10 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.0.1-bb.2] - 2021-08-12
+- added requests and limits to postgresql pod to satisfy ratio violations
+- added requests and limits to CI test-values to satisfy ratio violations
+
 ## [11.0.1-bb.1] - 2021-07-22
 - allow DNS networkpolicie allow for port 5353
 
