@@ -29,7 +29,7 @@ public final class CommonConfig {
     private final List<GroupModel> autoJoinGroupX509;
     private final List<GroupModel> noEmailMatchAutoJoinGroup;
 
-    private static final Logger logger = LogManager.getLogger(RequireGroupAuthenticator.class);
+    public static final Logger logger = LogManager.getLogger(RequireGroupAuthenticator.class);
 
     private CommonConfig(RealmModel realm) {
 
@@ -47,6 +47,7 @@ public final class CommonConfig {
                 match.setDomains(new ArrayList<String>());
             } else {
                 match.setGroupModels(convertPathsToGroupModels(realm, match.getGroups()));
+                //logger.debug("Groups found associated with valid formatted domains: " + match.getGroups());
             }
         });
     }
@@ -88,7 +89,7 @@ public final class CommonConfig {
         return config
                 .getEmailMatchAutoJoinGroup()
                 .stream()
-                .filter(group -> group.getDomains().size() < 1);
+                .filter(group -> group.getDomains().size() > 0);
     }
 
     public String getUserIdentityAttribute() {

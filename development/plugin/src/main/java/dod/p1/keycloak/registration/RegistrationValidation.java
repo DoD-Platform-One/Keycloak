@@ -59,16 +59,39 @@ public class RegistrationValidation extends RegistrationProfile {
         CommonConfig config = getInstance(realm);
 
         long domainMatchCount = config.getEmailMatchAutoJoinGroup()
-                .filter(collection -> collection.getDomains().stream().anyMatch(email::endsWith))
-                .peek(collection -> collection.getGroupModels().forEach(user::joinGroup)).count();
+                .filter(collection -> collection.getDomains().stream().anyMatch(email::endsWith)).count();
 
         if (x509Username != null) {
+            // User is a X509 user - Has a CAC
+            config.logger.info(" user " + user.getId() + " / " + user.getUsername() + " found with X509: " + x509Username);
             config.getAutoJoinGroupX509().forEach(user::joinGroup);
-        } else if (domainMatchCount == 0) {
+        } else {
+          if (domainMatchCount != 0) {
+            // User is not a X509 user but is in the whitelist
+
+            config.logger.info(" user " + user.getUsername() + " / " + email + ": Email found in whitelist");
+
+            //Below Works but without logging
+            /*config.getEmailMatchAutoJoinGroup()
+                    .filter(collection -> collection.getDomains().stream().anyMatch(email::endsWith))
+                    .forEach(collection -> collection.getGroupModels().forEach(user::joinGroup));
+            */
+            config.getEmailMatchAutoJoinGroup()
+                  .filter(collection -> collection.getDomains().stream().anyMatch(email::endsWith))
+                  .forEach(match -> {
+                    config.logger.info("Adding user " + user.getUsername() + " to group(s): " + match.getGroups());
+                    match.getGroupModels().forEach(group_match -> {
+                      user.joinGroup(group_match);
+                      });
+                  });
+
+        } else {
+            // User is not a X509 user or in whitelist
+            config.logger.info(" user " + user.getUsername() + " / " + email + ": Email Not found in whitelist");
             config.getNoEmailMatchAutoJoinGroup().forEach(user::joinGroup);
             user.setSingleAttribute("public-registrant", "true");
+          }
         }
-
     }
 
     /**
