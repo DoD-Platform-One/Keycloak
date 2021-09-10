@@ -1,8 +1,8 @@
-ARG PLUGIN_VERSION=1.0.4
+ARG PLUGIN_VERSION=1.0.5
 ARG KEYCLOAK_VERSION=14.0.0
 # This is the bigbang configuration version
 # can be reset back to 1 if either the plugin or keycloak version changes
-ARG BIGBANG_VERSION=1   
+ARG BIGBANG_VERSION=1
 
 ARG PLUGIN_JAR=platform-one-sso-$PLUGIN_VERSION-all.jar
 
@@ -54,7 +54,7 @@ build-dev-image:
     ENV DB_VENDOR h2
     ENV KEYCLOAK_USER admin
     ENV KEYCLOAK_PASSWORD pass
-    ENV JAVA_OPTIONS "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
+    ENV JAVA_OPTS_APPEND "-Dkeycloak.profile=preview -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
     ENV JAVA_TOOL_OPTIONS "-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
     ENV CUSTOM_REGISTRATION_CONFIG /opt/baby-yoda.yaml
     ENV X509_CA_BUNDLE /etc/x509/https/dod_cas.pem
