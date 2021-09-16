@@ -75,7 +75,7 @@ extraInitContainers: ""
 extraContainers: ""
 
 # Lifecycle hooks for the Keycloak container
-lifecycleHooks: |
+lifecycleHooks: ""
 #  postStart:
 #    exec:
 #      command:
