@@ -615,5 +615,6 @@ networkPolicies:
   ingressLabels:
     app: istio-ingressgateway
     istio: ingressgateway
-
+  smtpPort: 587
+  
 openshift: false

@@ -12,7 +12,7 @@ spec:
   egress:
   - ports:
     - protocol: TCP
-      port: 465
+      port: {{ .Values.networkPolicies.smtpPort }}
     to:
     - ipBlock:
         # This should be replaced with the IP of the mail Server
