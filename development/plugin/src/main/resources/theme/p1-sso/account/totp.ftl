@@ -33,8 +33,9 @@
                             <input type="hidden" id="stateChecker" name="stateChecker" value="${stateChecker}">
                             <input type="hidden" id="submitAction" name="submitAction" value="Delete">
                             <input type="hidden" id="credentialId" name="credentialId" value="${credential.id}">
-                            <button id="remove-mobile" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Remove Authenticator">
-                                <img src="${url.resourcesPath}/img/trash-fill.svg" alt="delete"></i>
+                            <button id="remove-mobile" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Remove Authenticator">
+                                <i class="pficon pficon-delete"></i>
+                                <img src="${url.resourcesPath}/img/trash-fill.svg" alt="delete"/>
                             </button>
                         </form>
                     </td>
