@@ -159,6 +159,8 @@ bbtests:
     artifacts: true
     envs:
       cypress_url: "https://keycloak-http.keycloak.svc.cluster.local:8443"
+      cypress_username: "admin"
+      cypress_password: "password"
 
 networkPolicies:
   enabled: true
