@@ -52,10 +52,11 @@ describe('Keycloak Healthcheck', function () {
     // Verify the app redirected to baby-yoda realm
     cy.location('href', { timeout: 10000 }).should('contain', '/auth/admin/master/console/#/realms/baby-yoda')
 
-    // Check for clients in  baby-yoda realm
-    cy.visit(Cypress.env('url') + '/auth/admin/master/console/#/realms/baby-yoda/clients')
-      cy.wait(1000)
-      cy.get('.datatable').find('tbody').find('tr').should('have.length', 7); // also includes last tr which is class ng-hide
+    // don't need to check count of clients. The test will break when new clients are added.
+    // // Check for clients in  baby-yoda realm
+    // cy.visit(Cypress.env('url') + '/auth/admin/master/console/#/realms/baby-yoda/clients')
+    //   cy.wait(1000)
+    //   cy.get('.datatable').find('tbody').find('tr').should('have.length', 7); // also includes last tr which is class ng-hide
 
     // Create a non-admin user
     cy.visit(Cypress.env('url') + '/auth/admin/master/console/#/create/user/baby-yoda')
