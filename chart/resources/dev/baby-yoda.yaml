@@ -58,6 +58,8 @@ groupProtectionIgnoreClients:
   - "account-console"
   - "broker"
   - "security-admin-console"
+  # Nexus hardcodes the client id so the group logic in custom plugin code must be skipped
+  - "https://nexus.bigbang.dev/service/rest/v1/security/saml/metadata"
 
 # When a user registers wihtout matching any top-levvel domain in emailMatchAutoJoinGroup, join to the listed groups
 noEmailMatchAutoJoinGroup:
