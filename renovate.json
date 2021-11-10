@@ -2,7 +2,6 @@
   "baseBranches": ["main"],
   "configWarningReuseIssue": false,
   "dependencyDashboard": "true",
-  "dependencyDashboardAutoclose": "true",
   "dependencyDashboardHeader": "- [ ] Use Earthly to generate new Keycloak image with plugins.\n- [ ] Upload image to this repo's container registry.\n- [ ] Update image tag in `chart/values.yaml`",
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
   "draftPR": true,
