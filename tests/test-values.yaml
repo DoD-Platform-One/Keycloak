@@ -148,11 +148,6 @@ extraVolumeMountsBigBang:
     subPath: tls.key
     readOnly: true
 
-istio:
-  enabled: true
-  keycloak:
-    enabled: true
-
 bbtests:
   enabled: true
   cypress:
