@@ -1,6 +1,6 @@
 # Platform One SSO
 
-Platform One Keycloak customizations.  This repo uses [Earthly](https://earthly.dev/) for repeatable builds.
+Platform One Keycloak customizations.  This repo uses [Earthly](https://earthly.dev/) for repeatable builds. Follow the installation instructions from their site.
 
 # Production Build
 

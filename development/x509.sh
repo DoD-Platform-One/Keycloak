@@ -94,4 +94,19 @@ function autogenerate_keystores() {
   fi
 }
 
-autogenerate_keystores
+function keystores_existence_check() {
+  local clirc="$JBOSS_HOME/standalone/configuration/.jbossclirc"
+  local truststore="$JBOSS_HOME/standalone/configuration/keystores/truststore.jks"
+  local keystore="$JBOSS_HOME/standalone/configuration/keystores/https-keystore.jks"
+
+  if [[ -f "$clirc" && -f "$truststore" && -f "$keystore" ]]; then
+      echo "Keystore and Truststore present, skipping creation..."
+      cat "$JBOSS_HOME/standalone/configuration/.jbossclirc" >> "$JBOSS_HOME/bin/.jbossclirc"
+      $JBOSS_HOME/bin/jboss-cli.sh --file=/opt/jboss/tools/cli/x509-keystore.cli
+      $JBOSS_HOME/bin/jboss-cli.sh --file=/opt/jboss/tools/cli/x509-truststore.cli
+  else
+    autogenerate_keystores
+  fi
+}
+
+keystores_existence_check

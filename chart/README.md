@@ -19,6 +19,9 @@ For more information on Keycloak and its capabilities, see its [documentation](h
 The chart has an optional dependency on the [PostgreSQL](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) chart.
 By default, the PostgreSQL chart requires PV support on underlying infrastructure (may be disabled).
 
+**Important**
+Since Version `v16.0.0` the support for Helm v2 is dropped in favor of to support also the latest postgres Helm Chart Version which requires Helm v3 only.
+
 ## Installing the Chart
 
 To install the chart with the release name `keycloak`:
@@ -62,6 +65,7 @@ The following table lists the configurable parameters of the Keycloak chart and 
 | `podSecurityContext` | SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this) | `{"fsGroup":1000}` |
 | `securityContext` | SecurityContext for the Keycloak container | `{"runAsNonRoot":true,"runAsUser":1000}` |
 | `extraInitContainers` | Additional init containers, e. g. for providing custom themes | `[]` |
+| `skipInitContainers` | Skip all init containers (to avoid issues with service meshes which require sidecar proxies for connectivity) | `false`
 | `extraContainers` | Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy | `[]` |
 | `lifecycleHooks` | Lifecycle hooks for the Keycloak container | `{}` |
 | `terminationGracePeriodSeconds` | Termination grace period in seconds for Keycloak shutdown. Clusters with a large cache might need to extend this to give Infinispan more time to rebalance | `60` |
@@ -72,6 +76,7 @@ The following table lists the configurable parameters of the Keycloak chart and 
 | `extraEnvFrom` | Additional environment variables for Keycloak mapped from a Secret or ConfigMap | `""` |
 | `priorityClassName` | Pod priority class name | `""` |
 | `affinity` | Pod affinity | Hard node and soft zone anti-affinity |
+| `topologySpreadConstraints` | Topology spread constraints | Constraints used to spread pods |
 | `nodeSelector` | Node labels for Pod assignment | `{}` |
 | `tolerations` | Node taints to tolerate | `[]` |
 | `podLabels` | Additional Pod labels | `{}` |
@@ -98,7 +103,7 @@ The following table lists the configurable parameters of the Keycloak chart and 
 | `service.httpNodePort` | The HTTP Service node port if type is NodePort | `""` |
 | `service.httpsPort` | The HTTPS Service port | `8443` |
 | `service.httpsNodePort` | The HTTPS Service node port if type is NodePort | `""` |
-| `service.httpManagementPort` | The WildFly management Service port | `8443` |
+| `service.httpManagementPort` | The WildFly management Service port | `9990` |
 | `service.httpManagementNodePort` | The WildFly management node port if type is NodePort | `""` |
 | `service.extraPorts` | Additional Service ports, e. g. for custom admin console | `[]` |
 | `service.sessionAffinity` | sessionAffinity for Service, e. g. "ClientIP" | `""` |
@@ -106,9 +111,12 @@ The following table lists the configurable parameters of the Keycloak chart and 
 | `ingress.enabled` | If `true`, an Ingress is created | `false` |
 | `ingress.rules` | List of Ingress Ingress rule | see below |
 | `ingress.rules[0].host` | Host for the Ingress rule | `{{ .Release.Name }}.keycloak.example.com` |
-| `ingress.rules[0].paths` | Paths for the Ingress rule | `[/]` |
+| `ingress.rules[0].paths` | Paths for the Ingress rule | see below |
+| `ingress.rules[0].paths[0].path` | Path for the Ingress rule | `/` |
+| `ingress.rules[0].paths[0].pathType` | Path Type for the Ingress rule | `Prefix` |
 | `ingress.servicePort` | The Service port targeted by the Ingress | `http` |
 | `ingress.annotations` | Ingress annotations | `{}` |
+| `ingress.ingressClassName` | The name of the Ingress Class associated with the ingress | `""` |
 | `ingress.labels` | Additional Ingress labels | `{}` |
 | `ingress.tls` | TLS configuration | see below |
 | `ingress.tls[0].hosts` | List of TLS hosts | `[keycloak.example.com]` |
@@ -116,8 +124,11 @@ The following table lists the configurable parameters of the Keycloak chart and 
 | `ingress.console.enabled` | If `true`, an Ingress for the console is created | `false` |
 | `ingress.console.rules` | List of Ingress Ingress rule for the console | see below |
 | `ingress.console.rules[0].host` | Host for the Ingress rule for the console | `{{ .Release.Name }}.keycloak.example.com` |
-| `ingress.console.rules[0].paths` | Paths for the Ingress rule for the console | `[/auth/admin]` |
+| `ingress.console.rules[0].paths` | Paths for the Ingress rule for the console | see below |
+| `ingress.console.rules[0].paths[0].path` | Path for the Ingress rule for the console | `[/auth/admin]` |
+| `ingress.console.rules[0].paths[0].pathType` | Path Type for the Ingress rule for the console | `Prefix` |
 | `ingress.console.annotations` | Ingress annotations for the console | `{}` |
+| `ingress.console.ingressClassName` | The name of the Ingress Class associated with the console ingress | `""` |
 | `networkPolicy.enabled` | If true, the ingress network policy is deployed | `false`
 | `networkPolicy.extraFrom` | Allows to define allowed external traffic (see Kubernetes doc for network policy `from` format) | `[]`
 | `route.enabled` | If `true`, an OpenShift Route is created | `false` |
@@ -206,6 +217,7 @@ It is used for the following values:
 * `livenessProbe`
 * `readinessProbe`
 * `startupProbe`
+* `topologySpreadConstraints`
 
 Additionally, custom labels and annotations can be set on various resources the values of which being passed through `tpl` as well.
 
@@ -644,7 +656,70 @@ Using a StatefulSet allows us to truncate to 20 characters leaving room for up t
 Additionally, we get stable values for `jboss.node.name` which can be advantageous for cluster discovery.
 The headless service that governs the StatefulSet is used for DNS discovery via DNS_PING.
 
+## Bad Gateway and Proxy Buffer Size in Nginx
+
+A common issue with Keycloak and nginx is that the proxy buffer may be too small for what Keycloak is trying to send. This will result in a Bad Gateway (502) error. There are [many](https://github.com/kubernetes/ingress-nginx/issues/4637) [issues](https://stackoverflow.com/questions/56126864/why-do-i-get-502-when-trying-to-authenticate) around the internet about this. The solution is to increase the buffer size of nginx. This can be done by creating an annotation in the ingress specification:
+
+```yaml
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+```
+
 ## Upgrading
+
+### From chart < 15.0.0
+
+* Keycloak is updated to 15.0.2
+
+### From chart < 14.0.0
+
+Ingress path definitions are extended to describe path and pathType. Previously only the path was configured. Please adapt your configuration as shown below:
+
+Old:
+```yaml
+ingress:
+  # ...
+  rules:
+    - # ...
+      # Paths for the host
+      paths:
+        - /
+```
+New:
+```yaml
+ingress:
+  # ...
+  rules:
+    - # ...
+      # Paths for the host
+      paths:
+        - path: /
+          pathType: Prefix
+```
+
+This allows to configure specific `pathType` configurations, e.g. `pathType: ImplementationSpecific` for [GKE Ingress on Google Cloud Platform](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress#default_backend).
+
+### From chart < 13.0.0
+
+* Keycloak is updated to 14.0.0
+
+Note that this might not be a seamless upgrade, because the clustering with older Keycloak versions might not work
+due to incompatible infinispan versions.
+
+### From chart < 12.0.0
+
+* Keycloak is updated to 13.0.1
+
+Note that this might not be a seamless upgrade, because the clustering with older Keycloak versions might not work
+due to incompatible infinispan versions.
+
+One way to perform the upgrade is to run:
+```
+kubectl delete sts <RELEASE_NAME>-keycloak && helm upgrade --install
+```
+This ensures that all replicas are restarted with the same version.
+Note that all sessions are lost in this case, and users might need to login again.
 
 ### From chart < 11.0.0
 

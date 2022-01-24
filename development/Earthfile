@@ -1,13 +1,14 @@
-ARG PLUGIN_VERSION=1.0.7
-ARG KEYCLOAK_VERSION=14.0.0
+ARG PLUGIN_VERSION=1.1.0
+ARG KEYCLOAK_VERSION=16.1.0
 # This is the bigbang configuration version
 # can be reset back to 1 if either the plugin or keycloak version changes
-ARG BIGBANG_VERSION=1
+ARG BIGBANG_VERSION=3
+ARG GRADLE_VERSION=7.1
 
 ARG PLUGIN_JAR=platform-one-sso-$PLUGIN_VERSION-all.jar
 
 build-plugin:
-    FROM registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk8
+    FROM registry1.dso.mil/ironbank/opensource/gradle/gradle-jdk11:$GRADLE_VERSION
 
     COPY plugin .
     RUN gradle build --info -P version=$PLUGIN_VERSION

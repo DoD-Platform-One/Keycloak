@@ -2,13 +2,13 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'jacoco'
-    id "io.freefair.lombok" version "5.3.0"
+    id 'io.freefair.lombok' version '6.3.0' // https://plugins.gradle.org/plugin/io.freefair.lombok
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {

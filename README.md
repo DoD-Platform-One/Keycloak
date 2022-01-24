@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 11.0.1-bb.9](https://img.shields.io/badge/Version-11.0.1--bb.9-informational?style=flat-square) ![AppVersion: 14.0.0](https://img.shields.io/badge/AppVersion-14.0.0-informational?style=flat-square)
+![Version: 16.0.6-bb.0](https://img.shields.io/badge/Version-16.0.6--bb.0-informational?style=flat-square) ![AppVersion: 16.1.0](https://img.shields.io/badge/AppVersion-16.1.0-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -41,7 +41,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib"` |  |
-| image.tag | string | `"14.0.0-1.0.7-1"` |  |
+| image.tag | string | `"16.1.0-1.1.0-3"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets | list | `[]` |  |
 | hostAliases | list | `[]` |  |
@@ -59,6 +59,7 @@ helm install keycloak chart/
 | securityContext.runAsUser | int | `1000` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | extraInitContainers | string | `""` |  |
+| skipInitContainers | bool | `false` |  |
 | extraContainers | string | `""` |  |
 | lifecycleHooks | string | `""` |  |
 | terminationGracePeriodSeconds | int | `60` |  |
@@ -71,6 +72,7 @@ helm install keycloak chart/
 | extraEnvFrom | string | `"- secretRef:\n    name: '{{ include \"keycloak.fullname\" . }}-env'\n"` |  |
 | priorityClassName | string | `""` |  |
 | affinity | string | `"podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n    - labelSelector:\n        matchLabels:\n          {{- include \"keycloak.selectorLabels\" . | nindent 10 }}\n        matchExpressions:\n          - key: app.kubernetes.io/component\n            operator: NotIn\n            values:\n              - test\n      topologyKey: kubernetes.io/hostname\n  preferredDuringSchedulingIgnoredDuringExecution:\n    - weight: 100\n      podAffinityTerm:\n        labelSelector:\n          matchLabels:\n            {{- include \"keycloak.selectorLabels\" . | nindent 12 }}\n          matchExpressions:\n            - key: app.kubernetes.io/component\n              operator: NotIn\n              values:\n                - test\n        topologyKey: failure-domain.beta.kubernetes.io/zone\n"` |  |
+| topologySpreadConstraints | string | `nil` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | podLabels | object | `{}` |  |
@@ -123,17 +125,21 @@ helm install keycloak chart/
 | service.sessionAffinity | string | `""` |  |
 | service.sessionAffinityConfig | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
+| ingress.ingressClassName | string | `""` |  |
 | ingress.servicePort | string | `"http"` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.labels | object | `{}` |  |
 | ingress.rules[0].host | string | `"{{ .Release.Name }}.keycloak.example.com"` |  |
-| ingress.rules[0].paths[0] | string | `"/"` |  |
+| ingress.rules[0].paths[0].path | string | `"/"` |  |
+| ingress.rules[0].paths[0].pathType | string | `"Prefix"` |  |
 | ingress.tls[0].hosts[0] | string | `"keycloak.example.com"` |  |
 | ingress.tls[0].secretName | string | `""` |  |
 | ingress.console.enabled | bool | `false` |  |
+| ingress.console.ingressClassName | string | `""` |  |
 | ingress.console.annotations | object | `{}` |  |
 | ingress.console.rules[0].host | string | `"{{ .Release.Name }}.keycloak.example.com"` |  |
-| ingress.console.rules[0].paths[0] | string | `"/auth/admin/"` |  |
+| ingress.console.rules[0].paths[0].path | string | `"/auth/admin/"` |  |
+| ingress.console.rules[0].paths[0].pathType | string | `"Prefix"` |  |
 | networkPolicy.enabled | bool | `false` |  |
 | networkPolicy.labels | object | `{}` |  |
 | networkPolicy.extraFrom | list | `[]` |  |
