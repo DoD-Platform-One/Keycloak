@@ -1,0 +1,9 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 10.3.13
+- name: gluon
+  repository: oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon
+  version: 0.2.5
+digest: sha256:73fd0ad951a99cac49853901bebed2af98f73942a3d394371d1195ccd974012d
+generated: "2022-01-24T08:46:05.51857509-07:00"

@@ -1,8 +1,0 @@
-dependencies:
-  - name: postgresql
-    version: 10.3.13
-    repository: file://./charts/postgresql-10.3.13.tgz
-    condition: postgresql.enabled
-  - name: gluon
-    version: "0.1.1"
-    repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
