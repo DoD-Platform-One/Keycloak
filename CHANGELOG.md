@@ -2,6 +2,10 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [16.0.6-bb.1] - 2022-01-27
+### Changed
+- fix problem on FIPS enabled nodes 
+
 ## [16.0.6-bb.0] - 2022-01-24
 ### Changed
 - upgrade to Keycloak app version 16.1.0 chart version 16.0.6
