@@ -256,7 +256,7 @@ secrets:
   # Environmental variables
   env:
     stringData:
-      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0"
+      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false"
 
       # Credentials to setup for default admin user.
       KEYCLOAK_USER: "{{ .Values.secrets.credentials.stringData.adminuser }}"

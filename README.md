@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 16.0.6-bb.0](https://img.shields.io/badge/Version-16.0.6--bb.0-informational?style=flat-square) ![AppVersion: 16.1.0](https://img.shields.io/badge/AppVersion-16.1.0-informational?style=flat-square)
+![Version: 16.0.6-bb.1](https://img.shields.io/badge/Version-16.0.6--bb.1-informational?style=flat-square) ![AppVersion: 16.1.0](https://img.shields.io/badge/AppVersion-16.1.0-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -94,7 +94,7 @@ helm install keycloak chart/
 | podDisruptionBudget | object | `{}` |  |
 | statefulsetAnnotations | object | `{}` |  |
 | statefulsetLabels | object | `{}` |  |
-| secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0"` |  |
+| secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false"` |  |
 | secrets.env.stringData.KEYCLOAK_USER | string | `"{{ .Values.secrets.credentials.stringData.adminuser }}"` |  |
 | secrets.env.stringData.KEYCLOAK_PASSWORD | string | `"{{ .Values.secrets.credentials.stringData.password }}"` |  |
 | secrets.env.stringData.PROXY_ADDRESS_FORWARDING | string | `"true"` |  |
