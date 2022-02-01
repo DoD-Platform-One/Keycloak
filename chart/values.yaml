@@ -633,3 +633,12 @@ networkPolicies:
   smtpPort: 587
   
 openshift: false
+
+bbtests:
+  enabled: false
+  cypress:
+    artifacts: true
+    envs:
+      cypress_url: "https://keycloak-http.keycloak.svc.cluster.local:8443"
+      cypress_username: "admin"
+      cypress_password: "password"
