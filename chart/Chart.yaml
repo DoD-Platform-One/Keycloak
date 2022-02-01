@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 16.0.6-bb.1
+version: 16.0.6-bb.2
 appVersion: 16.1.0
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
@@ -29,3 +29,6 @@ dependencies:
   - name: gluon
     version: "0.2.5"
     repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
+annotations:
+  bigbang.dev/applicationVersions: |
+    - Keycloak: 16.1.0

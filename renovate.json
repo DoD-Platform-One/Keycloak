@@ -22,6 +22,15 @@
         ".*KEYCLOAK_VERSION=(?<currentValue>.*)((.|\\n)*?)build-image:((.|\\n)*?)FROM\\s+(?<depName>.*):"
       ],
       "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "matchStrings": [
+        "- Keycloak:\\s+(?<currentValue>.+)"
+      ],
+      "registryUrlTemplate": "https://registry1.dso.mil",
+      "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
+      "datasourceTemplate": "docker"
     }
   ]
 }
