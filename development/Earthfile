@@ -1,8 +1,8 @@
 ARG PLUGIN_VERSION=1.1.0
-ARG KEYCLOAK_VERSION=16.1.0
+ARG KEYCLOAK_VERSION=16.1.1
 # This is the bigbang configuration version
 # can be reset back to 1 if either the plugin or keycloak version changes
-ARG BIGBANG_VERSION=3
+ARG BIGBANG_VERSION=1
 ARG GRADLE_VERSION=7.1
 
 ARG PLUGIN_JAR=platform-one-sso-$PLUGIN_VERSION-all.jar

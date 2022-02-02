@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart version
-  tag: "16.1.0-1.1.0-3"
+  tag: "16.1.1-1.1.0-1"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -202,11 +202,11 @@ startupProbe: |
 # Pod resource requests and limits
 resources: 
   requests:
-    cpu: "500m"
-    memory: "1024Mi"
+    cpu: "1"
+    memory: "1Gi"
   limits:
-    cpu: "500m"
-    memory: "1024Mi"
+    cpu: "1"
+    memory: "1Gi"
 
 #### starupScripts removed to discourange use in Big Bang ####
 
@@ -256,6 +256,7 @@ secrets:
   # Environmental variables
   env:
     stringData:
+      # https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index
       JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false"
 
       # Credentials to setup for default admin user.
