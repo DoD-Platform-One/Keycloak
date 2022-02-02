@@ -2,9 +2,14 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [17.0.1-bb.0] - 2022-02-02
+### Changed
+- upgrade Keycloak to app version 16.1.1 chart version 17.0.1
+
 ## [16.0.6-bb.3] - 2022-01-31
 ### Changed
 - moved test values
+
 ## [16.0.6-bb.2] - 2022-01-31
 ### Updated
 - Update Chart.yaml to follow new standardization for release automation

@@ -35,6 +35,7 @@
 - update the chart version with the bigbang ```-bb.#```
 - update app version when not the same as the original chart
 - add gluon library dependency
+- add annotations for release automation
 
 ## chart/Kptfile
 - file created when kpt was used to dowload the upstream chart
