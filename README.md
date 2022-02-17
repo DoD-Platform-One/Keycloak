@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 17.0.1-bb.0](https://img.shields.io/badge/Version-17.0.1--bb.0-informational?style=flat-square) ![AppVersion: 16.1.1](https://img.shields.io/badge/AppVersion-16.1.1-informational?style=flat-square)
+![Version: 17.0.1-bb.1](https://img.shields.io/badge/Version-17.0.1--bb.1-informational?style=flat-square) ![AppVersion: 16.1.1](https://img.shields.io/badge/AppVersion-16.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 

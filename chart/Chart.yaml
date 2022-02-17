@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 17.0.1-bb.0
+version: 17.0.1-bb.1
 appVersion: 16.1.1
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
@@ -27,7 +27,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: gluon
-    version: "0.2.5"
+    version: "0.2.6"
     repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
 annotations:
   bigbang.dev/applicationVersions: |
