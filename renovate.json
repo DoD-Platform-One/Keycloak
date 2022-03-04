@@ -6,7 +6,7 @@
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
   "draftPR": true,
   "enabledManagers": ["regex"],
-  "labels": ["keycloak","Package Sustainment","kind::chore"],
+  "labels": ["keycloak","Package Sustainment","kind::maintenance"],
   
   "packageRules": [
     {
