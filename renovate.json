@@ -17,6 +17,15 @@
   ],
   "regexManagers": [
     {
+      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "matchStrings": [
+        "appVersion:\\s+(?<currentValue>.+)"
+      ],
+      "registryUrlTemplate": "https://registry1.dso.mil",
+      "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
+      "datasourceTemplate": "docker"
+    },
+    {
       "fileMatch": ["^development/Earthfile"],
       "matchStrings": [
         ".*KEYCLOAK_VERSION=(?<currentValue>.*)((.|\\n)*?)build-image:((.|\\n)*?)FROM\\s+(?<depName>.*):"
