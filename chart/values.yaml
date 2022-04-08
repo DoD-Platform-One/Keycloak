@@ -16,8 +16,8 @@ image:
   pullPolicy: IfNotPresent
 
 # Image pull secrets for the Pod
-imagePullSecrets: []
-# - name: private-registry
+imagePullSecrets:
+- name: private-registry
 
 # Mapping between IPs and hostnames that will be injected as entries in the Pod's hosts files
 hostAliases: []
@@ -643,3 +643,8 @@ bbtests:
       cypress_url: "https://keycloak-http.keycloak.svc.cluster.local:8443"
       cypress_username: "admin"
       cypress_password: "password"
+      tnr_username: "cypress"
+      tnr_password: "tnr_w!G33ZyAt@C8"
+      tnr_firstName: "Cypress"
+      tnr_lastName: "TNR"
+      tnr_email: "cypress@tnr.mil"
