@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 17.0.1-bb.3](https://img.shields.io/badge/Version-17.0.1--bb.3-informational?style=flat-square) ![AppVersion: 16.1.1](https://img.shields.io/badge/AppVersion-16.1.1-informational?style=flat-square)
+![Version: 17.0.1-bb.4](https://img.shields.io/badge/Version-17.0.1--bb.4-informational?style=flat-square) ![AppVersion: 16.1.1](https://img.shields.io/badge/AppVersion-16.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -43,7 +43,7 @@ helm install keycloak chart/
 | image.repository | string | `"registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib"` |  |
 | image.tag | string | `"16.1.1-1.1.0-1"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| imagePullSecrets | list | `[]` |  |
+| imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
 | enableServiceLinks | bool | `true` |  |
 | podManagementPolicy | string | `"Parallel"` |  |
@@ -233,6 +233,11 @@ helm install keycloak chart/
 | bbtests.cypress.envs.cypress_url | string | `"https://keycloak-http.keycloak.svc.cluster.local:8443"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |
 | bbtests.cypress.envs.cypress_password | string | `"password"` |  |
+| bbtests.cypress.envs.tnr_username | string | `"cypress"` |  |
+| bbtests.cypress.envs.tnr_password | string | `"tnr_w!G33ZyAt@C8"` |  |
+| bbtests.cypress.envs.tnr_firstName | string | `"Cypress"` |  |
+| bbtests.cypress.envs.tnr_lastName | string | `"TNR"` |  |
+| bbtests.cypress.envs.tnr_email | string | `"cypress@tnr.mil"` |  |
 
 ## Contributing
 

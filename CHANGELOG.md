@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [17.0.1-bb.4] - 2022-03-29
+### Added
+- Added create-ci-cypress-user-hook.yaml, creates a cypress user using Keycloak REST API when run in CI testing.
+
 ## [17.0.1-bb.3] - 2022-03-25
 ### Added
 - Added baby-yoda-ci.json, create a baby-yoda realm w/ MFA disabled for CI cypress testing
