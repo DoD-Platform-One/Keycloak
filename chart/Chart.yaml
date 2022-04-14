@@ -1,7 +1,7 @@
 apiVersion: v2
 name: keycloak
-version: 17.0.1-bb.4
-appVersion: 16.1.1
+version: 18.0.0-bb.0
+appVersion: 17.0.1-legacy
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
   - sso
@@ -11,7 +11,7 @@ keywords:
   - kerberos
   - ldap
 home: https://www.keycloak.org/
-icon: https://www.keycloak.org/resources/images/keycloak_logo_480x108.png
+icon: https://www.keycloak.org/resources/images/keycloak_icon_512px.svg
 sources:
   - https://github.com/codecentric/helm-charts
   - https://github.com/jboss-dockerfiles/keycloak
@@ -31,4 +31,4 @@ dependencies:
     repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
 annotations:
   bigbang.dev/applicationVersions: |
-    - Keycloak: 16.1.1
+    - Keycloak: 17.0.1-1.1.0-1
