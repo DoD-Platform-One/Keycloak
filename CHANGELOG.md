@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.0.0-bb.1] - 2022-04-15
+### Changed
+- Changed the bigbang.dev/applicationVersions to point to upstream version instead of tagged version
+
+### Added
+- Added PlatformOne Plugin to bigbang.dev/applicationVersions annotation
+
 ## [18.0.0-bb.0] - 2022-04-13
 ### Updated
 - upgrade Keycloak to app version 17.0.1-legacy chart version 18.0.0-bb.0
