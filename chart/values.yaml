@@ -477,14 +477,34 @@ postgresql:
   networkPolicy:
     enabled: false
   # Added by BigBang
-  # change bitnami sub-chart upstream image to pull from registry.dso.mil
+  # change bitnami sub-chart upstream image to pull from registry1.dso.mil
   # this image is only used for dev and CI pipelines
+  global:
+    imagePullSecrets:
+      - private-registry
   image:
-    ## could not get IronBank hardened image to work with the bitnami postgres sub-chart
-    registry: registry.dso.mil
-    repository: platform-one/big-bang/apps/security-tools/keycloak/postgresql
-    tag: 11.8.0-debian-10-r61
-  
+    registry: registry1.dso.mil
+    repository: ironbank/opensource/postgres/postgresql12
+    tag: 12.9
+  securityContext:
+    enabled: true
+    fsGroup: 26
+    runAsUser: 26
+    runAsGroup: 26
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 26
+  # volumePermissions:
+  #   enabled: false
+  #   image:
+  #     registry: registry1.dso.mil
+  #     repository: ironbank/big-bang/base
+  #     tag: 1.0.0
+  #   pullSecrets:
+  #     - private-registry
+  #   securityContext:
+  #     runAsUser: 0  
+
   resources:
     requests:
       cpu: "250m"

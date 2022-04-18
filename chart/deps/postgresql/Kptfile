@@ -1,0 +1,18 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata:
+  name: postgresql
+upstream:
+  type: git
+  git:
+    repo: https://github.com/bitnami/charts
+    directory: /bitnami/postgresql
+    ref: 0391090fe16c1c9b80300bd5c24c76b52bcfc169
+  updateStrategy: resource-merge
+upstreamLock:
+  type: git
+  git:
+    repo: https://github.com/bitnami/charts
+    directory: /bitnami/postgresql
+    ref: 0391090fe16c1c9b80300bd5c24c76b52bcfc169
+    commit: 0391090fe16c1c9b80300bd5c24c76b52bcfc169
