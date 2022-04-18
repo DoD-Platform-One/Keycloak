@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.0.0-bb.1](https://img.shields.io/badge/Version-18.0.0--bb.1-informational?style=flat-square) ![AppVersion: 17.0.1-legacy](https://img.shields.io/badge/AppVersion-17.0.1--legacy-informational?style=flat-square)
+![Version: 18.0.0-bb.2](https://img.shields.io/badge/Version-18.0.0--bb.2-informational?style=flat-square) ![AppVersion: 17.0.1-legacy](https://img.shields.io/badge/AppVersion-17.0.1--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -167,9 +167,16 @@ helm install keycloak chart/
 | postgresql.postgresqlPassword | string | `"keycloak"` |  |
 | postgresql.postgresqlDatabase | string | `"keycloak"` |  |
 | postgresql.networkPolicy.enabled | bool | `false` |  |
-| postgresql.image.registry | string | `"registry.dso.mil"` |  |
-| postgresql.image.repository | string | `"platform-one/big-bang/apps/security-tools/keycloak/postgresql"` |  |
-| postgresql.image.tag | string | `"11.8.0-debian-10-r61"` |  |
+| postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
+| postgresql.image.registry | string | `"registry1.dso.mil"` |  |
+| postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
+| postgresql.image.tag | float | `12.9` |  |
+| postgresql.securityContext.enabled | bool | `true` |  |
+| postgresql.securityContext.fsGroup | int | `26` |  |
+| postgresql.securityContext.runAsUser | int | `26` |  |
+| postgresql.securityContext.runAsGroup | int | `26` |  |
+| postgresql.containerSecurityContext.enabled | bool | `true` |  |
+| postgresql.containerSecurityContext.runAsUser | int | `26` |  |
 | postgresql.resources.requests.cpu | string | `"250m"` |  |
 | postgresql.resources.requests.memory | string | `"256Mi"` |  |
 | postgresql.resources.limits.cpu | string | `"250m"` |  |
