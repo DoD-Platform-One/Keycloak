@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.0.0-bb.3] - 2022-04-18
+### Added
+- Added oscal-component
+
 ## [18.0.0-bb.2] - 2022-04-18
 ### Added
 - Added values to the values.yaml file for using an ironbank approved image for postgresql.enabled set to true.
@@ -50,7 +54,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [16.0.6-bb.1] - 2022-01-27
 ### Changed
-- fix problem on FIPS enabled nodes 
+- fix problem on FIPS enabled nodes
 
 ## [16.0.6-bb.0] - 2022-01-24
 ### Changed
