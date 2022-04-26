@@ -1,0 +1,296 @@
+component-definition:
+  uuid: 6d927295-e0ed-491a-b54f-4fa5282522fb
+  metadata:
+    title: Keycloak Component
+    last-modified: '2021-10-19T12:00:00Z'
+    version: "20211019"
+    oscal-version: 1.0.0
+    parties:
+      # Should be consistent across all of the packages, but where is ground truth?
+    - uuid: 72134592-08C2-4A77-ABAD-C880F109367A
+      type: organization
+      name: Platform One
+      links:
+      - href: <https://p1.dso.mil>
+        rel: website
+  components:
+  - uuid: 13936e92-24bd-4948-abe6-af88422174aa
+    type: software
+    title: Keycloak
+    description: |
+      An implementation of a customizable Keycloak for single sign-on (SSO) with Identity and Access Management
+    purpose: Provides user federation, strong authentication, user management, fine-grained authorization.
+    responsible-roles:
+    - role-id: provider
+      party-uuids:
+      - 72134592-08C2-4A77-ABAD-C880F109367A # matches parties entry for p1
+    control-implementations:
+    - uuid: 44bb0268-355d-455b-be33-7fc6ecc89668
+      source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+      description:
+        Controls implemented by Keycloak for inheritance by applications
+      implemented-requirements:
+      - uuid: 045bbf72-d7d1-4763-a997-caf62785b2aa
+        control-id: ac-1
+        description: >-
+          System-level access controls
+
+          Keycloak supports fine-grained authorization policies and is able to combine different access control mechanisms such as:
+
+            - Attribute-based access control (ABAC)
+            - Role-based access control (RBAC)
+            - User-based access control (UBAC)
+            - Context-based access control (CBAC)
+            - Rule-based access control
+            - Using JavaScript
+            - Time-based access control
+            - Support for custom access control mechanisms (ACMs) through a Policy Provider Service Provider Interface (SPI)
+
+          Keycloak is based on a set of administrative UIs and a RESTful API, and provides the necessary means to create permissions for your protected resources and scopes, associate those permissions with authorization policies, and enforce authorization decisions in your applications and services.
+
+          Resource servers (applications or services serving protected resources) usually rely on some kind of information to decide if access should be granted to a protected resource. For RESTful-based resource servers, that information is usually obtained from a security token, usually sent as a bearer token on every request to the server. For web applications that rely on a session to authenticate users, that information is usually stored in a user’s session and retrieved from there for each request.
+
+          Permissions can be created to protect two main types of objects:
+
+            - Resources: resource-based permission defines a set of one or more resources to protect using a set of one or more authorization policies.
+            - Scopes: scope-based permissions defines a set of one or more scopes to protect using a set of one or more authorization policies. Unlike resource-based permissions, you can use this permission type to create permissions not only for a resource, but also for the scopes associated with it, providing more granularity when defining the permissions that govern your resources and the actions that can be performed on them.
+
+            https://www.keycloak.org/docs/latest/authorization_services/
+
+          Organizational access controls
+
+          Organizational roles could be broken down into cluster admins, resource owners / administrators, clients / users
+      - uuid: 86815b87-fc12-432b-9d0a-77492186ad6e
+        control-id: ac-2
+        description: >-
+          Big Bang implements a custom plugin to handle account managment, found here (https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/-/tree/main/development).  Through this plugin logic is implemented to control automated registration and ties into DoD PKI validation/verification. Additionally, this plugin validates group membership in conjunction with Keycloak Clients to prohibit/allow access to various resources behind the single sign on solution.
+
+            a/c. non-privileged users are prohibited by the keycloak plugin and declarative group structure defined here (https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/-/tree/main/development). Privileged users follow a similar posture combined with other solutions to prohibit access to resources based on group membership.
+            b. Keycloak can be configured for fine grain permissions to assign account managers, additionally the custom plugin allows configuration of groups with specific permissions within the keycloak web UI console.
+            d (1-3). Declarative groups specify authorized users, groups, and roles. Access authorizations and assignment is related to Day 2 operations of keycloak and may vary between organizations.
+            e. Handled by Day 2 operations of keycloak.
+            f. declarative groups assist in the handling of accounts, but ultimate is is a day 2 operation.
+            g. Keycloak web UI has a queryable audit logging feature and backend logs can be monitored.
+            h. Handled by Day 2 operations of keycloak.
+            i. Handled by Day 2 operations of keycloak.
+            j. Mostly, handled by Day 2 operations of keycloak. However, built in registration flow validates and verifies DoD level authorization.
+            k.  Handled by Day 2 operations of keycloak.
+            l.  Handled by Day 2 operations of keycloak.
+      - uuid: 477fbb45-8837-4755-a1f2-6d1843b7bedb
+        control-id: ac-2.1
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak. There are roughly 30 different event types in keycloak and an event listener
+          can be configured to notify when an account is created, enabled, modified, disabled, or removed, or when
+          users are terminated or transferred.
+      - uuid: 440ef311-2711-4bb0-9dd8-438d196e84e5
+        control-id: ac-2.2
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak. There are roughly 30 different event types in keycloak and an event listener
+          can be configured to notify when an account is created, enabled, modified, disabled, or removed, or when
+          users are terminated or transferred.
+      - uuid: 9a76f468-1daa-49ca-9582-7c17751f41bc
+        control-id: ac-2.3
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak. There are roughly 30 different event types in keycloak and an event listener
+          can be configured to notify when an account is created, enabled, modified, disabled, or removed, or when
+          users are terminated or transferred.
+      - uuid: 93d0b28b-bcf4-4e45-a5e0-f5d1b0ce9d26
+        control-id: ac-2.4
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak. There are roughly 30 different event types in keycloak and an event listener
+          can be configured to notify when an account is created, enabled, modified, disabled, or removed, or when
+          users are terminated or transferred.
+      - uuid: 6c10ca0e-7b91-45ab-b066-949bdfba126a
+        control-id: ac-2.5
+        description: >-
+          Keycloak is configured with login timeout, session tokens, etc. and are managed in realm settings/tokens
+      - uuid: 473ce520-ed39-4d88-9433-2a04cc451b16
+        control-id: ac-2.12
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak. There are roughly 30 different event types in keycloak and an event listener
+          can be configured and automated via email, external webhook, and logging stack monitored by admins to notify
+          when an account is created, enabled, modified, disabled, or removed, or when users are terminated or transferred.
+      - uuid: cb4929fc-3685-45e4-8720-405dc5ed9ea3
+        control-id: ac-2.13
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak. There are roughly 30 different event types in keycloak and an event listener
+          can be configured and automated via email, external webhook, and logging stack monitored by admins to notify
+          when an account is created, enabled, modified, disabled, or removed, or when users are terminated or transferred.
+      - uuid: b704526e-e18f-46ec-8072-2e361115265a
+        control-id: ac-3
+        description: >-
+          Keycloak allows the creation of clients that provide login to app via Keycloak, allowing account management
+          to be inherited from keycloak and the enforcement of approved authorizaions for logical access to information and
+          system resources.
+      - uuid: ef73dc31-ab9a-4d67-b5b8-c042e47aba25
+        control-id: ac-4
+        description: >-
+          Keycloak is designed and recommended to be deployed in a stand-alone BB cluster with TLS passthrough for OIDC/SAML integration.
+          Controls are inherited from istio via network policies, virtual services and gateway configs.
+      - uuid: 34ea5ae5-3525-4a81-974f-a73e1999610f
+        control-id: ac-4.4
+        description: >-
+          Keycloak is designed and recommended to be deployed in a stand-alone BB cluster with TLS passthrough for OIDC/SAML integration.
+          Controls are inherited from istio via network policies, virtual services and gateway configs.
+      - uuid: 25a717a7-3f1f-4d24-9cc1-701be6f97df9
+        control-id: ac-5
+        description: >-
+          Keycloak is designed and recommended to be deployed in a stand-alone BB cluster with TLS passthrough for OIDC/SAML integration.
+          Controls are inherited from istio via network policies, virtual services and gateway configs.
+      - uuid: 28fba4bc-e1ae-4164-9673-6ed90d93a7c0
+        control-id: ac-6
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: 2f8de149-d07f-4e8a-8baf-5bdbace0cf8d
+        control-id: ac-6.1
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: 5a04932c-05cf-489a-932c-cb31b9480b73
+        control-id: ac-6.2
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: 337a9b7f-71d0-46ef-aaa2-af5367d9b371
+        control-id: ac-6.5
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: 6de217bb-f767-4af0-b813-b54df9baf173
+        control-id: ac-6.7
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: 59032e55-f51e-4a0d-9394-7474631005ec
+        control-id: ac-6.9
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: ad95419d-4506-48b0-a736-723724acea34
+        control-id: ac-6.10
+        description: >-
+          Keycloak as an IDM / IAM provider supports least privilege through user / group management (ABAC / RBAC) service offerings
+      - uuid: 16088314-7668-41a2-9ee1-a7128d6c209e
+        control-id: ac-7
+        description: >-
+          Keycloak has brute force protection which has three components: max login failures, quick login check (time between failures)
+          & minimum quick login check wait (time user will be disabled when multiple login failures are detected)
+      - uuid: 35992922-7375-45fc-bac1-1a6b551a76b9
+        control-id: ac-8
+        description: >-
+          Keycloak has a standard DOD login banner see https://login.dso.mil
+      - uuid: 2a99e48f-6631-4ff7-b955-b73caafdedac
+        control-id: ac-10
+        description: >-
+          Keycloak does not suffice this control natively; however, you can implement a “only one session per user” behavior with an
+          ```EventListenerProvider```. On every LOGIN event, delete all the sessions of a user, except the current one.
+      - uuid: 77c2aa64-ab6b-4508-b6f6-fcca929de9ab
+        control-id: ac-12
+        description: >-
+          Keycloak does not suffice this control natively; however, you can implement a session behaviors with an ```EventListenerProvider```.
+      - uuid: 3b38e765-41f8-4ea6-90dc-b4a1845b62cc
+        control-id: ac-14
+        description: >-
+          Keycloak has the ability to allow anonymous access to resource if Client Access Type is set to public.
+      - uuid: 9bd24189-a9f7-4ddb-98fb-ba259b46b459
+        control-id: ac-17.1
+        description: >-
+          Keycloak manages remote access to other applications through IAM.
+      - uuid: 3e901895-d5da-48a0-8317-56b456371243
+        control-id: ac-17.2
+        description: >-
+          Through EventListeners Keycloak can either ship logs to a SIEM which could alert on remote session events, or with custom SPIs Keycloak
+          can perform an action directly on events. A VPN client would need to use Keycloak as an SSO to generate these events.
+      - uuid: 66bc3835-8369-48ec-b54f-ca5ca034e2fd
+        control-id: ac-17.3
+        description: >-
+          Keycloak can restrict access to control points through IAM, but a VPN solution like Appgate would be better suited working with Keycloak.
+      - uuid: f6e0f2a4-c729-4335-97f4-b16fb49d27f9
+        control-id: ac-17.4
+        description: >-
+          Keycloak can support a VPN or other remote management system as its IAM to support remote access control.
+      - uuid: 6a948220-d3ef-4357-989a-38e25f27eb3f
+        control-id: au-2
+        description: >-
+          Keycloak captures user and admin events and can ship them out to a logging server for analysis or trigger an action on specific event via customizable EventListeners.
+      - uuid: 4b4d19b0-b8e1-4fdd-b57b-448f4e163342
+        control-id: au-3
+        description: >-
+          Keycloak events contain what, when, where, source, and objects/entities for policy violations.
+      - uuid: 35b33698-d3c5-496e-9cb4-4524c63e2fac
+        control-id: au-3.1
+        description: >-
+          Keycloak event logs include Time, Event Type, Details (Client, User, IP Address). Events are shipped to logging.
+      - uuid: ab565bfa-78a5-43e6-98cc-ba801a16b980
+        control-id: au-4
+        description: >-
+          Keycloak events can be both saved to database and shipped to logging server. Both systems are external to Keycloaks application server.
+      - uuid: 24b14c71-b4bd-402f-aba6-80056e1b6fec
+        control-id: au-7
+        description: >-
+          Keycloak provides audit records for compliance that qualify for this control.
+      - uuid: e528b2ec-6895-432d-acf1-b33e0f8455f5
+        control-id: au-7.1
+        description: >-
+          Within Keycloak records, sorting and searching are supported.
+      - uuid: ed7026d7-4257-44e6-919c-73e5f8a86be5
+        control-id: au-8
+        description: >-
+          Keycloak saves timestamps in event logs
+      - uuid: 92b5e2c1-cb7c-4f38-ba5b-22b617b15020
+        control-id: au-9
+        description: >-
+          Keycloak provides RBAC to restrict management of logs.
+      - uuid: 71c0d1c7-f9a5-4439-829b-8976749481eb
+        control-id: au-9.4
+        description: >-
+          Keycloak provides RBAC to restrict management of logs.
+      - uuid: 0b7b466e-e33c-4fa0-8979-a82da5fadc32
+        control-id: ia-2
+        description: >-
+          Keycloak supports control through its IAM/SSO service.
+      - uuid: ff98831e-de87-4f0d-b42f-3af08a6caff6
+        control-id: ia-2.1
+        description: >-
+          Keycloak supports MFA using mobile and x509 mTLS for both privileged and non-privileged account management.
+      - uuid: e0fbd222-d6ae-4729-a262-7c795dd6a628
+        control-id: ia-2.2
+        description: >-
+          Keycloak supports MFA using mobile and x509 mTLS for both privileged and non-privileged account management.
+      - uuid: 441d2bbd-b7ee-46e9-8110-f0fda67a2c90
+        control-id: ia-2.5
+        description: >-
+          Keycloak provides build-in functionality to support control.
+      - uuid: 5c163729-a954-43ca-a035-6040b0526ccd
+        control-id: ia-2.12
+        description: >-
+          Keycloak supports PIV credentials
+      - uuid: 084779e8-542d-4def-936b-69fd1fb7f266
+        control-id: ia-3
+        description: >-
+          Keycloak provides built-in functionality to support control.
+      - uuid: 7a4c2837-a205-4b9c-b850-a8afec580275
+        control-id: ia-4
+        description: >-
+          Keycloak provides built-in functionality to support control.
+      - uuid: ce397926-ec86-491c-82f6-db7e2e164a0d
+        control-id: ia-4.4
+        description: >-
+          Keycloak provides built-in functionality to support control.
+      - uuid: 7cee87f8-165f-4631-96f5-b2876df0e88a
+        control-id: ia-5.1
+        description: >-
+          Keycloak provides password-policies to support control. https://github.com/keycloak/keycloak-documentation/blob/main/server_admin/topics/authentication/password-policies.adoc
+      - uuid: 56d5209f-e279-4f67-b6e9-9a814695dda9
+        control-id: ia-5.2
+        description: >-
+          Keycloak supports OCSP checking, and truststore/chain validation for x509 PKI access.
+      - uuid: 8d858e85-710e-46aa-b6fd-98013480c2b6
+        control-id: ia-8.1
+        description: >-
+          Keycloak supports authenicating non-orgaizational users through supporting mTLS signed by external certificate authorities.
+      - uuid: c2976939-842a-4efc-afd3-11dc9892fb86
+        control-id: ia-11
+        description: >-
+          Keycloak supports OIDC/SAML which support expiration dates in tokens/assertions.
