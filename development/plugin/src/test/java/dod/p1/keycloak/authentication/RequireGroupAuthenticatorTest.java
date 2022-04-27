@@ -135,6 +135,17 @@ public class RequireGroupAuthenticatorTest {
     }
 
     @Test
+    public void testShouldAcceptValidClientWithUnderscoresWithUserInValidGroup() {
+        GroupModel group = mock(GroupModel.class);
+        when(realm.getGroupById("f289ee42-3088-415d-bab6-e444d7d58c57")).thenReturn(group);
+        when(client.getClientId()).thenReturn("test_f289ee42-3088-415d-bab6-e444d7d58c57_valid_client_test");
+        // This user IS authorized
+        when(user.isMemberOf(group)).thenReturn(true);
+        subject.authenticate(context);
+        verify(context).success();
+    }
+
+    @Test
     public void testOverrides() {
         subject.action(null);
         subject.setRequiredActions(null, null, null);
