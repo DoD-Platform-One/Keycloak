@@ -45,7 +45,7 @@ public class RequireGroupAuthenticator implements Authenticator {
 
         // Match the pattern "test_b4e4ae70-5b78-47ff-ad5c-7ebf3c10e452_app"
         // where "test" is the short name and "b4e4ae70-5b78-47ff-ad5c-7ebf3c10e452" is the group id
-        String clientIdPatternMatch = "^[a-z0-9-]+_([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})_[a-z0-9-]+$";
+        String clientIdPatternMatch = "^[a-z0-9-]+_([0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})_[_a-z0-9-]+$";
         Pattern pattern = Pattern.compile(clientIdPatternMatch);
         Matcher matcher = pattern.matcher(clientId);
 

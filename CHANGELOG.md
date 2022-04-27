@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.0.0-bb.4] - 2022-04-26
+### Changed
+- Custom P1 plugin changed to allow underscores in client names
+- Move MODIFICATIONS.md to /docs/PACKAGE_UPDATES.md and add more upgrade documentation
+### Updated
+- Updated DoD certificate authorities pem file
+
 ## [18.0.0-bb.3] - 2022-04-18
 ### Added
 - Added oscal-component

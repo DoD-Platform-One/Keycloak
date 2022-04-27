@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 18.0.0-bb.3
+version: 18.0.0-bb.4
 appVersion: 17.0.1-legacy
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
@@ -32,4 +32,4 @@ dependencies:
 annotations:
   bigbang.dev/applicationVersions: |
     - Keycloak: 17.0.1
-    - PlatformOne Plugin: 1.1.0
+    - PlatformOne Plugin: 1.2.0

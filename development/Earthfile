@@ -1,5 +1,6 @@
+# VERSION was added for Renovate. Unsure why it is needed. Not used for build
 VERSION 0.5
-ARG PLUGIN_VERSION=1.1.0
+ARG PLUGIN_VERSION=1.2.0
 ARG KEYCLOAK_VERSION=17.0.1-legacy
 # This is the bigbang configuration version
 # can be reset back to 1 if either the plugin or keycloak version changes
