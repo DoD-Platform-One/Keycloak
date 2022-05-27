@@ -1,7 +1,7 @@
 apiVersion: v2
 name: keycloak
-version: 18.0.0-bb.4
-appVersion: 17.0.1-legacy
+version: 18.1.1-bb.0
+appVersion: 18.0.0-legacy
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
   - sso
@@ -27,9 +27,9 @@ dependencies:
     repository: file://./deps/postgresql
     condition: postgresql.enabled
   - name: gluon
-    version: "0.2.8"
+    version: "0.2.9"
     repository: "oci://registry.dso.mil/platform-one/big-bang/apps/library-charts/gluon"
 annotations:
   bigbang.dev/applicationVersions: |
-    - Keycloak: 17.0.1
+    - Keycloak: 18.0.0
     - PlatformOne Plugin: 1.2.0

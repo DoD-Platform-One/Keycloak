@@ -5,6 +5,11 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
 1. Do diff of [upstream chart](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak) between old and new release tags to become aware of any significant chart changes.
 1. Create a development branch and merge request from the Gitlab issue.
 1. Merge/Sync the new helm chart with the existing Keycloak package code. A graphical diff application like [Meld](https://meldmerge.org/) is useful. Reference the "Modifications made to upstream chart" section below. Be careful not to overwrite Big Bang Package changes that need to be kept.
+1. Run a helm dependency command to update the chart/charts/*.tgz archives and create a new requirements.lock file. You will commit the tar archives along with the requirements.lock that was generated.
+    ```
+    export HELM_EXPERIMENTAL_OCI=1
+    helm dependency update ./chart
+    ```
 1. Update /CHANGELOG.md with an entry for "upgrade Keycloak to app version X.X.X-legacy chart version X.X.X-bb.X". Or, whatever description is appropriate.
 1. Update the /README.md following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md)
 1. Update /chart/Chart.yaml to the appropriate versions. 
@@ -30,6 +35,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
     ```bash
     docker login registry1.dso.mil
     ```
+    Install Earthly on the remote build server.
     Run the Earthly build
     ```bash
     earthly +build-image

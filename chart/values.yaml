@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "17.0.1-1.2.0-1"
+  tag: "18.0.0-1.2.0-1"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -408,6 +408,11 @@ ingress:
         paths:
           - path: /auth/admin/
             pathType: Prefix
+    # Console TLS configuration
+    tls: []
+#      - hosts:
+#          - console.keycloak.example.com
+#        secretName: ""
 
 ## Network policy configuration
 networkPolicy:
