@@ -1,25 +1,24 @@
 {
   "baseBranches": ["main"],
-  "configWarningReuseIssue": false,
   "dependencyDashboard": "true",
   "dependencyDashboardHeader": "- [ ] Use Earthly to generate new Keycloak image with plugins.\n- [ ] Upload image to this repo's container registry.\n- [ ] Update image tag in `chart/values.yaml`",
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
-  "draftPR": true,
-  "enabledManagers": ["regex"],
+  "draftPR": "true",
   "labels": ["keycloak","Package Sustainment","kind::maintenance"],
-  
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "groupName": "Ironbank",
-      "registryUrls": ["https://registry1.dso.mil"]
+      "groupName": "Ironbank"
     }
   ],
+  "separateMajorMinor": "false",
+  "ignoreDeps": ["docker.io/unguiculus/docker-python3-phantomjs-selenium", "org.keycloak:keycloak-core", "org.powermock:powermock-module-junit4", "org.powermock:powermock-api-mockito2", "org.mockito:mockito-core", "junit:junit", "org.yaml:snakeyaml", "org.keycloak:keycloak-services", "org.keycloak:keycloak-server-spi", "org.keycloak:keycloak-server-spi-private", "io.freefair.lombok", "com.github.johnrengelman.shadow", "gradle"],
+  "ignorePaths": ["**/development/plugin"],
   "regexManagers": [
     {
       "fileMatch": ["^chart/Chart\\.yaml$"],
       "matchStrings": [
-        "appVersion:\\s+(?<currentValue>.+)"
+        "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)"
       ],
       "registryUrlTemplate": "https://registry1.dso.mil",
       "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
