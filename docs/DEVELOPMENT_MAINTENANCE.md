@@ -251,7 +251,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
           email: email
           group: group
     ```
-1. Sonarqube needs an extra configuration step for SSO to work because it uses SAML. The values override ```addons.sonarqube.sso.certificate``` needs to be updated with the Keycloak realm certificate. When Keycloak finishes installing login to the admin console ```https://keycloak.bigbang.dev/auth/admin``` with default credentials ```admin/password```. Navigate to Realm Settings >> Keys. On the RS256 row click on the ```Certificate``` buttton and copy the certificate text as a single line string and paste it into your ```addons.sonarqube.sso.certificate``` value. Run another ```helm upgrade``` command and watch for Sonarqube to update.
+1. Sonarqube needs an extra configuration step for SSO to work because it uses SAML. The values override ```addons.sonarqube.sso.certificate``` needs to be updated with the Keycloak realm certificate. When Keycloak finishes installing login to the admin console ```https://keycloak.bigbang.dev/auth/admin``` with default credentials ```admin/password```. Navigate to Realm Settings >> Keys. On the RS256 row click on the ```Certificate``` button and copy the certificate text as a single line string and paste it into your ```addons.sonarqube.sso.certificate``` value. Run another ```helm upgrade``` command and watch for Sonarqube to update.
 1. Use Firefox browser with SOCKS v5 manual proxy configured so that we are running Firefox as if it was running on the EC2 instance. This is described in more detail in the development environment addendum [Multi Ingress-gateway Support with MetalLB and K3D](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/blob/master/docs/developer/development-environment.md)
 1. In the Firefox browser load ```https://keycloak.bigbang.dev``` and register a test user. You should register yourself with CAC and also a non-CAC test.user with just user and password with OTP. Both flows need to be tested.
 1. Then go back to ```https://keycloak.bigbang.dev/auth/admin``` and login to the admin console with the default credentials ```admin/password```
@@ -262,10 +262,10 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
     - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/password
     - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/totp
     - https://keycloak.bigbang.dev/register
-1. Ocassionally the DoD certificate authorities will need to be updated. Follow the instructions at ```/scripts/certs/README.md``` and copy the new ```dod_cas.pem``` to ```chart/resources/dev```. You might have to edit the ```/scripts/certs/dod_cas_to_pem.sh``` to update to the most recent published certs.
+1. Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at ```/scripts/certs/README.md``` and copy the new ```dod_cas.pem``` to ```chart/resources/dev```. You might have to edit the ```/scripts/certs/dod_cas_to_pem.sh``` to update to the most recent published certs.
 
 # Modifications made to upstream chart
-This is a high-level list of modifitations that Big Bang has made to the upstream helm chart. You can use this as as cross-check to make sure that no modifications were lost during the upgrade process.
+This is a high-level list of modifications that Big Bang has made to the upstream helm chart. You can use this as as cross-check to make sure that no modifications were lost during the upgrade process.
 
 ## chart/values.yaml
 - disable all internal services other than postgres
@@ -308,7 +308,7 @@ This is a high-level list of modifitations that Big Bang has made to the upstrea
 - add annotations for release automation
 
 ## chart/Kptfile
-- file created when kpt was used to dowload the upstream chart
+- file created when kpt was used to download the upstream chart
 
 ## chart/scripts/keycloak.cli
 - delete this upstream file.  Don't want to encourage anyone to override the startup script. 

@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.1.1-bb.0](https://img.shields.io/badge/Version-18.1.1--bb.0-informational?style=flat-square) ![AppVersion: 18.0.0-legacy](https://img.shields.io/badge/AppVersion-18.0.0--legacy-informational?style=flat-square)
+![Version: 18.1.1-bb.1](https://img.shields.io/badge/Version-18.1.1--bb.1-informational?style=flat-square) ![AppVersion: 18.0.0-legacy](https://img.shields.io/badge/AppVersion-18.0.0--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -71,7 +71,7 @@ helm install keycloak chart/
 | extraEnv | string | `""` |  |
 | extraEnvFrom | string | `"- secretRef:\n    name: '{{ include \"keycloak.fullname\" . }}-env'\n"` |  |
 | priorityClassName | string | `""` |  |
-| affinity | string | `"podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n    - labelSelector:\n        matchLabels:\n          {{- include \"keycloak.selectorLabels\" . | nindent 10 }}\n        matchExpressions:\n          - key: app.kubernetes.io/component\n            operator: NotIn\n            values:\n              - test\n      topologyKey: kubernetes.io/hostname\n  preferredDuringSchedulingIgnoredDuringExecution:\n    - weight: 100\n      podAffinityTerm:\n        labelSelector:\n          matchLabels:\n            {{- include \"keycloak.selectorLabels\" . | nindent 12 }}\n          matchExpressions:\n            - key: app.kubernetes.io/component\n              operator: NotIn\n              values:\n                - test\n        topologyKey: failure-domain.beta.kubernetes.io/zone\n"` |  |
+| affinity | string | `"podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n    - labelSelector:\n        matchLabels:\n          {{- include \"keycloak.selectorLabels\" . \| nindent 10 }}\n        matchExpressions:\n          - key: app.kubernetes.io/component\n            operator: NotIn\n            values:\n              - test\n      topologyKey: kubernetes.io/hostname\n  preferredDuringSchedulingIgnoredDuringExecution:\n    - weight: 100\n      podAffinityTerm:\n        labelSelector:\n          matchLabels:\n            {{- include \"keycloak.selectorLabels\" . \| nindent 12 }}\n          matchExpressions:\n            - key: app.kubernetes.io/component\n              operator: NotIn\n              values:\n                - test\n        topologyKey: failure-domain.beta.kubernetes.io/zone\n"` |  |
 | topologySpreadConstraints | string | `nil` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
@@ -225,6 +225,7 @@ helm install keycloak chart/
 | test.securityContext.runAsNonRoot | bool | `true` |  |
 | hostname | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
+| istio.injection | string | `"disabled"` |  |
 | istio.keycloak.enabled | bool | `false` |  |
 | istio.keycloak.annotations | object | `{}` |  |
 | istio.keycloak.labels | object | `{}` |  |
