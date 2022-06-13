@@ -640,6 +640,7 @@ hostname: bigbang.dev
 istio:
   # Toggle istio integration
   enabled: false
+  injection: "disabled"
   keycloak:
     # Toggle vs creation
     enabled: false
