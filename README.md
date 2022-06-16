@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.1.1-bb.1](https://img.shields.io/badge/Version-18.1.1--bb.1-informational?style=flat-square) ![AppVersion: 18.0.0-legacy](https://img.shields.io/badge/AppVersion-18.0.0--legacy-informational?style=flat-square)
+![Version: 18.1.1-bb.2](https://img.shields.io/badge/Version-18.1.1--bb.2-informational?style=flat-square) ![AppVersion: 18.0.0-legacy](https://img.shields.io/badge/AppVersion-18.0.0--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -171,7 +171,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.9` |  |
+| postgresql.image.tag | float | `12.11` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |
