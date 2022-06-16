@@ -490,7 +490,7 @@ postgresql:
   image:
     registry: registry1.dso.mil
     repository: ironbank/opensource/postgres/postgresql12
-    tag: 12.9
+    tag: 12.11
   securityContext:
     enabled: true
     fsGroup: 26

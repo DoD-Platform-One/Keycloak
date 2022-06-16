@@ -15,7 +15,7 @@ global:
 image:
   registry: registry1.dso.mil
   repository: ironbank/opensource/postgres/postgresql12
-  tag: 12.9
+  tag: 12.11
   pullSecrets:
     - private-registry
   ## Specify a imagePullPolicy
@@ -52,7 +52,7 @@ volumePermissions:
   image:
     registry: registry1.dso.mil
     repository: ironbank/big-bang/base
-    tag: 1.0.0
+    tag: 1.17.0
     pullSecrets:
       - private-registry
     ## Specify a imagePullPolicy
