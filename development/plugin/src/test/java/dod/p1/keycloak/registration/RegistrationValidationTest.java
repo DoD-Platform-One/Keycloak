@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.function.Function;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
@@ -207,7 +208,12 @@ public class RegistrationValidationTest {
                     }
 
                     @Override
-                    public <T extends Provider> T getComponentProvider(Class<T> clazz, String componentId) {
+                    public <T extends Provider> T getComponentProvider(Class<T> aClass, String componentId) {
+                        return null;
+                    }
+
+                    @Override
+                    public <T extends Provider> T getComponentProvider(Class<T> aClass, String componentId, Function<KeycloakSessionFactory,ComponentModel> aFunction) {
                         return null;
                     }
 
