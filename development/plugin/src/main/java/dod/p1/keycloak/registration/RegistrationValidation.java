@@ -193,12 +193,12 @@ public class RegistrationValidation extends RegistrationProfile {
             }
         }
 
-        if (Validation.isBlank(formData.getFirst(Validation.FIELD_FIRST_NAME))) {
-            errors.add(new FormMessage(Validation.FIELD_FIRST_NAME, Messages.MISSING_FIRST_NAME));
+        if (Validation.isBlank(formData.getFirst(RegistrationPage.FIELD_FIRST_NAME))) {
+            errors.add(new FormMessage(RegistrationPage.FIELD_FIRST_NAME, Messages.MISSING_FIRST_NAME));
         }
 
-        if (Validation.isBlank(formData.getFirst(Validation.FIELD_LAST_NAME))) {
-            errors.add(new FormMessage(Validation.FIELD_LAST_NAME, Messages.MISSING_LAST_NAME));
+        if (Validation.isBlank(formData.getFirst(RegistrationPage.FIELD_LAST_NAME))) {
+            errors.add(new FormMessage(RegistrationPage.FIELD_LAST_NAME, Messages.MISSING_LAST_NAME));
         }
 
         if (Validation.isBlank(formData.getFirst("user.attributes.affiliation"))) {

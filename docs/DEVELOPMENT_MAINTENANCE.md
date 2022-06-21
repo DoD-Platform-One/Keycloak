@@ -21,10 +21,11 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
         version: "X.X.X"
     annotations:
       bigbang.dev/applicationVersions: |
-        - Keycloak: XX.X.X
+        - Keycloak: XX.X.X-legacy
         - PlatformOne Plugin: X.X.X
     ```
 1. Update the /development/Earthfile. This is an [Earthly](https://earthly.dev/) config file. Earthly combines bash script and dockerfile together to make repeatable builds easy. Update PLUGIN_VERSION if the custom plugin code has changed. Update KEYCLOAK_VERSION to the new Iron Bank image tag. Update BIGBANG_VERSION as needed. These variables will be combined to create a composite custom image tag.
+1. Update the keycloak library dependencies in the ./development/plugin/build.gradle to match the new version of Keycloak. This library update might cause build errors. You might have to fix code in `src/main/**.java` and `src/test/**.java` to get a build to complete without errors.
 1. Build new image using [Earthly](https://earthly.dev/) by following the /development/README.md. If you are not doing Keycloak Java plugin development there is no need to install build tools on your workstation. A remote build server is recommended (EC2 instance) so that your workstation is not cluttered with build tools and artifacts. On the remote build server install [Earthly](https://earthly.dev/get-earthly). Git clone the [Keyclok Package repository](https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak) in the home directory on the remote build server and then change to the development directory. Switch to your development branch.
     ```bash
     git clone https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git

@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.1.1-bb.3] - 2022-06-21
+### Updated
+- upgrade Keycloak to app version 18.0.1 chart version 18.1.1
+- Update postgresql dependency chart big-bang base image to 1.18.0
+
 ## [18.1.1-bb.2] - 2022-06-16
 ### Updated
 - Update postgresql image and initContainer image
