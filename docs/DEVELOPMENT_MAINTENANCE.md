@@ -275,6 +275,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add default argument of "-b 0.0.0.0" to bind to localhost
 - Add IronBank postgresql12 image for dev/CI development/testing
 - and other miscellaneous change.  Diff with previous version to find all changes
+- modify pgchecker image to ironbank postgres image
 
 ##  chart/charts/*.tgz
 - run ```helm dependency update``` and commit the downloaded archives
@@ -286,6 +287,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 ## chart/templates/StatefulSet.yaml
 - add extraVolumesBigBang (lines 196-189)
 - add extraVolumeMountsBigBang (lines 146-148)
+- modify pgchecker initContainer (lines 54-64)
 
 ## chart/templates/bigbang/*
 - add istio virtual service

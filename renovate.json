@@ -39,6 +39,15 @@
       "registryUrlTemplate": "https://registry1.dso.mil",
       "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
       "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^chart/values\\.yaml$"],
+      "matchStrings": [
+        "image:\\s+registry1.dso.mil/ironbank/big-bang/base:(?<currentValue>.+)"
+      ],
+      "registryUrlTemplate": "https://registry1.dso.mil",
+      "depNameTemplate": "ironbank/big-bang/base",
+      "datasourceTemplate": "docker"
     }
   ]
 }
