@@ -36,7 +36,7 @@ spec:
       restartPolicy: OnFailure
       containers:
       - name: {{ template "keycloak.fullname" . }}-create-ci-cypress-user
-        image: "registry1.dso.mil/ironbank/big-bang/base:1.0.0"
+        image: {{ .Values.bbtests.image  }}
         imagePullPolicy: {{ .Values.image.pullPolicy  }}
         command:
         - /bin/sh

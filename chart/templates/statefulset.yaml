@@ -51,16 +51,17 @@ spec:
           securityContext:
             {{- toYaml .Values.pgchecker.securityContext | nindent 12 }}
           command:
-            - sh
+            - /bin/sh
             - -c
             - |
               echo 'Waiting for PostgreSQL to become ready...'
 
-              until printf "." && nc -z -w 2 {{ include "keycloak.postgresql.fullname" . }} {{ .Values.postgresql.service.port }}; do
-                  sleep 2;
-              done;
+              until pg_isready -h {{ include "keycloak.postgresql.fullname" . }} -p {{ .Values.postgresql.service.port }} -U {{ .Values.postgresql.postgresqlUsername }}; do sleep 2; done
 
               echo 'PostgreSQL OK ✓'
+          env:
+          - name: POSTGRES_HOST_AUTH_METHOD
+            value: "trust"   
           resources:
             {{- toYaml .Values.pgchecker.resources | nindent 12 }}
         {{- end }}

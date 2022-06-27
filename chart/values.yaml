@@ -449,9 +449,9 @@ route:
 pgchecker:
   image:
     # Docker image used to check Postgresql readiness at startup
-    repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/busybox
+    repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql12
     # Image tag for the pgchecker image
-    tag: 1.32
+    tag: 12.11
     # Image pull policy for the pgchecker image
     pullPolicy: IfNotPresent
   # SecurityContext for the pgchecker container
@@ -663,6 +663,7 @@ openshift: false
 
 bbtests:
   enabled: false
+  image: "registry1.dso.mil/ironbank/big-bang/base:1.18.0"
   cypress:
     artifacts: true
     envs:
