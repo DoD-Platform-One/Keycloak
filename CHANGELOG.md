@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.1.1-bb.6] - 2022-06-28
+### Updated
+- Updated bb base image to 2.0.0
+- Updated gluon to 0.2.10
+- Removed websecurity disable from cypress 
+
 ## [18.1.1-bb.5] - 2022-06-27
 ### Updated
 - Updated pgchecker initContainer to use IronBank postgres image instead of busybox
