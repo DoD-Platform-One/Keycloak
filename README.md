@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.1.1-bb.5](https://img.shields.io/badge/Version-18.1.1--bb.5-informational?style=flat-square) ![AppVersion: 18.0.1-legacy](https://img.shields.io/badge/AppVersion-18.0.1--legacy-informational?style=flat-square)
+![Version: 18.1.1-bb.6](https://img.shields.io/badge/Version-18.1.1--bb.6-informational?style=flat-square) ![AppVersion: 18.0.1-legacy](https://img.shields.io/badge/AppVersion-18.0.1--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -238,7 +238,7 @@ helm install keycloak chart/
 | networkPolicies.smtpPort | int | `587` |  |
 | openshift | bool | `false` |  |
 | bbtests.enabled | bool | `false` |  |
-| bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:1.18.0"` |  |
+| bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.0.0"` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"https://keycloak-http.keycloak.svc.cluster.local:8443"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |
