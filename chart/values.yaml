@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "18.0.1-1.2.0-1"
+  tag: "18.0.2-1.2.0-1"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -100,7 +100,7 @@ command: []
 
 ## Overrides the default args for the Keycloak container
 args:
-  # Big Bang additions 
+  # Big Bang additions
   - "-b 0.0.0.0"
   - "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
   - "-Dkeycloak.profile.feature.declarative_user_profile=enabled"
@@ -200,7 +200,7 @@ startupProbe: |
   periodSeconds: 5
 
 # Pod resource requests and limits
-resources: 
+resources:
   requests:
     cpu: "1"
     memory: "1Gi"
@@ -508,7 +508,7 @@ postgresql:
   #   pullSecrets:
   #     - private-registry
   #   securityContext:
-  #     runAsUser: 0  
+  #     runAsUser: 0
 
   resources:
     requests:
@@ -658,7 +658,7 @@ networkPolicies:
     app: istio-ingressgateway
     istio: ingressgateway
   smtpPort: 587
-  
+
 openshift: false
 
 bbtests:

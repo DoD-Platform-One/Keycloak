@@ -3,7 +3,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
 1. Read release notes from upstream [Keycloak documentation](https://www.keycloak.org/docs/latest/release_notes/index.html). Be aware of changes that are included in the upgrade. Take note of any manual upgrade steps that customers might need to perform, if any.
 1. Be aware that there are currently two versions of Keycloak. One is the legacy version that uses Wildfly for the application server. The other version is the new one using Quarkus. Big Bang for now will remain with the legacy version. The images in Iron Bank have tag with ```X.X.X-legacy```.
 1. Do diff of [upstream chart](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak) between old and new release tags to become aware of any significant chart changes.
-1. Create a development branch and merge request from the Gitlab issue.
+1. Create a development branch and merge request from the Keycloak issue.
 1. Merge/Sync the new helm chart with the existing Keycloak package code. A graphical diff application like [Meld](https://meldmerge.org/) is useful. Reference the "Modifications made to upstream chart" section below. Be careful not to overwrite Big Bang Package changes that need to be kept.
 1. Run a helm dependency command to update the chart/charts/*.tgz archives and create a new requirements.lock file. You will commit the tar archives along with the requirements.lock that was generated.
     ```
@@ -11,8 +11,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
     helm dependency update ./chart
     ```
 1. Update /CHANGELOG.md with an entry for "upgrade Keycloak to app version X.X.X-legacy chart version X.X.X-bb.X". Or, whatever description is appropriate.
-1. Update the /README.md following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md)
-1. Update /chart/Chart.yaml to the appropriate versions. 
+1. Update /chart/Chart.yaml to the appropriate versions.
     ```yaml
     version: XX.X.X-bb.X
     appVersion: XX.X.X-legacy
@@ -24,6 +23,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
         - Keycloak: XX.X.X-legacy
         - PlatformOne Plugin: X.X.X
     ```
+1. Update the /README.md following the [gluon library script](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md)
 1. Update the /development/Earthfile. This is an [Earthly](https://earthly.dev/) config file. Earthly combines bash script and dockerfile together to make repeatable builds easy. Update PLUGIN_VERSION if the custom plugin code has changed. Update KEYCLOAK_VERSION to the new Iron Bank image tag. Update BIGBANG_VERSION as needed. These variables will be combined to create a composite custom image tag.
 1. Update the keycloak library dependencies in the ./development/plugin/build.gradle to match the new version of Keycloak. This library update might cause build errors. You might have to fix code in `src/main/**.java` and `src/test/**.java` to get a build to complete without errors.
 1. Build new image using [Earthly](https://earthly.dev/) by following the /development/README.md. If you are not doing Keycloak Java plugin development there is no need to install build tools on your workstation. A remote build server is recommended (EC2 instance) so that your workstation is not cluttered with build tools and artifacts. On the remote build server install [Earthly](https://earthly.dev/get-earthly). Git clone the [Keyclok Package repository](https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak) in the home directory on the remote build server and then change to the development directory. Switch to your development branch.
@@ -56,16 +56,45 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
 
 
 # Testing new Keycloak version
-1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/tree/master/docs/developer/scripts) with the ```-m``` for metalLB so that k3d can support multiple ingress gateways. The following steps assume you are using the script.
-1. Follow the instructions at the end of the script to ssh to the EC2 instance with application-level port forwarding. Keep this ssh session for the remainder of the testing.
-1. You will need to edit the /etc/hosts on he EC2 instance. Make it look like this
+1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/blob/master/docs/assets/scripts/developer/k3d-dev.sh) with the ```-m``` for metalLB so that k3d can support multiple ingress gateways. The following steps assume you are using the script.
+1. Follow all of the instructions at the end of the script to ssh to the EC2 instance with application-level port forwarding. Keep this ssh session for the remainder of the testing. An `example` of the instructions to be followed are below.      
+  ```
+  SAVE THE FOLLOWING INSTRUCTIONS INTO A TEMPORARY TEXT DOCUMENT SO THAT YOU DON'T LOOSE THEM
+  NOTE: The EC2 instance will automatically terminate at 08:00 UTC unless you delete the cron job
+
+  ssh to instance:
+  ssh -i ~/.ssh/user.name-dev.pem ubuntu@X.X.X.X
+
+  To access apps from browser start ssh with application-level port forwarding:
+  ssh -i ~/.ssh/user.name-dev.pem ubuntu@X.X.X.X -D 127.0.0.1:12345
+
+  To use kubectl from your local workstation you must set the KUBECONFIG environment variable:
+  export KUBECONFIG=~/.kube/user.name-dev-config   
+
+  Do not edit /etc/hosts on your local workstation.
+  To access apps from a browser edit /etc/hosts on the EC2 instance. Sample /etc/host entries have already been added there.
+  Manually add more hostnames as needed.
+  
+  The IPs to use come from the istio-system services of type LOADBALANCER EXTERNAL-IP that are created when Istio is deployed.
+  You must use Firefox browser with with manual SOCKs v5 proxy configuration to localhost with port 12345.
+  Also ensure 'Proxy DNS when using SOCKS v5' is checked.
+  Or, with other browsers like Chrome you could use a browser plugin like foxyproxy to do the same thing as Firefox.   
+  ```
+
+1. You will need to edit the /etc/hosts on the EC2 instance. Make it look like this
     ```bash
     ## begin bigbang.dev section
     172.20.1.240 keycloak.bigbang.dev
     172.20.1.241 gitlab.bigbang.dev sonarqube.bigbang.dev
     ## end bigbang.dev section
     ```
-1. For end-to-end SSO testing there needs to be DNS for Keycloak. In a k3d dev environment there is no DNS so you must do a dev hack and edit the configmap "coredns-xxxxxxxx". Under NodeHosts add a host for keycloak.bigbang.dev. The IP for keycloak in a k3d environment created by the dev script will be 172.20.1.240. Like this
+1. For end-to-end SSO testing there needs to be DNS for Keycloak. In a k3d dev environment there is no DNS so you must do a dev hack and edit the configmap "coredns-xxxxxxxx". Under NodeHosts add a host for keycloak.bigbang.dev.    
+```
+kubectl get cm -n kube-system   
+kubectl edit cm coredns -n kube-system   
+```
+
+The IP for keycloak in a k3d environment created by the dev script will be 172.20.1.240. Like this
     ```yaml
       NodeHosts:|                                                                                    
         <nil> host.k3d.internal
@@ -77,11 +106,16 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
         172.20.1.240 keycloak.bigbang.dev
     ```
 1. Restart the coredns pod so that it picks up the new configmap.
-1. Deploy Big Bang with only istio-operator, istio, gitlab, and sonarqube enabled. Need to test both OIDC and SAML end-to-end SSO. Gitlab uses OIDC and Sonarqube uses SAML. Deploy BigBang using the following example helm command 
+```
+kubectl get pods -A   
+kubectl delete pod <coredns pod> -n kube-system
+```
+
+1. Deploy Big Bang with only istio-operator, istio, gitlab, and sonarqube enabled. Need to test both OIDC and SAML end-to-end SSO. Gitlab uses OIDC and Sonarqube uses SAML. Deploy BigBang using the following example helm command
     ```
     helm upgrade -i bigbang ./chart -n bigbang --create-namespace -f ../overrides/my-bb-override-values.yaml -f ../overrides/registry-values.yaml -f ./chart/ingress-certs.yaml
     ```
-    and these example values overrides
+    and these example values overrides (be sure to update the keycloak branch in the overrides below)
     ```
     domain: bigbang.dev
 
@@ -219,7 +253,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
           client_id: "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_gitlab"
           client_secret: ""
         values:
-          gitlab: 
+          gitlab:
             webservice:
               minReplicas: 1
               maxReplicas: 1
@@ -252,7 +286,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
           email: email
           group: group
     ```
-1. Sonarqube needs an extra configuration step for SSO to work because it uses SAML. The values override ```addons.sonarqube.sso.certificate``` needs to be updated with the Keycloak realm certificate. When Keycloak finishes installing login to the admin console ```https://keycloak.bigbang.dev/auth/admin``` with default credentials ```admin/password```. Navigate to Realm Settings >> Keys. On the RS256 row click on the ```Certificate``` button and copy the certificate text as a single line string and paste it into your ```addons.sonarqube.sso.certificate``` value. Run another ```helm upgrade``` command and watch for Sonarqube to update.
+1. Sonarqube needs an extra configuration step for SSO to work because it uses SAML. The values override ```addons.sonarqube.sso.certificate``` needs to be updated with the Keycloak realm certificate. When Keycloak finishes installing login to the admin console [Keycloak](https://keycloak.bigbang.dev/auth/admin) with default credentials ```admin/password```. Navigate to Realm Settings >> Keys. On the RS256 row click on the ```Certificate``` button and copy the certificate text as a single line string and paste it into your ```addons.sonarqube.sso.certificate``` value. Run another ```helm upgrade``` command and watch for Sonarqube to update.
 1. Use Firefox browser with SOCKS v5 manual proxy configured so that we are running Firefox as if it was running on the EC2 instance. This is described in more detail in the development environment addendum [Multi Ingress-gateway Support with MetalLB and K3D](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/blob/master/docs/developer/development-environment.md)
 1. In the Firefox browser load ```https://keycloak.bigbang.dev``` and register a test user. You should register yourself with CAC and also a non-CAC test.user with just user and password with OTP. Both flows need to be tested.
 1. Then go back to ```https://keycloak.bigbang.dev/auth/admin``` and login to the admin console with the default credentials ```admin/password```
@@ -314,7 +348,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - file created when kpt was used to download the upstream chart
 
 ## chart/scripts/keycloak.cli
-- delete this upstream file.  Don't want to encourage anyone to override the startup script. 
+- delete this upstream file.  Don't want to encourage anyone to override the startup script.
 
 ## chart/deps/postgresql
 - Upstream bitnami postgresql chart - modified for Iron Bank Postgresql 12.9 runtime.

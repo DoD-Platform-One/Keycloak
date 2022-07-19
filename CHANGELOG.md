@@ -3,11 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.2.1-bb.0] - 2022-07-19
+### Updated
+- Update chart to latest 18.2.1
+- Upgrade Keycloak image from version 18.0.1-legacy to version 18.0.2-legacy
+
 ## [18.1.1-bb.6] - 2022-06-28
 ### Updated
 - Updated bb base image to 2.0.0
 - Updated gluon to 0.2.10
-- Removed websecurity disable from cypress 
+- Removed websecurity disable from cypress
 
 ## [18.1.1-bb.5] - 2022-06-27
 ### Updated
