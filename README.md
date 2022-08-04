@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.2.1-bb.0](https://img.shields.io/badge/Version-18.2.1--bb.0-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
+![Version: 18.2.1-bb.1](https://img.shields.io/badge/Version-18.2.1--bb.1-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -226,6 +226,7 @@ helm install keycloak chart/
 | hostname | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.injection | string | `"disabled"` |  |
+| istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
 | istio.keycloak.enabled | bool | `false` |  |
 | istio.keycloak.annotations | object | `{}` |  |
 | istio.keycloak.labels | object | `{}` |  |
