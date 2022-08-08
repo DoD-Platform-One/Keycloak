@@ -19,8 +19,6 @@ spec:
   template:
     metadata:
       name: {{ template "keycloak.fullname" . }}-create-ci-cypress-user-hook
-      annotations:
-        sidecar.istio.io/inject: "false"
       labels:
         app: {{ template "keycloak.name" . }}
         heritage: {{ .Release.Service }}
@@ -63,6 +61,15 @@ spec:
           if [ "$token_req_status" != "200" ]; then
               echo -e "Check the base_url config."
               echo -e "Failed to get token: \n\t${token_req% *}"
+              {{- if and .Values.istio.enabled (eq .Values.istio.injection "enabled") }}
+              until curl -fsI http://localhost:15021/healthz/ready; do
+                echo "Waiting for Istio sidecar proxy..."
+                sleep 3
+              done
+              sleep 5
+              echo "Stopping the istio proxy..."
+              curl -X POST http://localhost:15020/quitquitquit
+              {{- end }}
               exit 1
           fi
 
@@ -92,11 +99,38 @@ spec:
               error_msg=$(echo "${user_create_req% *}" | jq .errorMessage | tr -d '"')
               if [ "$error_msg" == "User exists with the same username" ]; then
                   echo -e "Cypress user already created. Skipping..."
+                  {{- if and .Values.istio.enabled (eq .Values.istio.injection "enabled") }}
+                  until curl -fsI http://localhost:15021/healthz/ready; do
+                    echo "Waiting for Istio sidecar proxy..."
+                    sleep 3
+                  done
+                  sleep 5
+                  echo "Stopping the istio proxy..."
+                  curl -X POST http://localhost:15020/quitquitquit
+                  {{- end }}
                   exit 0
               fi
               echo -e "Failed to create Keycloak cypress user: \n\t${error_msg}"
+              {{- if and .Values.istio.enabled (eq .Values.istio.injection "enabled") }}
+              until curl -fsI http://localhost:15021/healthz/ready; do
+                echo "Waiting for Istio sidecar proxy..."
+                sleep 3
+              done
+              sleep 5
+              echo "Stopping the istio proxy..."
+              curl -X POST http://localhost:15020/quitquitquit
+              {{- end }}
               exit 1
           fi
+          {{- if and .Values.istio.enabled (eq .Values.istio.injection "enabled") }}
+          until curl -fsI http://localhost:15021/healthz/ready; do
+            echo "Waiting for Istio sidecar proxy..."
+            sleep 3
+          done
+          sleep 5
+          echo "Stopping the istio proxy..."
+          curl -X POST http://localhost:15020/quitquitquit
+          {{- end }}
         resources:
           requests:
             memory: 256Mi
