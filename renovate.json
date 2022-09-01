@@ -5,6 +5,7 @@
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
   "draftPR": "true",
   "labels": ["keycloak","Package Sustainment","kind::maintenance"],
+  "commitMessagePrefix": "SKIP UPDATE CHECK",
   "packageRules": [
     {
       "matchDatasources": ["docker"],
