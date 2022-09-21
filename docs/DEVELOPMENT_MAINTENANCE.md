@@ -41,11 +41,11 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
     ```bash
     earthly +build-image
     ```
-    If the build complets successfully the image will be saved to the remote build server.
+    If the build completes successfully the image will be saved to the remote build server.
     ```bash
     docker image list
     ```
-    Verify that the image tag is unique in the [repo1 registry](https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/container_registry/3340). There are operational images in this image registry. Be 100% certian that you will not overwrite an existing tag.  
+    Verify that the image tag is unique in the [repo1 registry](https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/container_registry/3340). There are operational images in this image registry. Be 100% certian that you will not overwrite an existing tag.
     Login to Repo1 registry with your access token and push the image.
     ```bash
     docker login registry.dso.mil
@@ -57,7 +57,7 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
 
 # Testing new Keycloak version
 1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/platform-one/big-bang/bigbang/-/blob/master/docs/assets/scripts/developer/k3d-dev.sh) with the ```-m``` for metalLB so that k3d can support multiple ingress gateways. The following steps assume you are using the script.
-1. Follow all of the instructions at the end of the script to ssh to the EC2 instance with application-level port forwarding. Keep this ssh session for the remainder of the testing. An `example` of the instructions to be followed are below.      
+1. Follow all of the instructions at the end of the script to ssh to the EC2 instance with application-level port forwarding. Keep this ssh session for the remainder of the testing. An `example` of the instructions to be followed are below.
   ```
   SAVE THE FOLLOWING INSTRUCTIONS INTO A TEMPORARY TEXT DOCUMENT SO THAT YOU DON'T LOOSE THEM
   NOTE: The EC2 instance will automatically terminate at 08:00 UTC unless you delete the cron job
@@ -69,16 +69,16 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
   ssh -i ~/.ssh/user.name-dev.pem ubuntu@X.X.X.X -D 127.0.0.1:12345
 
   To use kubectl from your local workstation you must set the KUBECONFIG environment variable:
-  export KUBECONFIG=~/.kube/user.name-dev-config   
+  export KUBECONFIG=~/.kube/user.name-dev-config
 
   Do not edit /etc/hosts on your local workstation.
   To access apps from a browser edit /etc/hosts on the EC2 instance. Sample /etc/host entries have already been added there.
   Manually add more hostnames as needed.
-  
+
   The IPs to use come from the istio-system services of type LOADBALANCER EXTERNAL-IP that are created when Istio is deployed.
   You must use Firefox browser with with manual SOCKs v5 proxy configuration to localhost with port 12345.
   Also ensure 'Proxy DNS when using SOCKS v5' is checked.
-  Or, with other browsers like Chrome you could use a browser plugin like foxyproxy to do the same thing as Firefox.   
+  Or, with other browsers like Chrome you could use a browser plugin like foxyproxy to do the same thing as Firefox.
   ```
 
 1. You will need to edit the /etc/hosts on the EC2 instance. Make it look like this
@@ -88,17 +88,17 @@ BigBang makes modifications to the upstream Codecentric helm chart and also buil
     172.20.1.241 gitlab.bigbang.dev sonarqube.bigbang.dev
     ## end bigbang.dev section
     ```
-1. For end-to-end SSO testing there needs to be DNS for Keycloak. In a k3d dev environment there is no DNS so you must do a dev hack and edit the configmap "coredns-xxxxxxxx". Under NodeHosts add a host for keycloak.bigbang.dev.    
+1. For end-to-end SSO testing there needs to be DNS for Keycloak. In a k3d dev environment there is no DNS so you must do a dev hack and edit the configmap "coredns-xxxxxxxx". Under NodeHosts add a host for keycloak.bigbang.dev.
 ```
-kubectl get cm -n kube-system   
-kubectl edit cm coredns -n kube-system   
+kubectl get cm -n kube-system
+kubectl edit cm coredns -n kube-system
 ```
 
 The IP for keycloak in a k3d environment created by the dev script will be 172.20.1.240. Like this
     ```yaml
-      NodeHosts:|                                                                                    
+      NodeHosts:|
         <nil> host.k3d.internal
-        172.20.0.2 k3d-k3s-default-agent-0   
+        172.20.0.2 k3d-k3s-default-agent-0
         172.20.0.5 k3d-k3s-default-agent-1
         172.20.0.4 k3d-k3s-default-agent-2
         172.20.0.3 k3d-k3s-default-server-0
@@ -107,7 +107,7 @@ The IP for keycloak in a k3d environment created by the dev script will be 172.2
     ```
 1. Restart the coredns pod so that it picks up the new configmap.
 ```
-kubectl get pods -A   
+kubectl get pods -A
 kubectl delete pod <coredns pod> -n kube-system
 ```
 
@@ -216,7 +216,7 @@ kubectl delete pod <coredns pod> -n kube-system
             realm:
               stringData:
                 realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
-          extraVolumes: |-              
+          extraVolumes: |-
             - name: certauthority
               secret:
                 secretName: {{ include "keycloak.fullname" . }}-certauthority
