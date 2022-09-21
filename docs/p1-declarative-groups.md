@@ -33,14 +33,14 @@ USMC/
 ```
 
 Implications and Rules:
-- A user is a member of either collaborator or developer. 
+- A user is a member of either collaborator or developer.
 - the developer group indicates access to full development tool suite, in addition to collaborator tools. The "full developer suite" would include any deployed tool that is integrated with SSO and needed for product development. Today that includes, Mattermost, Jira, Confluence, gitlab, sonarqube, fortify, and argo. Future implementation would include monitoring and logging solutions.
 - the collaborator group indicates access to deployed applications and Mattermost/Jira/Confluence
 - On a case by case basis, product teams may require an additional group/sub-group to identify roles. i.e. Platform-One/Products/Valkyrie/roles/ADMIN
 
 ## Considerations and Use Cases
 
-1. Declarative implementation - it is ideal to define a structure that can be easily defined in declarative yaml, like the realm.yaml configuration. This is consitent with other aspects of the SSO implementation.
+1. Declarative implementation - it is ideal to define a structure that can be easily defined in declarative yaml, like the realm.yaml configuration. This is consistent with other aspects of the SSO implementation.
 
 2. The declarative implementation can also support license restrictions. For example, Organization Disney can purchase 2500 collaborator seats and 30000 developer seats. The declarative configuration would allow/restrict according to these rules.
 

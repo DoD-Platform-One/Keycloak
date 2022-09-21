@@ -1,8 +1,8 @@
 # Manually Creating a Test Case
 
-1. Navigate to keycloack, Select Adminstration Console
+1. Navigate to Keycloak, Select Administration Console
 
-![Keycloack welcome](img/welcome.png)
+![Keycloak welcome](img/welcome.png)
 
 2. Login as an administrator username: admin password: pass
 
