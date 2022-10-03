@@ -67,6 +67,10 @@ podSecurityContext:
 securityContext:
   runAsUser: 1000
   runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
 
 # Additional init containers, e. g. for providing custom themes
 extraInitContainers: ""
@@ -460,6 +464,9 @@ pgchecker:
     runAsUser: 1000
     runAsGroup: 1000
     runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
   # Resource requests and limits for the pgchecker container
   resources:
     requests:
@@ -499,6 +506,9 @@ postgresql:
   containerSecurityContext:
     enabled: true
     runAsUser: 26
+    capabilities:
+      drop:
+        - ALL
   # volumePermissions:
   #   enabled: false
   #   image:

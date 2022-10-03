@@ -353,3 +353,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 ## chart/deps/postgresql
 - Upstream bitnami postgresql chart - modified for Iron Bank Postgresql 12.9 runtime.
 - Update security context for user:group 26:26
+
+## chart/deps/postgresql/templates/statefulset.yaml
+- commented out existing `-if -else` securityContext and replaced with 
+- `{{- toYaml $.Values.postgesql.containerSecurityContext | nindent 12 }}`
