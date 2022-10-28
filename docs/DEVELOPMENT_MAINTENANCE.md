@@ -318,6 +318,9 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 ## chart/Chart.lock
 - Chart.lock is updated during ```helm dependency update``` with the gluon library & postgresql dependency
 
+## chart/templates/servicemonitor.yaml
+- added support for Istio mTLS in the endpoints lines 37-43
+
 ## chart/templates/StatefulSet.yaml
 - add extraVolumesBigBang (lines 196-189)
 - add extraVolumeMountsBigBang (lines 146-148)

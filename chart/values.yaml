@@ -547,6 +547,9 @@ serviceMonitor:
   path: /metrics
   # The Service port at which metrics are served
   port: http-management
+  # added by Big Bang to support Istio mTLS
+  scheme: ""
+  tlsConfig: {}
 
 extraServiceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created

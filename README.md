@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.2.1-bb.4](https://img.shields.io/badge/Version-18.2.1--bb.4-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
+![Version: 18.2.1-bb.5](https://img.shields.io/badge/Version-18.2.1--bb.5-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -58,7 +58,7 @@ helm install keycloak chart/
 | podSecurityContext.fsGroup | int | `1000` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.capabilities.drop[0] | string | `"all"` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | extraInitContainers | string | `""` |  |
 | skipInitContainers | bool | `false` |  |
 | extraContainers | string | `""` |  |
@@ -160,7 +160,7 @@ helm install keycloak chart/
 | pgchecker.securityContext.runAsUser | int | `1000` |  |
 | pgchecker.securityContext.runAsGroup | int | `1000` |  |
 | pgchecker.securityContext.runAsNonRoot | bool | `true` |  |
-| pgchecker.securityContext.capabilities.drop[0] | string | `"all"` |  |
+| pgchecker.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | pgchecker.resources.requests.cpu | string | `"20m"` |  |
 | pgchecker.resources.requests.memory | string | `"32Mi"` |  |
 | pgchecker.resources.limits.cpu | string | `"20m"` |  |
@@ -180,7 +180,7 @@ helm install keycloak chart/
 | postgresql.securityContext.runAsGroup | int | `26` |  |
 | postgresql.containerSecurityContext.enabled | bool | `true` |  |
 | postgresql.containerSecurityContext.runAsUser | int | `26` |  |
-| postgresql.containerSecurityContext.capabilities.drop[0] | string | `"all"` |  |
+| postgresql.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | postgresql.resources.requests.cpu | string | `"250m"` |  |
 | postgresql.resources.requests.memory | string | `"256Mi"` |  |
 | postgresql.resources.limits.cpu | string | `"250m"` |  |
@@ -194,6 +194,8 @@ helm install keycloak chart/
 | serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | serviceMonitor.path | string | `"/metrics"` |  |
 | serviceMonitor.port | string | `"http-management"` |  |
+| serviceMonitor.scheme | string | `""` |  |
+| serviceMonitor.tlsConfig | object | `{}` |  |
 | extraServiceMonitor.enabled | bool | `false` |  |
 | extraServiceMonitor.namespace | string | `""` |  |
 | extraServiceMonitor.namespaceSelector | object | `{}` |  |
