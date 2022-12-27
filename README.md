@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.2.1-bb.5](https://img.shields.io/badge/Version-18.2.1--bb.5-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
+![Version: 18.2.1-bb.6](https://img.shields.io/badge/Version-18.2.1--bb.6-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -89,9 +89,7 @@ helm install keycloak chart/
 | extraVolumesBigBang | object | `{}` |  |
 | extraVolumeMounts | string | `""` |  |
 | extraVolumeMountsBigBang | object | `{}` |  |
-| extraPorts[0].name | string | `"jgroup"` |  |
-| extraPorts[0].containerPort | int | `7600` |  |
-| extraPorts[0].protocol | string | `"TCP"` |  |
+| extraPorts | list | `[]` |  |
 | podDisruptionBudget | object | `{}` |  |
 | statefulsetAnnotations | object | `{}` |  |
 | statefulsetLabels | object | `{}` |  |
@@ -117,10 +115,7 @@ helm install keycloak chart/
 | service.httpsNodePort | string | `nil` |  |
 | service.httpManagementPort | int | `9990` |  |
 | service.httpManagementNodePort | string | `nil` |  |
-| service.extraPorts[0].name | string | `"jgroup"` |  |
-| service.extraPorts[0].port | int | `7600` |  |
-| service.extraPorts[0].targetPort | string | `"jgroup"` |  |
-| service.extraPorts[0].protocol | string | `"TCP"` |  |
+| service.extraPorts | list | `[]` |  |
 | service.loadBalancerSourceRanges | list | `[]` |  |
 | service.externalTrafficPolicy | string | `"Cluster"` |  |
 | service.sessionAffinity | string | `""` |  |

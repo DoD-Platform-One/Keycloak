@@ -229,11 +229,11 @@ extraVolumeMounts: ""
 extraVolumeMountsBigBang: {}
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
-extraPorts:
+extraPorts: []
   #### Big Bang Addition ####
-  - name: jgroup
-    containerPort: 7600
-    protocol: TCP
+  #- name: jgroup
+  #  containerPort: 7600
+  #  protocol: TCP
 
 # Pod disruption budget
 podDisruptionBudget: {}
@@ -346,11 +346,11 @@ service:
   httpManagementNodePort: null
   # Additional Service ports, e. g. for custom admin console
   #### Added for Big Bang ####
-  extraPorts:
-  - name: jgroup
-    port: 7600
-    targetPort: jgroup
-    protocol: TCP
+  extraPorts: []
+  #- name: jgroup
+  #  port: 7600
+  #  targetPort: jgroup
+  #  protocol: TCP
   # When using Service type LoadBalancer, you can restrict source ranges allowed
   # to connect to the LoadBalancer, e. g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
