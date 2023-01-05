@@ -23,6 +23,9 @@ development/cypress/plugins
 development/cypress/support
 development/cypress/videos
 development/cypress/screenshots
+development/**/bin
+development/target
+target
 .gradle
 build
 out

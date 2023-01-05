@@ -9,9 +9,9 @@ replicas: 1
 
 image:
   # The Keycloak image repository
-  repository: registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib
+  repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "18.0.2-1.2.0-1"
+  tag: "20.0.2"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -100,25 +100,47 @@ terminationGracePeriodSeconds: 60
 clusterDomain: cluster.local
 
 ## Overrides the default entrypoint of the Keycloak container
-command: []
+command:
+  - "/opt/keycloak/bin/kc.sh"
 
 ## Overrides the default args for the Keycloak container
 args:
-  # Big Bang additions
-  - "-b 0.0.0.0"
-  - "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
-  - "-Dkeycloak.profile.feature.declarative_user_profile=enabled"
+  - "start"
 
 # Additional environment variables for Keycloak
+# https://www.keycloak.org/server/all-config
 extraEnv: ""
-  # - name: KEYCLOAK_LOGLEVEL
-  #   value: DEBUG
-  # - name: WILDFLY_LOGLEVEL
-  #   value: DEBUG
-  # - name: CACHE_OWNERS_COUNT
-  #   value: "2"
-  # - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
-  #   value: "2"
+# extraEnv: |-
+#   - name: KC_HTTPS_CERTIFICATE_FILE
+#     value: /opt/keycloak/conf/tls.crt
+#   - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+#     value: /opt/keycloak/conf/tls.key
+#   - name: KC_HTTP_ENABLED
+#     value: "true"
+#   - name: KC_HTTP_RELATIVE_PATH
+#     value: /auth
+#   - name: KC_HTTPS_CLIENT_AUTH
+#     value: request
+#   - name: KC_PROXY
+#     value: passthrough
+#   - name: KC_HTTPS_TRUST_STORE_FILE
+#     value: /opt/keycloak/conf/truststore.jks
+#   - name: KC_HTTPS_TRUST_STORE_PASSWORD
+#     value: password
+#   - name: KC_HOSTNAME
+#     value: keycloak.bigbang.dev
+#   - name: KC_HOSTNAME_STRICT
+#     value: "true"
+#   - name: KC_HOSTNAME_STRICT_HTTPS
+#     value: "true"
+#   - name: KC_LOG_LEVEL
+#     value: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
+#   - name: KC_CACHE
+#     value: ispn
+#   - name: KC_CACHE_STACK
+#     value: kubernetes
+#   - name: KC_SPI_STICKY_SESSION_ENCODER_INFINISPAN_SHOULD_ATTACH_ROUTE
+#     value: "false"
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
 #### Updated for Big Bang ####
@@ -230,10 +252,6 @@ extraVolumeMountsBigBang: {}
 
 # Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts: []
-  #### Big Bang Addition ####
-  #- name: jgroup
-  #  containerPort: 7600
-  #  protocol: TCP
 
 # Pod disruption budget
 podDisruptionBudget: {}
@@ -261,66 +279,13 @@ secrets:
   env:
     stringData:
       # https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index
-      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false"
-
-      # Credentials to setup for default admin user.
-      KEYCLOAK_USER: "{{ .Values.secrets.credentials.stringData.adminuser }}"
-      KEYCLOAK_PASSWORD: "{{ .Values.secrets.credentials.stringData.password }}"
-
-      # See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#running-keycloak-behind-a-reverse-proxy
-      PROXY_ADDRESS_FORWARDING: "true"
-
-      # For HA/Clustering.  See https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#high-availability-and-clustering
-      JGROUPS_DISCOVERY_PROTOCOL: dns.DNS_PING
-      JGROUPS_DISCOVERY_PROPERTIES: 'dns_query={{ include "keycloak.serviceDnsName" . }}'
-      KEYCLOAK_SERVICE_DNS_NAME: '{{ include "keycloak.serviceDnsName" . }}'
-      CACHE_OWNERS_COUNT: "2"
-      CACHE_OWNERS_AUTH_SESSIONS_COUNT: "2"
-
-      # Enable Prometheus metrics to be produced
-      KEYCLOAK_STATISTICS: "{{ if .Values.serviceMonitor.enabled }}all{{ end }}"
-
-      # Example custom registration
-      # CUSTOM_REGISTRATION_CONFIG: "/opt/jboss/keycloak/customreg.yaml"
-
-      # Example custom realm
-      # KEYCLOAK_IMPORT: "/opt/jboss/keycloak/realm.json"
-
-      # Example custom certificate authorities
-      # X509_CA_BUNDLE: "/etc/x509/https/cas.pem"
-
-  # Default admin user credentials
-  credentials:
-    stringData:
-      adminuser: admin
-      password: password
-
-  # Example inline TLS certificates
-  # tlscert:
-  #   stringData:
-  #     tls.crt: ""
-  # tlskey:
-  #   stringData:
-  #     tls.key: ""
-  # certauthority:
-  #   stringData
-  #     cas.pem: ""
-
-  # Example inline custom registration configuration
-  # See docs/configuration.md for info about how to create this secret in operational deployments
-  # Using this chart value to create the secret should only be used for development and pipeline tests
-  # See tests/test-values.yml for development example
-  # customreg:
-  #   stringData:
-  #     customreg.yaml: ""
-
-  # Example inline custom realm configuration
-  # See docs/configuration.md for info about how to create this secret in operational deployments
-  # Using this chart to create the secret should only be used for development and pipeline tests
-  # See tests/test-values.yml for development example
-  # realm:
-  #   stringData:
-  #     realm.json: ""
+      JAVA_TOOL_OPTIONS: "-Dcom.redhat.fips=false"
+      # default admin credentials. Override them for production deployments
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "password"
+      # java opts for jgroups required for infinispan distributed cache when using the kubernetes stack.
+      # https://www.keycloak.org/server/caching
+      JAVA_OPTS_APPEND: -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
 
 service:
   # Annotations for headless and HTTP Services
@@ -340,17 +305,8 @@ service:
   httpsPort: 8443
   # The HTTPS Service node port if type is NodePort
   httpsNodePort: null
-  # The WildFly management Service port
-  httpManagementPort: 9990
-  # The WildFly management Service node port if type is NodePort
-  httpManagementNodePort: null
   # Additional Service ports, e. g. for custom admin console
-  #### Added for Big Bang ####
   extraPorts: []
-  #- name: jgroup
-  #  port: 7600
-  #  targetPort: jgroup
-  #  protocol: TCP
   # When using Service type LoadBalancer, you can restrict source ranges allowed
   # to connect to the LoadBalancer, e. g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
@@ -455,7 +411,7 @@ pgchecker:
     # Docker image used to check Postgresql readiness at startup
     repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql12
     # Image tag for the pgchecker image
-    tag: 12.11
+    tag: 12.13
     # Image pull policy for the pgchecker image
     pullPolicy: IfNotPresent
   # SecurityContext for the pgchecker container
@@ -497,7 +453,7 @@ postgresql:
   image:
     registry: registry1.dso.mil
     repository: ironbank/opensource/postgres/postgresql12
-    tag: 12.11
+    tag: 12.13
   securityContext:
     enabled: true
     fsGroup: 26
@@ -684,7 +640,7 @@ bbtests:
   cypress:
     artifacts: true
     envs:
-      cypress_url: "https://keycloak-http.keycloak.svc.cluster.local:8443"
+      cypress_url: "http://keycloak-http.keycloak.svc.cluster.local"
       cypress_username: "admin"
       cypress_password: "password"
       tnr_username: "cypress"

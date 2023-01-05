@@ -1,3 +1,0 @@
-include:
-  - project: 'platform-one/private/big-bang/pipeline-templates'
-    file: '/products/platform1/keycloak.yml'

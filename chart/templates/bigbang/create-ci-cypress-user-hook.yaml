@@ -41,20 +41,31 @@ spec:
         - -c
         - |
           # create_keycloak_cypress_user()
-          default_admin_user="{{ default "admin" .Values.secrets.credentials.stringData.adminuser }}"
-          default_admin_password="{{ default "password" .Values.secrets.credentials.stringData.password }}"
-          base_url="https://keycloak-http.keycloak.svc.cluster.local:8443/auth"
+          default_admin_user="{{ default "admin" .Values.secrets.env.stringData.KEYCLOAK_ADMIN }}"
+          default_admin_password="{{ default "password" .Values.secrets.env.stringData.KEYCLOAK_ADMIN_PASSWORD }}"
+          base_url="http://keycloak-http.keycloak.svc.cluster.local"
           access_token=""
           realm="baby-yoda"
 
           echo "Base URL: $base_url"
+
+          # wait for Keycloak to be ready
+          COUNTER=0
+          until curl -fs "$base_url/auth/realms/master" --connect-timeout 10; do
+            echo "Wating for Keycloak..."
+            COUNTER=$[$COUNTER + 1]
+            echo "Retry $COUNTER"
+          done
+          
+          echo
+          echo "Keycloak master realm is ready"
 
           token_req=$(curl --write-out " %{http_code}" -s -k --request POST \
               -d "client_id=admin-cli" \
               -d "username=$default_admin_user" \
               -d "password=$default_admin_password" \
               -d "grant_type=password" \
-              "$base_url/realms/master/protocol/openid-connect/token")
+              "$base_url/auth/realms/master/protocol/openid-connect/token")
 
           token_req_status=${token_req##* }
 
@@ -91,13 +102,13 @@ spec:
               "temporary": false
               }
           ]
-          }' "$base_url/admin/realms/$realm/users")
+          }' "$base_url/auth/admin/realms/$realm/users")
 
           user_create_req_status=${user_create_req##* }
 
           if [ "$user_create_req_status" != "201" ]; then
               error_msg=$(echo "${user_create_req% *}" | jq .errorMessage | tr -d '"')
-              if [ "$error_msg" == "User exists with the same username" ]; then
+              if [ "$error_msg" == "User exists with same username" ]; then
                   echo -e "Cypress user already created. Skipping..."
                   {{- if and .Values.istio.enabled (eq .Values.istio.injection "enabled") }}
                   until curl -fsI http://localhost:15021/healthz/ready; do

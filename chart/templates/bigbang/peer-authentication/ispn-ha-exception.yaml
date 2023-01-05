@@ -1,0 +1,21 @@
+{{ if and .Values.istio.enabled (eq .Values.istio.injection "enabled") (eq .Values.istio.mtls.mode "STRICT") .Values.postgresql.enabled }}
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: ispn-ha-exception
+  namespace: {{ .Release.Namespace }}
+spec:
+  mtls:
+    mode: {{ .Values.istio.mtls.mode }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak
+  portLevelMtls:
+    # timing of mTLS prevents high-availability infinispan distributed cache from forming
+    # jgroups needs to communicate between pods on port 7800
+    # jgroups DNS_PING needs to communicate with keycloak-headless service listening on 8080
+    "7800":
+      mode: PERMISSIVE
+    "8080":
+      mode: PERMISSIVE
+{{- end }}

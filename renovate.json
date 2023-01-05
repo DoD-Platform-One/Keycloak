@@ -1,7 +1,7 @@
 {
   "baseBranches": ["main"],
   "dependencyDashboard": "true",
-  "dependencyDashboardHeader": "- [ ] Use Earthly to generate new Keycloak image with plugins.\n- [ ] Upload image to this repo's container registry.\n- [ ] Update image tag in `chart/values.yaml`",
+  "dependencyDashboardHeader": "- [ ] Follow upgrade instructions in this repo at docs/DEVELOPMENT_MAINTENANCE.md",
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
   "draftPR": "true",
   "labels": ["keycloak","Package Sustainment","kind::maintenance"],
@@ -23,13 +23,6 @@
       ],
       "registryUrlTemplate": "https://registry1.dso.mil",
       "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
-      "datasourceTemplate": "docker"
-    },
-    {
-      "fileMatch": ["^development/Earthfile"],
-      "matchStrings": [
-        ".*KEYCLOAK_VERSION=(?<currentValue>.*)((.|\\n)*?)build-image:((.|\\n)*?)FROM\\s+(?<depName>.*):"
-      ],
       "datasourceTemplate": "docker"
     },
     {
