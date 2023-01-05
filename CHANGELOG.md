@@ -3,11 +3,18 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.3.0-bb.0] - 2022-12-30
+### Updated
+- Update helm chart to 18.3.0
+- Upgrade Keycloak image from version 18.0.1-legacy to version 20.0.2
+- Update Java truststore to DoD trusted certificate authorities version 9.5
+### Changed
+- Migration to new Quarkus deployment architecture
+
 ## [18.2.1-bb.6] - 2022-12-12
 ### Added
 - Added keycloak-primary-app-exception for JPGROUPS
 
----
 ## [18.2.1-bb.5] - 2022-10-28
 ### Added
 - Added ServiceMonitor support for Istio mTLS

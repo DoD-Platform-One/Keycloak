@@ -52,18 +52,14 @@ The helm chart will automatically create a secret with your credentials and set 
 
 ## Certificates
 
-TLS certificates and Certificate Authorities can be used by creating secrets containing the values and volume mounting them into the pod. Thare are two ways to create the secrets. They can be created using gitops tools like a flux kustomize overlay for example. Another way to create the secrets is to use the keycloak helm chart. The following shows you how this would be done in the `values.yaml`:
+TLS certificates and Certificate Authorities truststore can be injected by creating secrets containing the values and volume mounting them into the pod. Thare are two ways to create the secrets. They can be created using gitops tools like a flux kustomize overlay for example. Another way to create the secrets is to use the keycloak helm chart. The following shows you how this would be done in the `values.yaml`:
 
 ```yaml
 secrets:
-  env:
-    stringData:
-      # Tell Keycloak to use this CA file
-      X509_CA_BUNDLE: /etc/x509/https/cas.pem
-  certauthority:
-    stringData:
-      cas.pem: |
-        <Certificate Authorities String>
+  truststore:
+    data:
+      truststore.jks: |-
+        <base64 encoded binary truststore.jks>
   tlscert:
     stringData:
       tls.crt: |
@@ -75,37 +71,46 @@ secrets:
 
 # NOTE: If you have other volumes you must include them together with this setting
 extraVolumes: |-
-  - name: certauthority
-    secret:
-      secretName: {{ include "keycloak.fullname" . }}-certauthority
   - name: tlscert
     secret:
       secretName: {{ include "keycloak.fullname" . }}-tlscert
   - name: tlskey
     secret:
       secretName: {{ include "keycloak.fullname" . }}-tlskey
+  - name: truststore
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-truststore
 
 # NOTE: If you have other volume mounts you must include them together with this setting
 extraVolumeMounts: |-
-  - name: certauthority
-    mountPath: /etc/x509/https/cas.pem
-    subPath: cas.pem
-    readOnly: true
   - name: tlscert
-    mountPath: /etc/x509/https/tls.crt
+    mountPath: /opt/keycloak/conf/tls.crt
     subPath: tls.crt
     readOnly: true
   - name: tlskey
-    mountPath: /etc/x509/https/tls.key
+    mountPath: /opt/keycloak/conf/tls.key
     subPath: tls.key
+    readOnly: true
+  - name: truststore
+    mountPath: /opt/keycloak/conf/truststore.jks
+    subPath: truststore.jks
     readOnly: true
 ```
 
-Each secret above will be volume mounted at `/etc/x509/https`, where [Keycloak will look for certificates to install](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md#setting-up-tlsssl).
+Keycolak is informed where the files are located be setting environment variables.
+```yaml
+extraEnv: |-
+  - name: KC_HTTPS_CERTIFICATE_FILE
+    value: /opt/keycloak/conf/tls.crt
+  - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+    value: /opt/keycloak/conf/tls.key
+  - name: KC_HTTPS_TRUST_STORE_FILE
+    value: /opt/keycloak/conf/truststore.jks
+```
 
 ## Database
 
-By default, the helm chart uses an internal PostgreSQL database.  To point to an external database, use the [Keycloak container documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#database-setup).  Example of helm chart values:
+By default, the helm chart uses an internal PostgreSQL database.  To point to an external database set environment variables.  Example of helm chart values:
 
 ```yaml
 postgresql:
@@ -115,12 +120,12 @@ postgresql:
 secrets:
   env:
     stringData:
-      DB_USER: "myDBUser"
-      DB_PASSWORD: "myDBPassword"
-      DB_VENDOR: postgres
-      DB_ADDR: mypostgres.bigbang.dev
-      DB_PORT: "5432"
-      DB_DATABASE: mydb
+      KC_DB_USERNAME: "keycloakDBuser"
+      KC_DB__PASSWORD: "keycloakDBpassword"
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres.bigbang.dev
+      KC_DB_URL_PORT: "5432"
+      KC_DB_URL_DATABASE: keycloakDBname
 ```
 
 > The values are templatized, so you can use helm templating like `{{ default "true" .Values.enabled }}`
@@ -129,7 +134,7 @@ This will create a secret named `keycloak-env` which is then added by reference 
 
 ## High Availability (HA) / Clustering
 
-The helm chart is already setup to support [Keycloak clustering](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md#setting-up-tlsssl) using DNS Ping for service disovery.  To enable this, update `replicas` to be > 1 in your `values.yaml`:
+The helm chart supports high availabilty. Also see [Keycloak documentation for distributed caching](https://www.keycloak.org/server/caching). To enable this, update `replicas` to be > 1 in your `values.yaml`:
 
 ```yaml
 replicas: 2
@@ -137,7 +142,7 @@ replicas: 2
 
 ## Custom Registration
 
-Platform One has included a plugin in the Keycloak docker image to help customize new user registrations.  The configuration for this plugin can be set by volume mounting a configuration file into the pod.  The following configuration in `values.yaml` shows you how to do this:
+Platform One has a custom Keycloak plugin in the to customize new user registrations. The configuration for this plugin can be set by volume mounting a configuration file into the pod.  The following configuration in `values.yaml` shows you how to do this:
 
 ```yaml
 secrets:
@@ -168,11 +173,11 @@ The helm chart will create a secret named `keycloak-customreg` containing the co
 
 ## Custom Realm
 
-Setting up a custom realm using a `.json` file can be done using a volume mount of a file and an environmental variable.  However, it is **NOT** recommended because it has the potential to override existing realm settings.  If you need to set this for development or testing purposes, see the [official documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#setting-a-custom-realm) and the [test-values.yml](../tests/test-values.yml) for a working example.
+Keycloak has the ability to import a custom realm file using a volume mount of a file and an environmental variable. However, it is **NOT** recommended for operational/production environments. If you need to set this for development or testing purposes, see the [helm chart documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#setting-a-custom-realm), the [Keycloak official documentaion](https://www.keycloak.org/server/importExport) and the [test-values.yml](../tests/test-values.yml) for a working example.
 
 ## Environmental Variables
 
-By default, the helm chart sets several environmental variables to support Istio, HA/Clustering, and Monitoring.  If you need to add additional environmental variables (or modify existing ones in `.Values.secrets.env`), use the following:
+By default, the helm chart sets several environmental variables to support Istio, HA/Clustering, and Monitoring. See [Keycloak configuration](https://www.keycloak.org/server/all-config) If you need to add additional environmental variables (or modify existing ones in `.Values.secrets.env`), use the following:
 
 ```yaml
 secrets:
@@ -204,6 +209,6 @@ monitoring:
 
 ## Additional Documentation
 
-- [Keycloak Container Settings](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md)
+- [Keycloak Configuration](https://www.keycloak.org/server/all-config)
 - [Keycloak Helm Chart Settings](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#readme)
 - [Keycloak Documentation](https://www.keycloak.org/documentation)

@@ -1,0 +1,286 @@
+comments: |
+  This values override file is provided FOR DEVELOPMENT/DEMO/TEST PURPOSES ONLY
+  For production configuration reference the Big Bang repo docs at docs/assets/configs/example/keycloak-prod-values.yaml
+
+domain: bigbang.dev
+
+flux:
+  interval: 1m
+  rollback:
+    cleanupOnFail: false
+
+networkPolicies:
+  enabled: true
+
+clusterAuditor:
+  enabled: false
+
+gatekeeper:
+  enabled: false
+
+kyverno:
+  enabled: false
+
+kyvernopolicies:
+  enabled: false
+
+istiooperator:
+  enabled: true
+
+istio:
+  enabled: true
+  ingressGateways:
+    public-ingressgateway:
+      type: "LoadBalancer"
+    passthrough-ingressgateway:
+      type: "LoadBalancer"
+  gateways:
+    public:
+      ingressGateway: "public-ingressgateway"
+      hosts:
+      - "*.{{ .Values.domain }}"
+    passthrough:
+      ingressGateway: "passthrough-ingressgateway"
+      hosts:
+      - "*.{{ .Values.domain }}"
+      tls:
+        mode: "PASSTHROUGH"
+
+jaeger:
+  enabled: false
+
+kiali:
+  enabled: false
+
+logging:
+  enabled: false
+
+eckoperator:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+monitoring:
+  enabled: false
+
+twistlock:
+  enabled: false
+  ingress:
+    gateway: "private"
+  values:
+    console:
+      persistence:
+        size: 5Gi
+
+
+# Gloabl SSO parameters
+sso:
+  oidc:
+    host: keycloak.bigbang.dev
+    realm: baby-yoda
+  # client_secret: ""
+
+addons:
+
+  metricsServer:
+    enabled: false
+
+  keycloak:
+    enabled: true
+    ingress:
+      gateway: "passthrough"
+    values:
+      replicas: 1
+      command:
+        - "/opt/keycloak/bin/kc.sh"
+      args:
+        - "start"
+        # - "start-dev"
+        - "--import-realm"
+
+      # https://www.keycloak.org/server/all-config
+      extraEnv: |-
+        - name: KC_HTTPS_CERTIFICATE_FILE
+          value: /opt/keycloak/conf/tls.crt
+        - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+          value: /opt/keycloak/conf/tls.key
+        - name: KC_HTTPS_TRUST_STORE_FILE
+          value: /opt/keycloak/conf/truststore.jks
+        - name: KC_HTTPS_TRUST_STORE_PASSWORD
+          value: password
+        - name: KC_HTTP_ENABLED
+          value: "true"
+        - name: KC_HTTP_RELATIVE_PATH
+          value: /auth
+        - name: KC_HTTPS_CLIENT_AUTH
+          value: request
+        - name: KC_PROXY
+          value: passthrough
+        - name: KC_HOSTNAME
+          value: keycloak.bigbang.dev
+        - name: KC_HOSTNAME_STRICT
+          value: "true"
+        - name: KC_HOSTNAME_STRICT_HTTPS
+          value: "true"
+        - name: KC_LOG_LEVEL
+          value: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
+        - name: KC_CACHE
+          value: ispn
+        - name: KC_CACHE_STACK
+          value: kubernetes
+
+      secrets:
+        env:
+          stringData:
+            CUSTOM_REGISTRATION_CONFIG: /opt/keycloak/conf/customreg.yaml
+        customreg:
+          stringData:
+            customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
+        realm:
+          stringData:
+            realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
+        truststore:
+          data:
+            truststore.jks: |-
+              {{ .Files.Get "resources/dev/truststore.jks" | b64enc }}
+        quarkusproperties:
+          stringData:
+            quarkus.properties: '{{ .Files.Get "resources/dev/quarkus.properties" }}'
+
+      extraInitContainers: |-
+        - name: plugin
+          image: registry.dso.mil/platform-one/big-bang/apps/product-tools/keycloak-p1-auth-plugin/init-container:test-X.X.X
+          imagePullPolicy: Always
+          command:
+          - sh
+          - -c
+          - | 
+            cp /app/p1-keycloak-plugin.jar /init
+            ls -l /init
+          volumeMounts:
+          - name: plugin
+            mountPath: "/init"
+      extraVolumes: |-
+        - name: customreg
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-customreg
+        - name: realm
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-realm
+        - name: plugin
+          emptyDir: {}
+        - name: truststore
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-truststore
+        - name: quarkusproperties
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-quarkusproperties
+            defaultMode: 0777
+      extraVolumeMounts: |-
+        - name: customreg
+          mountPath: /opt/keycloak/conf/customreg.yaml
+          subPath: customreg.yaml
+          readOnly: true
+        - name: realm
+          mountPath: /opt/keycloak/data/import/realm.json
+          subPath: realm.json
+        - name: plugin
+          mountPath: /opt/keycloak/providers/p1-keycloak-plugin.jar
+          subPath: p1-keycloak-plugin.jar
+        - name: truststore
+          mountPath: /opt/keycloak/conf/truststore.jks
+          subPath: truststore.jks
+        - name: quarkusproperties
+          mountPath: /opt/keycloak/conf/quarkus.properties
+          subPath: quarkus.properties
+
+
+  gitlabRunner:
+    enabled: false
+
+  gitlab:
+    enabled: true
+    ingress:
+      gateway: "public"
+    hostnames:
+      gitlab: gitlab
+      registry: registry
+    sso:
+      enabled: true
+      label: "Platform One SSO"
+      client_id: "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_gitlab"
+      client_secret: ""
+    values:
+      gitlab: 
+        webservice:
+          minReplicas: 1
+          maxReplicas: 1
+        gitlab-shell:
+          minReplicas: 1
+          maxReplicas: 1
+        sidekiq:
+          minReplicas: 1
+          maxReplicas: 1
+      registry:
+        hpa:
+          minReplicas: 1
+          maxReplicas: 1
+      global:
+        appConfig:
+          defaultCanCreateGroup: true
+
+  sonarqube:
+    enabled: true
+    ingress:
+      gateway: "public"
+    sso:
+      enabled: true
+      client_id: "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_saml-sonarqube"
+      label: "keycloak sso"
+      ## this is the public Keycloak realm cert from the Admin console
+      certificate: "REPLACE-ME-WITH-THE-SINGLE-LINE-KEYCLOAK-REALM-CERT"
+      login: login
+      name: name
+      email: email
+      group: group
+
+
+  ## ENTRIES FOR MATTERMOST SUPPORT
+  minioOperator:
+    enabled: true
+
+  mattermostoperator:
+    enabled: true
+
+  mattermost:
+    enabled: true
+    sso:
+      enabled: true
+      # client_id: "platform1_a8604cc9-f5e9-4656-802d-d05624370245_bb8-mattermost"
+      client_id: "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_mattermost"
+      client_secret: "no-secret"
+      auth_endpoint: https://keycloak.bigbang.dev/oauth/authorize
+      token_endpoint: https://keycloak.bigbang.dev/oauth/token
+      user_api_endpoint: https://keycloak.bigbang.dev/api/v4/user
+      # auth_endpoint: https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/auth
+      # token_endpoint: https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/token
+      # user_api_endpoint: https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/userinfo
+
+    values:
+      mattermostEnvs:
+        # required for KC >= 20.X to work with gitlab auth pointed to Keycloak
+        MM_GITLABSETTINGS_SCOPE: openid
+      minio:
+        install: true
+        tenants:
+          pools:
+            - servers: 1
+              volumesPerServer: 4
+              size: 256Mi
+              securityContext:
+                runAsUser: 1001
+                runAsGroup: 1001
+                fsGroup: 1001
+      postgresql:
+        install: true

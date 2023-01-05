@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.2.1-bb.6](https://img.shields.io/badge/Version-18.2.1--bb.6-informational?style=flat-square) ![AppVersion: 18.0.2-legacy](https://img.shields.io/badge/AppVersion-18.0.2--legacy-informational?style=flat-square)
+![Version: 18.3.0-bb.0](https://img.shields.io/badge/Version-18.3.0--bb.0-informational?style=flat-square) ![AppVersion: 20.0.2](https://img.shields.io/badge/AppVersion-20.0.2-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -40,8 +40,8 @@ helm install keycloak chart/
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
-| image.repository | string | `"registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib"` |  |
-| image.tag | string | `"18.0.2-1.2.0-1"` |  |
+| image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
+| image.tag | string | `"20.0.2"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
@@ -65,10 +65,8 @@ helm install keycloak chart/
 | lifecycleHooks | string | `""` |  |
 | terminationGracePeriodSeconds | int | `60` |  |
 | clusterDomain | string | `"cluster.local"` |  |
-| command | list | `[]` |  |
-| args[0] | string | `"-b 0.0.0.0"` |  |
-| args[1] | string | `"-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"` |  |
-| args[2] | string | `"-Dkeycloak.profile.feature.declarative_user_profile=enabled"` |  |
+| command[0] | string | `"/opt/keycloak/bin/kc.sh"` |  |
+| args[0] | string | `"start"` |  |
 | extraEnv | string | `""` |  |
 | extraEnvFrom | string | `"- secretRef:\n    name: '{{ include \"keycloak.fullname\" . }}-env'\n"` |  |
 | priorityClassName | string | `""` |  |
@@ -93,18 +91,10 @@ helm install keycloak chart/
 | podDisruptionBudget | object | `{}` |  |
 | statefulsetAnnotations | object | `{}` |  |
 | statefulsetLabels | object | `{}` |  |
-| secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0 -Dcom.redhat.fips=false"` |  |
-| secrets.env.stringData.KEYCLOAK_USER | string | `"{{ .Values.secrets.credentials.stringData.adminuser }}"` |  |
-| secrets.env.stringData.KEYCLOAK_PASSWORD | string | `"{{ .Values.secrets.credentials.stringData.password }}"` |  |
-| secrets.env.stringData.PROXY_ADDRESS_FORWARDING | string | `"true"` |  |
-| secrets.env.stringData.JGROUPS_DISCOVERY_PROTOCOL | string | `"dns.DNS_PING"` |  |
-| secrets.env.stringData.JGROUPS_DISCOVERY_PROPERTIES | string | `"dns_query={{ include \"keycloak.serviceDnsName\" . }}"` |  |
-| secrets.env.stringData.KEYCLOAK_SERVICE_DNS_NAME | string | `"{{ include \"keycloak.serviceDnsName\" . }}"` |  |
-| secrets.env.stringData.CACHE_OWNERS_COUNT | string | `"2"` |  |
-| secrets.env.stringData.CACHE_OWNERS_AUTH_SESSIONS_COUNT | string | `"2"` |  |
-| secrets.env.stringData.KEYCLOAK_STATISTICS | string | `"{{ if .Values.serviceMonitor.enabled }}all{{ end }}"` |  |
-| secrets.credentials.stringData.adminuser | string | `"admin"` |  |
-| secrets.credentials.stringData.password | string | `"password"` |  |
+| secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-Dcom.redhat.fips=false"` |  |
+| secrets.env.stringData.KEYCLOAK_ADMIN | string | `"admin"` |  |
+| secrets.env.stringData.KEYCLOAK_ADMIN_PASSWORD | string | `"password"` |  |
+| secrets.env.stringData.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless"` |  |
 | service.annotations | object | `{}` |  |
 | service.labels | object | `{}` |  |
 | service.type | string | `"ClusterIP"` |  |
@@ -113,8 +103,6 @@ helm install keycloak chart/
 | service.httpNodePort | string | `nil` |  |
 | service.httpsPort | int | `8443` |  |
 | service.httpsNodePort | string | `nil` |  |
-| service.httpManagementPort | int | `9990` |  |
-| service.httpManagementNodePort | string | `nil` |  |
 | service.extraPorts | list | `[]` |  |
 | service.loadBalancerSourceRanges | list | `[]` |  |
 | service.externalTrafficPolicy | string | `"Cluster"` |  |
@@ -149,7 +137,7 @@ helm install keycloak chart/
 | route.tls.insecureEdgeTerminationPolicy | string | `"Redirect"` |  |
 | route.tls.termination | string | `"edge"` |  |
 | pgchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
-| pgchecker.image.tag | float | `12.11` |  |
+| pgchecker.image.tag | float | `12.13` |  |
 | pgchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
 | pgchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | pgchecker.securityContext.runAsUser | int | `1000` |  |
@@ -168,7 +156,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.11` |  |
+| postgresql.image.tag | float | `12.13` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |
@@ -241,7 +229,7 @@ helm install keycloak chart/
 | bbtests.enabled | bool | `false` |  |
 | bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.0.0"` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
-| bbtests.cypress.envs.cypress_url | string | `"https://keycloak-http.keycloak.svc.cluster.local:8443"` |  |
+| bbtests.cypress.envs.cypress_url | string | `"http://keycloak-http.keycloak.svc.cluster.local"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |
 | bbtests.cypress.envs.cypress_password | string | `"password"` |  |
 | bbtests.cypress.envs.tnr_username | string | `"cypress"` |  |
