@@ -5,7 +5,7 @@ The files must be located here so that they can be accessed by the Keycloak helm
 This is a Keycloak realm export that can be imported to a Keycloak installation for dev/test/demo/CI. It can be imported on startup with the `--import-realm` argument. See the [keycloak-bigbang-values.yaml](../../../docs/assets/config/example/keycloak-bigbang-values.yaml) example.
 
 ## baby-yoda.yaml
-This is a configuration file to support the [Platform One custom Keycloak plugin](https://repo1.dso.mil/platform-one/big-bang/apps/product-tools/keycloak-p1-auth-plugin). It can be configured on startup with the CUSTOM_REGISTRATION_CONFIG environment variable. See the [keycloak-bigbang-values.yaml](../../../docs/assets/config/example/keycloak-bigbang-values.yaml) example.
+This is a configuration file to support the [Platform One custom Keycloak plugin](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin). It can be configured on startup with the CUSTOM_REGISTRATION_CONFIG environment variable. See the [keycloak-bigbang-values.yaml](../../../docs/assets/config/example/keycloak-bigbang-values.yaml) example.
 
 ## baby-yoda-ci.json
 A keycloak realm configured for CI pipelines without OTP and email verification.

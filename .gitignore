@@ -13,18 +13,20 @@
 # VIM Session
 Session.vim
 
-development/plugin/bin
-development/plugin/target
 *.iml
 **/.classpath
 **/.project
 **/.settings
+
 development/cypress/plugins
 development/cypress/support
 development/cypress/videos
 development/cypress/screenshots
 development/**/bin
-development/target
+development/plugin/bin
+development/plugin/target
+development/plugin/*.jar
+
 target
 .gradle
 build

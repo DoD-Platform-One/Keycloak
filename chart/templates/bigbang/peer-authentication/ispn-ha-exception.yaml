@@ -13,9 +13,6 @@ spec:
   portLevelMtls:
     # timing of mTLS prevents high-availability infinispan distributed cache from forming
     # jgroups needs to communicate between pods on port 7800
-    # jgroups DNS_PING needs to communicate with keycloak-headless service listening on 8080
     "7800":
-      mode: PERMISSIVE
-    "8080":
       mode: PERMISSIVE
 {{- end }}

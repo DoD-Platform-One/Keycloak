@@ -1,4 +1,4 @@
-{{- range $key, $serviceMonitor := dict "wildfly" .Values.serviceMonitor "extra" .Values.extraServiceMonitor }}
+{{- range $key, $serviceMonitor := dict "metrics" .Values.serviceMonitor "extra" .Values.extraServiceMonitor }}
 {{- with $serviceMonitor }}
 {{- if .enabled }}
 ---

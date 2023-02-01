@@ -1,6 +1,6 @@
 # Keycloak
 
-This repository contains a Helm chart to deploy a customizable Keycloak for single sign-on (SSO) with Identity and Access Management. Platform One provides a [custom keycolak pugin](https://repo1.dso.mil/platform-one/big-bang/apps/product-tools/keycloak-p1-auth-plugin) that adds additional customization for authentication, authorization, self-registration, and auto-joining of groups.
+This repository contains a Helm chart to deploy a customizable Keycloak for single sign-on (SSO) with Identity and Access Management. Platform One provides a [custom keycloak plugin](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin) that adds additional customization for authentication, authorization, self-registration, and auto-joining of groups.
 
 ## Prerequisites
 
