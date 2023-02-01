@@ -1,0 +1,3 @@
+The Platform One custom Keycloak plugin code is now hosted at [https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin).
+
+Download a current version of the P1 Keycloak plugin from the [P1 Keycloak Plugin package registry](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/-/packages) and place the jar file at `./plugin/p1-keycloak-plugin-X.X.X.jar`. Insure that the volume in the docker-compose.yaml matches the name of the file in the `./plugin/` directory.

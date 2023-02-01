@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.3.0-bb.2](https://img.shields.io/badge/Version-18.3.0--bb.2-informational?style=flat-square) ![AppVersion: 20.0.2](https://img.shields.io/badge/AppVersion-20.0.2-informational?style=flat-square)
+![Version: 18.4.0-bb.0](https://img.shields.io/badge/Version-18.4.0--bb.0-informational?style=flat-square) ![AppVersion: 20.0.3](https://img.shields.io/badge/AppVersion-20.0.3-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -41,12 +41,13 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"20.0.2"` |  |
+| image.tag | string | `"20.0.3"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
 | enableServiceLinks | bool | `true` |  |
 | podManagementPolicy | string | `"Parallel"` |  |
+| updateStrategy | string | `"RollingUpdate"` |  |
 | restartPolicy | string | `"Always"` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
@@ -176,7 +177,7 @@ helm install keycloak chart/
 | serviceMonitor.interval | string | `"10s"` |  |
 | serviceMonitor.scrapeTimeout | string | `"10s"` |  |
 | serviceMonitor.path | string | `"/metrics"` |  |
-| serviceMonitor.port | string | `"http-management"` |  |
+| serviceMonitor.port | string | `"http"` |  |
 | serviceMonitor.scheme | string | `""` |  |
 | serviceMonitor.tlsConfig | object | `{}` |  |
 | extraServiceMonitor.enabled | bool | `false` |  |

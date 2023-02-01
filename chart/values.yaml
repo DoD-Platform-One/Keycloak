@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "20.0.2"
+  tag: "20.0.3"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -30,6 +30,9 @@ enableServiceLinks: true
 
 # Pod management policy. One of `Parallel` or `OrderedReady`
 podManagementPolicy: Parallel
+
+# StatefulSet's update strategy
+updateStrategy: RollingUpdate
 
 # Pod restart policy. One of `Always`, `OnFailure`, or `Never`
 restartPolicy: Always
@@ -234,7 +237,7 @@ resources:
     cpu: "1"
     memory: "1Gi"
 
-#### starupScripts removed to discourange use in Big Bang ####
+#### starupScripts removed. Not relevant for Quarkus distribution ####
 
 # Add additional volumes, e. g. for custom themes
 extraVolumes: ""
@@ -502,7 +505,7 @@ serviceMonitor:
   # The path at which metrics are served
   path: /metrics
   # The Service port at which metrics are served
-  port: http-management
+  port: http
   # added by Big Bang to support Istio mTLS
   scheme: ""
   tlsConfig: {}
