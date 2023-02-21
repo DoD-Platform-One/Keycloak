@@ -97,7 +97,7 @@ extraVolumeMounts: |-
     readOnly: true
 ```
 
-Keycolak is informed where the files are located be setting environment variables.
+Keycloak is informed where the files are located be setting environment variables.
 ```yaml
 extraEnv: |-
   - name: KC_HTTPS_CERTIFICATE_FILE
