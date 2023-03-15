@@ -204,7 +204,7 @@ $ helm install keycloak codecentric/keycloak -n keycloak --values values.yaml
 The chart offers great flexibility.
 It can be configured to work with the official Keycloak Docker image but any custom image can be used as well.
 
-For the offical Docker image, please check it's configuration at https://github.com/keycloak/keycloak-containers/tree/master/server.
+For the offical Docker image, please check its configuration at https://github.com/keycloak/keycloak-containers/tree/master/server.
 
 ### Usage of the `tpl` Function
 

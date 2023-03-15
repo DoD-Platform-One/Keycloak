@@ -75,7 +75,7 @@ securityContext:
       - ALL
 
 
-# Additional init containers, e. g. for providing custom themes
+# Additional init containers, e.g. for providing custom themes
 extraInitContainers: ""
 
 # When using service meshes which rely on a sidecar, it may be necessary to skip init containers altogether,
@@ -239,21 +239,21 @@ resources:
 
 #### starupScripts removed. Not relevant for Quarkus distribution ####
 
-# Add additional volumes, e. g. for custom themes
+# Add additional volumes, e.g. for custom themes
 extraVolumes: ""
 
 #### added by Big Bang ####
 # This values key is reserved for integration with BigBang chart
 extraVolumesBigBang: {}
 
-# Add additional volumes mounts, e. g. for custom themes
+# Add additional volumes mounts, e.g. for custom themes
 extraVolumeMounts: ""
 
 #### added by Big Bang ####
 # This values key is reserved for integration with BigBang chart
 extraVolumeMountsBigBang: {}
 
-# Add additional ports, e. g. for admin console or exposing JGroups ports
+# Add additional ports, e.g. for admin console or exposing JGroups ports
 extraPorts: []
 
 # Pod disruption budget
@@ -269,7 +269,7 @@ statefulsetLabels: {}
 
 # Configuration for secrets that should be created
 ## The secrets can also be independently created separate from this helm chart.
-## for examlpe with a gitops tool like flux with a kustomize overlay.
+## for example with a gitops tool like flux with a kustomize overlay.
 secrets:
   # mysecret:
   #   type: {}
@@ -308,10 +308,10 @@ service:
   httpsPort: 8443
   # The HTTPS Service node port if type is NodePort
   httpsNodePort: null
-  # Additional Service ports, e. g. for custom admin console
+  # Additional Service ports, e.g. for custom admin console
   extraPorts: []
   # When using Service type LoadBalancer, you can restrict source ranges allowed
-  # to connect to the LoadBalancer, e. g. will result in Security Groups
+  # to connect to the LoadBalancer, e.g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
   loadBalancerSourceRanges: []
   # When using Service type LoadBalancer, you can preserve the source IP seen in the container
@@ -561,7 +561,7 @@ prometheusRule:
   #     severity: warning
 
 autoscaling:
-  # If `true`, a autoscaling/v2beta2 HorizontalPodAutoscaler resource is created (requires Kubernetes 1.18 or above)
+  # If `true`, an autoscaling/v2beta2 HorizontalPodAutoscaler resource is created (requires Kubernetes 1.18 or above)
   # Autoscaling seems to be most reliable when using KUBE_PING service discovery (see README for details)
   # This disables the `replicas` field in the StatefulSet
   enabled: false
