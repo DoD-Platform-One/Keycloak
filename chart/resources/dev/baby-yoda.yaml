@@ -1,5 +1,5 @@
 x509:
-  # User attirbute to bind to when associating PKI with a user account
+  # User attribute to bind to when associating PKI with a user account
   userIdentityAttribute: "usercertificate"
   # Reset on every login to "", tracks if the current login session is using PKI at all, even if not bound to the user
   userActive509Attribute: "activecac"
@@ -61,7 +61,7 @@ groupProtectionIgnoreClients:
   # Nexus hardcodes the client id so the group logic in custom plugin code must be skipped
   - "https://nexus.bigbang.dev/service/rest/v1/security/saml/metadata"
 
-# When a user registers wihtout matching any top-levvel domain in emailMatchAutoJoinGroup, join to the listed groups
+# When a user registers without matching any top-level domain in emailMatchAutoJoinGroup, join to the listed groups
 noEmailMatchAutoJoinGroup:
   - "/Randos"
 
