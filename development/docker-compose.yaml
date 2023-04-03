@@ -4,7 +4,7 @@ networks:
 
 services:
   postgresql:
-    image: 'bitnami/postgresql:15.1.0'
+    image: 'bitnami/postgresql:15.2.0'
     networks:
       - keycloak-tier
     container_name: keycloak-db
@@ -20,7 +20,7 @@ services:
     depends_on:
       - postgresql
 
-    image: 'registry1.dso.mil/ironbank/opensource/keycloak/keycloak:20.0.3'
+    image: 'registry1.dso.mil/ironbank/opensource/keycloak/keycloak:21.0.2'
 
     networks:
       - keycloak-tier
@@ -54,6 +54,8 @@ services:
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/tls.key
       KC_HTTPS_TRUST_STORE_FILE: /opt/keycloak/conf/truststore.jks
       KC_HTTPS_TRUST_STORE_PASSWORD: password
+      
+      KC_METRICS_ENABLED: "true"
 
       CUSTOM_REGISTRATION_CONFIG: /opt/keycloak/conf/customreg.yaml
 
@@ -61,7 +63,7 @@ services:
     - ./certs/tls.crt:/opt/keycloak/conf/tls.crt
     - ./certs/tls.key:/opt/keycloak/conf/tls.key
     - ./certs/truststore.jks:/opt/keycloak/conf/truststore.jks
-    - ./plugin/p1-keycloak-plugin-3.1.0.jar:/opt/keycloak/providers/p1-keycloak-plugin-3.1.0.jar
+    - ./plugin/p1-keycloak-plugin-3.2.0.jar:/opt/keycloak/providers/p1-keycloak-plugin-3.2.0.jar
     - ./baby-yoda.yaml:/opt/keycloak/conf/customreg.yaml
     - ./baby-yoda.json:/opt/keycloak/data/import/realm.json
     - ./quarkus.properties:/opt/keycloak/conf/quarkus.properties

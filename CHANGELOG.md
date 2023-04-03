@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [18.4.0-bb.2] - 2022-03-30
+### Updated
+- Update helm.sh/images postgresql ironbank image to 12.14
+- Update bitnami postgres version to 15.2.0
+- Update Keycloak version to 21.0.2
+- new plugin version 3.2.0
+
 ## [18.4.0-bb.1] - 2022-02-27
 ### Updated
 - new plugin version 3.1.0

@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.0-bb.1](https://img.shields.io/badge/Version-18.4.0--bb.1-informational?style=flat-square) ![AppVersion: 20.0.3](https://img.shields.io/badge/AppVersion-20.0.3-informational?style=flat-square)
+![Version: 18.4.0-bb.2](https://img.shields.io/badge/Version-18.4.0--bb.2-informational?style=flat-square) ![AppVersion: 21.0.2](https://img.shields.io/badge/AppVersion-21.0.2-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -41,7 +41,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"20.0.3"` |  |
+| image.tag | string | `"21.0.2"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
@@ -138,7 +138,7 @@ helm install keycloak chart/
 | route.tls.insecureEdgeTerminationPolicy | string | `"Redirect"` |  |
 | route.tls.termination | string | `"edge"` |  |
 | pgchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
-| pgchecker.image.tag | float | `12.13` |  |
+| pgchecker.image.tag | float | `12.14` |  |
 | pgchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
 | pgchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | pgchecker.securityContext.runAsUser | int | `1000` |  |
@@ -157,7 +157,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.13` |  |
+| postgresql.image.tag | float | `12.14` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |

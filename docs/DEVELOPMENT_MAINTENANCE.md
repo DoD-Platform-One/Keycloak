@@ -41,8 +41,8 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
         - https://keycloak.bigbang.dev:8443/auth/realms/baby-yoda/account/password
         - https://keycloak.bigbang.dev:8443/auth/realms/baby-yoda/account/totp
         - https://keycloak.bigbang.dev:8443/register
-    1. Test registring a user with CAC. Verify that the user is automatically added to IL2 group. Test login from the account page.
-    1. Test registring a regular user with username and password. Test login at the account page with OTP.
+    1. Test registering a user with CAC. Verify that the user is automatically added to IL2 group. Test login from the account page.
+    1. Test registering a regular user with username and password. Test login at the account page with OTP.
 1. After you are satisfied with the testing in the docker compose environment, put a copy of the new plugin jar at development/plugin/p1-keycloak-plugin-X.X.X.jar. Then permanently point the docker-compose.yaml to that jar file so that the docker compose environment will work out of the box for anyone who clones this repo.
 1. Build and publish a plugin image to the [P1 Keycloak Plugin container registry](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/container_registry/) using the instructions in the [P1 plugin repo](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/-/blob/main/docs/deployment.md). The image label should have "test" in the name like this `test-X.X.X`. 
 1. Use a full k8s deployment to test Keycloak, the custom plugin, and end-to-end SSO. See next section.
