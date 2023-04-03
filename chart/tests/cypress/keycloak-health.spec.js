@@ -39,8 +39,8 @@ describe('Keycloak Healthcheck', function () {
     // Verify the app redirected you to the console
     cy.location('pathname', { timeout: 10000 }).should('eq', '/auth/admin/master/console/');
 
-    // verify the page title is "Keycloak Admin Console"
-    cy.title().should('eq', 'Keycloak Administration Console');
+    // verify the page title is "Keycloak Admin UI"
+    cy.title().should('eq', 'Keycloak Administration UI');
 
     // // Go to Realm page
     // cy.visit(Cypress.env('url') + '/auth/admin/master/console/#/realms/baby-yoda')
