@@ -607,8 +607,8 @@ test:
     runAsNonRoot: true
 
 # Big Bang Additions
-## Your FQDN will be ${ .Values.subdomain }.${ .Values.hostname }
-hostname: bigbang.dev
+## Your FQDN will be ${ .Values.subdomain }.${ .Values.domain }
+domain: bigbang.dev
 istio:
   # Toggle istio integration
   enabled: false
@@ -625,7 +625,7 @@ istio:
     gateways:
       - istio-system/main
     hosts:
-      - keycloak.{{ .Values.hostname }}
+      - keycloak.{{ .Values.domain }}
 monitoring:
   enabled: false
 networkPolicies:

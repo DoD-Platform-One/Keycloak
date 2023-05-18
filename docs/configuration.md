@@ -5,7 +5,7 @@
 The helm chart is setup to integrate with [Istio](https://istio.io).  Istio must be deployed to your cluster before enabling the integration.  To create the istio endpoint, set the following in your `values.yaml`
 
 ```yaml
-hostname: <your_domain_name.com>
+domain: <your_domain_name.com>
 istio:
   enabled: true
   keycloak:
