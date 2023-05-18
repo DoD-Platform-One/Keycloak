@@ -4,6 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [18.4.0-bb.3] - 2023-05-17
+### Updated
+- Update chat/values.yaml hostname key to domain
+- Updated docs, changing hostname to domain
+
 ## [18.4.0-bb.2] - 2022-03-30
 ### Updated
 - Update helm.sh/images postgresql ironbank image to 12.14

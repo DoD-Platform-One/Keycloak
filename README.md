@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.0-bb.2](https://img.shields.io/badge/Version-18.4.0--bb.2-informational?style=flat-square) ![AppVersion: 21.0.2](https://img.shields.io/badge/AppVersion-21.0.2-informational?style=flat-square)
+![Version: 18.4.0-bb.3](https://img.shields.io/badge/Version-18.4.0--bb.3-informational?style=flat-square) ![AppVersion: 21.0.2](https://img.shields.io/badge/AppVersion-21.0.2-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -212,7 +212,7 @@ helm install keycloak chart/
 | test.podSecurityContext.fsGroup | int | `1000` |  |
 | test.securityContext.runAsUser | int | `1000` |  |
 | test.securityContext.runAsNonRoot | bool | `true` |  |
-| hostname | string | `"bigbang.dev"` |  |
+| domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.injection | string | `"disabled"` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
@@ -220,7 +220,7 @@ helm install keycloak chart/
 | istio.keycloak.annotations | object | `{}` |  |
 | istio.keycloak.labels | object | `{}` |  |
 | istio.keycloak.gateways[0] | string | `"istio-system/main"` |  |
-| istio.keycloak.hosts[0] | string | `"keycloak.{{ .Values.hostname }}"` |  |
+| istio.keycloak.hosts[0] | string | `"keycloak.{{ .Values.domain }}"` |  |
 | monitoring.enabled | bool | `false` |  |
 | networkPolicies.enabled | bool | `false` |  |
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
