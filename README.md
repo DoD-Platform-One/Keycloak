@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.0-bb.3](https://img.shields.io/badge/Version-18.4.0--bb.3-informational?style=flat-square) ![AppVersion: 21.0.2](https://img.shields.io/badge/AppVersion-21.0.2-informational?style=flat-square)
+![Version: 18.4.3-bb.0](https://img.shields.io/badge/Version-18.4.3--bb.0-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -41,7 +41,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"21.0.2"` |  |
+| image.tag | string | `"21.1.1"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
@@ -117,8 +117,6 @@ helm install keycloak chart/
 | ingress.rules[0].host | string | `"{{ .Release.Name }}.keycloak.example.com"` |  |
 | ingress.rules[0].paths[0].path | string | `"/"` |  |
 | ingress.rules[0].paths[0].pathType | string | `"Prefix"` |  |
-| ingress.tls[0].hosts[0] | string | `"keycloak.example.com"` |  |
-| ingress.tls[0].secretName | string | `""` |  |
 | ingress.console.enabled | bool | `false` |  |
 | ingress.console.ingressClassName | string | `""` |  |
 | ingress.console.annotations | object | `{}` |  |
