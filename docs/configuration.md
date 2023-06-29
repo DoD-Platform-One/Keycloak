@@ -207,6 +207,18 @@ monitoring:
   enabled: true
 ```
 
+### LDAP Egress
+
+If you are planning to utilize an external LDAP with Keycloak, you'll need to set up permissions to Egress.  This can be enabled by setting the following:
+
+```yaml
+networkPolicies:
+  ldap:
+    enabled: true
+    cidr: X.X.X.X/X
+    port: 636
+```
+
 ## Additional Documentation
 
 - [Keycloak Configuration](https://www.keycloak.org/server/all-config)

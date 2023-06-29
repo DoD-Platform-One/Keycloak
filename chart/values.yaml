@@ -634,6 +634,10 @@ networkPolicies:
     app: istio-ingressgateway
     istio: ingressgateway
   smtpPort: 587
+  ldap:
+    enabled: false
+    cidr: X.X.X.X/X
+    port: 636
 
 openshift: false
 

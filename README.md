@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.3-bb.0](https://img.shields.io/badge/Version-18.4.3--bb.0-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
+![Version: 18.4.3-bb.1](https://img.shields.io/badge/Version-18.4.3--bb.1-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -224,6 +224,9 @@ helm install keycloak chart/
 | networkPolicies.ingressLabels.app | string | `"istio-ingressgateway"` |  |
 | networkPolicies.ingressLabels.istio | string | `"ingressgateway"` |  |
 | networkPolicies.smtpPort | int | `587` |  |
+| networkPolicies.ldap.enabled | bool | `false` |  |
+| networkPolicies.ldap.cidr | string | `"X.X.X.X/X"` |  |
+| networkPolicies.ldap.port | int | `636` |  |
 | openshift | bool | `false` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.0.0"` |  |
