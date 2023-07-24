@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.3-bb.1](https://img.shields.io/badge/Version-18.4.3--bb.1-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
+![Version: 18.4.3-bb.2](https://img.shields.io/badge/Version-18.4.3--bb.2-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -136,7 +136,7 @@ helm install keycloak chart/
 | route.tls.insecureEdgeTerminationPolicy | string | `"Redirect"` |  |
 | route.tls.termination | string | `"edge"` |  |
 | pgchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
-| pgchecker.image.tag | float | `12.14` |  |
+| pgchecker.image.tag | float | `12.15` |  |
 | pgchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
 | pgchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | pgchecker.securityContext.runAsUser | int | `1000` |  |
@@ -155,7 +155,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.14` |  |
+| postgresql.image.tag | float | `12.15` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `26` |  |

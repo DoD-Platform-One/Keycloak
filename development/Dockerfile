@@ -1,4 +1,4 @@
-FROM registry1.dso.mil/ironbank/redhat/ubi/ubi8-micro:8.7
+FROM registry1.dso.mil/ironbank/redhat/ubi/ubi8-micro:8.8
 
 RUN mkdir /app
 

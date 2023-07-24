@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 18.4.3-bb.1
+version: 18.4.3-bb.2
 appVersion: 21.1.1
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
@@ -23,11 +23,11 @@ maintainers:
     email: thomas.darimont+github@gmail.com
 dependencies:
   - name: postgresql
-    version: 10.16.2
+    version: 10.3.13
     repository: file://./deps/postgresql
     condition: postgresql.enabled
   - name: gluon
-    version: "0.3.2"
+    version: "0.4.0"
     repository: "oci://registry1.dso.mil/bigbang"
 annotations:
   bigbang.dev/applicationVersions: |
@@ -37,7 +37,7 @@ annotations:
       image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:21.1.1
     - name: postgresl12
       condition: postgresql.enabled
-      image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.14
+      image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.15
     - name: base
       condition: bbtests.enabled
       image: registry1.dso.mil/ironbank/big-bang/base:2.0.0
