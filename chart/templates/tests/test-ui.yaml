@@ -1,3 +1,7 @@
-{{- include "gluon.tests.cypress-configmap.base" . }}
+{{- include "gluon.tests.cypress-configmap.overrides" (list . "keycloak-test.cypress-configmap") }}
+{{- define "keycloak-test.cypress-configmap" }}
+{{- end }}
 ---
-{{- include "gluon.tests.cypress-runner.base" . }}
+{{- include "gluon.tests.cypress-runner.overrides" (list . "keycloak-test.cypress-runner") -}}
+{{- define "keycloak-test.cypress-runner" -}}
+{{- end }}

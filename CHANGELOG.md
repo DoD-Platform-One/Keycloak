@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.4.3-bb.2] - 2022-06-29
+### Updated
+- Update bitnami/postgresql version 15.2.0 -> 15.3.0
+- Update postgresql-exporter version to 0.12.0 -> 0.12.1
+- Update postgresql12 version to 12.14 -> 12.15
+- Update gluon version 0.3.2 -> 0.4.0
+- Update uib8-micro version 8.7 -> 8.8
+
 ## [18.4.3-bb.1] - 2023-06-27
 ### Updated
 - Added support for LDAP egress
