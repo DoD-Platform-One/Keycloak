@@ -36,6 +36,8 @@ spec:
       - name: {{ template "keycloak.fullname" . }}-create-ci-cypress-user
         image: {{ .Values.bbtests.image  }}
         imagePullPolicy: {{ .Values.image.pullPolicy  }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
         command:
         - /bin/sh
         - -c

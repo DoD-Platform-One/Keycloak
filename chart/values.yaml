@@ -65,6 +65,7 @@ rbac:
 # SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
 podSecurityContext:
   fsGroup: 1000
+  runAsNonRoot: true
 
 # SecurityContext for the Keycloak container
 securityContext:
@@ -460,8 +461,8 @@ postgresql:
   securityContext:
     enabled: true
     fsGroup: 26
-    runAsUser: 26
-    runAsGroup: 26
+    runAsUser: 1001
+    runAsGroup: 1001
   containerSecurityContext:
     enabled: true
     runAsUser: 26

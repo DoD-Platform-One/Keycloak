@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.4.3-bb.2] - 2023-08-09
+### Updated
+- Update securityContext for postgres to run as non-root
+
 ## [18.4.3-bb.2] - 2022-06-29
 ### Updated
 - Update bitnami/postgresql version 15.2.0 -> 15.3.0

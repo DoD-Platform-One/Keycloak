@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.3-bb.2](https://img.shields.io/badge/Version-18.4.3--bb.2-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
+![Version: 18.4.3-bb.3](https://img.shields.io/badge/Version-18.4.3--bb.3-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -158,8 +158,8 @@ helm install keycloak chart/
 | postgresql.image.tag | float | `12.15` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
-| postgresql.securityContext.runAsUser | int | `26` |  |
-| postgresql.securityContext.runAsGroup | int | `26` |  |
+| postgresql.securityContext.runAsUser | int | `1001` |  |
+| postgresql.securityContext.runAsGroup | int | `1001` |  |
 | postgresql.containerSecurityContext.enabled | bool | `true` |  |
 | postgresql.containerSecurityContext.runAsUser | int | `26` |  |
 | postgresql.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
