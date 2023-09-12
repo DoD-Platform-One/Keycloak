@@ -173,7 +173,7 @@ The helm chart will create a secret named `keycloak-customreg` containing the co
 
 ## Custom Realm
 
-Keycloak has the ability to import a custom realm file using a volume mount of a file and an environmental variable. However, it is **NOT** recommended for operational/production environments. If you need to set this for development or testing purposes, see the [helm chart documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#setting-a-custom-realm), the [Keycloak official documentaion](https://www.keycloak.org/server/importExport) and the [test-values.yml](../tests/test-values.yml) for a working example.
+Keycloak has the ability to import a custom realm file using a volume mount of a file and an environmental variable. However, it is **NOT** recommended for operational/production environments. If you need to set this for development or testing purposes, see the [helm chart documentation](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#setting-a-custom-realm), the [Keycloak official documentaion](https://www.keycloak.org/server/importExport) and the [test-values.yaml](../tests/test-values.yaml) for a working example.
 
 ## Environmental Variables
 
