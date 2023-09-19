@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.3-bb.4](https://img.shields.io/badge/Version-18.4.3--bb.4-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
+![Version: 18.4.3-bb.5](https://img.shields.io/badge/Version-18.4.3--bb.5-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -57,6 +57,7 @@ helm install keycloak chart/
 | rbac.create | bool | `false` |  |
 | rbac.rules | list | `[]` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
+| podSecurityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
@@ -234,6 +235,8 @@ helm install keycloak chart/
 | bbtests.cypress.envs.cypress_url | string | `"http://keycloak-http.keycloak.svc.cluster.local"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |
 | bbtests.cypress.envs.cypress_password | string | `"password"` |  |
+| bbtests.cypress.envs.cypress_tnr_username | string | `"cypress"` |  |
+| bbtests.cypress.envs.cypress_tnr_password | string | `"tnr_w!G33ZyAt@C8"` |  |
 | bbtests.cypress.envs.tnr_username | string | `"cypress"` |  |
 | bbtests.cypress.envs.tnr_password | string | `"tnr_w!G33ZyAt@C8"` |  |
 | bbtests.cypress.envs.tnr_firstName | string | `"Cypress"` |  |

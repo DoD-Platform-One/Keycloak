@@ -3,6 +3,15 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.4.3-bb.5]
+### Updated
+- Updated gluon to 0.4.0 to 0.4.1
+- Updated Cypress tests to accomodate cypress 13.X+
+- Added chart/resources/dev/baby-yoda-bb-ci.json to enable SSO testing in the pipeline
+- Improved chart/templates/bigbang/create-ci-cypress-user-hook.yaml with additional attributes
+
+
+
 ## [18.4.3-bb.4]
 ### Updated
 - Fixed a broken link in the docs
