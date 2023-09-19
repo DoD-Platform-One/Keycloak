@@ -95,15 +95,29 @@ spec:
           "enabled": true,
           "username": "{{ .Values.bbtests.cypress.envs.tnr_username }}",
           "email": "{{ .Values.bbtests.cypress.envs.tnr_email }}",
+          "emailVerified": true,
           "firstName": "{{ .Values.bbtests.cypress.envs.tnr_firstName }}",
           "lastName": "{{ .Values.bbtests.cypress.envs.tnr_lastName }}",
+          "groups": ["/Impact Level 2 Authorized" ],
           "credentials": [
               {
               "type": "password",
               "value": "{{ .Values.bbtests.cypress.envs.tnr_password }}",
               "temporary": false
               }
-          ]
+          ],
+          "attributes": 
+            {
+            "terms_and_conditions":["1677014361"],
+            "notes":[""],
+            "affiliation":["other"],
+            "organization":["Test"],
+            "rank":["E-5"],
+            "location":["42"],
+            "mattermostid":["2352211826381947"],
+            "public-registrant":["true"],
+            "activecac": [""]
+            }
           }' "$base_url/auth/admin/realms/$realm/users")
 
           user_create_req_status=${user_create_req##* }

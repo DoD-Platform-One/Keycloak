@@ -32,7 +32,7 @@
   "registrationAllowed": true,
   "registrationEmailAsUsername": false,
   "rememberMe": false,
-  "verifyEmail": false,
+  "verifyEmail": true,
   "loginWithEmailAllowed": true,
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": true,
@@ -63,7 +63,10 @@
         "composite": true,
         "composites": {
           "client": {
-            "account": ["view-profile", "manage-account"]
+            "account": [
+              "view-profile",
+              "manage-account"
+            ]
           }
         },
         "clientRole": false,
@@ -162,7 +165,9 @@
           "composite": true,
           "composites": {
             "client": {
-              "realm-management": ["query-clients"]
+              "realm-management": [
+                "query-clients"
+              ]
             }
           },
           "clientRole": true,
@@ -281,7 +286,10 @@
           "composite": true,
           "composites": {
             "client": {
-              "realm-management": ["query-groups", "query-users"]
+              "realm-management": [
+                "query-groups",
+                "query-users"
+              ]
             }
           },
           "clientRole": true,
@@ -316,6 +324,7 @@
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_twistlock-oidc": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_kiali": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_prometheus": [],
+      "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_tempo": [],
       "account": [
         {
           "id": "9a61ae6b-aba7-47d0-a3b1-67e40ac4f5d1",
@@ -342,7 +351,9 @@
           "composite": true,
           "composites": {
             "client": {
-              "account": ["manage-account-links"]
+              "account": [
+                "manage-account-links"
+              ]
             }
           },
           "clientRole": true,
@@ -356,7 +367,9 @@
           "composite": true,
           "composites": {
             "client": {
-              "account": ["view-consent"]
+              "account": [
+                "view-consent"
+              ]
             }
           },
           "clientRole": true,
@@ -400,7 +413,9 @@
       "name": "Impact Level 2 Authorized",
       "path": "/Impact Level 2 Authorized",
       "attributes": {
-        "il2": ["true"]
+        "il2": [
+          "true"
+        ]
       },
       "realmRoles": [],
       "clientRoles": {},
@@ -422,7 +437,11 @@
       "attributes": {},
       "realmRoles": [],
       "clientRoles": {
-        "realm-management": ["view-events", "manage-users", "view-users"]
+        "realm-management": [
+          "view-events",
+          "manage-users",
+          "view-users"
+        ]
       },
       "subGroups": []
     },
@@ -444,18 +463,24 @@
     "clientRole": false,
     "containerId": "baby-yoda"
   },
-  "defaultGroups": ["/Impact Level 2 Authorized"],
-  "requiredCredentials": ["password"],
-  "passwordPolicy": "hashAlgorithm(pbkdf2-sha256) and forceExpiredPasswordChange(90) and passwordHistory(5) and length(4) and notUsername(undefined)",
+  "requiredCredentials": [
+    "password"
+  ],
+  "passwordPolicy": "hashAlgorithm(pbkdf2-sha256) and forceExpiredPasswordChange(90) and specialChars(2) and passwordHistory(5) and length(12) and notUsername(undefined)",
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
   "otpPolicyDigits": 6,
   "otpPolicyLookAheadWindow": 3,
   "otpPolicyPeriod": 30,
-  "otpSupportedApplications": ["FreeOTP", "Google Authenticator"],
+  "otpSupportedApplications": [
+    "FreeOTP",
+    "Google Authenticator"
+  ],
   "webAuthnPolicyRpEntityName": "keycloak",
-  "webAuthnPolicySignatureAlgorithms": ["ES256"],
+  "webAuthnPolicySignatureAlgorithms": [
+    "ES256"
+  ],
   "webAuthnPolicyRpId": "",
   "webAuthnPolicyAttestationConveyancePreference": "not specified",
   "webAuthnPolicyAuthenticatorAttachment": "not specified",
@@ -465,7 +490,9 @@
   "webAuthnPolicyAvoidSameAuthenticatorRegister": false,
   "webAuthnPolicyAcceptableAaguids": [],
   "webAuthnPolicyPasswordlessRpEntityName": "keycloak",
-  "webAuthnPolicyPasswordlessSignatureAlgorithms": ["ES256"],
+  "webAuthnPolicyPasswordlessSignatureAlgorithms": [
+    "ES256"
+  ],
   "webAuthnPolicyPasswordlessRpId": "",
   "webAuthnPolicyPasswordlessAttestationConveyancePreference": "not specified",
   "webAuthnPolicyPasswordlessAuthenticatorAttachment": "not specified",
@@ -477,14 +504,18 @@
   "scopeMappings": [
     {
       "clientScope": "offline_access",
-      "roles": ["offline_access"]
+      "roles": [
+        "offline_access"
+      ]
     }
   ],
   "clientScopeMappings": {
     "account": [
       {
         "client": "account-console",
-        "roles": ["manage-account"]
+        "roles": [
+          "manage-account"
+        ]
       }
     ]
   },
@@ -501,7 +532,9 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": ["/realms/baby-yoda/account/*"],
+      "redirectUris": [
+        "/realms/baby-yoda/account/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -531,7 +564,9 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": ["/realms/baby-yoda/account/*"],
+      "redirectUris": [
+        "/realms/baby-yoda/account/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -627,7 +662,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://alertmanager.bigbang.dev/login/generic_oauth", "https://alertmanager.dogfood.bigbang.dev/login/generic_oauth"],
+      "redirectUris": [
+        "https://alertmanager.bigbang.dev/login/generic_oauth",
+        "https://alertmanager.dogfood.bigbang.dev/login/generic_oauth"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -660,7 +698,12 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["web-origins", "roles", "profile", "email"],
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -673,7 +716,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://anchore.dogfood.bigbang.dev/service/sso/auth/keycloak", "https://anchore.bigbang.dev/service/sso/auth/keycloak"],
+      "redirectUris": [
+        "https://anchore.dogfood.bigbang.dev/service/sso/auth/keycloak",
+        "https://anchore.bigbang.dev/service/sso/auth/keycloak"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -718,7 +764,9 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["role_list"],
+      "defaultClientScopes": [
+        "role_list"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -730,7 +778,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://argocd.dogfood.bigbang.dev/auth/callback", "https://argocd.bigbang.dev/auth/callback"],
+      "redirectUris": [
+        "https://argocd.dogfood.bigbang.dev/auth/callback",
+        "https://argocd.bigbang.dev/auth/callback"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -769,7 +820,9 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["ArgoCD"],
+      "defaultClientScopes": [
+        "ArgoCD"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -825,7 +878,9 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["Gitlab"],
+      "defaultClientScopes": [
+        "Gitlab"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -837,7 +892,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://grafana.dogfood.bigbang.dev/login/generic_oauth", "https://grafana.bigbang.dev/login/generic_oauth"],
+      "redirectUris": [
+        "https://grafana.dogfood.bigbang.dev/login/generic_oauth",
+        "https://grafana.bigbang.dev/login/generic_oauth"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -876,7 +934,9 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["Grafana"],
+      "defaultClientScopes": [
+        "Grafana"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -886,7 +946,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://tracing.bigbang.dev/login"],
+      "redirectUris": [
+        "https://tracing.bigbang.dev/login"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -924,8 +986,18 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["web-origins", "roles", "profile", "email"],
-      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     },
     {
       "id": "fb41d5e6-dc17-4c88-90d3-adfdaa08d1b8",
@@ -938,7 +1010,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://kiali.bigbang.dev/kiali/*", "https://kiali.dogfood.bigbang.dev/kiali/*"],
+      "redirectUris": [
+        "https://kiali.bigbang.dev/kiali/*",
+        "https://kiali.dogfood.bigbang.dev/kiali/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -977,8 +1052,18 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["web-origins", "roles", "profile", "email"],
-      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     },
     {
       "id": "23ec72c7-03e6-4155-88cb-7c376f6a5d54",
@@ -989,7 +1074,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://kibana.dogfood.bigbang.dev/*", "https://kibana.bigbang.dev/*"],
+      "redirectUris": [
+        "https://kibana.dogfood.bigbang.dev/*",
+        "https://kibana.bigbang.dev/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1028,7 +1116,9 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["elastic"],
+      "defaultClientScopes": [
+        "elastic"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -1142,7 +1232,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://prometheus.bigbang.dev/login/generic_oauth", "https://prometheus.dogfood.bigbang.dev/login/generic_oauth"],
+      "redirectUris": [
+        "https://prometheus.bigbang.dev/login/generic_oauth",
+        "https://prometheus.dogfood.bigbang.dev/login/generic_oauth"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1181,7 +1274,71 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["web-origins", "roles", "profile", "email"],
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": []
+    },
+    {
+      "id": "569f67de-36e6-4552-ac54-e52085109818",
+      "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_tempo",
+      "name": "BigBang Dev Tempo",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "https://tempo.bigbang.dev/*",
+        "https://tempo.dogfood.bigbang.dev/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "saml.assertion.signature": "false",
+        "id.token.as.detached.signature": "false",
+        "saml.multivalued.roles": "false",
+        "saml.force.post.binding": "false",
+        "saml.encrypt": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "saml.server.signature": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "saml.server.signature.keyinfo.ext": "false",
+        "use.refresh.tokens": "true",
+        "exclude.session.state.from.auth.response": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "saml.artifact.binding": "false",
+        "backchannel.logout.session.required": "true",
+        "client_credentials.use_refresh_token": "false",
+        "consent.screen.text": "This client is used for development support for Big Bang / Platform One.  Be sure that you are only using this client for development.",
+        "saml_force_name_id_format": "false",
+        "saml.client.signature": "false",
+        "tls.client.certificate.bound.access.tokens": "false",
+        "saml.authnstatement": "false",
+        "display.on.consent.screen": "true",
+        "saml.onetimeuse.condition": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -1193,7 +1350,10 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": ["https://sonarqube.dogfood.bigbang.dev/oauth2/callback/saml*", "https://sonarqube.bigbang.dev/oauth2/callback/saml*"],
+      "redirectUris": [
+        "https://sonarqube.dogfood.bigbang.dev/oauth2/callback/saml*",
+        "https://sonarqube.bigbang.dev/oauth2/callback/saml*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1300,7 +1460,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://twistlock.bigbang.dev/api/v1/authenticate/callback/oidc"],
+      "redirectUris": [
+        "https://twistlock.bigbang.dev/api/v1/authenticate/callback/oidc"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1338,8 +1500,15 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["profile"],
-      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+      "defaultClientScopes": [
+        "profile"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     },
     {
       "id": "01a6f0c9-1965-45d4-8082-58dd29f406f3",
@@ -1350,7 +1519,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://twistlock.bigbang.dev*", "https://twistlock.dogfood.bigbang.dev*"],
+      "redirectUris": [
+        "https://twistlock.bigbang.dev*",
+        "https://twistlock.dogfood.bigbang.dev*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1393,7 +1565,10 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": ["role_list", "twistlock"],
+      "defaultClientScopes": [
+        "role_list",
+        "twistlock"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -1404,7 +1579,10 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://vault.bigbang.dev/ui/vault/auth/oidc/oidc/callback", "https://vault.bigbang.dev/oidc/callback"],
+      "redirectUris": [
+        "https://vault.bigbang.dev/ui/vault/auth/oidc/oidc/callback",
+        "https://vault.bigbang.dev/oidc/callback"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1459,8 +1637,18 @@
           }
         }
       ],
-      "defaultClientScopes": ["web-origins", "roles", "profile", "email"],
-      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     },
     {
       "id": "f975a475-89c7-43bc-bddb-c9d974ff5ac3",
@@ -1469,8 +1657,12 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://nexus.bigbang.dev/saml"],
-      "webOrigins": ["https://nexus.bigbang.dev"],
+      "redirectUris": [
+        "https://nexus.bigbang.dev/saml"
+      ],
+      "webOrigins": [
+        "https://nexus.bigbang.dev"
+      ],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -1557,7 +1749,9 @@
           }
         }
       ],
-      "defaultClientScopes": ["role_list"],
+      "defaultClientScopes": [
+        "role_list"
+      ],
       "optionalClientScopes": []
     },
     {
@@ -1599,8 +1793,12 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": ["/admin/baby-yoda/console/*"],
-      "webOrigins": ["+"],
+      "redirectUris": [
+        "/admin/baby-yoda/console/*"
+      ],
+      "webOrigins": [
+        "+"
+      ],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -2445,8 +2643,19 @@
       ]
     }
   ],
-  "defaultDefaultClientScopes": ["email", "roles", "profile", "web-origins", "role_list"],
-  "defaultOptionalClientScopes": ["phone", "microprofile-jwt", "address", "offline_access"],
+  "defaultDefaultClientScopes": [
+    "email",
+    "roles",
+    "profile",
+    "web-origins",
+    "role_list"
+  ],
+  "defaultOptionalClientScopes": [
+    "phone",
+    "microprofile-jwt",
+    "address",
+    "offline_access"
+  ],
   "browserSecurityHeaders": {
     "contentSecurityPolicyReportOnly": "",
     "xContentTypeOptions": "nosniff",
@@ -2473,7 +2682,9 @@
   "emailTheme": "keycloak",
   "eventsEnabled": false,
   "eventsExpiration": 1800,
-  "eventsListeners": ["jboss-logging"],
+  "eventsListeners": [
+    "jboss-logging"
+  ],
   "enabledEventTypes": [
     "SEND_RESET_PASSWORD",
     "UPDATE_CONSENT_ERROR",
@@ -2556,7 +2767,9 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "allow-default-scopes": ["true"]
+          "allow-default-scopes": [
+            "true"
+          ]
         }
       },
       {
@@ -2585,7 +2798,9 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "max-clients": ["200"]
+          "max-clients": [
+            "200"
+          ]
         }
       },
       {
@@ -2603,7 +2818,9 @@
         "subType": "authenticated",
         "subComponents": {},
         "config": {
-          "allow-default-scopes": ["true"]
+          "allow-default-scopes": [
+            "true"
+          ]
         }
       },
       {
@@ -2640,8 +2857,12 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "host-sending-registration-request-must-match": ["true"],
-          "client-uris-must-match": ["true"]
+          "host-sending-registration-request-must-match": [
+            "true"
+          ],
+          "client-uris-must-match": [
+            "true"
+          ]
         }
       }
     ],
@@ -2660,7 +2881,9 @@
         "providerId": "aes-generated",
         "subComponents": {},
         "config": {
-          "priority": ["100"]
+          "priority": [
+            "100"
+          ]
         }
       },
       {
@@ -2669,7 +2892,9 @@
         "providerId": "rsa-generated",
         "subComponents": {},
         "config": {
-          "priority": ["100"]
+          "priority": [
+            "100"
+          ]
         }
       },
       {
@@ -2678,14 +2903,20 @@
         "providerId": "hmac-generated",
         "subComponents": {},
         "config": {
-          "priority": ["100"],
-          "algorithm": ["HS256"]
+          "priority": [
+            "100"
+          ],
+          "algorithm": [
+            "HS256"
+          ]
         }
       }
     ]
   },
   "internationalizationEnabled": false,
-  "supportedLocales": [""],
+  "supportedLocales": [
+    ""
+  ],
   "authenticationFlows": [
     {
       "id": "5fca3666-0018-4ca1-8ec9-4b00deb3d8f1",
@@ -2733,14 +2964,14 @@
           "authenticatorConfig": "dod-cac",
           "authenticator": "auth-x509-client-username-form",
           "authenticatorFlow": false,
-          "requirement": "DISABLED",
+          "requirement": "ALTERNATIVE",
           "priority": 1,
           "userSetupAllowed": false,
           "autheticatorFlow": false
         },
         {
           "authenticatorFlow": true,
-          "requirement": "REQUIRED",
+          "requirement": "ALTERNATIVE",
           "priority": 2,
           "flowAlias": "MFA Login",
           "userSetupAllowed": false,
@@ -2767,7 +2998,7 @@
         {
           "authenticator": "basic-auth-otp",
           "authenticatorFlow": false,
-          "requirement": "DISABLED",
+          "requirement": "REQUIRED",
           "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -2811,7 +3042,7 @@
         {
           "authenticator": "conditional-user-configured",
           "authenticatorFlow": false,
-          "requirement": "DISABLED",
+          "requirement": "REQUIRED",
           "priority": 10,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -2819,7 +3050,7 @@
         {
           "authenticator": "auth-otp-form",
           "authenticatorFlow": false,
-          "requirement": "DISABLED",
+          "requirement": "REQUIRED",
           "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -2837,7 +3068,7 @@
         {
           "authenticator": "conditional-user-configured",
           "authenticatorFlow": false,
-          "requirement": "DISABLED",
+          "requirement": "REQUIRED",
           "priority": 0,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -2845,7 +3076,7 @@
         {
           "authenticator": "auth-otp-form",
           "authenticatorFlow": false,
-          "requirement": "DISABLED",
+          "requirement": "REQUIRED",
           "priority": 1,
           "userSetupAllowed": false,
           "autheticatorFlow": false
@@ -3075,6 +3306,14 @@
           "authenticatorFlow": false,
           "requirement": "REQUIRED",
           "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "reset-credential-email",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
           "userSetupAllowed": false,
           "autheticatorFlow": false
         },
@@ -3545,7 +3784,7 @@
       "alias": "CONFIGURE_TOTP",
       "name": "Configure OTP",
       "providerId": "CONFIGURE_TOTP",
-      "enabled": false,
+      "enabled": true,
       "defaultAction": false,
       "priority": 10,
       "config": {}
@@ -3563,7 +3802,7 @@
       "alias": "UPDATE_PASSWORD",
       "name": "Update Password",
       "providerId": "UPDATE_PASSWORD",
-      "enabled": false,
+      "enabled": true,
       "defaultAction": false,
       "priority": 30,
       "config": {}
@@ -3572,7 +3811,7 @@
       "alias": "UPDATE_PROFILE",
       "name": "Update Profile",
       "providerId": "UPDATE_PROFILE",
-      "enabled": false,
+      "enabled": true,
       "defaultAction": false,
       "priority": 40,
       "config": {}
@@ -3581,7 +3820,7 @@
       "alias": "VERIFY_EMAIL",
       "name": "Verify Email",
       "providerId": "VERIFY_EMAIL",
-      "enabled": false,
+      "enabled": true,
       "defaultAction": true,
       "priority": 50,
       "config": {}

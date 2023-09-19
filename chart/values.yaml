@@ -651,6 +651,8 @@ bbtests:
       cypress_url: "http://keycloak-http.keycloak.svc.cluster.local"
       cypress_username: "admin"
       cypress_password: "password"
+      cypress_tnr_username: "cypress"
+      cypress_tnr_password: "tnr_w!G33ZyAt@C8"
       tnr_username: "cypress"
       tnr_password: "tnr_w!G33ZyAt@C8"
       tnr_firstName: "Cypress"
