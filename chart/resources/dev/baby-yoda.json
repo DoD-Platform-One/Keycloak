@@ -297,6 +297,7 @@
           "attributes": {}
         }
       ],
+      "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_neuvector": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_gitlab": [],
       "security-admin-console": [],
       "account-console": [],
@@ -1221,6 +1222,57 @@
       ],
       "defaultClientScopes": [],
       "optionalClientScopes": []
+    },
+    {
+      "id": "cdb12226-b98c-401c-b1b9-7a7d243f5096",
+      "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_neuvector",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "https://neuvector.bigbang.dev/openId_auth"
+      ],
+      "webOrigins": [
+        "/*"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     },
     {
       "id": "7dd8ea36-bf2a-4561-be21-be5ab880a26d",
