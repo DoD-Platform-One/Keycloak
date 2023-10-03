@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.4.3-bb.7]
+### Updated
+- Added dev client for neuvector to baby-yoda realm
+
 ## [18.4.3-bb.6] - 2023-09-27
 ### Updated
 - Updated horizontal pod autoscaler to select and apply the appropriate API version
