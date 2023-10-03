@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.3-bb.7](https://img.shields.io/badge/Version-18.4.3--bb.7-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
+![Version: 18.4.3-bb.8](https://img.shields.io/badge/Version-18.4.3--bb.8-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -59,6 +59,7 @@ helm install keycloak chart/
 | podSecurityContext.fsGroup | int | `1000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
+| securityContext.runAsGroup | int | `1000` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | extraInitContainers | string | `""` |  |
@@ -159,8 +160,8 @@ helm install keycloak chart/
 | postgresql.image.tag | float | `12.15` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
-| postgresql.securityContext.runAsUser | int | `1001` |  |
-| postgresql.securityContext.runAsGroup | int | `1001` |  |
+| postgresql.securityContext.runAsUser | int | `1000` |  |
+| postgresql.securityContext.runAsGroup | int | `1000` |  |
 | postgresql.containerSecurityContext.enabled | bool | `true` |  |
 | postgresql.containerSecurityContext.runAsUser | int | `26` |  |
 | postgresql.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
@@ -210,6 +211,7 @@ helm install keycloak chart/
 | test.image.pullPolicy | string | `"IfNotPresent"` |  |
 | test.podSecurityContext.fsGroup | int | `1000` |  |
 | test.securityContext.runAsUser | int | `1000` |  |
+| test.securityContext.runAsGroup | int | `1000` |  |
 | test.securityContext.runAsNonRoot | bool | `true` |  |
 | domain | string | `"bigbang.dev"` |  |
 | istio.enabled | bool | `false` |  |

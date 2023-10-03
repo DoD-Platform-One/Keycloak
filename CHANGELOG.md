@@ -3,7 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [18.4.3-bb.7]
+
+## [18.4.3-bb.8] - 2023-10-03
+### Updated
+- Updated non root group user
+
+## [18.4.3-bb.7]- 2023-10-03
 ### Updated
 - Added dev client for neuvector to baby-yoda realm
 
@@ -17,8 +22,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Updated Cypress tests to accomodate cypress 13.X+
 - Added chart/resources/dev/baby-yoda-bb-ci.json to enable SSO testing in the pipeline
 - Improved chart/templates/bigbang/create-ci-cypress-user-hook.yaml with additional attributes
-
-
 
 ## [18.4.3-bb.4]
 ### Updated
