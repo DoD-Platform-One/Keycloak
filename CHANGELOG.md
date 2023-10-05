@@ -16,14 +16,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 - Updated horizontal pod autoscaler to select and apply the appropriate API version
 
-## [18.4.3-bb.5]
+## [18.4.3-bb.5] - 2023-09-19
 ### Updated
 - Updated gluon to 0.4.0 to 0.4.1
 - Updated Cypress tests to accomodate cypress 13.X+
 - Added chart/resources/dev/baby-yoda-bb-ci.json to enable SSO testing in the pipeline
 - Improved chart/templates/bigbang/create-ci-cypress-user-hook.yaml with additional attributes
 
-## [18.4.3-bb.4]
+## [18.4.3-bb.4] - 2023-09-12
 ### Updated
 - Fixed a broken link in the docs
 
