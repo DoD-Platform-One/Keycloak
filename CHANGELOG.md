@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Updated
 - Fixed a broken link in the docs
 
-## [18.4.3-bb.2] - 2023-08-09
+## [18.4.3-bb.3] - 2023-08-09
 ### Updated
 - Update securityContext for postgres to run as non-root
 
