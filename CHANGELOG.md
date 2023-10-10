@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [18.4.3-bb.9] - 2023-10-10
+### Updated
+- Fixed and updated changelog entries
+
 ## [18.4.3-bb.8] - 2023-10-03
 ### Updated
 - Updated non root group user
