@@ -73,6 +73,7 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
     ```bash
     helm upgrade -i bigbang ./chart -n bigbang --create-namespace -f ../overrides/keycloak-bigbang-values.yaml -f ../overrides/registry-values.yaml -f ./chart/ingress-certs.yaml
     ```
+1. For more help getting these setup with all of the needed values.yaml changes check [authservice](https://repo1.dso.mil/big-bang/product/packages/authservice/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md).
 1. For end-to-end SSO testing there needs to be DNS for Keycloak. In a k3d dev environment there is no DNS so you must do a dev hack and edit the configmap "coredns-xxxxxxxx". Under NodeHosts add a host for keycloak.bigbang.dev.
 ```bash
 kubectl get cm -n kube-system
