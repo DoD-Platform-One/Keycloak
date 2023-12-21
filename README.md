@@ -1,6 +1,7 @@
+
 # keycloak
 
-![Version: 18.4.3-bb.10](https://img.shields.io/badge/Version-18.4.3--bb.10-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
+![Version: 18.4.3-bb.11](https://img.shields.io/badge/Version-18.4.3--bb.11-informational?style=flat-square) ![AppVersion: 21.1.1](https://img.shields.io/badge/AppVersion-21.1.1-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -57,6 +58,8 @@ helm install keycloak chart/
 | rbac.create | bool | `false` |  |
 | rbac.rules | list | `[]` |  |
 | podSecurityContext.fsGroup | int | `1000` |  |
+| podSecurityContext.runAsUser | int | `1000` |  |
+| podSecurityContext.runAsGroup | int | `1000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | securityContext.runAsGroup | int | `1000` |  |
