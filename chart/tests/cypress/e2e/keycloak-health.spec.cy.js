@@ -34,15 +34,7 @@ describe('Keycloak Healthcheck', function () {
       cy.visit(Cypress.env('url') + '/auth/realms/baby-yoda/account')
       cy.wait(2000)
 
-      cy.get('input[id="username"]')
-        .type(Cypress.env('tnr_username'))
-        .should('have.value', Cypress.env('tnr_username'));
-
-      cy.get('input[id="password"]')
-        .type(Cypress.env('tnr_password'))
-        .should('have.value', Cypress.env('tnr_password'));  
-
-      cy.get('form').submit();
+      cy.performKeycloakLogin(Cypress.env('tnr_username'), Cypress.env('tnr_password'))
       cy.wait(500)
     }
   })
