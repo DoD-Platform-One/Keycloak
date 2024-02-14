@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [18.4.3-bb.13] - 2024-02-14
+### Updated
+- Update Keycloak version to 21.1.2
+
 ## [18.4.3-bb.12] - 2024-01-16
 ### Updated
 - Gluon update to 4.7

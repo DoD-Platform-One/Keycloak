@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "21.1.1"
+  tag: "21.1.2"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
