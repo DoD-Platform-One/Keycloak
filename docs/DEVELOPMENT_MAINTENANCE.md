@@ -67,45 +67,39 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
     - registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:X.X.X
 
 # Testing new Keycloak version with custom P1 plugin.
-1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/scripts/developer/k3d-dev.sh) with the `-m` for metalLB so that k3d can support multiple ingress gateways. The following steps assume you are using the script.
+1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/scripts/developer/k3d-dev.sh) script with the `-a` option. This will enable  metalLB and create a separate passthrough gateway, which is necessary for Keycloak. The following steps assume you are using the script.
 1. Follow all of the instructions at the end of the script to connect to and use the remote k3d cluster. 
-1. Deploy Big Bang with only istio-operator, istio, gitlab, sonarqube, and Mattermost enabled. Need to test both OIDC and SAML end-to-end SSO. Gitlab uses OIDC and Sonarqube uses SAML. Mattermost is included in the end-to-end testing because it has some unique SSO configuration that should be tested. Deploy BigBang using the following example helm command and the provided [example big bang values override](./docs/assets/config/example/keycloak-bigbang-dev-values.yaml). Change the plugin image label to use your test plugin image. Hint: search for "X.X.X" in the example values file.
+1. Deploy Big Bang with istio-operator, istio, gitlab, sonarqube, and Mattermost enabled. This is so that you can test both OIDC and SAML end-to-end SSO. Gitlab uses OIDC and Sonarqube uses SAML. Mattermost is included in the end-to-end testing because it has some unique SSO configuration that should be tested. Deploy BigBang using the following example helm command and the provided [example big bang values override](./docs/assets/config/example/keycloak-bigbang-dev-values.yaml). Change the plugin image label to use your test plugin image. Hint: search for "X.X.X" in the example values file.
     ```bash
     helm upgrade -i bigbang ./chart -n bigbang --create-namespace -f ../overrides/keycloak-bigbang-values.yaml -f ../overrides/registry-values.yaml -f ./chart/ingress-certs.yaml
     ```
 1. For more help getting these setup with all of the needed values.yaml changes check [authservice](https://repo1.dso.mil/big-bang/product/packages/authservice/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md).
-1. For end-to-end SSO testing there needs to be DNS for Keycloak. In a k3d dev environment there is no DNS so you must do a dev hack and edit the configmap "coredns-xxxxxxxx". Under NodeHosts add a host for keycloak.bigbang.dev.
-```bash
-kubectl get cm -n kube-system
-kubectl edit cm coredns -n kube-system
-```
-The IP for the passthrough ingress gateway in a k3d environment created by the dev script will be 172.20.1.240. Like this
-    ```yaml
-      NodeHosts:|
-        <nil> host.k3d.internal
-        172.20.0.2 k3d-k3s-default-agent-0
-        172.20.0.5 k3d-k3s-default-agent-1
-        172.20.0.4 k3d-k3s-default-agent-2
-        172.20.0.3 k3d-k3s-default-server-0
-        172.20.0.6 k3d-k3s-default-serverlb
-        172.20.1.240 keycloak.bigbang.dev
-    ```
-1. Restart the coredns pod so that it picks up the new configmap.
-```bash
-kubectl get pods -A
-kubectl delete pod <coredns pod> -n kube-system
-```
-1. Sonarqube needs an extra configuration step for SSO to work because it uses SAML. The values override `addons.sonarqube.sso.certificate` needs to be updated with the Keycloak realm certificate. When Keycloak finishes installing login to the admin console [Keycloak](https://keycloak.bigbang.dev/auth/admin) with default credentials `admin/password`. Navigate to Realm Settings >> Keys. On the RS256 row click on the `Certificate` button and copy the certificate text as a single line string and paste it into your `addons.sonarqube.sso.certificate` value. Run another `helm upgrade` command and watch for Sonarqube to update.
-1. In a browser load `https://keycloak.bigbang.dev` and register a test user. You should register yourself with CAC and also a non-CAC test.user with just user and password with OTP. Both flows need to be tested.
+1. In a browser load `https://keycloak.bigbang.dev` and register two test users, one with your CAC, one without a CAC with just a username and password with OTP. Both flows need to be tested. (Note: You can also create these test users through the [Keycloak admin UI](https://keycloak.bigbang.dev/auth/admin/master/console/), but if you do so you must create them in the baby-yoda realm and add them to the IL2 Users group). 
 1. Then go back to `https://keycloak.bigbang.dev/auth/admin` and login to the admin console with the default credentials `admin/password`
-1. Navigate to users, click "View all users" button and edit the test users that you created. Set "Email Verified" ON. Remove the verify email "Required User Actions". Click "Save" button.
-1. Test end-to-end SSO with Gitlab and Sonarqube with your CAC user and the other test user.
+1. Navigate to users, click "View all users" button and edit the test users that you created. Set "Email Verified" to "Yes." In "Required User Actions" remove "Verify Email." Click the "Save" button.
+1. Test end-to-end SSO with Gitlab with both your CAC user and non-CAC user by browsing to gitlab.bigbang.dev in an incognito window and confirming that you can log on through SSO as both users. 
+1. Before testing sonarqube, you'll need to update the sso.saml.metadata value in your override. There are two ways to find the correct value:
+    - Through the Keycloak admin console. Log on to the [admin console](https://keycloak.bigbang.dev/auth/admin/master/console/), then click on "Realm settings" in the left-hand column, then in the Endpoints section, click on the "SAML 2.0 Identity Provider Metadata" link. This will open another tab, containing the SAML metadata value you need. View source here to place the value in one continuous line (ctrl-u will do this on Chrome and Firefox). Then copy the value to your clipboard. 
+    - From a bash prompt. Run ```curl https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/saml/descriptor``` and copy the output to your clipboard. If you are on Microsoft Windows running WSL, you may need to update your WSL /etc/hosts file with the correct IP for the Keycloak passthrough gateway (you should already have such an entry in your Windows host file if you're able to connect to keycloak.bigbang.dev in a browser).
+1. Once you have the value copied to your clipboard, open your override in an editor and delete the old sso.saml.metadata value. Paste in your new value. IMPORTANT: *** Be sure the value is on the same line as the metadata: key, not one line below it. ***
+1. Test end-to-end SSO with Sonarqube with both your CAC user and non-CAC user by browsing to sonarqube.bigbang.dev in an incognito window and confirming that you can log on through SSO as both users. 
+1. Test Mattermost. To do this:
+    - Browse to chat.bigbang.dev and create a user when prompted. This will be the admin account. 
+    - Once you've logged on to Mattermost with your admin account, start a free trial.
+    - Get the name of your Mattermost postgresql pod by running ```kubectl get pods -n mattermost```. For the purposes of these instructions we'll assume this pod is called mattermost-postgresql-0 
+    - Exec into the Mattermost postgresql pod with ```kubectl exec -n mattermost -it mattermost-postgresql-0 -- bash``` 
+    - In the pod, run this to log on to the postgresql database as the mattermost user (the password should be bigbang):```psql --username=mattermost```
+    - To get the license key, run ```select * from licenses;``` (Note: the ; on the end is important.)
+    - The license key will be the massive string of over 1,600 characters at the end of the output. Copy this to your clipboard.
+    - In your override, set the addons.mattermost.sso.enabled value to "true" and uncomment the addons.mattermost.values.enterprise.license key. Paste the license you copied in the previous step into the double quotes in the value of this key. Save your edits.
+    - Redeploy Big Bang with the same helm update you used earlier. You should now be able to log on to chat.bigbang.dev through SSO as the test user accounts you created. Log on as each and perform the Mattermost tests in the Testing Steps section [here](https://repo1.dso.mil/big-bang/product/packages/mattermost/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-for-updates). 
 1. Test the custom user forms to make sure all the fields are working
     - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/
     - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/password
     - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/totp
     - https://keycloak.bigbang.dev/register
-1. Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `/scripts/certs/README.md` and copy the new `truststore.jks` to [./chart/resources/dev](../chart/resources/dev/) and to [./development/certs/](../development/certs/) . You might have to edit the `/scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.
+
+Note: Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `/scripts/certs/README.md` and copy the new `truststore.jks` to [./chart/resources/dev](../chart/resources/dev/) and to [./development/certs/](../development/certs/) . You might have to edit the `/scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.
 
 
 # Modifications made to upstream chart
