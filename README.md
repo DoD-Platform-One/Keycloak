@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 18.4.3-bb.13](https://img.shields.io/badge/Version-18.4.3--bb.13-informational?style=flat-square) ![AppVersion: 21.1.2](https://img.shields.io/badge/AppVersion-21.1.2-informational?style=flat-square)
+![Version: 18.4.3-bb.14](https://img.shields.io/badge/Version-18.4.3--bb.14-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -41,7 +41,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"21.1.2"` |  |
+| image.tag | string | `"23.0.7"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
