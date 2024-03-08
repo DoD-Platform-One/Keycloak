@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "21.1.2"
+  tag: "23.0.7"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -64,15 +64,15 @@ rbac:
 
 # SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
 podSecurityContext:
-  fsGroup: 1000
-  runAsUser: 1000
-  runAsGroup: 1000
+  fsGroup: 2000
+  runAsUser: 2000
+  runAsGroup: 2000
   runAsNonRoot: true
 
 # SecurityContext for the Keycloak container
 securityContext:
-  runAsUser: 1000
-  runAsGroup: 1000
+  runAsUser: 2000
+  runAsGroup: 2000
   runAsNonRoot: true
   capabilities:
     drop:
@@ -433,11 +433,11 @@ pgchecker:
   # Resource requests and limits for the pgchecker container
   resources:
     requests:
-      cpu: "20m"
-      memory: "32Mi"
+      cpu: "250m"
+      memory: "256Mi"
     limits:
-      cpu: "20m"
-      memory: "32Mi"
+      cpu: "250m"
+      memory: "256Mi"
 
 postgresql:
   # If `true`, the Postgresql dependency is enabled
