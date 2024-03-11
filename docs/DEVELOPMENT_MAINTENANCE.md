@@ -69,7 +69,7 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
 # Testing new Keycloak version with custom P1 plugin.
 1. Create a k8s dev environment. One option is to use the Big Bang [k3d-dev.sh](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/scripts/developer/k3d-dev.sh) script with the `-a` option. This will enable  metalLB and create a separate passthrough gateway, which is necessary for Keycloak. The following steps assume you are using the script.
 1. Follow all of the instructions at the end of the script to connect to and use the remote k3d cluster. 
-1. Deploy Big Bang with istio-operator, istio, gitlab, sonarqube, and Mattermost enabled. This is so that you can test both OIDC and SAML end-to-end SSO. Gitlab uses OIDC and Sonarqube uses SAML. Mattermost is included in the end-to-end testing because it has some unique SSO configuration that should be tested. Deploy BigBang using the following example helm command and the provided [example big bang values override](./docs/assets/config/example/keycloak-bigbang-dev-values.yaml). Change the plugin image label to use your test plugin image. Hint: search for "X.X.X" in the example values file.
+1. Deploy Big Bang with istio-operator, Istio, Gitlab, Sonarqube, and Mattermost enabled. SSO should be enabled for Gitlab and Sonarqube, but NOT for Mattermost at this point (you'll enable it for Mattermost later). This is so that you can test both OIDC and SAML end-to-end SSO. Gitlab uses OIDC and Sonarqube uses SAML. Mattermost is included in the end-to-end testing because it has some unique SSO configuration that should be tested. Deploy BigBang using the following example helm command and the provided [example big bang values override](./docs/assets/config/example/keycloak-bigbang-dev-values.yaml). Change the plugin image label to use your test plugin image. Hint: search for "X.X.X" in the example values file.
     ```bash
     helm upgrade -i bigbang ./chart -n bigbang --create-namespace -f ../overrides/keycloak-bigbang-values.yaml -f ../overrides/registry-values.yaml -f ./chart/ingress-certs.yaml
     ```
@@ -85,14 +85,14 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
 1. Run the same helm update command you used initially to deploy Big Bang once again so that Kubernetes reads the new SAML metadata value. 
 1. Test end-to-end SSO with Sonarqube with both your CAC user and non-CAC user by browsing to sonarqube.bigbang.dev in an incognito window and confirming that you can log on through SSO as both users. 
 1. Test Mattermost. To do this:
-    - Browse to chat.bigbang.dev and create a user when prompted. This will be the admin account. 
+    - Browse to chat.bigbang.dev and create a user when prompted. This will be the admin account. You can use a fake email address here. 
     - Once you've logged on to Mattermost with your admin account, start a free trial. To do this click the drop-down menu in the uppoer-left, choose System Console, and click the "Start trial" button. Fill out the dialog that appears (it's OK to use fake data here). When the "Your trial has started!" pop-up appears, click Close.
     - Get the name of your Mattermost postgresql pod by running ```kubectl get pods -n mattermost```. For the purposes of these instructions we'll assume this pod is called mattermost-postgresql-0 
     - Exec into the Mattermost postgresql pod with ```kubectl exec -n mattermost -it mattermost-postgresql-0 -- bash``` 
     - In the pod, run this to log on to the postgresql database as the mattermost user (the password should be bigbang):```psql --username=mattermost```
     - To get the license key, run ```select * from licenses;``` (Note: the ; on the end is important.)
     - The license key will be the massive string of over 1,600 characters at the end of the output. Copy this to your clipboard.
-    - In your override, set the addons.mattermost.sso.enabled value to "true" and uncomment the addons.mattermost.values.enterprise.license key. Paste the license you copied in the previous step into the double quotes in the value of this key. Save your edits.
+    - In your override, set the addons.mattermost.sso.enabled value to "true" and paste the license you copied in the previous step into the double quotes in the value of this key. Save your edits.
     - Redeploy Big Bang with the same helm update you used earlier. You should now be able to log on to chat.bigbang.dev through SSO as the test user accounts you created. Log on as each and perform the Mattermost tests in the Testing Steps section [here](https://repo1.dso.mil/big-bang/product/packages/mattermost/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-for-updates). 
 1. Test the custom user forms to make sure all the fields are working
     - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/
