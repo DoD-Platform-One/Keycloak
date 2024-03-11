@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 23.0.7-bb.0](https://img.shields.io/badge/Version-23.0.7-bb.0-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
+![Version: 23.0.7-bb.1](https://img.shields.io/badge/Version-23.0.7--bb.1-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -56,12 +56,12 @@ helm install keycloak chart/
 | serviceAccount.imagePullSecrets | list | `[]` |  |
 | rbac.create | bool | `false` |  |
 | rbac.rules | list | `[]` |  |
-| podSecurityContext.fsGroup | int | `1000` |  |
-| podSecurityContext.runAsUser | int | `1000` |  |
-| podSecurityContext.runAsGroup | int | `1000` |  |
+| podSecurityContext.fsGroup | int | `2000` |  |
+| podSecurityContext.runAsUser | int | `2000` |  |
+| podSecurityContext.runAsGroup | int | `2000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | int | `1000` |  |
-| securityContext.runAsGroup | int | `1000` |  |
+| securityContext.runAsUser | int | `2000` |  |
+| securityContext.runAsGroup | int | `2000` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | extraInitContainers | string | `""` |  |
@@ -147,10 +147,10 @@ helm install keycloak chart/
 | pgchecker.securityContext.runAsGroup | int | `1000` |  |
 | pgchecker.securityContext.runAsNonRoot | bool | `true` |  |
 | pgchecker.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| pgchecker.resources.requests.cpu | string | `"20m"` |  |
-| pgchecker.resources.requests.memory | string | `"32Mi"` |  |
-| pgchecker.resources.limits.cpu | string | `"20m"` |  |
-| pgchecker.resources.limits.memory | string | `"32Mi"` |  |
+| pgchecker.resources.requests.cpu | string | `"250m"` |  |
+| pgchecker.resources.requests.memory | string | `"256Mi"` |  |
+| pgchecker.resources.limits.cpu | string | `"250m"` |  |
+| pgchecker.resources.limits.memory | string | `"256Mi"` |  |
 | postgresql.enabled | bool | `true` |  |
 | postgresql.postgresqlUsername | string | `"keycloak"` |  |
 | postgresql.postgresqlPassword | string | `"keycloak"` |  |
