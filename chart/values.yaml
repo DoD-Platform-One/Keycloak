@@ -613,7 +613,7 @@ test:
 
 # Big Bang Additions
 ## Your FQDN will be ${ .Values.subdomain }.${ .Values.domain }
-domain: bigbang.dev
+domain: dev.bigbang.mil
 istio:
   # Toggle istio integration
   enabled: false
