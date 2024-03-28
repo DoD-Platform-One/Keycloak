@@ -44,8 +44,8 @@ The administrative user's credentials are pulled from a secret named `credential
 secrets:
   credentials:
     stringData:
-      adminuser: your_admin_username
-      password: your_admin_password
+      KEYCLOAK_ADMIN: "your_admin_username"
+      KEYCLOAK_ADMIN_PASSWORD: "your_admin_password"
 ```
 
 The helm chart will automatically create a secret with your credentials and set the [appropriate environmental variables](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak#creating-a-keycloak-admin-user) for the user to be created.
