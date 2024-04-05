@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:9ae91087-7b28-4068-86da-f337e9494535",
+  "serialNumber": "urn:uuid:20751442-b620-43a5-b280-2d942ff84dc1",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -20982,24 +20982,12 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final?package-id=59a9bcef848808b5",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final?package-id=c3fe4d6f3fcb5a2e",
           "group": "org.jboss.narayana.jta",
           "name": "jta",
           "version": "6.0.1.Final",
-          "cpe": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:jta:6.0.1.Final:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:narayana:jta:6.0.1.Final:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final",
-          "externalReferences": [
-            {
-              "url": "",
-              "type": "build-meta",
-              "hashes": [
-                {
-                  "alg": "SHA-1",
-                  "content": "742f887112c5b214763d74c8dbc60562c892516c"
-                }
-              ]
-            }
-          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -21016,22 +21004,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "java-archive"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:narayana:jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -21059,7 +21031,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar"
+              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar:org.jboss.narayana.jta:jta"
             }
           ]
         },
@@ -30477,7 +30449,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "11.4.1-2.1.el9",
@@ -30489,7 +30461,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:11.4.1-2.1.el9:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -35629,12 +35601,24 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final?package-id=be5cb6d432a0e67f",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final?package-id=602752c4b5705e84",
           "group": "org.jboss.narayana.jta",
           "name": "narayana-jta",
           "version": "6.0.1.Final",
-          "cpe": "cpe:2.3:a:narayana-jta:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final",
+          "externalReferences": [
+            {
+              "url": "",
+              "type": "build-meta",
+              "hashes": [
+                {
+                  "alg": "SHA-1",
+                  "content": "742f887112c5b214763d74c8dbc60562c892516c"
+                }
+              ]
+            }
+          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -35654,6 +35638,62 @@
             },
             {
               "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:narayana-jta:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
               "value": "cpe:2.3:a:narayana-jta:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
@@ -35663,6 +35703,14 @@
             {
               "name": "syft:cpe23",
               "value": "cpe:2.3:a:narayana_jta:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -35746,7 +35794,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar:org.jboss.narayana.jta:narayana-jta"
+              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar"
             }
           ]
         },
@@ -78908,7 +78956,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/libstdc\u002B\u002B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8\u0026package-id=0fee13262724b386",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/libstdc%2B%2B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8\u0026package-id=0fee13262724b386",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "8.5.0-18.el8",
@@ -78920,7 +78968,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:8.5.0-18.el8:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -82422,7 +82470,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-IO-Socket-SSL@2.066-4.module\u002Bel8.3.0\u002B6446\u002B594cad75?arch=noarch\u0026upstream=perl-IO-Socket-SSL-2.066-4.module\u002Bel8.3.0\u002B6446\u002B594cad75.src.rpm\u0026distro=rhel-8.8\u0026package-id=697ff928890e100e",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-IO-Socket-SSL@2.066-4.module%2Bel8.3.0%2B6446%2B594cad75?arch=noarch\u0026upstream=perl-IO-Socket-SSL-2.066-4.module%2Bel8.3.0%2B6446%2B594cad75.src.rpm\u0026distro=rhel-8.8\u0026package-id=697ff928890e100e",
           "publisher": "Red Hat, Inc.",
           "name": "perl-IO-Socket-SSL",
           "version": "2.066-4.module\u002Bel8.3.0\u002B6446\u002B594cad75",
@@ -82434,7 +82482,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:perl-IO-Socket-SSL:perl-IO-Socket-SSL:2.066-4.module\\\u002Bel8.3.0\\\u002B6446\\\u002B594cad75:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/perl-IO-Socket-SSL@2.066-4.module\u002Bel8.3.0\u002B6446\u002B594cad75?arch=noarch\u0026upstream=perl-IO-Socket-SSL-2.066-4.module\u002Bel8.3.0\u002B6446\u002B594cad75.src.rpm\u0026distro=rhel-8.8",
+          "purl": "pkg:rpm/rhel/perl-IO-Socket-SSL@2.066-4.module%2Bel8.3.0%2B6446%2B594cad75?arch=noarch\u0026upstream=perl-IO-Socket-SSL-2.066-4.module%2Bel8.3.0%2B6446%2B594cad75.src.rpm\u0026distro=rhel-8.8",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -82626,7 +82674,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-Mozilla-CA@20160104-7.module\u002Bel8.3.0\u002B6498\u002B9eecfe51?arch=noarch\u0026upstream=perl-Mozilla-CA-20160104-7.module\u002Bel8.3.0\u002B6498\u002B9eecfe51.src.rpm\u0026distro=rhel-8.8\u0026package-id=ead57b8c9dac2349",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-Mozilla-CA@20160104-7.module%2Bel8.3.0%2B6498%2B9eecfe51?arch=noarch\u0026upstream=perl-Mozilla-CA-20160104-7.module%2Bel8.3.0%2B6498%2B9eecfe51.src.rpm\u0026distro=rhel-8.8\u0026package-id=ead57b8c9dac2349",
           "publisher": "Red Hat, Inc.",
           "name": "perl-Mozilla-CA",
           "version": "20160104-7.module\u002Bel8.3.0\u002B6498\u002B9eecfe51",
@@ -82638,7 +82686,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:perl-Mozilla-CA:perl-Mozilla-CA:20160104-7.module\\\u002Bel8.3.0\\\u002B6498\\\u002B9eecfe51:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/perl-Mozilla-CA@20160104-7.module\u002Bel8.3.0\u002B6498\u002B9eecfe51?arch=noarch\u0026upstream=perl-Mozilla-CA-20160104-7.module\u002Bel8.3.0\u002B6498\u002B9eecfe51.src.rpm\u0026distro=rhel-8.8",
+          "purl": "pkg:rpm/rhel/perl-Mozilla-CA@20160104-7.module%2Bel8.3.0%2B6498%2B9eecfe51?arch=noarch\u0026upstream=perl-Mozilla-CA-20160104-7.module%2Bel8.3.0%2B6498%2B9eecfe51.src.rpm\u0026distro=rhel-8.8",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -82720,7 +82768,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-Net-SSLeay@1.88-2.module\u002Bel8.6.0\u002B13392\u002Bf0897f98?arch=x86_64\u0026upstream=perl-Net-SSLeay-1.88-2.module\u002Bel8.6.0\u002B13392\u002Bf0897f98.src.rpm\u0026distro=rhel-8.8\u0026package-id=b68721417e67a3e8",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-Net-SSLeay@1.88-2.module%2Bel8.6.0%2B13392%2Bf0897f98?arch=x86_64\u0026upstream=perl-Net-SSLeay-1.88-2.module%2Bel8.6.0%2B13392%2Bf0897f98.src.rpm\u0026distro=rhel-8.8\u0026package-id=b68721417e67a3e8",
           "publisher": "Red Hat, Inc.",
           "name": "perl-Net-SSLeay",
           "version": "1.88-2.module\u002Bel8.6.0\u002B13392\u002Bf0897f98",
@@ -82732,7 +82780,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:perl-Net-SSLeay:perl-Net-SSLeay:1.88-2.module\\\u002Bel8.6.0\\\u002B13392\\\u002Bf0897f98:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/perl-Net-SSLeay@1.88-2.module\u002Bel8.6.0\u002B13392\u002Bf0897f98?arch=x86_64\u0026upstream=perl-Net-SSLeay-1.88-2.module\u002Bel8.6.0\u002B13392\u002Bf0897f98.src.rpm\u0026distro=rhel-8.8",
+          "purl": "pkg:rpm/rhel/perl-Net-SSLeay@1.88-2.module%2Bel8.6.0%2B13392%2Bf0897f98?arch=x86_64\u0026upstream=perl-Net-SSLeay-1.88-2.module%2Bel8.6.0%2B13392%2Bf0897f98.src.rpm\u0026distro=rhel-8.8",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -83840,7 +83888,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-Text-Tabs\u002BWrap@2013.0523-395.el8?arch=noarch\u0026upstream=perl-Text-Tabs\u002BWrap-2013.0523-395.el8.src.rpm\u0026distro=rhel-8.8\u0026package-id=b48453ed3aedb8e9",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/postgres/postgresql12@12.15:pkg:rpm/rhel/perl-Text-Tabs%2BWrap@2013.0523-395.el8?arch=noarch\u0026upstream=perl-Text-Tabs%2BWrap-2013.0523-395.el8.src.rpm\u0026distro=rhel-8.8\u0026package-id=b48453ed3aedb8e9",
           "publisher": "Red Hat, Inc.",
           "name": "perl-Text-Tabs\u002BWrap",
           "version": "2013.0523-395.el8",
@@ -83852,7 +83900,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:perl-Text-Tabs\\\u002BWrap:perl-Text-Tabs\\\u002BWrap:2013.0523-395.el8:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/perl-Text-Tabs\u002BWrap@2013.0523-395.el8?arch=noarch\u0026upstream=perl-Text-Tabs\u002BWrap-2013.0523-395.el8.src.rpm\u0026distro=rhel-8.8",
+          "purl": "pkg:rpm/rhel/perl-Text-Tabs%2BWrap@2013.0523-395.el8?arch=noarch\u0026upstream=perl-Text-Tabs%2BWrap-2013.0523-395.el8.src.rpm\u0026distro=rhel-8.8",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -101462,7 +101510,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/big-bang/base@2.0.0:pkg:rpm/rhel/libstdc\u002B\u002B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8\u0026package-id=0fee13262724b386",
+          "bom-ref": "registry1.dso.mil/ironbank/big-bang/base@2.0.0:pkg:rpm/rhel/libstdc%2B%2B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8\u0026package-id=0fee13262724b386",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "8.5.0-18.el8",
@@ -101474,7 +101522,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:8.5.0-18.el8:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@8.5.0-18.el8?arch=x86_64\u0026upstream=gcc-8.5.0-18.el8.src.rpm\u0026distro=rhel-8.8",
           "properties": [
             {
               "name": "syft:package:foundBy",
