@@ -3,8 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [23.0.7-bb.3] - 2024-04-10
+### Changed
+- Renewing and refreshing DoD CAs in truststore.jks bundle shipped with the package
+
 ## [23.0.7-bb.2] - 2024-03-25
-### Updated
+### Changed
 - Updating domain and dev/ci realm info to `*.dev.bigbang.mil`
 
 ## [23.0.7-bb.1] - 2024-03-11
