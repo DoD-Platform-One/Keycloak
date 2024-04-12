@@ -6,7 +6,7 @@ JKS_TRUSTSTORE_FILE="truststore.jks"
 JKS_TRUSTSTORE_PATH="${MAIN_DIR}/${JKS_TRUSTSTORE_FILE}"
 TRUSTSTORE_PASSWORD="password"
 TEMPORARY_CERTIFICATE="temporary_ca.crt"
-X509_CA_BUNDLE="../truststore/dod_cas.pem"
+X509_CA_BUNDLE="${MAIN_DIR}/dod_cas.pem"
 
 pushd /tmp >& /dev/null
 
