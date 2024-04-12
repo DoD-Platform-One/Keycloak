@@ -26,7 +26,7 @@ if ! [ $# == 0 ]; then
     fi
     mkdir /tmp/dod_cas
     curl -sS $URL > /tmp/dod_cas/dod_cas.zip
-    unzip -q -d /tmp/dod_cas /tmp/dod_cas/dod_cas.zip
+    env --chdir=/tmp/dod_cas -S jar -xf /tmp/dod_cas/dod_cas.zip
 
     find /tmp/dod_cas/ -name '*.cer' -print0 |
     while IFS= read -r -d '' line; do
