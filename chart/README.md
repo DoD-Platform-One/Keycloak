@@ -463,8 +463,17 @@ extraVolumes: |
 ### Setting a Custom Realm
 
 A realm can be added by creating a secret or configmap for the realm json file and then supplying this into the chart.
-It can be mounted using `extraVolumeMounts` and then referenced as environment variable `KEYCLOAK_IMPORT`.
-First we need to create a Secret from the realm JSON file using `kubectl create secret generic realm-secret --from-file=realm.json` which we need to reference in `values.yaml`:
+It can be mounted using `extraVolumeMounts` and then referenced using the config items below.
+First we need to create a Secret from the realm JSON file using `kubectl create secret generic realm-secret --from-file=realm.json` or the programmatic values below which we need to reference in `values.yaml`:
+
+To add a custom realm, first create a secret for the realm json file: 
+```
+kubectl create secret generic realm-secret --from-file=realm.json
+```
+
+Or using the `.Values.secrets` key.
+
+Then add these items to the chart:
 
 ```yaml
 extraVolumes: |
@@ -481,6 +490,23 @@ extraEnv: |
   - name: KEYCLOAK_IMPORT
     value: /realm/realm.json
 ```
+
+```
+addons.keycloak.values.args: - "--import-realm"
+addons.keycloak.values.secrets.realm.stringData: realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
+addons.keycloak.values.extraVolumes.- name: realm.secret: secretName: {{ include "keycloak.fullname" . }}-realm
+addons.keycloak.values.extraVolumeMounts.- name: realm.mountPath: /opt/keycloak/data/import/realm.json
+```
+
+For an example of a values.yaml file with all of these values implemented, see [here](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/configs/example/keycloak-dev-values.yaml#L137). These are links to each specific line in this example file:
+
+https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/configs/example/keycloak-dev-values.yaml#L48 
+
+https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/configs/example/keycloak-dev-values.yaml#L93
+
+https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/configs/example/keycloak-dev-values.yaml#L121
+
+https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/configs/example/keycloak-dev-values.yaml#L137
 
 Alternatively, the realm file could be added to a custom image.
 
