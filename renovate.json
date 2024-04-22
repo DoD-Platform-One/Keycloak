@@ -6,6 +6,7 @@
   "draftPR": "true",
   "labels": ["keycloak","Package Sustainment","kind::maintenance"],
   "commitMessagePrefix": "SKIP UPDATE CHECK",
+  "enabledManagers": ["regex", "helmv3"],
   "packageRules": [
     {
       "matchDatasources": ["docker"],
