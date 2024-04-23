@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:e335d711-af92-42f4-a22f-3d2ce6749280",
+  "serialNumber": "urn:uuid:c1e50537-d915-4a0e-b332-5b3fa2a26d49",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -20982,12 +20982,24 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final?package-id=c3fe4d6f3fcb5a2e",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final?package-id=59a9bcef848808b5",
           "group": "org.jboss.narayana.jta",
           "name": "jta",
           "version": "6.0.1.Final",
-          "cpe": "cpe:2.3:a:narayana:jta:6.0.1.Final:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:jta:6.0.1.Final:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final",
+          "externalReferences": [
+            {
+              "url": "",
+              "type": "build-meta",
+              "hashes": [
+                {
+                  "alg": "SHA-1",
+                  "content": "742f887112c5b214763d74c8dbc60562c892516c"
+                }
+              ]
+            }
+          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -21004,6 +21016,22 @@
             {
               "name": "syft:package:metadataType",
               "value": "java-archive"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:narayana:jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -21031,7 +21059,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar:org.jboss.narayana.jta:jta"
+              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar"
             }
           ]
         },
@@ -35601,24 +35629,12 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final?package-id=602752c4b5705e84",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final?package-id=be5cb6d432a0e67f",
           "group": "org.jboss.narayana.jta",
           "name": "narayana-jta",
           "version": "6.0.1.Final",
-          "cpe": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:narayana-jta:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final",
-          "externalReferences": [
-            {
-              "url": "",
-              "type": "build-meta",
-              "hashes": [
-                {
-                  "alg": "SHA-1",
-                  "content": "742f887112c5b214763d74c8dbc60562c892516c"
-                }
-              ]
-            }
-          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -35638,62 +35654,6 @@
             },
             {
               "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:narayana:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:narayana:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:narayana-jta:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
               "value": "cpe:2.3:a:narayana-jta:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
@@ -35703,14 +35663,6 @@
             {
               "name": "syft:cpe23",
               "value": "cpe:2.3:a:narayana_jta:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -35794,7 +35746,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar"
+              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar:org.jboss.narayana.jta:narayana-jta"
             }
           ]
         },
