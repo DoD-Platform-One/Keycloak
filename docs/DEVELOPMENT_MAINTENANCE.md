@@ -34,13 +34,13 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
     ```
 1. A custom Keycloak image is no longer used. Instead a plugin image is created and volume mounted into k8s. This Keycloak package chart uses the IronBank image.
 1. If you are upgrading the Keycloak version follow instructions in the [P1 plugin repo](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md) to upgrade the custom P1 plugin. Follow the instructions there for building a plugin jar for testing. Recommended to use the free community version of Intellij IDEA instead of Visual Studio Code. Intellij IDEA has much better support for Java development. You can run unit tests with coverage and build from IDE.
-1. Test the plugin changes locally using the [docker-compose local dev environment](../development/README.md). Temporarily point the development/docker-compsose.yaml to the new plugin jar built during the previous step. 
+1. Test the plugin changes locally using the [docker-compose local dev environment](../development/README.md). Temporarily point the development/docker-compose.yaml to the new plugin jar built during the previous step. 
     1. Test the admin console
     1. Test the custom user forms
-        - https://keycloak.bigbang.dev:8443/auth/realms/baby-yoda/account/
-        - https://keycloak.bigbang.dev:8443/auth/realms/baby-yoda/account/password
-        - https://keycloak.bigbang.dev:8443/auth/realms/baby-yoda/account/totp
-        - https://keycloak.bigbang.dev:8443/register
+        - https://keycloak.dev.bigbang.mil:8443/auth/realms/baby-yoda/account/
+        - https://keycloak.dev.bigbang.mil:8443/auth/realms/baby-yoda/account/password
+        - https://keycloak.dev.bigbang.mil:8443/auth/realms/baby-yoda/account/totp
+        - https://keycloak.dev.bigbang.mil:8443/register
     1. Test registering a user with CAC. Verify that the user is automatically added to IL2 group. Test login from the account page.
     1. Test registering a regular user with username and password. Test login at the account page with OTP.
 1. After you are satisfied with the testing in the docker compose environment, put a copy of the new plugin jar at development/plugin/p1-keycloak-plugin-X.X.X.jar. Then permanently point the docker-compose.yaml to that jar file so that the docker compose environment will work out of the box for anyone who clones this repo.
@@ -74,31 +74,24 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
     helm upgrade -i bigbang ./chart -n bigbang --create-namespace -f ../overrides/keycloak-bigbang-values.yaml -f ../overrides/registry-values.yaml -f ./chart/ingress-certs.yaml
     ```
 1. For more help getting these setup with all of the needed values.yaml changes check [authservice](https://repo1.dso.mil/big-bang/product/packages/authservice/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md).
-1. In a browser load `https://keycloak.bigbang.dev` and register two test users, one with your CAC, one without a CAC with just a username and password with OTP. Both flows need to be tested. (Note: You can also create these test users through the [Keycloak admin UI](https://keycloak.bigbang.dev/auth/admin/master/console/), but if you do so you must create them in the baby-yoda realm and add them to the IL2 Users group). 
-1. Then go back to `https://keycloak.bigbang.dev/auth/admin` and login to the admin console with the default credentials `admin/password`
+1. In a browser load `https://keycloak.dev.bigbang.mil` and register two test users, one with your CAC, one without a CAC with just a username and password with OTP. Both flows need to be tested. (Note: You can also create these test users through the [Keycloak admin UI](https://keycloak.dev.bigbang.mil/auth/admin/master/console/), but if you do so you must create them in the baby-yoda realm and add them to the IL2 Users group). 
+1. Then go back to `https://keycloak.dev.bigbang.mil/auth/admin` and login to the admin console with the default credentials `admin/password`
 1. Navigate to users, click "View all users" button and edit the test users that you created. Set "Email Verified" to "Yes." In "Required User Actions" remove "Verify Email." Click the "Save" button.
-1. Test end-to-end SSO with Gitlab with both your CAC user and non-CAC user by browsing to gitlab.bigbang.dev in an incognito window and confirming that you can log on through SSO as both users. 
+1. Test end-to-end SSO with Gitlab with both your CAC user and non-CAC user by browsing to gitlab.dev.bigbang.mil in an incognito window and confirming that you can log on through SSO as both users. 
 1. Before testing sonarqube, you'll need to update the sso.saml.metadata value in your override. There are two ways to find the correct value:
-    - Through the Keycloak admin console. Log on to the [admin console](https://keycloak.bigbang.dev/auth/admin/master/console/), then click on "Realm settings" in the left-hand column, then in the Endpoints section, click on the "SAML 2.0 Identity Provider Metadata" link. This will open another tab, containing the SAML metadata value you need. View source here to place the value in one continuous line (ctrl-u will do this on Chrome and Firefox). Then copy the value to your clipboard. 
-    - From a bash prompt. Run ```curl https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/saml/descriptor``` and copy the output to your clipboard. If you are on Microsoft Windows running WSL, you may need to update your WSL /etc/hosts file with the correct IP for the Keycloak passthrough gateway (you should already have such an entry in your Windows host file if you're able to connect to keycloak.bigbang.dev in a browser).
+    - Through the Keycloak admin console. Log on to the [admin console](https://keycloak.dev.bigbang.mil/auth/admin/master/console/), then click on "Realm settings" in the left-hand column, then in the Endpoints section, click on the "SAML 2.0 Identity Provider Metadata" link. This will open another tab, containing the SAML metadata value you need. View source here to place the value in one continuous line (ctrl-u will do this on Chrome and Firefox). Then copy the value to your clipboard. 
+    - From a bash prompt, run ```curl https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/protocol/saml/descriptor``` and copy the output to your clipboard. If you are on Microsoft Windows running WSL, you may need to update your WSL /etc/hosts file with the correct IP for the Keycloak passthrough gateway (you should already have such an entry in your Windows host file if you're able to connect to keycloak.dev.bigbang.mil in a browser).
 1. Once you have the value copied to your clipboard, open your override in an editor and delete the old sso.saml.metadata value. Paste in your new value. IMPORTANT: *** Be sure the value is on the same line as the metadata: key, not one line below it. ***
 1. Run the same helm update command you used initially to deploy Big Bang once again so that Kubernetes reads the new SAML metadata value. 
-1. Test end-to-end SSO with Sonarqube with both your CAC user and non-CAC user by browsing to sonarqube.bigbang.dev in an incognito window and confirming that you can log on through SSO as both users. 
+1. Test end-to-end SSO with Sonarqube with both your CAC user and non-CAC user by browsing to sonarqube.dev.bigbang.mil in an incognito window and confirming that you can log on through SSO as both users. 
 1. Test Mattermost. To do this:
-    - Browse to chat.bigbang.dev and create a user when prompted. This will be the admin account. You can use a fake email address here. 
-    - Once you've logged on to Mattermost with your admin account, start a free trial. To do this click the drop-down menu in the uppoer-left, choose System Console, and click the "Start trial" button. Fill out the dialog that appears (it's OK to use fake data here). When the "Your trial has started!" pop-up appears, click Close.
-    - Get the name of your Mattermost postgresql pod by running ```kubectl get pods -n mattermost```. For the purposes of these instructions we'll assume this pod is called mattermost-postgresql-0 
-    - Exec into the Mattermost postgresql pod with ```kubectl exec -n mattermost -it mattermost-postgresql-0 -- bash``` 
-    - In the pod, run this to log on to the postgresql database as the mattermost user (the password should be bigbang):```psql --username=mattermost```
-    - To get the license key, run ```select * from licenses;``` (Note: the ; on the end is important.)
-    - The license key will be the massive string of over 1,600 characters at the end of the output. Copy this to your clipboard.
-    - In your override, set the addons.mattermost.sso.enabled value to "true" and paste the license you copied in the previous step into the double quotes in the value of this key. Save your edits.
-    - Redeploy Big Bang with the same helm update you used earlier. You should now be able to log on to chat.bigbang.dev through SSO as the test user accounts you created. Log on as each and perform the Mattermost tests in the Testing Steps section [here](https://repo1.dso.mil/big-bang/product/packages/mattermost/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md?ref_type=heads#testing-for-updates). 
+    - Browse to chat.dev.bigbang.mil and create a user with username/password. This option should be available if `addons.mattermost.sso.enable_sign_up_with_email` is enabled. This test simply validates that normal authentication works when SSO is not forced.
+    - Once logged in, log out and attempt to create an SSO user using the Gitlab OIDC link. Once you finish authenticating, you should return to mattermost as expected and be logged in as your keycloak user
 1. Test the custom user forms to make sure all the fields are working
-    - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/
-    - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/password
-    - https://keycloak.bigbang.dev/auth/realms/baby-yoda/account/totp
-    - https://keycloak.bigbang.dev/register
+    - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/
+    - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/password
+    - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/totp
+    - https://keycloak.dev.bigbang.mil/register
 
 Note: Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `/scripts/certs/README.md` and copy the new `truststore.jks` to [./chart/resources/dev](../chart/resources/dev/) and to [./development/certs/](../development/certs/) . You might have to edit the `/scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.
 
@@ -159,9 +152,6 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - add gluon library dependency
 - Update postgresql dependency for local source
 - add annotations for release automation
-
-## chart/Kptfile
-- file created when kpt was used to download the upstream chart
 
 ## chart/scripts/keycloak.cli
 - Quarkus migration: Delete this Wildfly startup config.
