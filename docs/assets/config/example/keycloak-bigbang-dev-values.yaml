@@ -2,7 +2,14 @@ comments: |
   This values override file is provided FOR DEVELOPMENT/DEMO/TEST PURPOSES ONLY
   For production configuration reference the Big Bang repo docs at docs/assets/configs/example/keycloak-prod-values.yaml
 
-domain: bigbang.dev
+domain: dev.bigbang.mil
+
+# Global SSO parameters
+sso:
+  oidc:
+    host: keycloak.dev.bigbang.mil
+    realm: baby-yoda
+  # client_secret: ""
 
 flux:
   interval: 1m
@@ -21,10 +28,10 @@ gatekeeper:
 kyverno:
   enabled: false
 
-kyvernopolicies:
+kyvernoPolicies:
   enabled: false
 
-istiooperator:
+istioOperator:
   enabled: true
 
 istio:
@@ -52,12 +59,6 @@ jaeger:
 kiali:
   enabled: false
 
-logging:
-  enabled: false
-
-eckoperator:
-  enabled: false
-
 fluentbit:
   enabled: false
 
@@ -66,13 +67,6 @@ monitoring:
 
 twistlock:
   enabled: false
-
-# Gloabl SSO parameters
-sso:
-  oidc:
-    host: keycloak.bigbang.dev
-    realm: baby-yoda
-  # client_secret: ""
 
 addons:
 
@@ -111,7 +105,7 @@ addons:
         - name: KC_PROXY
           value: passthrough
         - name: KC_HOSTNAME
-          value: keycloak.bigbang.dev
+          value: keycloak.{{ .Values.domain }}
         - name: KC_HOSTNAME_STRICT
           value: "true"
         - name: KC_HOSTNAME_STRICT_HTTPS
@@ -142,10 +136,11 @@ addons:
         quarkusproperties:
           stringData:
             quarkus.properties: '{{ .Files.Get "resources/dev/quarkus.properties" }}'
-
+      # Modify the image key below to deploy a custom image
+      # i.e image: registry.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/init-container:test-X.X.X
       extraInitContainers: |-
         - name: plugin
-          image: registry.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/init-container:test-X.X.X
+          image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.3.0
           imagePullPolicy: Always
           command:
           - sh
@@ -245,7 +240,7 @@ addons:
   minioOperator:
     enabled: true
 
-  mattermostoperator:
+  mattermostOperator:
     enabled: true
 
   mattermost:
@@ -255,13 +250,8 @@ addons:
       # client_id: "platform1_a8604cc9-f5e9-4656-802d-d05624370245_bb8-mattermost"
       client_id: "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_mattermost"
       client_secret: "no-secret"
-      auth_endpoint: https://keycloak.bigbang.dev/oauth/authorize
-      token_endpoint: https://keycloak.bigbang.dev/oauth/token
-      user_api_endpoint: https://keycloak.bigbang.dev/api/v4/user
-      # auth_endpoint: https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/auth
-      # token_endpoint: https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/token
-      # user_api_endpoint: https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/userinfo
-
+      enable_sign_up_with_email: true
+      enable_sign_in_with_email: true    
     values:
       mattermostEnvs:
         # required for KC >= 20.X to work with gitlab auth pointed to Keycloak

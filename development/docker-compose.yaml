@@ -44,7 +44,7 @@ services:
       KC_DB_URL_PORT: "5432"
       KC_DB_URL_DATABASE: "keycloak"
 
-      KC_HOSTNAME: keycloak.bigbang.dev
+      KC_HOSTNAME: keycloak.dev.bigbang.mil
       KC_HOSTNAME_STRICT: "true"
       KC_HOSTNAME_STRICT_HTTPS: "true"
       KC_LOG_LEVEL: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"

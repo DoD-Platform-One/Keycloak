@@ -215,7 +215,7 @@ helm install keycloak chart/
 | test.securityContext.runAsUser | int | `1000` |  |
 | test.securityContext.runAsGroup | int | `1000` |  |
 | test.securityContext.runAsNonRoot | bool | `true` |  |
-| domain | string | `"bigbang.dev"` |  |
+| domain | string | `"dev.bigbang.mil"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.injection | string | `"disabled"` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
