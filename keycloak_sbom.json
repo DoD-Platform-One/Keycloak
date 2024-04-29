@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:c1e50537-d915-4a0e-b332-5b3fa2a26d49",
+  "serialNumber": "urn:uuid:651e0256-e016-40d9-be39-06c72f1f19ac",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -20982,24 +20982,12 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final?package-id=59a9bcef848808b5",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final?package-id=c3fe4d6f3fcb5a2e",
           "group": "org.jboss.narayana.jta",
           "name": "jta",
           "version": "6.0.1.Final",
-          "cpe": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:jta:6.0.1.Final:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:narayana:jta:6.0.1.Final:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.jboss.narayana.jta/jta@6.0.1.Final",
-          "externalReferences": [
-            {
-              "url": "",
-              "type": "build-meta",
-              "hashes": [
-                {
-                  "alg": "SHA-1",
-                  "content": "742f887112c5b214763d74c8dbc60562c892516c"
-                }
-              ]
-            }
-          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -21016,22 +21004,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "java-archive"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse-foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:eclipse_foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:narayana:jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -21059,7 +21031,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar"
+              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar:org.jboss.narayana.jta:jta"
             }
           ]
         },
@@ -35629,12 +35601,24 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final?package-id=be5cb6d432a0e67f",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak@23.0.7:pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final?package-id=602752c4b5705e84",
           "group": "org.jboss.narayana.jta",
           "name": "narayana-jta",
           "version": "6.0.1.Final",
-          "cpe": "cpe:2.3:a:narayana-jta:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*",
           "purl": "pkg:maven/org.jboss.narayana.jta/narayana-jta@6.0.1.Final",
+          "externalReferences": [
+            {
+              "url": "",
+              "type": "build-meta",
+              "hashes": [
+                {
+                  "alg": "SHA-1",
+                  "content": "742f887112c5b214763d74c8dbc60562c892516c"
+                }
+              ]
+            }
+          ],
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -35654,6 +35638,62 @@
             },
             {
               "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:narayana:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss-by-red-hat\\,-inc-:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:jboss_by_red_hat\\,_inc_:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:narayana-jta:narayana-jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
               "value": "cpe:2.3:a:narayana-jta:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
@@ -35663,6 +35703,14 @@
             {
               "name": "syft:cpe23",
               "value": "cpe:2.3:a:narayana_jta:narayana_jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse-foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
+            },
+            {
+              "name": "syft:cpe23",
+              "value": "cpe:2.3:a:eclipse_foundation:jta:6.0.1.Final:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:cpe23",
@@ -35746,7 +35794,7 @@
             },
             {
               "name": "syft:metadata:virtualPath",
-              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar:org.jboss.narayana.jta:narayana-jta"
+              "value": "/opt/keycloak/lib/lib/main/org.jboss.narayana.jta.narayana-jta-6.0.1.Final.jar"
             }
           ]
         },
@@ -88551,7 +88599,7 @@
               }
             }
           ],
-          "cpe": "cpe:2.3:a:kenneth_reitz_project:python-requests:2.20.0:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:python:requests:2.20.0:*:*:*:*:*:*:*",
           "purl": "pkg:pypi/requests@2.20.0",
           "properties": [
             {
@@ -88569,122 +88617,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "python-package"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz_project:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitzproject:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitzproject:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-requests:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-requests:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_requests:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_requests:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz_project:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitzproject:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me_project:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me_project:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:meproject:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:meproject:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-requests:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_requests:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:requests:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:requests:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me_project:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:meproject:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:requests:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me:requests:2.20.0:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:location:0:layerID",
@@ -89275,7 +89207,7 @@
               }
             }
           ],
-          "cpe": "cpe:2.3:a:python_packaging_authority_project:python-setuptools:39.2.0:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:python:setuptools:39.2.0:*:*:*:*:*:*:*",
           "purl": "pkg:pypi/setuptools@39.2.0",
           "properties": [
             {
@@ -89293,134 +89225,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "python-package"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority_project:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authorityproject:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authorityproject:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority_project:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authorityproject:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig_project:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig_project:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sigproject:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sigproject:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-setuptools:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-setuptools:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_setuptools:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_setuptools:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig_project:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils-sig:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils-sig:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sigproject:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-setuptools:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_setuptools:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:setuptools:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:setuptools:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils-sig:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:setuptools:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:setuptools:39.2.0:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:location:0:layerID",
@@ -96737,7 +96541,7 @@
           "bom-ref": "registry1.dso.mil/ironbank/big-bang/base@2.0.0:pkg:golang/golang.org/x/net@v0.15.0?package-id=679cc237eb4cc14b",
           "name": "golang.org/x/net",
           "version": "v0.15.0",
-          "cpe": "cpe:2.3:a:golang:x\\/net:v0.15.0:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:golang:networking:v0.15.0:*:*:*:*:go:*:*",
           "purl": "pkg:golang/golang.org/x/net@v0.15.0",
           "properties": [
             {
@@ -96837,7 +96641,7 @@
           "bom-ref": "registry1.dso.mil/ironbank/big-bang/base@2.0.0:pkg:golang/golang.org/x/text@v0.13.0?package-id=ca0d6ff56f2f6222",
           "name": "golang.org/x/text",
           "version": "v0.13.0",
-          "cpe": "cpe:2.3:a:golang:x\\/text:v0.13.0:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:golang:text:v0.13.0:*:*:*:*:*:*:*",
           "purl": "pkg:golang/golang.org/x/text@v0.13.0",
           "properties": [
             {
@@ -96986,6 +96790,7 @@
           "bom-ref": "registry1.dso.mil/ironbank/big-bang/base@2.0.0:pkg:golang/gopkg.in/yaml.v3@v3.0.1?package-id=6d689b3325769664",
           "name": "gopkg.in/yaml.v3",
           "version": "v3.0.1",
+          "cpe": "cpe:2.3:a:yaml_project:yaml:v3.0.1:*:*:*:*:go:*:*",
           "purl": "pkg:golang/gopkg.in/yaml.v3@v3.0.1",
           "properties": [
             {
@@ -107027,7 +106832,7 @@
               }
             }
           ],
-          "cpe": "cpe:2.3:a:kenneth_reitz_project:python-requests:2.20.0:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:python:requests:2.20.0:*:*:*:*:*:*:*",
           "purl": "pkg:pypi/requests@2.20.0",
           "properties": [
             {
@@ -107045,122 +106850,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "python-package"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz_project:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitzproject:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitzproject:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-requests:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-requests:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_requests:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_requests:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz_project:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitzproject:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me_project:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me_project:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:meproject:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:meproject:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-requests:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_requests:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:requests:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:requests:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:kenneth_reitz:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me_project:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me:python-requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me:python_requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:meproject:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:requests:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:requests:2.20.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:me:requests:2.20.0:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:location:0:layerID",
@@ -107751,7 +107440,7 @@
               }
             }
           ],
-          "cpe": "cpe:2.3:a:python_packaging_authority_project:python-setuptools:39.2.0:*:*:*:*:*:*:*",
+          "cpe": "cpe:2.3:a:python:setuptools:39.2.0:*:*:*:*:*:*:*",
           "purl": "pkg:pypi/setuptools@39.2.0",
           "properties": [
             {
@@ -107769,134 +107458,6 @@
             {
               "name": "syft:package:metadataType",
               "value": "python-package"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority_project:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authorityproject:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authorityproject:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority_project:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authorityproject:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig_project:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig_project:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sigproject:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sigproject:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_packaging_authority:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-setuptools:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-setuptools:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_setuptools:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_setuptools:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig_project:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils-sig:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils-sig:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sigproject:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python-setuptools:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python_setuptools:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:setuptools:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:setuptools:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils-sig:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:distutils_sig:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python-setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:python_setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:setuptools:setuptools:39.2.0:*:*:*:*:*:*:*"
-            },
-            {
-              "name": "syft:cpe23",
-              "value": "cpe:2.3:a:python:setuptools:39.2.0:*:*:*:*:*:*:*"
             },
             {
               "name": "syft:location:0:layerID",
