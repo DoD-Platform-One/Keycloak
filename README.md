@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 23.0.7-bb.4](https://img.shields.io/badge/Version-23.0.7--bb.4-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
+![Version: 23.0.7-bb.5](https://img.shields.io/badge/Version-23.0.7--bb.5-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -232,6 +232,7 @@ helm install keycloak chart/
 | networkPolicies.ldap.enabled | bool | `false` |  |
 | networkPolicies.ldap.cidr | string | `"X.X.X.X/X"` |  |
 | networkPolicies.ldap.port | int | `636` |  |
+| networkPolicies.additionalPolicies | list | `[]` |  |
 | openshift | bool | `false` |  |
 | bbtests.enabled | bool | `false` |  |
 | bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.0.0"` |  |

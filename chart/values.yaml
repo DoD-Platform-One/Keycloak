@@ -643,6 +643,7 @@ networkPolicies:
     enabled: false
     cidr: X.X.X.X/X
     port: 636
+  additionalPolicies: []
 
 openshift: false
 
