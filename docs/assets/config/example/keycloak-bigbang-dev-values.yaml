@@ -252,6 +252,9 @@ addons:
       client_secret: "no-secret"
       enable_sign_up_with_email: true
       enable_sign_in_with_email: true    
+      auth_endpoint: https://keycloak.dev.bigbang.mil/oauth/authorize
+      token_endpoint: https://keycloak.dev.bigbang.mil/oauth/token
+      user_api_endpoint: https://keycloak.dev.bigbang.mil/api/v4/user
     values:
       mattermostEnvs:
         # required for KC >= 20.X to work with gitlab auth pointed to Keycloak
