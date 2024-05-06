@@ -103,7 +103,6 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - disable all internal services other than postgres
 - add BigBang additional values at bottom of values.yaml
 - add IronBank hardened image
-- add default argument of "-b 0.0.0.0" to bind to localhost
 - Add IronBank postgresql12 image for dev/CI development/testing
 - and other miscellaneous change.  Diff with previous version to find all changes
 - modify pgchecker image to ironbank postgres image
@@ -153,11 +152,8 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - Update postgresql dependency for local source
 - add annotations for release automation
 
-## chart/scripts/keycloak.cli
-- Quarkus migration: Delete this Wildfly startup config.
-
 ## chart/deps/postgresql
-- Upstream bitnami postgresql chart - modified for Iron Bank Postgresql 12.9 runtime.
+- Upstream bitnami postgresql chart - modified for Iron Bank Postgresql 12.15 runtime.
 - Update security context for user:group 26:26
 
 ## chart/deps/postgresql/templates/statefulset.yaml
