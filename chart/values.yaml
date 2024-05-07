@@ -617,6 +617,10 @@ domain: dev.bigbang.mil
 istio:
   # Toggle istio integration
   enabled: false
+  # Toggle istio hardening
+  hardened:
+    enabled: false
+    customAuthorizationPolicies: []
   injection: "disabled"
   mtls:
     # -- STRICT = Allow only mutual TLS traffic,
@@ -628,7 +632,7 @@ istio:
     annotations: {}
     labels: {}
     gateways:
-      - istio-system/main
+      - istio-system/passthrough
     hosts:
       - keycloak.{{ .Values.domain }}
 monitoring:
