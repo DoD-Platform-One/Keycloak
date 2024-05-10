@@ -224,7 +224,7 @@ helm install keycloak chart/
 | istio.keycloak.enabled | bool | `false` |  |
 | istio.keycloak.annotations | object | `{}` |  |
 | istio.keycloak.labels | object | `{}` |  |
-| istio.keycloak.gateways[0] | string | `"istio-system/passthrough"` |  |
+| istio.keycloak.gateways[0] | string | `"istio-system/main"` |  |
 | istio.keycloak.hosts[0] | string | `"keycloak.{{ .Values.domain }}"` |  |
 | monitoring.enabled | bool | `false` |  |
 | networkPolicies.enabled | bool | `false` |  |
