@@ -42,7 +42,7 @@ The administrative user's credentials are pulled from a secret named `credential
 
 ```yaml
 secrets:
-  credentials:
+  env:
     stringData:
       KEYCLOAK_ADMIN: "your_admin_username"
       KEYCLOAK_ADMIN_PASSWORD: "your_admin_password"
