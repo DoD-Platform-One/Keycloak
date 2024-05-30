@@ -1,5 +1,5 @@
 # How to update the Keycloak Package chart
-Big Bang makes modifications to the upstream Codecentric helm chart. The upstream Keycloak image from IronBank is used in conjuction with a custom Keycloak plugin. The custom P1 plugin contains custom authz and authn code, custom self-registration theme, and automatic joining of groups based on certian registration information like the use of a DoD CAC. The plugin code is hosted at [https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin). Platform One custom plugin artifact image is hosted in Iron Bank at registry1.dso.mil/ironbank/opensource/keycloak/keycloak:X.X.X  
+Big Bang makes modifications to the upstream Codecentric helm chart. The upstream Keycloak image from IronBank is used in conjuction with a custom Keycloak plugin. The custom P1 plugin contains custom authz and authn code, custom self-registration theme, and automatic joining of groups based on certian registration information like the use of a DoD CAC. The plugin code is hosted at [https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin). Platform One custom plugin artifact image is hosted in Iron Bank at registry1.dso.mil/ironbank/opensource/keycloak/keycloak:X.X.X
 
 *Note: Be aware that there are currently two versions of Keycloak. One is the legacy version that uses Wildfly for the application server. The other version is the new one using Quarkus. Big Bang has migrated to the new Quarkus version. The images in Iron Bank have tag without the "legacy" `X.X.X`.*
 
@@ -76,12 +76,12 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
         -f ./chart/ingress-certs.yaml
     ```
 
-1. **Register Test Users:** Create two test users in Keycloak, one with a CAC and one without (username/password/OTP). *Note: You may create these test users through the [admin UI](https://keycloak.dev.bigbang.mil/auth/admin/master/console/), but must also create them in the baby-yoda realm and add them to the IL2 Users group.* 
+1. **Register Test Users:** Create two test users in Keycloak, one with a CAC and one without (username/password/OTP). *Note: You may create these test users through the [admin UI](https://keycloak.dev.bigbang.mil/auth/admin/master/console/), but must also create them in the baby-yoda realm and add them to the IL2 Users group.*
 
 
 1. **Test Admin Console:** Access the Keycloak admin console using the default credentials (admin/password) and verify functionality.
 
-1. **Test End-to-End SSO:** Test SSO with Gitlab and Sonarqube for both CAC and non-CAC users. Update the `sso.saml.metadata` value in your override file for Sonarqube testing.
+1. **Test End-to-End SSO:** Test SSO with Gitlab and Sonarqube for both CAC and non-CAC users. *Note: While testing the non-CAC user, ensure there is no CAC supplied to the browser (either use an incognito window/new browser instance or disconnect the CAC/CAC Reader.).* Update the `sso.saml.metadata` value in your override file for Sonarqube testing.
 
 1. **Test Mattermost:** Create a user in Mattermost with username/password and then attempt to log in using the Gitlab OIDC link.
     - Browse to chat.dev.bigbang.mil and create a user with username/password. This option should be available if `addons.mattermost.sso.enable_sign_up_with_email` is enabled. This test simply validates that normal authentication works when SSO is not forced.
@@ -157,5 +157,5 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - Update security context for user:group 26:26
 
 ## chart/deps/postgresql/templates/statefulset.yaml
-- commented out existing `-if -else` securityContext and replaced with 
+- commented out existing `-if -else` securityContext and replaced with
 - `{{- toYaml $.Values.postgesql.containerSecurityContext | nindent 12 }}`
