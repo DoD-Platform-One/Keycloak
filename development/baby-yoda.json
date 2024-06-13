@@ -318,7 +318,7 @@
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_twistlock-saml": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_kibana": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_saml-sonarqube": [],
-      "https://nexus.bigbang.dev/service/rest/v1/security/saml/metadata": [],
+      "https://nexus.dev.bigbang.mil/service/rest/v1/security/saml/metadata": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_jaeger": [],
       "admin-cli": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_argocd": [],
@@ -326,6 +326,7 @@
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_kiali": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_prometheus": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_thanos": [],
+      "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_holocron": [],
       "account": [
         {
           "id": "9a61ae6b-aba7-47d0-a3b1-67e40ac4f5d1",
@@ -665,6 +666,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://alertmanager.bigbang.dev/login/generic_oauth",
+        "https://alertmanager.dev.bigbang.mil/login/generic_oauth",
         "https://alertmanager.dogfood.bigbang.dev/login/generic_oauth"
       ],
       "webOrigins": [],
@@ -711,7 +713,7 @@
       "id": "ec39f333-e4ce-434e-9cf1-f39651915b37",
       "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_anchore",
       "name": "BigBang Dev Anchore",
-      "adminUrl": "https://anchore.bigbang.dev/service/sso/auth/keycloak",
+      "adminUrl": "https://anchore.dev.bigbang.mil/service/sso/auth/keycloak",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
@@ -719,7 +721,8 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://anchore.dogfood.bigbang.dev/service/sso/auth/keycloak",
-        "https://anchore.bigbang.dev/service/sso/auth/keycloak"
+        "https://anchore.bigbang.dev/service/sso/auth/keycloak",
+        "https://anchore.dev.bigbang.mil/service/sso/auth/keycloak"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -733,7 +736,7 @@
       "frontchannelLogout": true,
       "protocol": "saml",
       "attributes": {
-        "saml_assertion_consumer_url_redirect": "https://anchore.bigbang.dev/service/sso/auth/keycloak",
+        "saml_assertion_consumer_url_redirect": "https://anchore.dev.bigbang.mil/service/sso/auth/keycloak",
         "saml.multivalued.roles": "false",
         "saml.force.post.binding": "true",
         "oauth2.device.authorization.grant.enabled": "false",
@@ -749,7 +752,7 @@
         "saml.assertion.signature": "true",
         "id.token.as.detached.signature": "false",
         "saml.encrypt": "false",
-        "saml_assertion_consumer_url_post": "https://anchore.bigbang.dev/service/sso/auth/keycloak",
+        "saml_assertion_consumer_url_post": "https://anchore.dev.bigbang.mil/service/sso/auth/keycloak",
         "saml.server.signature": "true",
         "exclude.session.state.from.auth.response": "false",
         "saml.artifact.binding.identifier": "7CotOBSAei1i2frOht5AFaONGy0=",
@@ -781,7 +784,8 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://argocd.dogfood.bigbang.dev/auth/callback",
-        "https://argocd.bigbang.dev/auth/callback"
+        "https://argocd.bigbang.dev/auth/callback",
+        "https://argocd.dev.bigbang.mil/auth/callback"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -837,8 +841,10 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://code.bigbang.dev/users/auth/openid_connect/callback*",
+        "https://code.dev.bigbang.mil/users/auth/openid_connect/callback*",
         "https://code.dogfood.bigbang.dev/users/auth/openid_connect/callback*",
         "https://gitlab.bigbang.dev/users/auth/openid_connect/callback*",
+        "https://gitlab.dev.bigbang.mil/users/auth/openid_connect/callback*",
         "https://gitlab.dogfood.bigbang.dev/users/auth/openid_connect/callback*"
       ],
       "webOrigins": [],
@@ -895,7 +901,8 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://grafana.dogfood.bigbang.dev/login/generic_oauth",
-        "https://grafana.bigbang.dev/login/generic_oauth"
+        "https://grafana.bigbang.dev/login/generic_oauth",
+        "https://grafana.dev.bigbang.mil/login/generic_oauth"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -941,6 +948,89 @@
       "optionalClientScopes": []
     },
     {
+      "id": "a28da266-4848-4448-adee-9d11d44a7df2",
+      "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_holocron",
+      "name": "BigBang Dev Holocron",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "https://holocron.dev.bigbang.mil/login"
+      ],
+      "webOrigins": [
+        "https://holocron.dev.bigbang.mil"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "c017e5d8-f5c0-46d7-a3de-9db71a4432c7",
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "groups",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "053ab013-99ac-449a-9aaf-9bb7aec6c0eb",
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    },
+    {
       "id": "5b31df1f-b6cf-423c-b2ed-18ff35e9eb6f",
       "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_jaeger",
       "surrogateAuthRequired": false,
@@ -948,7 +1038,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://tracing.bigbang.dev/login"
+        "https://tracing.bigbang.dev/login",
+        "https://tracing.dev.bigbang.mil/login"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1004,8 +1095,8 @@
       "id": "fb41d5e6-dc17-4c88-90d3-adfdaa08d1b8",
       "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_kiali",
       "name": "BigBang Dev Kiali",
-      "rootUrl": "https://kiali.bigbang.dev/kiali",
-      "adminUrl": "https://kiali.bigbang.dev/kiali",
+      "rootUrl": "https://kiali.dev.bigbang.mil/kiali",
+      "adminUrl": "https://kiali.dev.bigbang.mil/kiali",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
@@ -1013,6 +1104,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://kiali.bigbang.dev/kiali/*",
+        "https://kiali.dev.bigbang.mil/kiali/*",
         "https://kiali.dogfood.bigbang.dev/kiali/*"
       ],
       "webOrigins": [],
@@ -1077,7 +1169,8 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://kibana.dogfood.bigbang.dev/*",
-        "https://kibana.bigbang.dev/*"
+        "https://kibana.bigbang.dev/*",
+        "https://kibana.dev.bigbang.mil/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1134,6 +1227,8 @@
         "https://chat.dogfood.bigbang.dev/signup/gitlab/complete",
         "https://chat.bigbang.dev/login/gitlab/complete",
         "https://chat.bigbang.dev/signup/gitlab/complete",
+        "https://chat.dev.bigbang.mil/login/gitlab/complete",
+        "https://chat.dev.bigbang.mil/signup/gitlab/complete",
         "https://chat.dogfood.bigbang.dev/login/gitlab/complete"
       ],
       "webOrigins": [],
@@ -1237,7 +1332,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://neuvector.bigbang.dev/openId_auth"
+        "https://neuvector.bigbang.dev/openId_auth",
+        "https://neuvector.dev.bigbang.mil/openId_auth"
       ],
       "webOrigins": [
         "/*"
@@ -1286,6 +1382,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://prometheus.bigbang.dev/login/generic_oauth",
+        "https://prometheus.dev.bigbang.mil/login/generic_oauth",
         "https://prometheus.dogfood.bigbang.dev/login/generic_oauth"
       ],
       "webOrigins": [],
@@ -1405,7 +1502,8 @@
       "secret": "**********",
       "redirectUris": [
         "https://sonarqube.dogfood.bigbang.dev/oauth2/callback/saml*",
-        "https://sonarqube.bigbang.dev/oauth2/callback/saml*"
+        "https://sonarqube.bigbang.dev/oauth2/callback/saml*",
+        "https://sonarqube.dev.bigbang.mil/oauth2/callback/saml*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1514,7 +1612,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://twistlock.bigbang.dev/api/v1/authenticate/callback/oidc"
+        "https://twistlock.bigbang.dev/api/v1/authenticate/callback/oidc",
+        "https://twistlock.dev.bigbang.mil/api/v1/authenticate/callback/oidc"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1574,6 +1673,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://twistlock.bigbang.dev*",
+        "https://twistlock.dev.bigbang.mil*",
         "https://twistlock.dogfood.bigbang.dev*"
       ],
       "webOrigins": [],
@@ -1634,7 +1734,8 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "https://vault.bigbang.dev/ui/vault/auth/oidc/oidc/callback",
-        "https://vault.bigbang.dev/oidc/callback"
+        "https://vault.bigbang.dev/oidc/callback",
+        "https://vault.dev.bigbang.mil/oidc/callback"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -1705,15 +1806,17 @@
     },
     {
       "id": "f975a475-89c7-43bc-bddb-c9d974ff5ac3",
-      "clientId": "https://nexus.bigbang.dev/service/rest/v1/security/saml/metadata",
+      "clientId": "https://nexus.dev.bigbang.mil/service/rest/v1/security/saml/metadata",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "https://nexus.bigbang.dev/saml"
+        "https://nexus.bigbang.dev/saml",
+        "https://nexus.dev.bigbang.mil/saml"
       ],
       "webOrigins": [
+        "https://nexus.dev.bigbang.mil",
         "https://nexus.bigbang.dev"
       ],
       "notBefore": 0,
@@ -1728,10 +1831,10 @@
       "protocol": "saml",
       "attributes": {
         "saml.assertion.signature": "true",
-        "saml_single_logout_service_url_post": "https://nexus.bigbang.dev/saml",
+        "saml_single_logout_service_url_post": "https://nexus.dev.bigbang.mil/saml",
         "saml.force.post.binding": "true",
         "saml.encrypt": "true",
-        "saml_assertion_consumer_url_post": "https://nexus.bigbang.dev/saml",
+        "saml_assertion_consumer_url_post": "https://nexus.dev.bigbang.mil/saml",
         "saml.server.signature": "true",
         "saml.server.signature.keyinfo.ext": "false",
         "saml.signing.certificate": "MIICrjCCAZagAwIBAgIGAXxWyxltMA0GCSqGSIb3DQEBCwUAMBgxFjAUBgNVBAMMDVNBTUwgS2V5U3RvcmUwHhcNMjExMDA2MTgwODQzWhcNMzExMDA0MTgwODQzWjAYMRYwFAYDVQQDDA1TQU1MIEtleVN0b3JlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxUynY8ACJfuCmMQqxqRekKeD7OTyjttfyxE2Xnny67/67evr/GZIUz0XsYl6XgTpTj2Nk6kaVWJR7W/dy0zqK+4liCRTzuDoOkaOZY+IqH8+XVqXei4eQo9g5woXOzsXihpaMQ38yXVKmkq13UCas8PKS1AnkUT1tAYDUoLL8o2kmGedLscpyb3+rf4F5nWJLTGgWIG8mQ7X3CpvKD9+cCLGkJJSOdK8XHPYVO8MDTVqxhLZEejYIHAwN1oFPGkURzskiD1CCDymQq/f0tbQlnu62FOa3iu6TqpQWB9pGoFj84p2uvMNIvDN489fBTT3blFnSu3tFDwAividADYuswIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQBDMUOqL4pQJhYFqstQNaz8LlDALTTD1uw/k0MFGxTAa5Tri87WvTHa8uJNDw1PFUGZ80137TCK7I7+zDZIQzADb+WoZVPhIh+S9L9bbaQZ2LpRnsoJisP+fWNoDrR8okPYJ8pFuzA3V1dU5Oyo0kz1tTWtlnh2NIs6f9dClo5HjeUw6wigjcp5dLcz8RanWwKXYHAIAYlarUjjVdHLDvEmZzvWTWOK6JtLOx+3XRYcuKx5ICdTnDp9ptMB0MOZf8/rLUKpSz+rMKRlRoFR7vEpTtMbKtl8izZTKDYpWOf1MIE1Tv/Pq+dehjBoccwLthSEA+ba7/lJ0O0+U0euW+yT",
