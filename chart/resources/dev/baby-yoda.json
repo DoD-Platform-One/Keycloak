@@ -326,6 +326,7 @@
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_kiali": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_prometheus": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_thanos": [],
+      "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_holocron": [],
       "account": [
         {
           "id": "9a61ae6b-aba7-47d0-a3b1-67e40ac4f5d1",
@@ -945,6 +946,89 @@
         "Grafana"
       ],
       "optionalClientScopes": []
+    },
+    {
+      "id": "a28da266-4848-4448-adee-9d11d44a7df2",
+      "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_holocron",
+      "name": "BigBang Dev Holocron",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "https://holocron.dev.bigbang.mil/login"
+      ],
+      "webOrigins": [
+        "https://holocron.dev.bigbang.mil"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "c017e5d8-f5c0-46d7-a3de-9db71a4432c7",
+          "name": "groups",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "foo",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "groups",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "053ab013-99ac-449a-9aaf-9bb7aec6c0eb",
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "consentRequired": false,
+          "config": {
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     },
     {
       "id": "5b31df1f-b6cf-423c-b2ed-18ff35e9eb6f",

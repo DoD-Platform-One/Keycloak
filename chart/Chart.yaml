@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 23.0.7-bb.9
+version: 23.0.7-bb.10
 appVersion: 23.0.7
 description: Open Source Identity and Access Management For Modern Applications and Services
 keywords:
