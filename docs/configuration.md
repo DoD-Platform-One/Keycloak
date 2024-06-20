@@ -108,6 +108,16 @@ extraEnv: |-
     value: /opt/keycloak/conf/truststore.jks
 ```
 
+Keycloak supports a custom location for the trust store and permits enablement/disablement of the baby yoda domain. You can find a more in depth explanation of these values and their usage [here](https://repo1.dso.mil/big-bang/product/packages/keycloak/-/issues/138#note_2038936).
+```yaml
+secrets:
+  env:
+    stringData:
+      KC_SPI_BABY_YODA_OCSP_ENABLED: "true"
+      KC_SPI_TRUSTSTORE_FILE_FILE: "/opt/keycloak/conf/truststore.jks"
+      KC_SPI_TRUSTSTORE_FILE_PASSWORD: "password"
+```
+
 ## Database
 
 By default, the helm chart uses an internal PostgreSQL database.  To point to an external database set environment variables.  Example of helm chart values:
