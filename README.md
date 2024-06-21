@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 23.0.7-bb.10](https://img.shields.io/badge/Version-23.0.7--bb.10-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
+![Version: 23.0.7-bb.11](https://img.shields.io/badge/Version-23.0.7--bb.11-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -219,6 +219,8 @@ helm install keycloak chart/
 | istio.enabled | bool | `false` |  |
 | istio.hardened.enabled | bool | `false` |  |
 | istio.hardened.customAuthorizationPolicies | list | `[]` |  |
+| istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
+| istio.hardened.customServiceEntries | list | `[]` |  |
 | istio.injection | string | `"disabled"` |  |
 | istio.mtls.mode | string | `"STRICT"` | STRICT = Allow only mutual TLS traffic, PERMISSIVE = Allow both plain text and mutual TLS traffic |
 | istio.keycloak.enabled | bool | `false` |  |
