@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [23.0.7-bb.11] - 2024-06-20
+### Added
+- Templates for Istio Sidecars and ServiceEntries, values update
+
 ## [23.0.7-bb.10] - 2024-06-10
 ### Added
 - Added holocron client to ci json for baby yoda realm
@@ -15,7 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Added thanos client to ci json for baby yoda realm
 
-## [23.0.7-bb.7] - 2024-05-014
+## [23.0.7-bb.7] - 2024-05-14
 ### Added
 - Added thanos client for development SSO to baby yoda realm
 

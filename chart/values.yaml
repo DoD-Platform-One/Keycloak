@@ -621,6 +621,24 @@ istio:
   hardened:
     enabled: false
     customAuthorizationPolicies: []
+      # - name: "allow-nothing"
+      #   enabled: true
+      #   spec: {}
+    outboundTrafficPolicyMode: "REGISTRY_ONLY"
+    customServiceEntries: []
+      # - name: "allow-google"
+      #   enabled: true
+      #   spec:
+      #     exportTo:
+      #       - "."
+      #     hosts:
+      #       - google.com
+      #     location: MESH_EXTERNAL
+      #     ports:
+      #       - number: 443
+      #         protocol: TLS
+      #         name: https
+      #     resolution: DNS
   injection: "disabled"
   mtls:
     # -- STRICT = Allow only mutual TLS traffic,
