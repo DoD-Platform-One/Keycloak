@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 23.0.7-bb.12](https://img.shields.io/badge/Version-23.0.7--bb.12-informational?style=flat-square) ![AppVersion: 23.0.7](https://img.shields.io/badge/AppVersion-23.0.7-informational?style=flat-square)
+![Version: 24.0.5-bb.0](https://img.shields.io/badge/Version-24.0.5--bb.0-informational?style=flat-square) ![AppVersion: 24.0.5](https://img.shields.io/badge/AppVersion-24.0.5-informational?style=flat-square)
 
 Open Source Identity and Access Management For Modern Applications and Services
 
@@ -41,7 +41,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"23.0.7"` |  |
+| image.tag | string | `"24.0.5"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
@@ -140,7 +140,7 @@ helm install keycloak chart/
 | route.tls.insecureEdgeTerminationPolicy | string | `"Redirect"` |  |
 | route.tls.termination | string | `"edge"` |  |
 | pgchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
-| pgchecker.image.tag | float | `12.15` |  |
+| pgchecker.image.tag | float | `12.18` |  |
 | pgchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
 | pgchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | pgchecker.securityContext.runAsUser | int | `1000` |  |
@@ -159,7 +159,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.15` |  |
+| postgresql.image.tag | float | `12.18` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `1000` |  |
@@ -239,7 +239,7 @@ helm install keycloak chart/
 | networkPolicies.additionalPolicies | list | `[]` |  |
 | openshift | bool | `false` |  |
 | bbtests.enabled | bool | `false` |  |
-| bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.0.0"` |  |
+| bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://keycloak-http.keycloak.svc.cluster.local"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |

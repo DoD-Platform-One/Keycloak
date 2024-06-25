@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "23.0.7"
+  tag: "24.0.5"
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -418,7 +418,7 @@ pgchecker:
     # Docker image used to check Postgresql readiness at startup
     repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql12
     # Image tag for the pgchecker image
-    tag: 12.15
+    tag: 12.18
     # Image pull policy for the pgchecker image
     pullPolicy: IfNotPresent
   # SecurityContext for the pgchecker container
@@ -460,7 +460,7 @@ postgresql:
   image:
     registry: registry1.dso.mil
     repository: ironbank/opensource/postgres/postgresql12
-    tag: 12.15
+    tag: 12.18
   securityContext:
     enabled: true
     fsGroup: 26
@@ -671,7 +671,7 @@ openshift: false
 
 bbtests:
   enabled: false
-  image: "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
+  image: "registry1.dso.mil/ironbank/big-bang/base:2.1.0"
   cypress:
     artifacts: true
     envs:
