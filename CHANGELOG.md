@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [24.0.5-bb.0] - 2024-06-25
+### Updated
+- Updating Keycloak 23.0.7 -> 24.0.5
+- Updating Gluon 0.4.7 -> 0.5.0
+- Updating Postgresql 12.15 -> 12.18
+- Updating BB base image 2.0.0 -> 2.1.0
+- Updating development certs
+
 ## [23.0.7-bb.12] - 2024-06-25
 ### Changed
 - Removed shared authorization policies
