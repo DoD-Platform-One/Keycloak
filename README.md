@@ -5,6 +5,7 @@
 Open Source Identity and Access Management For Modern Applications and Services
 
 ## Upstream References
+
 * <https://www.keycloak.org/>
 
 * <https://github.com/codecentric/helm-charts>
@@ -12,6 +13,7 @@ Open Source Identity and Access Management For Modern Applications and Services
 * <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
 
 ## Learn More
+
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -23,12 +25,13 @@ Open Source Identity and Access Management For Modern Applications and Services
 
 Install Helm
 
-https://helm.sh/docs/intro/install/
+<https://helm.sh/docs/intro/install/>
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
+
 ```bash
 helm install keycloak chart/
 ```
