@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [24.0.5-bb.1] - 2024-06-26
+
+### Added
+
+- Changed route weight in VirtualService to be explicit
 
 ## [24.0.5-bb.0] - 2024-06-25
 
