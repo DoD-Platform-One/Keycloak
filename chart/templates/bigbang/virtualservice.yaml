@@ -25,6 +25,7 @@ spec:
           port:
             number: {{ .Values.service.httpPort }}
           host: {{ $serviceName }}
+        weight: 100    
   tls:
   - match:
     - port: 8443
@@ -37,4 +38,5 @@ spec:
         host: {{ $serviceName }}
         port:
           number: {{ .Values.service.httpsPort }}
+      weight: 100      
 {{- end }}
