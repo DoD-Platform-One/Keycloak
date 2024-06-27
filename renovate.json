@@ -1,7 +1,6 @@
 {
   "baseBranches": ["main"],
   "dependencyDashboard": "true",
-  "dependencyDashboardHeader": "- [ ] Follow upgrade instructions in this repo at docs/DEVELOPMENT_MAINTENANCE.md",
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
   "draftPR": "true",
   "labels": ["keycloak","Package Sustainment","kind::maintenance"],
