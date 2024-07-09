@@ -1,0 +1,121 @@
+# Many of these are disabled by default, but for clarity turn them off explicitly
+# Notably, the following have not been disabled
+# - networkPolicies - not disabled due to ease of use when deploying via k3d_dev
+
+clusterAuditor:
+  enabled: false
+
+eckOperator:
+  enabled: false
+
+elasticsearchKibana:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+gatekeeper:
+  enabled: false
+
+grafana:
+  enabled: false
+
+istio:
+  enabled: false
+
+istioOperator:
+  enabled: false
+
+jaeger:
+  enabled: false
+
+kiali:
+  enabled: false
+
+kyverno:
+  enabled: false
+
+kyvernoPolicies:
+  enabled: false
+
+kyvernoReporter:
+  enabled: false
+
+loki:
+  enabled: false
+
+monitoring:
+  enabled: false
+
+neuvector:
+  enabled: false
+
+promtail:
+  enabled: false
+
+tempo:
+  enabled: false
+
+twistlock:
+  enabled: false
+
+addons:
+  anchore:
+    enabled: false
+
+  argocd:
+    enabled: false
+
+  authservice:
+    enabled: false
+
+  fortify:
+    enabled: false
+
+  gitlab:
+    enabled: false
+
+  gitlabRunner:
+    enabled: false
+
+  haproxy:
+    enabled: false
+
+  harbor:
+    enabled: false
+
+  holocron:
+    enabled: false
+
+  keycloak:
+    enabled: false
+
+  mattermost:
+    enabled: false
+
+  mattermostOperator:
+    enabled: false
+
+  metricsServer:
+    enabled: false
+
+  minio:
+    enabled: false
+
+  minioOperator:
+    enabled: false
+
+  nexusRepositoryManager:
+    enabled: false
+
+  sonarqube:
+    enabled: false
+
+  thanos:
+    enabled: false
+
+  vault:
+    enabled: false
+
+  velero:
+    enabled: false

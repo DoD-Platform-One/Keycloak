@@ -5,19 +5,22 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
 
 1. **Read Release Notes:** from the upstream [Keycloak documentation](https://www.keycloak.org/docs/latest/release_notes/index.html). Carefully review the release notes for the new Keycloak version to understand any breaking changes or required manual upgrade steps.
 
-1. **Identify Chart Changes:** Perform a diff between the current and [upstream](https://github.com/codecentric/helm-charts/tree/master/charts/keycloak) charts to identify significant changes.
-
-1. **Merge Chart Updates:** Manually merge the new chart updates into the existing Keycloak package code, paying close attention to Big Bang-specific modifications. *See the [Modifications made to upstream chart section](#modifications-made-to-upstream-chart) below.*
-
-1. **Update Chart Files:** Update the chart/Kptfile with the new chart version and commit hash.
-
-1. **Update CHANGELOG.md:** Add an entry describing the upgrade, including the new Keycloak and chart versions.
+1. **Run kpt update:** Identify latest upstream chart version for our target keycloak version: https://github.com/codecentric/helm-charts/tree/master/charts/keycloakx
+    ```
+    kpt pkg update chart@keycloakx-<version> --strategy alpha-git-patch
+    ```
+    Note that the upstream chart is named `keycloakx`, but we leave our chart named `keycloak` to align with current umbrella config.
 
 1. **Update Chart.yaml:** Update the chart/Chart.yaml file with the appropriate versions for Keycloak, dependencies, and annotations.
     ```yaml
+    name: keycloak
     version: XX.X.X-bb.X
-    appVersion: XX.X.X-legacy
+    appVersion: XX.X.X
     dependencies:
+      - name: postgresql
+        version: XX.X.XX
+        repository: file://./deps/postgresql
+        condition: postgresql.enabled
       - name: gluon
         version: "X.X.X"
     annotations:
@@ -33,9 +36,12 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
         condition: bbtests.enabled
         image: registry1.dso.mil/ironbank/big-bang/base:X.X.X
     ```
+
+1. **Update CHANGELOG.md:** Add an entry describing the upgrade, including the new Keycloak and chart versions.
+
 1. **Update README.md:** Update the file following the [gluon library script](https://repo1.dso.mil/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md) guidelines noting any additional chart changes you make during development testing.
 
-1. **Run Helm Dependency Update:** Execute helm dependency update ./chart to update the chart archives and generate a new requirements.lock file. Commit both the archives and the lock file.
+1. **Run Helm Dependency Update:** Execute `helm dependency update ./chart` to update the chart archives and generate a new requirements.lock file. Commit both the archives and the lock file.
     ```bash
     helm dependency update ./chart
     ```
@@ -56,44 +62,148 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
 1. **Update Documentation:** After successful testing, update all documentation with the new Keycloak and plugin versions.
 1. **Create Release Tag:** Create an official semver release tag in the P1 plugin repository and monitor the mirrored Party Bus IL2 pipeline for successful completion.
 
-1. **Publish Official Plugin Image:** Publish the official plugin image to IronBank, following the provided [instructions](https://repo1.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/-/blob/main/docs/deployment.md).
+1. **Publish Official Plugin Image:** Publish the official plugin image to IronBank, following the provided [instructions](https://repo1.dso.mil/big-bang/product/plugins/keycloak-p1-auth-plugin/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md#publish-plugin-image-to-iron-bank).
 
 1. **Update BigBang MR:** Update the `tests/test-values.yaml` file in the BigBang MR with the new plugin init-container tag, using either the test image or the official IronBank image.
 
 
-# Testing with custom P1 plugin
+# Testing Keycloak with custom P1 plugin
 
-1. **Create k8s Dev Environment:** Use the Big Bang k3d-dev.sh script with the -a option to create a k3d cluster with metalLB and a passthrough gateway for Keycloak.
+You should perform these steps on both a clean install and an upgrade from BB master.
 
-1. **Deploy Big Bang:** Deploy Big Bang with Istio-operator, Istio, Gitlab, Sonarqube, and Mattermost enabled. Ensure SSO is enabled for Gitlab and Sonarqube, but not for Mattermost initially. Use the provided example Big Bang values override file and modify the plugin image label to use your test image.
+## Update overrides
 
+Update `docs/dev-overrides/keycloak-testing` as needed:
 
-    ```bash
-    helm upgrade -i bigbang ./chart \
-        -n bigbang --create-namespace \
-        -f ../overrides/keycloak-bigbang-values.yaml \
-        -f ../overrides/registry-values.yaml \
-        -f ./chart/ingress-certs.yaml
+### Branch/Tag Config
+
+If you'd like to install from a specific branch or tag, then the code block under keycloak needs to be uncommented and used to target your changes.
+
+For example, this would target the `renovate/ironbank` branch.
+
+```yaml
+addons:
+  keycloak:
+  # Add git branch or tag to test against a specific branch or tag instead of the current umbrella tag.
+  # Tag takes precedence and must therefore be set to null if you wish to reference a branch
+  git:
+    tag: null
+    branch: "renovate/ironbank"
+```
+
+### Plugin image version
+
+Update to reference the appropriate plugin image version. This might be an ironbank image if doing final testing, or a bigbang-staging image for development testing.
+
+```yaml
+addons:
+  keycloak:
+    values:
+      extraInitContainers: |-
+        - name: plugin
+          image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.5.0
+          ...
+```
+
+### sso.saml.metadata for Sonarqube
+```yaml
+sso:
+  saml:
+    # Required for Sonarqube (or other SAML apps) SSO to work, must update after keycloak is deployed and run a helm upgrade
+    # Fill this in with the result from `curl https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/protocol/saml/descriptor ; echo`
+    metadata: ''
+```
+
+## Cluster setup
+
+⚠️ Always make sure your local bigbang repo is current before deploying.
+
+1. Export your Ironbank/Harbor credentials (this can be done in your `~/.bashrc` or `~/.zshrc` file if desired). These specific variables are expected by the `k3d-dev.sh` script when deploying metallb, and are referenced in other commands for consistency:
+
+```sh
+export REGISTRY_USERNAME='<your_username>'
+export REGISTRY_PASSWORD='<your_password>'
+```
+
+1. Export the path to your local bigbang repo (without a trailing `/`):
+
+⚠️ Note that wrapping your file path in quotes when exporting will break expansion of `~`.
+
+```sh
+export BIGBANG_REPO_DIR=<absolute_path_to_local_bigbang_repo>
+```
+
+e.g.
+
+```sh
+export BIGBANG_REPO_DIR=~/repos/bigbang
+```
+
+1. Run the [k3d_dev.sh](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/assets/scripts/developer/k3d-dev.sh) script to deploy a dev cluster (`-a` flag required to create a k3d cluster with metalLB and a passthrough gateway for Keycloak):
+
+    ```sh
+    "${BIGBANG_REPO_DIR}"/docs/assets/scripts/developer/k3d-dev.sh -a
     ```
 
-1. **Register Test Users:** Create two test users in Keycloak, one with a CAC and one without (username/password/OTP). *Note: You may create these test users through the [admin UI](https://keycloak.dev.bigbang.mil/auth/admin/master/console/), but must also create them in the baby-yoda realm and add them to the IL2 Users group.*
+1. Export your kubeconfig:
 
+    ```sh
+    export KUBECONFIG=~/.kube/<your_kubeconfig_file>
+    ```
 
-1. **Test Admin Console:** Access the Keycloak admin console using the default credentials (admin/password) and verify functionality.
+    e.g.
 
-1. **Test End-to-End SSO:** Test SSO with Gitlab and Sonarqube for both CAC and non-CAC users. *Note: While testing the non-CAC user, ensure there is no CAC supplied to the browser (either use an incognito window/new browser instance or disconnect the CAC/CAC Reader.).* Update the `sso.saml.metadata` value in your override file for Sonarqube testing.
+    ```sh
+    export KUBECONFIG=~/.kube/Sam.Sarnowski-dev-config
+    ```
 
-1. **Test Mattermost:** Create a user in Mattermost with username/password and then attempt to log in using the Gitlab OIDC link.
-    - Browse to chat.dev.bigbang.mil and create a user with username/password. This option should be available if `addons.mattermost.sso.enable_sign_up_with_email` is enabled. This test simply validates that normal authentication works when SSO is not forced.
-    - After you have logged in, log out and attempt to create an SSO user using the Gitlab OIDC link. Once you finish authenticating, you should return to mattermost as expected and be logged in as your keycloak user.
+1. [Deploy flux to your cluster](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/scripts/install_flux.sh):
 
-1. **Test Custom User Forms:** Verify the functionality of the custom user forms for account management.
+```sh
+"${BIGBANG_REPO_DIR}"/scripts/install_flux.sh -u "${REGISTRY_USERNAME}" -p "${REGISTRY_PASSWORD}"
+```
+
+## Deploy Bigbang
+
+From the root of this repo, run the following deploy command:
+
+  ```sh
+  helm upgrade -i bigbang ${BIGBANG_REPO_DIR}/chart/ -n bigbang --create-namespace \
+  --set registryCredentials.username=${REGISTRY_USERNAME} --set registryCredentials.password=${REGISTRY_PASSWORD} \
+  -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/tests/test-values.yaml \
+  -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/chart/ingress-certs.yaml \
+  -f docs/dev-overrides/minimal.yaml \
+  -f docs/dev-overrides/keycloak-testing.yaml
+  ```
+
+This will deploy the following apps for testing:
+
+- Keycloak, Authservice, Istio, Istio Operator
+- Monitoring including Grafana and Mattermost plus dependencies (OIDC), Sonarqube (SAML), all with SSO enabled
+
+## Testing
+
+1. **Test Admin Console:** Access the Keycloak admin console at https://keycloak.dev.bigbang.mil/auth/admin/ using the default credentials (admin/password) and verify functionality. 
+
+    - Note that this will log you into the `master` realm, *not* the `baby-yoda` realm.
+
+1. **Register Test Users:** Naviagte to https://keycloak.dev.bigbang.mil to create two test users in Keycloak, one with a CAC and one without (username/password/OTP). 
+
+    - While creating and testing the non-CAC user, ensure there is no CAC supplied to the browser (either use an incognito window/new browser instance or disconnect the CAC/CAC Reader).
+
+    - You may create these test users through the admin console to bypass the registration flow, but must create them in the `baby-yoda` realm, set credentails and add them to the `Impact Level 2 Authorized` group. CAC registered users will automatically be added to the IL2 group.
+
+    - Regardless of creation mechanism, you will need to set email as verified via the admin console for both test users.
+
+1. **Test End-to-End SSO:** Test SSO with Grafana (https://grafana.dev.bigbang.mil), Mattermost (https://chat.dev.bigbang.mil) and Sonarqube (https://sonarqube.dev.bigbang.mil) for both CAC and non-CAC users. Update the `sso.saml.metadata` value in your override file and re-run helm upgrade command for Sonarqube testing as noted previously.
+
+1. **Test Custom Plugin User Forms:** Verify the functionality of the custom user forms for account management.
     - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/
     - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/password
     - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/totp
     - https://keycloak.dev.bigbang.mil/register
 
-*Note: Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `/scripts/certs/README.md` and copy the new `truststore.jks` to [./chart/resources/dev](../chart/resources/dev/) and to [./development/certs](../development/certs) . You may need to edit `/scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.*
+*Note: Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `scripts/certs/README.md` and copy the new `truststore.jks` to `chart/resources/dev` and to `development/certs`. You may need to edit `scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.*
 
 
 # Modifications made to upstream chart
