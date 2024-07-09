@@ -63,7 +63,7 @@ services:
     - ./certs/tls.crt:/opt/keycloak/conf/tls.crt
     - ./certs/tls.key:/opt/keycloak/conf/tls.key
     - ./certs/truststore.jks:/opt/keycloak/conf/truststore.jks
-    - ./plugin/p1-keycloak-plugin-3.4.0.jar:/opt/keycloak/providers/p1-keycloak-plugin-3.4.0.jar
+    - ./plugin/p1-keycloak-plugin-3.5.0.jar:/opt/keycloak/providers/p1-keycloak-plugin-3.5.0.jar
     - ./baby-yoda.yaml:/opt/keycloak/conf/customreg.yaml
     - ./baby-yoda.json:/opt/keycloak/data/import/realm.json
     - ./quarkus.properties:/opt/keycloak/conf/quarkus.properties

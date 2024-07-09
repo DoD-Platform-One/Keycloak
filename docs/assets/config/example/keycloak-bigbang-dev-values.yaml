@@ -140,7 +140,7 @@ addons:
       # i.e image: registry.dso.mil/big-bang/apps/product-tools/keycloak-p1-auth-plugin/init-container:test-X.X.X
       extraInitContainers: |-
         - name: plugin
-          image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.4.0
+          image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.5.0
           imagePullPolicy: Always
           command:
           - sh
@@ -151,6 +151,10 @@ addons:
           volumeMounts:
           - name: plugin
             mountPath: "/init"
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
       extraVolumes: |-
         - name: customreg
           secret:
