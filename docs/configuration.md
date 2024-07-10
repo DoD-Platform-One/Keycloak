@@ -117,6 +117,13 @@ secrets:
       KC_SPI_TRUSTSTORE_FILE_FILE: "/opt/keycloak/conf/truststore.jks"
       KC_SPI_TRUSTSTORE_FILE_PASSWORD: "password"
 ```
+_Note: OCSP [is been phased out](https://www.thesslstore.com/blog/ocsp-vs-crl-what-each-is-why-browsers-prefer-one-over-the-other/#h-ocsp-vs-crl-why-the-industry-is-shifting-away-from-ocsp) and [is no longer supported in >80% of web browsers](https://www.chromium.org/Home/chromium-security/crlsets) today with CRL's being the replacement. CRL's are the certificate revocation mechanism required by the W3C for all browser vendors. Firefox is one of the few web browsers that still uses OCSP for now._
+
+### Configuring Linux (Ubuntu) for CAC / Cert Testing
+- [All-in-one script](https://github.com/jdjaxon/linux_cac) to install CAC middleware and import DoD certificates to Chrome & Firefox
+- Other CAC resources: 
+  - [PKI/PKE Document Library](https://public.cyber.mil/pki-pke/pkipke-document-library/?_dl_facet_pkipke_topics=trust-store-management)
+  - [CAC FAQ](https://militarycac.org/linux.htm)
 
 ## Database
 
