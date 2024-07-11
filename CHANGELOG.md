@@ -3,6 +3,20 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [25.0.1-bb.0] - 2024-07-09
+
+### Updated
+
+- Update Keycloak 24.0.5 -> 25.0.1
+- Update Postgresql 12.18 -> 12.19
+- Update to `keycloakx` chart and add Kptfile to track
+- Update cypress test for new verbiage
+- Update cypress keycloak user hook job conditional
+- Update `KC_PROXY` to new `KC_PROXY_HEADERS`
+- Update development themes to reference correct `keycloak.v2` parent
+- Explicitly specify `platform: linux/amd64` in `docker-compose.yaml`
+- Remove `KC_HOSTNAME_STRICT_HTTPS` env from docs as it is no longer valid
+
 ## [24.0.5-bb.1] - 2024-06-26
 
 ### Added

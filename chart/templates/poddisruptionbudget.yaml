@@ -1,12 +1,9 @@
 {{- if .Values.podDisruptionBudget -}}
-{{- if .Capabilities.APIVersions.Has "policy/v1" }}
-apiVersion: policy/v1
-{{- else }}
-apiVersion: policy/v1beta1
-{{- end }}
+apiVersion: {{ ternary "policy/v1" "policy/v1beta1" (semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version) }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "keycloak.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
 spec:

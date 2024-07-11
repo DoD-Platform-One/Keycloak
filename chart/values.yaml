@@ -11,7 +11,9 @@ image:
   # The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "24.0.5"
+  tag: "25.0.1"
+  # Overrides the Keycloak image tag with a specific digest
+  digest: ""
   # The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
@@ -40,6 +42,8 @@ restartPolicy: Always
 serviceAccount:
   # Specifies whether a ServiceAccount should be created
   create: true
+  # Specifies whether the ServiceAccount can get and list pods
+  allowReadPods: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
@@ -49,6 +53,8 @@ serviceAccount:
   labels: {}
   # Image pull secrets that are attached to the ServiceAccount
   imagePullSecrets: []
+  # Automount API credentials for the Service Account
+  automountServiceAccountToken: true
 
 rbac:
   create: false
@@ -78,21 +84,20 @@ securityContext:
     drop:
       - ALL
 
-
-# Additional init containers, e.g. for providing custom themes
+# Additional init containers, e. g. for providing custom themes
 extraInitContainers: ""
 
 # When using service meshes which rely on a sidecar, it may be necessary to skip init containers altogether,
 # since the sidecar doesn't start until the init containers are done, and the sidecar may be required
 # for network access.
-# For example, Istio in strict mTLS mode prevents the pgchecker init container from ever completing
+# For example, Istio in strict mTLS mode prevents the dbchecker init container from ever completing
 skipInitContainers: false
 
 # Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy
 extraContainers: ""
 
 # Lifecycle hooks for the Keycloak container
-lifecycleHooks: ""
+lifecycleHooks: |
 #  postStart:
 #    exec:
 #      command:
@@ -107,14 +112,14 @@ terminationGracePeriodSeconds: 60
 clusterDomain: cluster.local
 
 ## Overrides the default entrypoint of the Keycloak container
-command:
-  - "/opt/keycloak/bin/kc.sh"
+command: []
 
 ## Overrides the default args for the Keycloak container
-args:
-  - "start"
+args: []
 
 # Additional environment variables for Keycloak
+# Any environment variables defined directly in the statefulset should be set with the appropriate values
+# rather than set here, which will potentially produce duplicates and helm upgrade errors
 # https://www.keycloak.org/server/all-config
 extraEnv: ""
 # extraEnv: |-
@@ -122,39 +127,24 @@ extraEnv: ""
 #     value: /opt/keycloak/conf/tls.crt
 #   - name: KC_HTTPS_CERTIFICATE_KEY_FILE
 #     value: /opt/keycloak/conf/tls.key
-#   - name: KC_HTTP_ENABLED
-#     value: "true"
-#   - name: KC_HTTP_RELATIVE_PATH
-#     value: /auth
 #   - name: KC_HTTPS_CLIENT_AUTH
 #     value: request
-#   - name: KC_PROXY
-#     value: passthrough
 #   - name: KC_HTTPS_TRUST_STORE_FILE
 #     value: /opt/keycloak/conf/truststore.jks
 #   - name: KC_HTTPS_TRUST_STORE_PASSWORD
 #     value: password
 #   - name: KC_HOSTNAME
-#     value: keycloak.bigbang.dev
+#     value: keycloak.dev.bigbang.mil
 #   - name: KC_HOSTNAME_STRICT
-#     value: "true"
-#   - name: KC_HOSTNAME_STRICT_HTTPS
 #     value: "true"
 #   - name: KC_LOG_LEVEL
 #     value: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
-#   - name: KC_CACHE
-#     value: ispn
-#   - name: KC_CACHE_STACK
-#     value: kubernetes
-#   - name: KC_SPI_STICKY_SESSION_ENCODER_INFINISPAN_SHOULD_ATTACH_ROUTE
-#     value: "false"
 
 # Additional environment variables for Keycloak mapped from Secret or ConfigMap
 #### Updated for Big Bang ####
 extraEnvFrom: |
   - secretRef:
       name: '{{ include "keycloak.fullname" . }}-env'
-
 
 #  Pod priority class name
 priorityClassName: ""
@@ -183,7 +173,7 @@ affinity: |
                 operator: NotIn
                 values:
                   - test
-          topologyKey: failure-domain.beta.kubernetes.io/zone
+          topologyKey: topology.kubernetes.io/zone
 
 # Topology spread constraints template
 topologySpreadConstraints:
@@ -201,7 +191,6 @@ podLabels: {}
 podAnnotations: {}
 
 # Liveness probe configuration
-#### Updated for Big Bang ####
 livenessProbe: |
   httpGet:
     path: /auth/realms/master
@@ -211,8 +200,15 @@ livenessProbe: |
   timeoutSeconds: 2
   periodSeconds: 15
 
+# Revisit after enabling management port
+# livenessProbe: |
+#   httpGet:
+#     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health/live'
+#     port: '{{ .Values.http.internalPort }}'
+#   initialDelaySeconds: 0
+#   timeoutSeconds: 5
+
 # Readiness probe configuration
-#### Updated for Big Bang ####
 readinessProbe: |
   httpGet:
     path: /auth/realms/master
@@ -221,8 +217,15 @@ readinessProbe: |
   failureThreshold: 15
   timeoutSeconds: 2
 
+# Revisit after enabling management port
+# readinessProbe: |
+#   httpGet:
+#     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health/ready'
+#     port: '{{ .Values.http.internalPort }}'
+#   initialDelaySeconds: 10
+#   timeoutSeconds: 1
+
 # Startup probe configuration
-#### Updated for Big Bang ####
 startupProbe: |
   httpGet:
     path: /auth/realms/master
@@ -231,6 +234,16 @@ startupProbe: |
   timeoutSeconds: 2
   failureThreshold: 60
   periodSeconds: 5
+
+# Revisit after enabling management port
+# startupProbe: |
+#   httpGet:
+#     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health'
+#     port: '{{ .Values.http.internalPort }}'
+#   initialDelaySeconds: 15
+#   timeoutSeconds: 1
+#   failureThreshold: 60
+#   periodSeconds: 5
 
 # Pod resource requests and limits
 resources:
@@ -241,23 +254,21 @@ resources:
     cpu: "1"
     memory: "1Gi"
 
-#### starupScripts removed. Not relevant for Quarkus distribution ####
-
-# Add additional volumes, e.g. for custom themes
+# Add additional volumes, e. g. for custom themes
 extraVolumes: ""
 
 #### added by Big Bang ####
 # This values key is reserved for integration with BigBang chart
 extraVolumesBigBang: {}
 
-# Add additional volumes mounts, e.g. for custom themes
+# Add additional volumes mounts, e. g. for custom themes
 extraVolumeMounts: ""
 
 #### added by Big Bang ####
 # This values key is reserved for integration with BigBang chart
 extraVolumeMountsBigBang: {}
 
-# Add additional ports, e.g. for admin console or exposing JGroups ports
+# Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts: []
 
 # Pod disruption budget
@@ -295,7 +306,7 @@ secrets:
       JAVA_OPTS_APPEND: -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
 
 service:
-  # Annotations for headless and HTTP Services
+  # Annotations for HTTP service
   annotations: {}
   # Additional labels for headless and HTTP Services
   labels: {}
@@ -312,10 +323,10 @@ service:
   httpsPort: 8443
   # The HTTPS Service node port if type is NodePort
   httpsNodePort: null
-  # Additional Service ports, e.g. for custom admin console
+  # Additional Service ports, e. g. for custom admin console
   extraPorts: []
   # When using Service type LoadBalancer, you can restrict source ranges allowed
-  # to connect to the LoadBalancer, e.g. will result in Security Groups
+  # to connect to the LoadBalancer, e. g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
   loadBalancerSourceRanges: []
   # When using Service type LoadBalancer, you can preserve the source IP seen in the container
@@ -327,6 +338,10 @@ service:
   sessionAffinity: ""
   # Session affinity config
   sessionAffinityConfig: {}
+
+serviceHeadless:
+  # Annotations for headless service
+  annotations: {}
 
 ingress:
   # If `true`, an Ingress is created
@@ -350,7 +365,7 @@ ingress:
       host: '{{ .Release.Name }}.keycloak.example.com'
       # Paths for the host
       paths:
-        - path: /
+        - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/'
           pathType: Prefix
 # Example TLS configuration
 #   tls:
@@ -373,8 +388,9 @@ ingress:
         host: '{{ .Release.Name }}.keycloak.example.com'
         # Paths for the host
         paths:
-          - path: /auth/admin/
+          - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/admin'
             pathType: Prefix
+
     # Console TLS configuration
     tls: []
 #      - hosts:
@@ -382,6 +398,7 @@ ingress:
 #        secretName: ""
 
 ## Network policy configuration
+# https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicy:
   # If true, the Network policies are deployed
   enabled: false
@@ -390,8 +407,19 @@ networkPolicy:
   labels: {}
 
   # Define all other external allowed source
-  # See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#networkpolicypeer-v1-networking-k8s-io
+  # See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#networkpolicypeer-v1-networking-k8s-io
   extraFrom: []
+
+  # Define egress networkpolicies for the Keycloak pods (external database for example)
+  # See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#networkpolicyegressrule-v1-networking-k8s-io
+  # egress:
+  #   - to:
+  #       - ipBlock:
+  #           cidr: 192.168.1.30/32
+  #     ports:
+  #       - protocol: TCP
+  #         port: 3306
+  egress: []
 
 route:
   # If `true`, an OpenShift Route is created
@@ -413,15 +441,16 @@ route:
     # TLS termination of the route. Can be `edge`, `passthrough`, or `reencrypt`
     termination: edge
 
-pgchecker:
+dbchecker:
+  enabled: true
   image:
     # Docker image used to check Postgresql readiness at startup
     repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql12
     # Image tag for the pgchecker image
-    tag: 12.18
-    # Image pull policy for the pgchecker image
+    tag: 12.19
+    # Image pull policy for the dbchecker image
     pullPolicy: IfNotPresent
-  # SecurityContext for the pgchecker container
+  # SecurityContext for the dbchecker container
   securityContext:
     allowPrivilegeEscalation: false
     runAsUser: 1000
@@ -430,7 +459,7 @@ pgchecker:
     capabilities:
       drop:
         - ALL
-  # Resource requests and limits for the pgchecker container
+  # Resource requests and limits for the dbchecker container
   resources:
     requests:
       cpu: "250m"
@@ -460,7 +489,7 @@ postgresql:
   image:
     registry: registry1.dso.mil
     repository: ironbank/opensource/postgres/postgresql12
-    tag: 12.18
+    tag: 12.19
   securityContext:
     enabled: true
     fsGroup: 26
@@ -472,17 +501,6 @@ postgresql:
     capabilities:
       drop:
         - ALL
-  # volumePermissions:
-  #   enabled: false
-  #   image:
-  #     registry: registry1.dso.mil
-  #     repository: ironbank/big-bang/base
-  #     tag: 2.0.0
-  #   pullSecrets:
-  #     - private-registry
-  #   securityContext:
-  #     runAsUser: 0
-
   resources:
     requests:
       cpu: "250m"
@@ -490,6 +508,41 @@ postgresql:
     limits:
       cpu: "250m"
       memory: "256Mi"
+
+database:
+  # don't create secret for db password. Instead use existing k8s secret
+  # existingSecret: "my-existent-dbpass-secret"
+  # existingSecretKey: "password"
+  existingSecret: ""
+  existingSecretKey: ""
+  # E.g. dev-file, dev-mem, mariadb, mssql, mysql, oracle or postgres
+  vendor:
+  hostname:
+  port:
+  database:
+  username:
+  password:
+
+cache:
+  # Use "custom" to disable automatic cache configuration
+  stack: default
+
+proxy:
+  enabled: true
+  mode: forwarded
+  http:
+    enabled: true
+
+metrics:
+  enabled: true
+
+health:
+  enabled: true
+
+http:
+  # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
+  relativePath: "/auth"
+  internalPort: http-internal
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created
@@ -507,9 +560,9 @@ serviceMonitor:
   # Timeout for scraping
   scrapeTimeout: 10s
   # The path at which metrics are served
-  path: /metrics
+  path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/metrics'
   # The Service port at which metrics are served
-  port: http
+  port: '{{ .Values.http.internalPort }}'
   # added by Big Bang to support Istio mTLS
   scheme: ""
   tlsConfig: {}
@@ -530,13 +583,18 @@ extraServiceMonitor:
   # Timeout for scraping
   scrapeTimeout: 10s
   # The path at which metrics are served
-  path: /auth/realms/master/metrics
+  path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/metrics'
   # The Service port at which metrics are served
-  port: http
+  port: '{{ .Values.http.internalPort }}'
+  # added by Big Bang to support Istio mTLS
+  scheme: ""
+  tlsConfig: {}
 
 prometheusRule:
   # If `true`, a PrometheusRule resource for the prometheus-operator is created
   enabled: false
+  # Optionally sets a target namespace in which to deploy the ServiceMonitor resource
+  namespace: ""
   # Annotations for the PrometheusRule
   annotations: {}
   # Additional labels for the PrometheusRule
@@ -565,7 +623,7 @@ prometheusRule:
   #     severity: warning
 
 autoscaling:
-  # If `true`, an autoscaling/v2beta2 HorizontalPodAutoscaler resource is created (requires Kubernetes 1.18 or above)
+  # If `true`, an autoscaling/v2 HorizontalPodAutoscaler resource is created (requires Kubernetes 1.23 or above)
   # Autoscaling seems to be most reliable when using KUBE_PING service discovery (see README for details)
   # This disables the `replicas` field in the StatefulSet
   enabled: false
@@ -597,9 +655,9 @@ test:
   enabled: false
   image:
     # The image for the test Pod
-    repository: docker.io/unguiculus/docker-python3-phantomjs-selenium
+    repository: docker.io/seleniarm/standalone-chromium
     # The tag for the test Pod image
-    tag: v1
+    tag: "117.0"
     # The image pull policy for the test Pod image
     pullPolicy: IfNotPresent
   # SecurityContext for the entire test Pod
@@ -608,8 +666,9 @@ test:
   # SecurityContext for the test container
   securityContext:
     runAsUser: 1000
-    runAsGroup: 1000
     runAsNonRoot: true
+  # See https://helm.sh/docs/topics/charts_hooks/#hook-deletion-policies
+  deletionPolicy: before-hook-creation
 
 # Big Bang Additions
 ## Your FQDN will be ${ .Values.subdomain }.${ .Values.domain }

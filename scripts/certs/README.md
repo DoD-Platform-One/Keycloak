@@ -5,7 +5,7 @@ These scripts help research and clean the certificates for a secure Keycloak dep
 # Create a clean DoD CA pem bundle file without expired certs
 1. Create the clean pem file which will include expired certs
     ```
-    docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:23.0.7 -c "./dod_cas_to_pem.sh dod_cas_including_expired_certs.pem"
+    docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.1 -c "./dod_cas_to_pem.sh dod_cas_including_expired_certs.pem"
     ```
 2. Create a final pem file without the expired certs. Previously we used cert_tree.py to remove expired certs but that process is currently broken because the script is filtering out the External CAs with duplicate CNs from the CA bundle. Instead, manually remove remove any expired certs from from the CA bundle.
 View the pem file created created in previous step and take note of the identity of the expired certs. There are usually about 4 of them. For example DoD Root CA "CA-49".
@@ -29,7 +29,7 @@ View the pem file created created in previous step and take note of the identity
 3. Create a java truststore.jks
 After creating the dod_cas.pem file, create a java truststore.jks. Ensure you are in the `scripts/certs` directory prior to running the below docker command, or update the volume mount path accordingly.
     ```
-    docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:23.0.7 -c "./ca_bundle_to_truststore.sh"
+    docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.1 -c "./ca_bundle_to_truststore.sh"
     ```
 
 # Helper scripts for CA certs usage overview
@@ -38,7 +38,7 @@ This script creates a single clean pem file using the archive downloaded from [D
 
 Usage:
 ```
-docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:23.0.7 -c "./dod_cas_to_pem.sh dod_cas_including_expired_certs.pem"
+docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.1 -c "./dod_cas_to_pem.sh dod_cas_including_expired_certs.pem"
 ```
 
 ## cert_tree.py
@@ -54,7 +54,7 @@ This script creates a java truststore.jks from the DoD certificate authorities f
 
 Usage:
 ```
-docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:23.0.7 -c "./ca_bundle_to_truststore.sh"
+docker run --rm --entrypoint="/bin/bash" -u root:root -v $(pwd):/truststore -w /truststore registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.1 -c "./ca_bundle_to_truststore.sh"
 ```
 
 ## cert_check.pl

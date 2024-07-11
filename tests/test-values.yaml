@@ -3,10 +3,6 @@ args:
   - "start-dev"
   - "--import-realm" 
 
-extraEnv: |-
-  - name: KC_HTTP_RELATIVE_PATH
-    value: /auth
-
 secrets:
   realm:
     stringData:
