@@ -24,7 +24,7 @@ describe('Keycloak Healthcheck', function () {
     cy.location('pathname', { timeout: 10000 }).should('eq', '/auth/admin/master/console/');
 
     // verify the page title is "Keycloak Admin UI"
-    cy.title().should('eq', 'Keycloak Administration UI');
+    cy.title().should('eq', 'Keycloak Administration Console');
 
     cy.visit(Cypress.env('url') + '/auth/admin/master/console/#/baby-yoda/users');
     cy.wait(2000);

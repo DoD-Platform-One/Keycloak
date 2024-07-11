@@ -4,6 +4,7 @@ networks:
 
 services:
   postgresql:
+    platform: linux/amd64
     image: 'bitnami/postgresql:15.3.0'
     networks:
       - keycloak-tier
@@ -17,10 +18,11 @@ services:
       - POSTGRESQL_DATABASE=keycloak
 
   keycloak:
+    platform: linux/amd64
     depends_on:
       - postgresql
 
-    image: 'registry1.dso.mil/ironbank/opensource/keycloak/keycloak:24.0.5'
+    image: 'registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.1'
 
     networks:
       - keycloak-tier
@@ -46,7 +48,6 @@ services:
 
       KC_HOSTNAME: keycloak.dev.bigbang.mil
       KC_HOSTNAME_STRICT: "true"
-      KC_HOSTNAME_STRICT_HTTPS: "true"
       KC_LOG_LEVEL: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
 
       KC_HTTPS_CLIENT_AUTH: request

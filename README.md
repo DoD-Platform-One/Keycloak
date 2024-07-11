@@ -1,14 +1,14 @@
 # keycloak
 
-![Version: 24.0.5-bb.1](https://img.shields.io/badge/Version-24.0.5--bb.1-informational?style=flat-square) ![AppVersion: 24.0.5](https://img.shields.io/badge/AppVersion-24.0.5-informational?style=flat-square)
+![Version: 2.4.3-bb.0](https://img.shields.io/badge/Version-2.4.3--bb.0-informational?style=flat-square) ![AppVersion: 25.0.1](https://img.shields.io/badge/AppVersion-25.0.1-informational?style=flat-square)
 
-Open Source Identity and Access Management For Modern Applications and Services
+Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
 ## Upstream References
 * <https://www.keycloak.org/>
 
 * <https://github.com/codecentric/helm-charts>
-* <https://github.com/jboss-dockerfiles/keycloak>
+* <https://github.com/keycloak/keycloak/tree/main/quarkus/container>
 * <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
 
 ## Learn More
@@ -41,7 +41,8 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"24.0.5"` |  |
+| image.tag | string | `"25.0.1"` |  |
+| image.digest | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
 | hostAliases | list | `[]` |  |
@@ -50,10 +51,12 @@ helm install keycloak chart/
 | updateStrategy | string | `"RollingUpdate"` |  |
 | restartPolicy | string | `"Always"` |  |
 | serviceAccount.create | bool | `true` |  |
+| serviceAccount.allowReadPods | bool | `false` |  |
 | serviceAccount.name | string | `""` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.labels | object | `{}` |  |
 | serviceAccount.imagePullSecrets | list | `[]` |  |
+| serviceAccount.automountServiceAccountToken | bool | `true` |  |
 | rbac.create | bool | `false` |  |
 | rbac.rules | list | `[]` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
@@ -70,12 +73,12 @@ helm install keycloak chart/
 | lifecycleHooks | string | `""` |  |
 | terminationGracePeriodSeconds | int | `60` |  |
 | clusterDomain | string | `"cluster.local"` |  |
-| command[0] | string | `"/opt/keycloak/bin/kc.sh"` |  |
-| args[0] | string | `"start"` |  |
+| command | list | `[]` |  |
+| args | list | `[]` |  |
 | extraEnv | string | `""` |  |
 | extraEnvFrom | string | `"- secretRef:\n    name: '{{ include \"keycloak.fullname\" . }}-env'\n"` |  |
 | priorityClassName | string | `""` |  |
-| affinity | string | `"podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n    - labelSelector:\n        matchLabels:\n          {{- include \"keycloak.selectorLabels\" . \| nindent 10 }}\n        matchExpressions:\n          - key: app.kubernetes.io/component\n            operator: NotIn\n            values:\n              - test\n      topologyKey: kubernetes.io/hostname\n  preferredDuringSchedulingIgnoredDuringExecution:\n    - weight: 100\n      podAffinityTerm:\n        labelSelector:\n          matchLabels:\n            {{- include \"keycloak.selectorLabels\" . \| nindent 12 }}\n          matchExpressions:\n            - key: app.kubernetes.io/component\n              operator: NotIn\n              values:\n                - test\n        topologyKey: failure-domain.beta.kubernetes.io/zone\n"` |  |
+| affinity | string | `"podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n    - labelSelector:\n        matchLabels:\n          {{- include \"keycloak.selectorLabels\" . \| nindent 10 }}\n        matchExpressions:\n          - key: app.kubernetes.io/component\n            operator: NotIn\n            values:\n              - test\n      topologyKey: kubernetes.io/hostname\n  preferredDuringSchedulingIgnoredDuringExecution:\n    - weight: 100\n      podAffinityTerm:\n        labelSelector:\n          matchLabels:\n            {{- include \"keycloak.selectorLabels\" . \| nindent 12 }}\n          matchExpressions:\n            - key: app.kubernetes.io/component\n              operator: NotIn\n              values:\n                - test\n        topologyKey: topology.kubernetes.io/zone\n"` |  |
 | topologySpreadConstraints | string | `nil` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
@@ -113,24 +116,26 @@ helm install keycloak chart/
 | service.externalTrafficPolicy | string | `"Cluster"` |  |
 | service.sessionAffinity | string | `""` |  |
 | service.sessionAffinityConfig | object | `{}` |  |
+| serviceHeadless.annotations | object | `{}` |  |
 | ingress.enabled | bool | `false` |  |
 | ingress.ingressClassName | string | `""` |  |
 | ingress.servicePort | string | `"http"` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.labels | object | `{}` |  |
 | ingress.rules[0].host | string | `"{{ .Release.Name }}.keycloak.example.com"` |  |
-| ingress.rules[0].paths[0].path | string | `"/"` |  |
+| ingress.rules[0].paths[0].path | string | `"{{ tpl .Values.http.relativePath $ \| trimSuffix \"/\" }}/"` |  |
 | ingress.rules[0].paths[0].pathType | string | `"Prefix"` |  |
 | ingress.console.enabled | bool | `false` |  |
 | ingress.console.ingressClassName | string | `""` |  |
 | ingress.console.annotations | object | `{}` |  |
 | ingress.console.rules[0].host | string | `"{{ .Release.Name }}.keycloak.example.com"` |  |
-| ingress.console.rules[0].paths[0].path | string | `"/auth/admin/"` |  |
+| ingress.console.rules[0].paths[0].path | string | `"{{ tpl .Values.http.relativePath $ \| trimSuffix \"/\" }}/admin"` |  |
 | ingress.console.rules[0].paths[0].pathType | string | `"Prefix"` |  |
 | ingress.console.tls | list | `[]` |  |
 | networkPolicy.enabled | bool | `false` |  |
 | networkPolicy.labels | object | `{}` |  |
 | networkPolicy.extraFrom | list | `[]` |  |
+| networkPolicy.egress | list | `[]` |  |
 | route.enabled | bool | `false` |  |
 | route.path | string | `"/"` |  |
 | route.annotations | object | `{}` |  |
@@ -139,18 +144,19 @@ helm install keycloak chart/
 | route.tls.enabled | bool | `true` |  |
 | route.tls.insecureEdgeTerminationPolicy | string | `"Redirect"` |  |
 | route.tls.termination | string | `"edge"` |  |
-| pgchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
-| pgchecker.image.tag | float | `12.18` |  |
-| pgchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
-| pgchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
-| pgchecker.securityContext.runAsUser | int | `1000` |  |
-| pgchecker.securityContext.runAsGroup | int | `1000` |  |
-| pgchecker.securityContext.runAsNonRoot | bool | `true` |  |
-| pgchecker.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| pgchecker.resources.requests.cpu | string | `"250m"` |  |
-| pgchecker.resources.requests.memory | string | `"256Mi"` |  |
-| pgchecker.resources.limits.cpu | string | `"250m"` |  |
-| pgchecker.resources.limits.memory | string | `"256Mi"` |  |
+| dbchecker.enabled | bool | `true` |  |
+| dbchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
+| dbchecker.image.tag | float | `12.19` |  |
+| dbchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
+| dbchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| dbchecker.securityContext.runAsUser | int | `1000` |  |
+| dbchecker.securityContext.runAsGroup | int | `1000` |  |
+| dbchecker.securityContext.runAsNonRoot | bool | `true` |  |
+| dbchecker.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| dbchecker.resources.requests.cpu | string | `"250m"` |  |
+| dbchecker.resources.requests.memory | string | `"256Mi"` |  |
+| dbchecker.resources.limits.cpu | string | `"250m"` |  |
+| dbchecker.resources.limits.memory | string | `"256Mi"` |  |
 | postgresql.enabled | bool | `true` |  |
 | postgresql.postgresqlUsername | string | `"keycloak"` |  |
 | postgresql.postgresqlPassword | string | `"keycloak"` |  |
@@ -159,7 +165,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.18` |  |
+| postgresql.image.tag | float | `12.19` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `1000` |  |
@@ -171,6 +177,22 @@ helm install keycloak chart/
 | postgresql.resources.requests.memory | string | `"256Mi"` |  |
 | postgresql.resources.limits.cpu | string | `"250m"` |  |
 | postgresql.resources.limits.memory | string | `"256Mi"` |  |
+| database.existingSecret | string | `""` |  |
+| database.existingSecretKey | string | `""` |  |
+| database.vendor | string | `nil` |  |
+| database.hostname | string | `nil` |  |
+| database.port | string | `nil` |  |
+| database.database | string | `nil` |  |
+| database.username | string | `nil` |  |
+| database.password | string | `nil` |  |
+| cache.stack | string | `"default"` |  |
+| proxy.enabled | bool | `true` |  |
+| proxy.mode | string | `"forwarded"` |  |
+| proxy.http.enabled | bool | `true` |  |
+| metrics.enabled | bool | `true` |  |
+| health.enabled | bool | `true` |  |
+| http.relativePath | string | `"/auth"` |  |
+| http.internalPort | string | `"http-internal"` |  |
 | serviceMonitor.enabled | bool | `false` |  |
 | serviceMonitor.namespace | string | `""` |  |
 | serviceMonitor.namespaceSelector | object | `{}` |  |
@@ -178,8 +200,8 @@ helm install keycloak chart/
 | serviceMonitor.labels | object | `{}` |  |
 | serviceMonitor.interval | string | `"10s"` |  |
 | serviceMonitor.scrapeTimeout | string | `"10s"` |  |
-| serviceMonitor.path | string | `"/metrics"` |  |
-| serviceMonitor.port | string | `"http"` |  |
+| serviceMonitor.path | string | `"{{ tpl .Values.http.relativePath $ \| trimSuffix \"/\" }}/metrics"` |  |
+| serviceMonitor.port | string | `"{{ .Values.http.internalPort }}"` |  |
 | serviceMonitor.scheme | string | `""` |  |
 | serviceMonitor.tlsConfig | object | `{}` |  |
 | extraServiceMonitor.enabled | bool | `false` |  |
@@ -189,9 +211,12 @@ helm install keycloak chart/
 | extraServiceMonitor.labels | object | `{}` |  |
 | extraServiceMonitor.interval | string | `"10s"` |  |
 | extraServiceMonitor.scrapeTimeout | string | `"10s"` |  |
-| extraServiceMonitor.path | string | `"/auth/realms/master/metrics"` |  |
-| extraServiceMonitor.port | string | `"http"` |  |
+| extraServiceMonitor.path | string | `"{{ tpl .Values.http.relativePath $ \| trimSuffix \"/\" }}/metrics"` |  |
+| extraServiceMonitor.port | string | `"{{ .Values.http.internalPort }}"` |  |
+| extraServiceMonitor.scheme | string | `""` |  |
+| extraServiceMonitor.tlsConfig | object | `{}` |  |
 | prometheusRule.enabled | bool | `false` |  |
+| prometheusRule.namespace | string | `""` |  |
 | prometheusRule.annotations | object | `{}` |  |
 | prometheusRule.labels | object | `{}` |  |
 | prometheusRule.rules | list | `[]` |  |
@@ -208,13 +233,13 @@ helm install keycloak chart/
 | autoscaling.behavior.scaleDown.policies[0].value | int | `1` |  |
 | autoscaling.behavior.scaleDown.policies[0].periodSeconds | int | `300` |  |
 | test.enabled | bool | `false` |  |
-| test.image.repository | string | `"docker.io/unguiculus/docker-python3-phantomjs-selenium"` |  |
-| test.image.tag | string | `"v1"` |  |
+| test.image.repository | string | `"docker.io/seleniarm/standalone-chromium"` |  |
+| test.image.tag | string | `"117.0"` |  |
 | test.image.pullPolicy | string | `"IfNotPresent"` |  |
 | test.podSecurityContext.fsGroup | int | `1000` |  |
 | test.securityContext.runAsUser | int | `1000` |  |
-| test.securityContext.runAsGroup | int | `1000` |  |
 | test.securityContext.runAsNonRoot | bool | `true` |  |
+| test.deletionPolicy | string | `"before-hook-creation"` |  |
 | domain | string | `"dev.bigbang.mil"` |  |
 | istio.enabled | bool | `false` |  |
 | istio.hardened.enabled | bool | `false` |  |

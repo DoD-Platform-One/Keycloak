@@ -124,7 +124,8 @@ spec:
 
           if [ "$user_create_req_status" != "201" ]; then
               error_msg=$(echo "${user_create_req% *}" | jq .errorMessage | tr -d '"')
-              if [ "$error_msg" == "User exists with same username" ]; then
+              echo -e "${error_msg}"
+              if [ "$error_msg" == "User exists with same username" ] || [ "$error_msg" == "User exists with same email" ]; then
                   echo -e "Cypress user already created. Skipping..."
                   {{- if and .Values.istio.enabled (eq .Values.istio.injection "enabled") }}
                   until curl -fsI http://localhost:15021/healthz/ready; do
