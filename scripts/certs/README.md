@@ -1,6 +1,8 @@
 # Overview
 The DoD approved certificate authority archives distributed by [DoD Cyber Exchange](https://public.cyber.mil/pki-pke/pkipke-document-library/) contain certs that are not recommended for use with a Keycloak deployment. For example: sofware certs, email certs, certs uploaded with the wrong format, expired certs, etc.   
-These scripts help research and clean the certificates for a secure Keycloak deployment.
+These scripts help research and clean the certificates for a secure Keycloak deployment.  
+  
+_See also: [steps for the procedure that Party Bus uses](https://confluence.il4.dso.mil/display/P1CNAPSSO/How+to+update+TrustStore) to update the truststore._
 
 # Create a clean DoD CA pem bundle file without expired certs
 1. Create the clean pem file which will include expired certs
