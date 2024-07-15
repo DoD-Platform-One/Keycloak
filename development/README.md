@@ -2,6 +2,9 @@
 The Platform One custom Keycloak plugin code is now hosted at https://repo1.dso.mil/big-bang/product/plugins/keycloak-p1-auth-plugin. Git clone the that repo on your workstation. See [documentation](https://repo1.dso.mil/big-bang/product/plugins/keycloak-p1-auth-plugin/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md) in that repo for how to compile and build the plugin jar. 
 
 # Local Dev/Testing
+
+You'll find that the below instructions are very similar to [the procedure that Party Bus uses](https://confluence.il4.dso.mil/pages/viewpage.action?spaceKey=P1CNAPSSO&title=Keycloak).
+
 These steps are all performed in the keycloak repo.
 
 This development environment is intended for local testing of the Platform One custom Keycloak plugin and developement/testing of custom themes. Docker compose is used to start a local dev/test environment quickly and easily. This local dev environment is not ideal for end-to-end SSO testing. For end-to-end SSO testing deploy Keycloak with the plugin in Kubernetes along with the apps that are needed for SSO client testing. Please see [DEVELOPMENT_MAINTENANCE.md](https://repo1.dso.mil/big-bang/product/packages/keycloak/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md) in this repo for deploy and integration testing instructions.
@@ -21,7 +24,7 @@ This development environment is intended for local testing of the Platform One c
 1. Ensure that the volume in `development/docker-compose.yaml` matches the name of the file in the `development/plugin` directory.
 1. Update the `development/certs` files as needed. See the [development/certs/README.md](./certs/README.md).
 
-1. Start the local docker compose development environment. Typical commands for starting, using, and stopping the local docker compose environment. On Mac, recommend using Colima rather than Docker Desktop.
+1. Start the local docker compose development environment. Typical commands for starting, using, and stopping the local docker compose environment. On Mac, it is recommended to use [Rancher Desktop](https://rancherdesktop.io/) or [Colima](https://github.com/abiosoft/colima) versus the resource heavy Docker Desktop.
     ```bash
     docker compose up -d
     docker logs --follow keycloak
