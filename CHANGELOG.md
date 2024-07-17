@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.4.3-bb.1] - 2024-07-16
+
+### Added
+
+- Added `bigbang.labels` helper function to postgresql subchart under `templates/bigbang`
+- Added call to `bigbang.labels` function in pod template section of `chart/deps/postgresql/templates/statefulset.yaml` and `chart/deps/postgresql/templates/statefulset-readreplicas.yaml`
+- Added `podLabels` entries for `app` and `version` in `chart/values.yaml`
+- Updated `docs/DEVELOPMENT_MAINTENANCE.md` [Modifications made to upstream chart](https://repo1.dso.mil/big-bang/product/packages/keycloak/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md#modifications-made-to-upstream-chart) section to reflect aforementioned changes
+
 ## [2.4.3-bb.0] - 2024-07-11
 
 ### Updated

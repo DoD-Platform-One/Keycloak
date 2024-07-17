@@ -1,10 +1,11 @@
 # keycloak
 
-![Version: 2.4.3-bb.0](https://img.shields.io/badge/Version-2.4.3--bb.0-informational?style=flat-square) ![AppVersion: 25.0.1](https://img.shields.io/badge/AppVersion-25.0.1-informational?style=flat-square)
+![Version: 2.4.3-bb.1](https://img.shields.io/badge/Version-2.4.3--bb.1-informational?style=flat-square) ![AppVersion: 25.0.1](https://img.shields.io/badge/AppVersion-25.0.1-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
 ## Upstream References
+
 * <https://www.keycloak.org/>
 
 * <https://github.com/codecentric/helm-charts>
@@ -12,6 +13,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 * <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
 
 ## Learn More
+
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -23,12 +25,13 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 Install Helm
 
-https://helm.sh/docs/intro/install/
+<https://helm.sh/docs/intro/install/>
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
+
 ```bash
 helm install keycloak chart/
 ```
@@ -82,7 +85,8 @@ helm install keycloak chart/
 | topologySpreadConstraints | string | `nil` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
-| podLabels | object | `{}` |  |
+| podLabels.app | string | `"keycloak"` |  |
+| podLabels.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | podAnnotations | object | `{}` |  |
 | livenessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\nperiodSeconds: 15\n"` |  |
 | readinessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\n"` |  |
