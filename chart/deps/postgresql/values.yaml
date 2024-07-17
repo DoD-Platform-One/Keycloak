@@ -52,7 +52,7 @@ volumePermissions:
   image:
     registry: registry1.dso.mil
     repository: ironbank/big-bang/base
-    tag: 2.0.0
+    tag: 2.0.1
     pullSecrets:
       - private-registry
     ## Specify a imagePullPolicy

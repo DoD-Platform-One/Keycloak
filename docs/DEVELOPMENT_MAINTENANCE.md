@@ -216,6 +216,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - Add IronBank postgresql12 image for dev/CI development/testing
 - and other miscellaneous change.  Diff with previous version to find all changes
 - modify pgchecker image to ironbank postgres image
+- Set `podLabels.app` and `podLabels.version` to conform with kiali requirements
 
 ##  chart/charts/*.tgz
 - run `helm dependency update` and commit the downloaded archives
@@ -266,6 +267,13 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 - Upstream bitnami postgresql chart - modified for Iron Bank Postgresql 12.15 runtime.
 - Update security context for user:group 26:26
 
+## chart/deps/postgresql/templates/bigbang/*
+- add `_helpers.tpl` file with `bigbang.labels` helper function
+
 ## chart/deps/postgresql/templates/statefulset.yaml
 - commented out existing `-if -else` securityContext and replaced with
 - `{{- toYaml $.Values.postgesql.containerSecurityContext | nindent 12 }}`
+- add call to `bigbang.labels` helper (`{{- include "bigbang.labels" . | nindent 8 }}`) in pod template section near line 33
+
+## chart/deps/postgresql/templates/statefulset-readreplicas.yaml
+- add call to `bigbang.labels` helper (`{{- include "bigbang.labels" . | nindent 8 }}`) in pod template section near line 30

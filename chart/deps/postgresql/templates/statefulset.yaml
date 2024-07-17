@@ -31,6 +31,7 @@ spec:
     metadata:
       name: {{ template "common.names.fullname" . }}
       labels:
+      {{- include "bigbang.labels" . | nindent 8 }}
       {{- include "common.labels.standard" . | nindent 8 }}
         role: primary
         app.kubernetes.io/component: primary
