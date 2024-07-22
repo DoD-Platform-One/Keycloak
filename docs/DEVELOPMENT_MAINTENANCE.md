@@ -195,6 +195,8 @@ This will deploy the following apps for testing:
 
     - Regardless of creation mechanism, you will need to set email as verified via the admin console for both test users.
 
+    - If deploying using the instructions outlined in the [Deploy Bigbang](#deploy-bigbang) section above, a `cypress` user will automatically be created in keycloak. This can be used as an alternative to manually creating a non-CAC user. The password can be found under `monitoring.values.bbtests.cypress.envs.cypress_tnr_password` in the Big Bang [test-values.yaml](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?) file.
+
 1. **Test End-to-End SSO:** Test SSO with Grafana (https://grafana.dev.bigbang.mil), Mattermost (https://chat.dev.bigbang.mil) and Sonarqube (https://sonarqube.dev.bigbang.mil) for both CAC and non-CAC users. Update the `sso.saml.metadata` value in your override file and re-run helm upgrade command for Sonarqube testing as noted previously.
 
 1. **Test Custom Plugin User Forms:** Verify the functionality of the custom user forms for account management.
@@ -202,6 +204,8 @@ This will deploy the following apps for testing:
     - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/password
     - https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/account/totp
     - https://keycloak.dev.bigbang.mil/register
+
+1. Once you've confirmed that the package tests above pass, also test your branch against Big Bang per the steps in this [document](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md).
 
 *Note: Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `scripts/certs/README.md` and copy the new `truststore.jks` to `chart/resources/dev` and to `development/certs`. You may need to edit `scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.*
 
