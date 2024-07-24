@@ -183,11 +183,11 @@ This will deploy the following apps for testing:
 
 ## Testing
 
-1. **Test Admin Console:** Access the Keycloak admin console at https://keycloak.dev.bigbang.mil/auth/admin/ using the default credentials (admin/password) and verify functionality. 
+1. **Test Admin Console:** Access the Keycloak admin console at https://keycloak.dev.bigbang.mil/auth/admin/ using the default credentials (admin/password) and verify functionality.
 
     - Note that this will log you into the `master` realm, *not* the `baby-yoda` realm.
 
-1. **Register Test Users:** Naviagte to https://keycloak.dev.bigbang.mil to create two test users in Keycloak, one with a CAC and one without (username/password/OTP). 
+1. **Register Test Users:** Naviagte to https://keycloak.dev.bigbang.mil to create two test users in Keycloak, one with a CAC and one without (username/password/OTP).
 
     - While creating and testing the non-CAC user, ensure there is no CAC supplied to the browser (either use an incognito window/new browser instance or disconnect the CAC/CAC Reader).
 
@@ -208,6 +208,46 @@ This will deploy the following apps for testing:
 1. Once you've confirmed that the package tests above pass, also test your branch against Big Bang per the steps in this [document](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md).
 
 *Note: Occasionally the DoD certificate authorities will need to be updated. Follow the instructions at `scripts/certs/README.md` and copy the new `truststore.jks` to `chart/resources/dev` and to `development/certs`. You may need to edit `scripts/certs/dod_cas_to_pem.sh` to update to the most recent published certs but it usually points to the latest archive.*
+
+## Files That Require Integration Testing
+
+Some things aren't tested by the package pipeline, but are tested by the BigBang pipeline. These need to be tested independently if updated:
+
+- SSO
+- ./chart/templates/bigbang/create-ci-cypress-user-hook.yaml
+- ./chart/templates/bigbang/istio/authorizationPolicies/ingressgateway-authz-policy.yaml
+- ./chart/templates/bigbang/istio/authorizationPolicies/keycloak-postgres-policy.yaml
+- ./chart/templates/bigbang/istio/authorizationPolicies/template.yaml
+- ./chart/templates/bigbang/keycloak-rolebinding-openshift-scc.yaml
+- ./chart/templates/bigbang/network-attachment-definition.yaml
+- ./chart/templates/bigbang/network-policies/additional-networkpolicies.yaml
+- ./chart/templates/bigbang/network-policies/egress-default-deny-all.yaml
+- ./chart/templates/bigbang/network-policies/egress-dns-http-https.yaml
+- ./chart/templates/bigbang/network-policies/egress-helm-test.yaml
+- ./chart/templates/bigbang/network-policies/egress-in-namespace.yaml
+- ./chart/templates/bigbang/network-policies/egress-istiod.yaml
+- ./chart/templates/bigbang/network-policies/egress-ldap.yaml
+- ./chart/templates/bigbang/network-policies/egress-postgres.yaml
+- ./chart/templates/bigbang/network-policies/egress-smtp.yaml
+- ./chart/templates/bigbang/network-policies/egress-tempo.yaml
+- ./chart/templates/bigbang/network-policies/ingress-allow-https.yaml
+- ./chart/templates/bigbang/network-policies/ingress-default-deny-all.yaml
+- ./chart/templates/bigbang/network-policies/ingress-in-namespace.yaml
+- ./chart/templates/bigbang/network-policies/ingress-internal-postgres.yaml
+- ./chart/templates/bigbang/network-policies/ingress-istio.yaml
+- ./chart/templates/bigbang/network-policies/ingress-jgroups.yaml
+- ./chart/templates/bigbang/network-policies/ingress-monitoring-sidecar.yaml
+- ./chart/templates/bigbang/network-policies/ingress-monitoring.yaml
+- ./chart/templates/bigbang/peer-authentication/ispn-ha-exception.yaml
+- ./chart/templates/bigbang/peer-authentication/peer-authentication.yaml
+- ./chart/templates/bigbang/peer-authentication/postgresException.yaml
+- ./chart/templates/bigbang/service-entries/serviceEntry.yaml
+- ./chart/templates/bigbang/sidecar/sidecar.yaml
+- ./chart/templates/bigbang/virtualservice.yaml
+
+## Instructions for Integration Testing
+
+See the [Big Bang Doc](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads)
 
 
 # Modifications made to upstream chart
