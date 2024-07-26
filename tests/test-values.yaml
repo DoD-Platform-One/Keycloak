@@ -1,7 +1,6 @@
-
 args:
   - "start-dev"
-  - "--import-realm" 
+  - "--import-realm"
 
 secrets:
   realm:
@@ -17,7 +16,6 @@ extraVolumeMounts: |-
   - name: realm
     mountPath: /opt/keycloak/data/import/realm.json
     subPath: realm.json
-
 
 bbtests:
   enabled: true
