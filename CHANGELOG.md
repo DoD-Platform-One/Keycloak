@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.4.3-bb.3] - 2024-08-01
+
+### Added
+
+- Added "start" argument to the chart/values.yaml.
+
 ## [2.4.3-bb.2] - 2024-07-19
 
 ### Added
