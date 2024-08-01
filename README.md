@@ -1,12 +1,11 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.4.3-bb.2](https://img.shields.io/badge/Version-2.4.3--bb.2-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
+![Version: 2.4.3-bb.3](https://img.shields.io/badge/Version-2.4.3--bb.3-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
 ## Upstream References
-
 * <https://www.keycloak.org/>
 
 * <https://github.com/codecentric/helm-charts>
@@ -15,10 +14,9 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 ### Upstream Release Notes
 
-* [Find upstream chart's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)
+- [Find upstream chart's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)
 
 ## Learn More
-
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -30,13 +28,12 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 Install Helm
 
-<https://helm.sh/docs/intro/install/>
+https://helm.sh/docs/intro/install/
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
-
 ```bash
 helm install keycloak chart/
 ```
@@ -82,7 +79,7 @@ helm install keycloak chart/
 | terminationGracePeriodSeconds | int | `60` |  |
 | clusterDomain | string | `"cluster.local"` |  |
 | command | list | `[]` |  |
-| args | list | `[]` |  |
+| args[0] | string | `"start"` |  |
 | extraEnv | string | `""` |  |
 | extraEnvFrom | string | `"- secretRef:\n    name: '{{ include \"keycloak.fullname\" . }}-env'\n"` |  |
 | priorityClassName | string | `""` |  |
@@ -293,3 +290,4 @@ Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in 
 ---
 
 _This file is programatically generated using `helm-docs` and some BigBang-specific templates. The `gluon` repository has [instructions for regenerating package READMEs](https://repo1.dso.mil/big-bang/product/packages/gluon/-/blob/master/docs/bb-package-readme.md)._
+

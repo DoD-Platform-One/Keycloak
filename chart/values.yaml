@@ -115,7 +115,9 @@ clusterDomain: cluster.local
 command: []
 
 ## Overrides the default args for the Keycloak container
-args: []
+## !! arg: "start" needs to be set for the container to start up properly !!
+args: 
+  - "start"
 
 # Additional environment variables for Keycloak
 # Any environment variables defined directly in the statefulset should be set with the appropriate values
