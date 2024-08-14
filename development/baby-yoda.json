@@ -327,6 +327,7 @@
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_prometheus": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_thanos": [],
       "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_holocron": [],
+      "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_fortify": [], 
       "account": [
         {
           "id": "9a61ae6b-aba7-47d0-a3b1-67e40ac4f5d1",
@@ -889,6 +890,72 @@
         "Gitlab"
       ],
       "optionalClientScopes": []
+    },
+    {
+      "id": "e6eff1eb-aaae-41cf-a555-1ba53ef01b00",
+      "clientId": "dev_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_fortify",
+      "name": "BigBang Dev Fortify",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "https://fortify.dev.bigbang.mil/service/sso/auth/keycloak",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "https://fortify.dev.bigbang.mil/saml/SSO/alias/",
+        "https://fortify.dogfood.bigbang.dev/saml/SSO/alias/",
+        "https://fortify.bigbang.dev/service/saml/SSO/alias/"
+      ],
+      "webOrigins": [
+        "https://fortify.dogfood.bigbang.dev",
+        "https://fortify.bigbang.dev",
+        "https://fortify.dev.bigbang.mil"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "saml",
+      "attributes": {
+        "saml.assertion.signature": "true",
+        "saml.force.post.binding": "true",
+        "saml.server.signature": "true",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml.signing.certificate": "MIIC7TCCAdUCBgGQ8LKCFjANBgkqhkiG9w0BAQsFADA6MTgwNgYDVQQDDC9kZXZfMDBlYjg5MDQtNWI4OC00YzY4LWFkNjctY2VjMGQyZTA3YWE2X2ZvcnRpZjAeFw0yNDA3MjYyMDE3MjhaFw0zNDA3MjYyMDE5MDhaMDoxODA2BgNVBAMML2Rldl8wMGViODkwNC01Yjg4LTRjNjgtYWQ2Ny1jZWMwZDJlMDdhYTZfZm9ydGlmMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiuWEFvW8sgrL8cwpoXIQXe0e6fv0QVGrKTpPaAUJ8wD1KOfjoaPsvQfJA3rY8TMSWtnHcW3lSvCCx8iv2ubB9GeUoJm89M0r1o0M6alvQSXGQ+SPjselFtJ9s4erWfKjC0jJaiVavqyP9r1yrNKOHjT+k98nDeuKvO3hLZd4k+WMfPvUap+J3sFR1bfzvQWN11aJ0yf++nE4oYoj5/QucN0old8dLNmzLWm+pgv60m2uhzD8DHaELEUWU5knY4ySXWGz0V1AUW58xsrse5S1PHO92EGuZuEQmTUtazVLaB+qyO1ehQ7d0DtkvxGeJ6DdfoQeIqCJIi4ciwNr9Nu9fwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQBgv1DWGBo6ltBG2mVImunO7rR5Ff28D7Pb9aWX2F+DZerhPBulymVDWdcsvUvgcjwUggprw/a9sx0bYwoGfg0TWx+xbtGqJazfQBBNcMSpCt43YrKfjysoY+hq7ybcm6NYHLszBxmjETXBxlNlM5fnIAuiX3svF8AfQT9XILYHM5gjXef/Q/plwNBUfZH/sMNcAhk3eQWZatxnERfUw4lqAl2hzVci5XdzP7al5/ZSmS+7JGC9qZUFF/Bs/O55ifD5DhCnRotldI60KH6ZuXge+kM2vUqWpXhNVYNpdtH01tXjyKECOsNdiYVw39xPUfWo9fOXvv3LFQVlNjfwH3ha",
+        "saml.artifact.binding.identifier": "wuHebJ6R+kv2qFq9mPE/JX/H1+k=",
+        "saml.artifact.binding": "false",
+        "saml.signature.algorithm": "RSA_SHA256",
+        "consent.screen.text": "This client is used for development support for Big Bang / Platform One.  Be sure that you are only using this client for development.",
+        "saml_force_name_id_format": "true",
+        "saml.client.signature": "true",
+        "saml.authnstatement": "true",
+        "display.on.consent.screen": "true",
+        "saml_name_id_format": "username",
+        "saml.signing.private.key": "MIIEowIBAAKCAQEAiuWEFvW8sgrL8cwpoXIQXe0e6fv0QVGrKTpPaAUJ8wD1KOfjoaPsvQfJA3rY8TMSWtnHcW3lSvCCx8iv2ubB9GeUoJm89M0r1o0M6alvQSXGQ+SPjselFtJ9s4erWfKjC0jJaiVavqyP9r1yrNKOHjT+k98nDeuKvO3hLZd4k+WMfPvUap+J3sFR1bfzvQWN11aJ0yf++nE4oYoj5/QucN0old8dLNmzLWm+pgv60m2uhzD8DHaELEUWU5knY4ySXWGz0V1AUW58xsrse5S1PHO92EGuZuEQmTUtazVLaB+qyO1ehQ7d0DtkvxGeJ6DdfoQeIqCJIi4ciwNr9Nu9fwIDAQABAoIBAD3HPxytOTwhlDucmOmvn7r/NFBTWf1Rk2U3g8ka8KVuiBylI3iqPiqH028iTWre0eup0M1RWXqfBjRRPXKKT7ti9NcH+mUR+s0nmJY3X/4kjI53EykpAHNptTJMhjjwNHfY7IkzSyzi+PeApQhccIzb+l2QFEFbQi6tSYorRJzXBYl8Y+L2SJAt0QWdyHfzBIipLCW8wDzxsujLQeg0/dYOeQ9Taf/aCFAVltJcy1g+t6WF8r/CoWVaCLCdUcngRr0L5bLS4Xtx6eFnoegENuV+0CWaSYHk5rzkGO4MqOh4Rw6y4ldUySbgcc9fK5MezhzkAVoggbKkfKZI69dLQ7kCgYEAvgTitu1hvx0ceFuQjrYJBZ3jh22049v3btf1m5/AOArpHroWOova+UQTkZwrWA5y64qXWySQVZ0TldzVD6busvtoDYo/9hYL7nbU5eRsfCggwGnBAx04QXT+z6dhTGi6uY7u2zHvVK/xV8ztHNQPIIQCXO3ichOxMzquFVwf4rcCgYEAuyBDMB9IRgMZfXKqDp/3Nc9D0J1S1wYPu/xv5knI4R9oGaIiKdRC8P48KL6U0PgMoDcmpMtqLtusvB7xWmxt4XGX5VZVXeJI8r57X6aMDEHMEgkjQ4uKbPLAeD4Jnwp8F5welex6ksAHpnd4sEGuR1Z3JL97e27GjGqggUW6E3kCgYBvvNu8ifaytWGqfN2SrgS8Is5LMv3uB8mGisPI0bXsvq26/d5YaylG7vs64sSyMTzuuT6rv+KIFagQth0r6RPwd9oGLEfUY758abBjx2Dr2YT44Lc5J5OPGkdEwL58ehFjUGOwzbpY6GVZJg5Ap4qFqlrhXpmMT3wiDd2UfenaHQKBgHoEaYtBerEcaEyirjznFh2iTwgC7feD3lKoIpc5WaFiB1FfpYM9A4F9ZeDzlLpGZIU8MRiYA18WoyXvz1U1CtlMZs2GZBfZ69NNXclbIksDxHumNbZfkR3FlLdTTJbGEXCbvl3oW2zBhruHf8z+pxOhUANIUM6FxzXceViSDOmRAoGBAI5Ne0v78LQubDIwdSRQHFzQc4PY+lKx/jnM4Y/kmK0TZSvzVanh8LRvWzmpbmG7cVyWa2Kkmwu/kOq85mIHzg4rukCZeTFIlVZUiuMgmlqC10LX4CBr/NF/yu3Z9NdbFmLvqBEDmzbastzmy5TBSZonRAkHh39/Iw6lqS8Xn3Ui",
+        "saml.allow.ecp.flow": "false",
+        "saml.onetimeuse.condition": "false",
+        "saml.server.signature.keyinfo.xmlSigKeyInfoKeyNameTransformer": "NONE",
+        "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "role_list"
+      ],
+      "optionalClientScopes": [],
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      }
     },
     {
       "id": "cd756309-03fe-4bfa-a544-a7de3e2a4825",
