@@ -119,6 +119,42 @@ secrets:
 ```
 _Note: OCSP [is been phased out](https://www.thesslstore.com/blog/ocsp-vs-crl-what-each-is-why-browsers-prefer-one-over-the-other/#h-ocsp-vs-crl-why-the-industry-is-shifting-away-from-ocsp) and [is no longer supported in >80% of web browsers](https://www.chromium.org/Home/chromium-security/crlsets) today with CRL's being the replacement. CRL's are the certificate revocation mechanism required by the W3C for all browser vendors. Firefox is one of the few web browsers that still uses OCSP for now._
 
+### Using System Truststore
+
+The HTTPS Truststore was deprecated in Keycloak 25.0 and an eventual plan to shift existing Truststores (housing certs related to validating CAC credentials) before support is fully removed. The Truststore is utilized to validate TLS traffic where Keycloak is a client (not server, which is handled by the `tls.key`, `tls.crt` files. This validation enables keycloak to trust upstream CA validation authorities)
+
+[Deployment of the System Truststore](https://www.keycloak.org/server/keycloak-truststore) can be completed by providing certificates in either .pfx, .pem, or .p12 form. A basic script to transition from .jks to .pfx is [provided](../scripts/certs/jks_to_pfx.sh).
+
+Once the certificates are prepared, they can be included in any Keycloak overrides under the `extraEnv`, `secrets.truststore`, `extraVolumes` and `extraVolumeMounts` keys as below:
+
+```
+extraVolumes: |-
+  ...
+  - name: truststore
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-truststore
+  ...
+extraVolumeMounts: |-
+  ...
+  - name: truststore
+    mountPath: /opt/keycloak/conf/truststore.pfx
+    subPath: truststore.pfx
+  ...
+secrets:
+  ...
+  truststore:
+    data:
+      truststore.pfx: '{{ .Files.Get "SYSTEM/PATH/TO/truststore.pfx" | b64enc }}'
+extraEnv: |-
+  ...
+  - name: KC_TRUSTSTORE_PATHS
+    value: /opt/keycloak/conf/truststore.pfx
+  ...
+```
+
+#### Upgrade Concerns
+  - If transitioning from the HTTPS Truststore to the System Truststore, the Keycloak Statefulset will likely need to be deleted during migration.
+
 ### Configuring Linux (Ubuntu) for CAC / Cert Testing
 - [All-in-one script](https://github.com/jdjaxon/linux_cac) to install CAC middleware and import DoD certificates to Chrome & Firefox
 - Other CAC resources: 
