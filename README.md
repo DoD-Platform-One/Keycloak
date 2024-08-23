@@ -1,12 +1,11 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.4.3-bb.4](https://img.shields.io/badge/Version-2.4.3--bb.4-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
+![Version: 2.4.3-bb.5](https://img.shields.io/badge/Version-2.4.3--bb.5-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
 ## Upstream References
-
 * <https://www.keycloak.org/>
 
 * <https://github.com/codecentric/helm-charts>
@@ -18,7 +17,6 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 * [Find upstream chart's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)
 
 ## Learn More
-
 * [Application Overview](docs/overview.md)
 * [Other Documentation](docs/)
 
@@ -30,13 +28,12 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 Install Helm
 
-<https://helm.sh/docs/intro/install/>
+https://helm.sh/docs/intro/install/
 
 ## Deployment
 
 * Clone down the repository
 * cd into directory
-
 ```bash
 helm install keycloak chart/
 ```
@@ -90,8 +87,7 @@ helm install keycloak chart/
 | topologySpreadConstraints | string | `nil` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
-| podLabels.app | string | `"keycloak"` |  |
-| podLabels.version | string | `"{{ .Chart.AppVersion }}"` |  |
+| podLabels | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | livenessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\nperiodSeconds: 15\n"` |  |
 | readinessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\n"` |  |
@@ -293,3 +289,4 @@ Please see the [contributing guide](./CONTRIBUTING.md) if you are interested in 
 ---
 
 _This file is programatically generated using `helm-docs` and some BigBang-specific templates. The `gluon` repository has [instructions for regenerating package READMEs](https://repo1.dso.mil/big-bang/product/packages/gluon/-/blob/master/docs/bb-package-readme.md)._
+
