@@ -187,9 +187,7 @@ nodeSelector: {}
 tolerations: []
 
 # Additional Pod labels
-podLabels:
-  app: keycloak
-  version: "{{ .Chart.AppVersion }}"
+podLabels: {}
 
 # Additional Pod annotations
 podAnnotations: {}

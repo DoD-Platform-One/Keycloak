@@ -28,12 +28,11 @@ spec:
     metadata:
       name: {{ template "common.names.fullname" . }}
       labels:
-      {{- include "bigbang.labels" . | nindent 8 }}
       {{- include "common.labels.standard" . | nindent 8 }}
         app.kubernetes.io/component: read
         role: read
 {{- with .Values.readReplicas.podLabels }}
-{{ toYaml . | indent 8 }}
+{{ tpl (toYaml . | indent 8) $ }}
 {{- end }}
 {{- with .Values.readReplicas.podAnnotations }}
       annotations:
