@@ -1,7 +1,7 @@
 apiVersion: v2
 name: keycloak
-version: 2.4.3-bb.5
-appVersion: 25.0.2
+version: 2.5.0-bb.0
+appVersion: 25.0.4
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:
   - sso
@@ -28,17 +28,17 @@ dependencies:
     repository: file://./deps/postgresql
     condition: postgresql.enabled
   - name: gluon
-    version: "0.5.0"
+    version: "0.5.3"
     repository: "oci://registry1.dso.mil/bigbang"
 annotations:
   bigbang.dev/applicationVersions: |
-    - Keycloak: 25.0.2
+    - Keycloak: 25.0.4
   helm.sh/images: |
     - name: keycloak
-      image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.2
+      image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:25.0.4
     - name: postgresl12
       condition: postgresql.enabled
-      image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.19
+      image: registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.20
     - name: base
       condition: bbtests.enabled
       image: registry1.dso.mil/ironbank/big-bang/base:2.1.0

@@ -36,27 +36,29 @@ addons:
     enabled: true
     # Add git branch or tag information to test against a specific branch or tag instead of using `main`
     # tag is higher precedence, and thus must be nulled to use a branch
-    # git:
-    #   tag: null
-    #   branch: "renovate/ironbank"
-    # values:
-    #   extraInitContainers: |-
-    #     - name: plugin
-    #       image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.5.0
-    #       imagePullPolicy: Always
-    #       command:
-    #       - sh
-    #       - -c
-    #       - |
-    #         cp /app/p1-keycloak-plugin.jar /init
-    #         ls -l /init
-    #       volumeMounts:
-    #       - name: plugin
-    #         mountPath: "/init"
-    #       securityContext:
-    #         capabilities:
-    #           drop:
-    #             - ALL
+    git:
+      tag: null
+      branch: "renovate/ironbank"
+    values:
+      # extraInitContainers: |-
+      #   - name: plugin
+      #     image: registry1.dso.mil/bigbang-staging/keycloak-p1-auth-plugin/init-container:test-3.5.6
+      #     imagePullPolicy: Always
+      #     command:
+      #     - sh
+      #     - -c
+      #     - |
+      #       cp /app/p1-keycloak-plugin.jar /init
+      #       ls -l /init
+      #     volumeMounts:
+      #     - name: plugin
+      #       mountPath: "/init"
+      #     securityContext:
+      #       capabilities:
+      #         drop:
+      #           - ALL
+    networkPolicies:
+      enabled: true
 
   authservice:
     enabled: true
