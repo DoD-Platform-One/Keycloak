@@ -11,7 +11,7 @@ image:
   # The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
   # Overrides the Keycloak image tag whose default is the chart appVersion
-  tag: "25.0.2"
+  tag: "25.0.4"
   # Overrides the Keycloak image tag with a specific digest
   digest: ""
   # The Keycloak image pull policy
@@ -201,13 +201,15 @@ livenessProbe: |
   failureThreshold: 15
   timeoutSeconds: 2
   periodSeconds: 15
+  initialDelaySeconds: 0
 
 # Revisit after enabling management port
 # livenessProbe: |
 #   httpGet:
 #     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health/live'
 #     port: '{{ .Values.http.internalPort }}'
-#   initialDelaySeconds: 0
+#     scheme: '{{ .Values.http.internalScheme }}'
+# initialDelaySeconds: 0
 #   timeoutSeconds: 5
 
 # Readiness probe configuration
@@ -218,6 +220,7 @@ readinessProbe: |
     scheme: HTTP
   failureThreshold: 15
   timeoutSeconds: 2
+  initialDelaySeconds: 10
 
 # Revisit after enabling management port
 # readinessProbe: |
@@ -449,7 +452,7 @@ dbchecker:
     # Docker image used to check Postgresql readiness at startup
     repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql12
     # Image tag for the pgchecker image
-    tag: 12.19
+    tag: "12.20"
     # Image pull policy for the dbchecker image
     pullPolicy: IfNotPresent
   # SecurityContext for the dbchecker container
@@ -491,7 +494,7 @@ postgresql:
   image:
     registry: registry1.dso.mil
     repository: ironbank/opensource/postgres/postgresql12
-    tag: 12.19
+    tag: "12.20"
   securityContext:
     enabled: true
     fsGroup: 26
@@ -545,6 +548,7 @@ http:
   # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
   relativePath: "/auth"
   internalPort: http-internal
+  internalScheme: HTTP
 
 serviceMonitor:
   # If `true`, a ServiceMonitor resource for the prometheus-operator is created

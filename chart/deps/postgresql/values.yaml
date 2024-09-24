@@ -15,7 +15,7 @@ global:
 image:
   registry: registry1.dso.mil
   repository: ironbank/opensource/postgres/postgresql12
-  tag: 12.19
+  tag: "12.20"
   pullSecrets:
     - private-registry
   ## Specify a imagePullPolicy

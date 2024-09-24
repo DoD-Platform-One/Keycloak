@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.4.3-bb.5](https://img.shields.io/badge/Version-2.4.3--bb.5-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
+![Version: 2.5.0-bb.0](https://img.shields.io/badge/Version-2.5.0--bb.0-informational?style=flat-square) ![AppVersion: 25.0.4](https://img.shields.io/badge/AppVersion-25.0.4-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -46,7 +46,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"25.0.2"` |  |
+| image.tag | string | `"25.0.4"` |  |
 | image.digest | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
@@ -89,8 +89,8 @@ helm install keycloak chart/
 | tolerations | list | `[]` |  |
 | podLabels | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
-| livenessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\nperiodSeconds: 15\n"` |  |
-| readinessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\n"` |  |
+| livenessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\nperiodSeconds: 15\ninitialDelaySeconds: 0\n"` |  |
+| readinessProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\n  scheme: HTTP\nfailureThreshold: 15\ntimeoutSeconds: 2\ninitialDelaySeconds: 10\n"` |  |
 | startupProbe | string | `"httpGet:\n  path: /auth/realms/master\n  port: http\ninitialDelaySeconds: 90\ntimeoutSeconds: 2\nfailureThreshold: 60\nperiodSeconds: 5\n"` |  |
 | resources.requests.cpu | string | `"1"` |  |
 | resources.requests.memory | string | `"1Gi"` |  |
@@ -151,7 +151,7 @@ helm install keycloak chart/
 | route.tls.termination | string | `"edge"` |  |
 | dbchecker.enabled | bool | `true` |  |
 | dbchecker.image.repository | string | `"registry1.dso.mil/ironbank/opensource/postgres/postgresql12"` |  |
-| dbchecker.image.tag | float | `12.19` |  |
+| dbchecker.image.tag | string | `"12.20"` |  |
 | dbchecker.image.pullPolicy | string | `"IfNotPresent"` |  |
 | dbchecker.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | dbchecker.securityContext.runAsUser | int | `1000` |  |
@@ -170,7 +170,7 @@ helm install keycloak chart/
 | postgresql.global.imagePullSecrets[0] | string | `"private-registry"` |  |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/opensource/postgres/postgresql12"` |  |
-| postgresql.image.tag | float | `12.19` |  |
+| postgresql.image.tag | string | `"12.20"` |  |
 | postgresql.securityContext.enabled | bool | `true` |  |
 | postgresql.securityContext.fsGroup | int | `26` |  |
 | postgresql.securityContext.runAsUser | int | `1000` |  |
@@ -198,6 +198,7 @@ helm install keycloak chart/
 | health.enabled | bool | `true` |  |
 | http.relativePath | string | `"/auth"` |  |
 | http.internalPort | string | `"http-internal"` |  |
+| http.internalScheme | string | `"HTTP"` |  |
 | serviceMonitor.enabled | bool | `false` |  |
 | serviceMonitor.namespace | string | `""` |  |
 | serviceMonitor.namespaceSelector | object | `{}` |  |
