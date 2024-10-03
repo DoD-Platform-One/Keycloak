@@ -45,7 +45,7 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
     ```bash
     helm dependency update ./chart
     ```
-1. **Build and Publish Plugin Image:** Follow the instructions in the P1 plugin repository to build and publish a new plugin image to the IronBank container registry. Use a test label for the image initially.
+1. **Build and Publish Plugin Image:** Follow the [instructions](https://repo1.dso.mil/big-bang/product/plugins/keycloak-p1-auth-plugin/-/blob/main/docs/DEVELOPMENT_MAINTENANCE.md) in the P1 plugin repository to build and publish a new plugin image to the IronBank container registry. Use a test label for the image initially.
 
 1. **Test Keycloak and Plugin:** Conduct thorough testing of Keycloak, the custom plugin, and end-to-end SSO using a full k8s deployment. Refer to the [Testing with custom P1 plugin](#testing-with-custom-p1-plugin) section for detailed instructions.
     - Test the admin console
@@ -312,7 +312,7 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 
 ## chart/deps/postgresql/templates/statefulset.yaml
 - commented out existing `-if -else` securityContext and replaced with
-- `{{- toYaml $.Values.postgesql.containerSecurityContext | nindent 12 }}`
+- `{{- toYaml $.Values.postgresql.containerSecurityContext | nindent 12 }}`
 - Update to use `tpl` for `.Values.primary.podLabels`
 
 ## chart/deps/postgresql/templates/statefulset-readreplicas.yaml

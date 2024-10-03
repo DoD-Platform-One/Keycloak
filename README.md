@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.5.0-bb.0](https://img.shields.io/badge/Version-2.5.0--bb.0-informational?style=flat-square) ![AppVersion: 25.0.4](https://img.shields.io/badge/AppVersion-25.0.4-informational?style=flat-square)
+![Version: 2.5.1-bb.0](https://img.shields.io/badge/Version-2.5.1--bb.0-informational?style=flat-square) ![AppVersion: 25.0.6](https://img.shields.io/badge/AppVersion-25.0.6-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -46,7 +46,7 @@ helm install keycloak chart/
 | nameOverride | string | `""` |  |
 | replicas | int | `1` |  |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` |  |
-| image.tag | string | `"25.0.4"` |  |
+| image.tag | string | `"25.0.6"` |  |
 | image.digest | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets[0].name | string | `"private-registry"` |  |
