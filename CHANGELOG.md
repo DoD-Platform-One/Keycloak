@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [2.5.0-bb.0] - 2024-09-17
 
 ### Updated
+- Keycloak -> 25.0.6
+- Gluon -> 0.5.4
+
+## [2.5.0-bb.0] - 2024-09-17
+
+### Updated
 
 - Keycloak to -> 25.0.4
 - Postgresql -> 12.20
