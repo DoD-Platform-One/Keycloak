@@ -37,7 +37,7 @@ Big Bang makes modifications to the upstream Codecentric helm chart. The upstrea
         image: registry1.dso.mil/ironbank/big-bang/base:X.X.X
     ```
 
-1. **Update CHANGELOG.md:** Add an entry describing the upgrade, including the new Keycloak and chart versions.
+1. **Update CHANGELOG.md:** Add an entry describing the upgrade, including the new Keycloak, p1-keycloak-plugin and chart versions.
 
 1. **Update README.md:** Update the file following the [gluon library script](https://repo1.dso.mil/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md) guidelines noting any additional chart changes you make during development testing.
 
