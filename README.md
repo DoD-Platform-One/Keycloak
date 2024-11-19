@@ -1,30 +1,31 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.5.1-bb.0](https://img.shields.io/badge/Version-2.5.1--bb.0-informational?style=flat-square) ![AppVersion: 25.0.6](https://img.shields.io/badge/AppVersion-25.0.6-informational?style=flat-square)
+![Version: 2.5.1-bb.1](https://img.shields.io/badge/Version-2.5.1--bb.1-informational?style=flat-square) ![AppVersion: 25.0.6](https://img.shields.io/badge/AppVersion-25.0.6-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
 ## Upstream References
-* <https://www.keycloak.org/>
+- <https://www.keycloak.org/>
 
-* <https://github.com/codecentric/helm-charts>
-* <https://github.com/keycloak/keycloak/tree/main/quarkus/container>
-* <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
+- <https://github.com/codecentric/helm-charts>
+- <https://github.com/keycloak/keycloak/tree/main/quarkus/container>
+- <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
 
-### Upstream Release Notes
+## Upstream Release Notes
 
-* [Find upstream chart's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)
+- [Find upstream chart's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)
 
 ## Learn More
-* [Application Overview](docs/overview.md)
-* [Other Documentation](docs/)
+
+- [Application Overview](docs/overview.md)
+- [Other Documentation](docs/)
 
 ## Pre-Requisites
 
-* Kubernetes Cluster deployed
-* Kubernetes config installed in `~/.kube/config`
-* Helm installed
+- Kubernetes Cluster deployed
+- Kubernetes config installed in `~/.kube/config`
+- Helm installed
 
 Install Helm
 
@@ -32,8 +33,9 @@ https://helm.sh/docs/intro/install/
 
 ## Deployment
 
-* Clone down the repository
-* cd into directory
+- Clone down the repository
+- cd into directory
+
 ```bash
 helm install keycloak chart/
 ```

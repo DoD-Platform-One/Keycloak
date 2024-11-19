@@ -317,3 +317,6 @@ This is a high-level list of modifications that Big Bang has made to the upstrea
 
 ## chart/deps/postgresql/templates/statefulset-readreplicas.yaml
 - Update to use `tpl` for `.Values.readReplicas.podLabels`
+
+## charts/.helmignore
+- Added /resources/dev/truststore.pfx to alleviate helm deployment secret size limits
