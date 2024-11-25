@@ -6,6 +6,7 @@ metadata:
   name: "{{ template "common.names.fullname" . }}-read"
   labels: {{- include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: read
+    app.kubernetes.io/version: {{ .Values.image.tag | quote}}
 {{- with .Values.readReplicas.labels }}
 {{ toYaml . | indent 4 }}
 {{- end }}
@@ -29,6 +30,7 @@ spec:
       name: {{ template "common.names.fullname" . }}
       labels:
       {{- include "common.labels.standard" . | nindent 8 }}
+        app.kubernetes.io/version: {{ .Values.image.tag | quote }}
         app.kubernetes.io/component: read
         role: read
 {{- with .Values.readReplicas.podLabels }}
