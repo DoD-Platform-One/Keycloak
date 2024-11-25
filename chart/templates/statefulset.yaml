@@ -34,7 +34,7 @@ spec:
         {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "keycloak.selectorLabels" . | nindent 8 }}
+        {{- include "keycloak.labels" . | nindent 8 }}
         {{- if and .Values.postgresql.enabled (and .Values.postgresql.networkPolicy .Values.postgresql.networkPolicy.enabled) }}
         {{ include "keycloak.postgresql.fullname" . }}-client: "true"
         {{- end }}
