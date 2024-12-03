@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Updated
 - added kubernetes version labels to Keycloak and Postgresql
+- Added the maintenance track annotation and badge
 
 ## [2.5.1-bb.1] - 2024-11-19
 
