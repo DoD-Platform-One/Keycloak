@@ -1,16 +1,16 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.5.1-bb.2](https://img.shields.io/badge/Version-2.5.1--bb.2-informational?style=flat-square) ![AppVersion: 25.0.6](https://img.shields.io/badge/AppVersion-25.0.6-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 2.5.1-bb.3](https://img.shields.io/badge/Version-2.5.1--bb.3-informational?style=flat-square) ![AppVersion: 25.0.6](https://img.shields.io/badge/AppVersion-25.0.6-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
 ## Upstream References
 - <https://www.keycloak.org/>
 
-* <https://github.com/codecentric/helm-charts>
-* <https://github.com/keycloak/keycloak/tree/main/quarkus/container>
-* <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
+- <https://github.com/codecentric/helm-charts>
+- <https://github.com/keycloak/keycloak/tree/main/quarkus/container>
+- <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
 
 ## Upstream Release Notes
 

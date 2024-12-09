@@ -23,6 +23,5 @@ examples/
 .idea/
 *.tmproj
 .vscode/
-# Keycloak System Truststore
-/resources/dev/truststore.pfx
+
 
