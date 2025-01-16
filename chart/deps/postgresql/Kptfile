@@ -7,12 +7,12 @@ upstream:
   git:
     repo: https://github.com/bitnami/charts
     directory: /bitnami/postgresql
-    ref: 0391090fe16c1c9b80300bd5c24c76b52bcfc169
+    ref: d278c2b6792e02c5f327e96df4f031cab7bc0819
   updateStrategy: resource-merge
 upstreamLock:
   type: git
   git:
     repo: https://github.com/bitnami/charts
     directory: /bitnami/postgresql
-    ref: 0391090fe16c1c9b80300bd5c24c76b52bcfc169
-    commit: 0391090fe16c1c9b80300bd5c24c76b52bcfc169
+    ref: d278c2b6792e02c5f327e96df4f031cab7bc0819
+    commit: d278c2b6792e02c5f327e96df4f031cab7bc0819

@@ -57,7 +57,7 @@ spec:
             - |
               echo 'Waiting for PostgreSQL to become ready...'
 
-              until pg_isready -h {{ include "keycloak.postgresql.fullname" . }} -p {{ .Values.postgresql.service.port }} -U {{ .Values.postgresql.postgresqlUsername }}; do sleep 2; done
+              until pg_isready -h {{ include "keycloak.postgresql.fullname" . }} -p {{ .Values.postgresql.service.port }} -U {{ .Values.postgresql.auth.username }}; do sleep 2; done
 
               echo 'PostgreSQL OK ✓'
           env:
@@ -153,7 +153,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ include "keycloak.postgresql.fullname" . }}
-                  key: postgresql-password
+                  key: password
             {{- end }}
             {{- if .Values.metrics.enabled }}
             - name: KC_METRICS_ENABLED
