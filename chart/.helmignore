@@ -1,5 +1,4 @@
-# Patterns to ignore when building packages.
-# This supports shell glob matching, relative path matching, and
+# Patterns to ignore when building packages. This supports shell glob matching, relative path matching, and
 # negation (prefixed with !). Only one pattern per line.
 .DS_Store
 # Common VCS dirs
@@ -12,7 +11,13 @@
 .svn/
 ci/
 examples/
+Kptfile
+OWNERS
+README.md
+Chart.lock
+#resources/dev/truststore.pfx
 # Common backup files
+deps/postgresql/charts/*.tgz
 *.swp
 *.bak
 *.tmp
@@ -23,5 +28,3 @@ examples/
 .idea/
 *.tmproj
 .vscode/
-
-

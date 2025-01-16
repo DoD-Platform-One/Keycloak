@@ -19,7 +19,7 @@ image:
 
 # Image pull secrets for the Pod
 imagePullSecrets:
-- name: private-registry
+  - name: private-registry
 
 # Mapping between IPs and hostnames that will be injected as entries in the Pod's hosts files
 hostAliases: []
@@ -116,7 +116,7 @@ command: []
 
 ## Overrides the default args for the Keycloak container
 ## !! arg: "start" needs to be set for the container to start up properly !!
-args: 
+args:
   - "start"
 
 # Additional environment variables for Keycloak
@@ -256,7 +256,6 @@ resources:
     cpu: "1"
     memory: "1Gi"
   limits:
-    cpu: "1"
     memory: "1Gi"
 
 # Add additional volumes, e. g. for custom themes
@@ -356,27 +355,28 @@ ingress:
   # The Service port targeted by the Ingress
   servicePort: http
   # Ingress annotations
-  annotations: {}
+  annotations:
+    {}
     ## Resolve HTTP 502 error using ingress-nginx:
     ## See https://www.ibm.com/support/pages/502-error-ingress-keycloak-response
     # nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
 
   # Additional Ingress labels
-  labels: {}
-   # List of rules for the Ingress
+  labels:
+    {}
+    # List of rules for the Ingress
   rules:
-    -
-      # Ingress host
-      host: '{{ .Release.Name }}.keycloak.example.com'
+    - # Ingress host
+      host: "{{ .Release.Name }}.keycloak.example.com"
       # Paths for the host
       paths:
         - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/'
           pathType: Prefix
-# Example TLS configuration
-#   tls:
-#     - hosts:
-#         - keycloak.example.com
-#       secretName: ""
+  # Example TLS configuration
+  #   tls:
+  #     - hosts:
+  #         - keycloak.example.com
+  #       secretName: ""
 
   # ingress for console only (/auth/admin)
   console:
@@ -388,9 +388,8 @@ ingress:
     # Useful to set nginx.ingress.kubernetes.io/whitelist-source-range particularly
     annotations: {}
     rules:
-      -
-        # Ingress host
-        host: '{{ .Release.Name }}.keycloak.example.com'
+      - # Ingress host
+        host: "{{ .Release.Name }}.keycloak.example.com"
         # Paths for the host
         paths:
           - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/admin'
@@ -450,9 +449,9 @@ dbchecker:
   enabled: true
   image:
     # Docker image used to check Postgresql readiness at startup
-    repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql12
+    repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql-alpine
     # Image tag for the pgchecker image
-    tag: "12.20"
+    tag: "15.10"
     # Image pull policy for the dbchecker image
     pullPolicy: IfNotPresent
   # SecurityContext for the dbchecker container
@@ -470,18 +469,18 @@ dbchecker:
       cpu: "250m"
       memory: "256Mi"
     limits:
-      cpu: "250m"
       memory: "256Mi"
 
 postgresql:
   # If `true`, the Postgresql dependency is enabled
   enabled: true
   # PostgreSQL User to create
-  postgresqlUsername: keycloak
   # PostgreSQL Password for the new user
-  postgresqlPassword: keycloak
   # PostgreSQL Database to create
-  postgresqlDatabase: keycloak
+  auth:
+    username: keycloak
+    password: keycloak
+    database: keycloak
   # PostgreSQL network policy configuration
   networkPolicy:
     enabled: false
@@ -493,26 +492,25 @@ postgresql:
       - private-registry
   image:
     registry: registry1.dso.mil
-    repository: ironbank/opensource/postgres/postgresql12
-    tag: "12.20"
-  securityContext:
-    enabled: true
-    fsGroup: 26
-    runAsUser: 1000
-    runAsGroup: 1000
-  containerSecurityContext:
-    enabled: true
-    runAsUser: 26
-    capabilities:
-      drop:
-        - ALL
-  resources:
-    requests:
-      cpu: "250m"
-      memory: "256Mi"
-    limits:
-      cpu: "250m"
-      memory: "256Mi"
+    repository: ironbank/opensource/postgres/postgresql-alpine
+    tag: "15.10"
+  service:
+    port: 5432
+  primary:
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      seccompProfile:
+        type: RuntimeDefault
+      capabilities:
+        drop:
+          - ALL
 
 database:
   # don't create secret for db password. Instead use existing k8s secret
@@ -568,7 +566,7 @@ serviceMonitor:
   # The path at which metrics are served
   path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/metrics'
   # The Service port at which metrics are served
-  port: '{{ .Values.http.internalPort }}'
+  port: "{{ .Values.http.internalPort }}"
   # added by Big Bang to support Istio mTLS
   scheme: ""
   tlsConfig: {}
@@ -591,7 +589,7 @@ extraServiceMonitor:
   # The path at which metrics are served
   path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/metrics'
   # The Service port at which metrics are served
-  port: '{{ .Values.http.internalPort }}'
+  port: "{{ .Values.http.internalPort }}"
   # added by Big Bang to support Istio mTLS
   scheme: ""
   tlsConfig: {}
@@ -685,12 +683,14 @@ istio:
   # Toggle istio hardening
   hardened:
     enabled: false
-    customAuthorizationPolicies: []
+    customAuthorizationPolicies:
+      []
       # - name: "allow-nothing"
       #   enabled: true
       #   spec: {}
     outboundTrafficPolicyMode: "REGISTRY_ONLY"
-    customServiceEntries: []
+    customServiceEntries:
+      []
       # - name: "allow-google"
       #   enabled: true
       #   spec:

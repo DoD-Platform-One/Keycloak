@@ -3,25 +3,38 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [2.5.1-bb.5] - 2025-01-14
+
+### Updated
+
+- Updated the Postgresql dependency chart to Postgresql version `15.10` to replace the unsupported Postgresql version `12`
+- Postgresql --> 15.10
+- Gluon --> 0.5.12
+
 ## [2.5.1-bb.3] - 2024-12-09
 
 ### Updated
+
 - Re-added truststore.pfx as the omission of the file in 2.5.1-bb.1 was causing issue for customers that use the truststore
 
 ## [2.5.1-bb.2] - 2024-11-22
 
 ### Updated
+
 - added kubernetes version labels to Keycloak and Postgresql
 - Added the maintenance track annotation and badge
 
 ## [2.5.1-bb.1] - 2024-11-19
 
 ### Updated
+
 - Added truststore.pfx to .helmignore file to alleviate helm deployment secret size issues
 
 ## [2.5.1-bb.0] - 2024-10-03
 
 ### Updated
+
 - Keycloak -> 25.0.6
 - Gluon -> 0.5.4
 - p1-keycloak-plugin -> 3.5.7
