@@ -1,81 +1,80 @@
-# Optionally override the fully qualified name
+# -- Optionally override the fully qualified name
 fullnameOverride: ""
 
-# Optionally override the name
+# -- Optionally override the name
 nameOverride: ""
 
-# The number of replicas to create (has no effect if autoscaling enabled)
+# -- The number of replicas to create (has no effect if autoscaling enabled)
 replicas: 1
 
 image:
-  # The Keycloak image repository
+  # -- The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
-  # Overrides the Keycloak image tag whose default is the chart appVersion
+  # -- Overrides the Keycloak image tag; default is the chart appVersion
   tag: "25.0.6"
-  # Overrides the Keycloak image tag with a specific digest
+  # -- Overrides the Keycloak image tag with a specific digest
   digest: ""
-  # The Keycloak image pull policy
+  # -- The Keycloak image pull policy
   pullPolicy: IfNotPresent
 
-# Image pull secrets for the Pod
+# -- Image pull secrets for the Pod
 imagePullSecrets:
   - name: private-registry
 
-# Mapping between IPs and hostnames that will be injected as entries in the Pod's hosts files
+# -- Mapping between IPs and hostnames that will be injected as entries in the Pod's hosts files
 hostAliases: []
 # - ip: "1.2.3.4"
 #   hostnames:
-#     - "my.host.com"
+#   - "my.host.com"
 
-# Indicates whether information about services should be injected into Pod's environment variables, matching the syntax of Docker links
+# -- Indicates whether information about services should be injected into Pod's environment variables, matching the syntax of Docker links
 enableServiceLinks: true
 
-# Pod management policy. One of `Parallel` or `OrderedReady`
+# -- Pod management policy. One of `Parallel` or `OrderedReady`
 podManagementPolicy: Parallel
 
-# StatefulSet's update strategy
+# -- StatefulSet's update strategy
 updateStrategy: RollingUpdate
 
-# Pod restart policy. One of `Always`, `OnFailure`, or `Never`
+# -- Pod restart policy. One of `Always`, `OnFailure`, or `Never`
 restartPolicy: Always
 
 serviceAccount:
-  # Specifies whether a ServiceAccount should be created
+  # -- Specifies whether a ServiceAccount should be created
   create: true
-  # Specifies whether the ServiceAccount can get and list pods
+  # -- Specifies whether the ServiceAccount can get and list pods
   allowReadPods: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
-  # Additional annotations for the ServiceAccount
+  # -- Additional annotations for the ServiceAccount
   annotations: {}
-  # Additional labels for the ServiceAccount
+  # -- Additional labels for the ServiceAccount
   labels: {}
-  # Image pull secrets that are attached to the ServiceAccount
+  # -- Image pull secrets that are attached to the ServiceAccount
   imagePullSecrets: []
-  # Automount API credentials for the Service Account
+  # -- Automount API credentials for the Service Account
   automountServiceAccountToken: true
 
 rbac:
   create: false
   rules: []
-  # RBAC rules for KUBE_PING
+  # -- RBAC rules for KUBE_PING
   #  - apiGroups:
-  #      - ""
+  #    - ""
   #    resources:
-  #      - pods
+  #    - pods
   #    verbs:
-  #      - get
-  #      - list
+  #    - get
+  #    - list
 
-# SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
+# -- SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
 podSecurityContext:
   fsGroup: 2000
   runAsUser: 2000
   runAsGroup: 2000
   runAsNonRoot: true
 
-# SecurityContext for the Keycloak container
+# -- SecurityContext for the Keycloak container
 securityContext:
   runAsUser: 2000
   runAsGroup: 2000
@@ -84,19 +83,19 @@ securityContext:
     drop:
       - ALL
 
-# Additional init containers, e. g. for providing custom themes
+# -- Additional init containers, e. g. for providing custom themes
 extraInitContainers: ""
 
-# When using service meshes which rely on a sidecar, it may be necessary to skip init containers altogether,
+# -- When using service meshes which rely on a sidecar, it may be necessary to skip init containers altogether,
 # since the sidecar doesn't start until the init containers are done, and the sidecar may be required
 # for network access.
 # For example, Istio in strict mTLS mode prevents the dbchecker init container from ever completing
 skipInitContainers: false
 
-# Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy
+# -- Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy
 extraContainers: ""
 
-# Lifecycle hooks for the Keycloak container
+# -- Lifecycle hooks for the Keycloak container
 lifecycleHooks: |
 #  postStart:
 #    exec:
@@ -105,21 +104,21 @@ lifecycleHooks: |
 #        - -c
 #        - ls
 
-# Termination grace period in seconds for Keycloak shutdown. Clusters with a large cache might need to extend this to give Infinispan more time to rebalance
+# -- Termination grace period in seconds for Keycloak shutdown. Clusters with a large cache might need to extend this to give Infinispan more time to rebalance
 terminationGracePeriodSeconds: 60
 
-# The internal Kubernetes cluster domain
+# -- The internal Kubernetes cluster domain
 clusterDomain: cluster.local
 
-## Overrides the default entrypoint of the Keycloak container
+# -- Overrides the default entrypoint of the Keycloak container
 command: []
 
-## Overrides the default args for the Keycloak container
-## !! arg: "start" needs to be set for the container to start up properly !!
+# -- Overrides the default args for the Keycloak container
+# **arg: "start" needs to be set for the container to start up properly**
 args:
   - "start"
 
-# Additional environment variables for Keycloak
+# -- Additional environment variables for Keycloak
 # Any environment variables defined directly in the statefulset should be set with the appropriate values
 # rather than set here, which will potentially produce duplicates and helm upgrade errors
 # https://www.keycloak.org/server/all-config
@@ -142,16 +141,15 @@ extraEnv: ""
 #   - name: KC_LOG_LEVEL
 #     value: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
 
-# Additional environment variables for Keycloak mapped from Secret or ConfigMap
-#### Updated for Big Bang ####
+# -- Additional environment variables for Keycloak mapped from Secret or ConfigMap
 extraEnvFrom: |
   - secretRef:
       name: '{{ include "keycloak.fullname" . }}-env'
 
-#  Pod priority class name
+# --  Pod priority class name
 priorityClassName: ""
 
-# Pod affinity
+# -- Pod affinity
 affinity: |
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -177,22 +175,22 @@ affinity: |
                   - test
           topologyKey: topology.kubernetes.io/zone
 
-# Topology spread constraints template
+# -- Topology spread constraints template
 topologySpreadConstraints:
 
-# Node labels for Pod assignment
+# -- Node labels for Pod assignment
 nodeSelector: {}
 
-# Node taints to tolerate
+# -- Node taints to tolerate
 tolerations: []
 
-# Additional Pod labels
+# -- Additional Pod labels
 podLabels: {}
 
-# Additional Pod annotations
+# -- Additional Pod annotations
 podAnnotations: {}
 
-# Liveness probe configuration
+# -- Liveness probe configuration
 livenessProbe: |
   httpGet:
     path: /auth/realms/master
@@ -203,7 +201,7 @@ livenessProbe: |
   periodSeconds: 15
   initialDelaySeconds: 0
 
-# Revisit after enabling management port
+# TODO: Revisit after enabling management port
 # livenessProbe: |
 #   httpGet:
 #     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health/live'
@@ -212,7 +210,7 @@ livenessProbe: |
 # initialDelaySeconds: 0
 #   timeoutSeconds: 5
 
-# Readiness probe configuration
+# -- Readiness probe configuration
 readinessProbe: |
   httpGet:
     path: /auth/realms/master
@@ -222,7 +220,7 @@ readinessProbe: |
   timeoutSeconds: 2
   initialDelaySeconds: 10
 
-# Revisit after enabling management port
+# TODO: Revisit after enabling management port
 # readinessProbe: |
 #   httpGet:
 #     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health/ready'
@@ -230,7 +228,7 @@ readinessProbe: |
 #   initialDelaySeconds: 10
 #   timeoutSeconds: 1
 
-# Startup probe configuration
+# -- Startup probe configuration
 startupProbe: |
   httpGet:
     path: /auth/realms/master
@@ -240,7 +238,7 @@ startupProbe: |
   failureThreshold: 60
   periodSeconds: 5
 
-# Revisit after enabling management port
+# TODO: Revisit after enabling management port
 # startupProbe: |
 #   httpGet:
 #     path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/health'
@@ -250,7 +248,7 @@ startupProbe: |
 #   failureThreshold: 60
 #   periodSeconds: 5
 
-# Pod resource requests and limits
+# -- Pod resource requests and limits
 resources:
   requests:
     cpu: "1"
@@ -258,37 +256,35 @@ resources:
   limits:
     memory: "1Gi"
 
-# Add additional volumes, e. g. for custom themes
+# -- Add additional volumes, e. g. for custom themes
 extraVolumes: ""
 
-#### added by Big Bang ####
-# This values key is reserved for integration with BigBang chart
+# -- This values key is reserved for integration with BigBang chart
 extraVolumesBigBang: {}
 
-# Add additional volumes mounts, e. g. for custom themes
+# -- Add additional volumes mounts, e. g. for custom themes
 extraVolumeMounts: ""
 
-#### added by Big Bang ####
-# This values key is reserved for integration with BigBang chart
+# -- This values key is reserved for integration with BigBang chart
 extraVolumeMountsBigBang: {}
 
-# Add additional ports, e. g. for admin console or exposing JGroups ports
+# -- Add additional ports, e. g. for admin console or exposing JGroups ports
 extraPorts: []
 
-# Pod disruption budget
+# -- Pod disruption budget
 podDisruptionBudget: {}
-#  maxUnavailable: 1
-#  minAvailable: 1
+# maxUnavailable: 1
+# minAvailable: 1
 
-# Annotations for the StatefulSet
+# -- Annotations for the StatefulSet
 statefulsetAnnotations: {}
 
-# Additional labels for the StatefulSet
+# -- Additional labels for the StatefulSet
 statefulsetLabels: {}
 
-# Configuration for secrets that should be created
-## The secrets can also be independently created separate from this helm chart.
-## for example with a gitops tool like flux with a kustomize overlay.
+# -- Configuration for secrets that should be created
+# The secrets can also be independently created separate from this helm chart.
+# for example with a gitops tool like flux with a kustomize overlay.
 secrets:
   # mysecret:
   #   type: {}
@@ -296,79 +292,86 @@ secrets:
   #   labels: {}
   #   stringData: {}
   #   data: {}
-  #### Added for Big Bang ####
-  # Environmental variables
+
+  # -- Environmental variables
   env:
     stringData:
-      # https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index
+      # -- https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index
       JAVA_TOOL_OPTIONS: "-Dcom.redhat.fips=false"
-      # default admin credentials. Override them for production deployments
+      # -- default admin credentials. Override them for production deployments
       KEYCLOAK_ADMIN: "admin"
       KEYCLOAK_ADMIN_PASSWORD: "password"
-      # java opts for jgroups required for infinispan distributed cache when using the kubernetes stack.
-      # https://www.keycloak.org/server/caching
+      # -- java opts for jgroups required for infinispan distributed cache when using the kubernetes stack.
+      # -- https://www.keycloak.org/server/caching
       JAVA_OPTS_APPEND: -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
 
 service:
-  # Annotations for HTTP service
+  # -- Annotations for HTTP service
   annotations: {}
-  # Additional labels for headless and HTTP Services
+
+  # -- Additional labels for headless and HTTP Services
   labels: {}
   # key: value
-  # The Service type
+
+  # -- The Service type
   type: ClusterIP
-  # Optional IP for the load balancer. Used for services of type LoadBalancer only
+
+  # -- Optional IP for the load balancer. Used for services of type LoadBalancer only
   loadBalancerIP: ""
-  # The http Service port
+
+  # -- The http Service port
   httpPort: 80
-  # The HTTP Service node port if type is NodePort
+
+  # -- The HTTP Service node port if type is NodePort
   httpNodePort: null
-  # The HTTPS Service port
+
+  # -- The HTTPS Service port
   httpsPort: 8443
-  # The HTTPS Service node port if type is NodePort
+
+  # -- The HTTPS Service node port if type is NodePort
   httpsNodePort: null
-  # Additional Service ports, e. g. for custom admin console
+
+  # -- Additional Service ports, e. g. for custom admin console
   extraPorts: []
-  # When using Service type LoadBalancer, you can restrict source ranges allowed
+
+  # -- When using Service type LoadBalancer, you can restrict source ranges allowed
   # to connect to the LoadBalancer, e. g. will result in Security Groups
   # (or equivalent) with inbound source ranges allowed to connect
   loadBalancerSourceRanges: []
-  # When using Service type LoadBalancer, you can preserve the source IP seen in the container
+  # -- When using Service type LoadBalancer, you can preserve the source IP seen in the container
   # by changing the default (Cluster) to be Local.
   # See https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
   externalTrafficPolicy: "Cluster"
-  # Session affinity
+  # -- Session affinity
   # See https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace
   sessionAffinity: ""
-  # Session affinity config
+  # -- Session affinity config
   sessionAffinityConfig: {}
 
 serviceHeadless:
-  # Annotations for headless service
+  # -- Annotations for headless service
   annotations: {}
 
 ingress:
-  # If `true`, an Ingress is created
+  # -- If `true`, an Ingress is created
   enabled: false
-  # The name of the Ingress Class associated with this ingress
+  # -- The name of the Ingress Class associated with this ingress
   ingressClassName: ""
-  # The Service port targeted by the Ingress
+  # -- The Service port targeted by the Ingress
   servicePort: http
-  # Ingress annotations
-  annotations:
-    {}
+  # -- Ingress annotations
+  annotations: {}
     ## Resolve HTTP 502 error using ingress-nginx:
     ## See https://www.ibm.com/support/pages/502-error-ingress-keycloak-response
     # nginx.ingress.kubernetes.io/proxy-buffer-size: 128k
 
-  # Additional Ingress labels
-  labels:
-    {}
-    # List of rules for the Ingress
+  # -- Additional Ingress labels
+  labels: {}
+  # -- List of rules for the Ingress
   rules:
-    - # Ingress host
-      host: "{{ .Release.Name }}.keycloak.example.com"
-      # Paths for the host
+    # -- Ingress hostname
+    - host: "{{ .Release.Name }}.keycloak.example.com"
+      # -- Paths for the host
       paths:
         - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/'
           pathType: Prefix
@@ -378,83 +381,83 @@ ingress:
   #         - keycloak.example.com
   #       secretName: ""
 
-  # ingress for console only (/auth/admin)
+  # -- ingress for console only (/auth/admin)
   console:
-    # If `true`, an Ingress is created for console path only
+    # -- If `true`, an Ingress is created for console path only
     enabled: false
-    # The name of Ingress Class associated with the console ingress only
+    # -- The name of Ingress Class associated with the console ingress only
     ingressClassName: ""
-    # Ingress annotations for console ingress only
+    # -- Ingress annotations for console ingress only
     # Useful to set nginx.ingress.kubernetes.io/whitelist-source-range particularly
     annotations: {}
     rules:
-      - # Ingress host
+      - # -- Ingress host
         host: "{{ .Release.Name }}.keycloak.example.com"
-        # Paths for the host
+        # -- Paths for the host
         paths:
           - path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/admin'
             pathType: Prefix
 
-    # Console TLS configuration
+    # -- Console TLS configuration
     tls: []
 #      - hosts:
 #          - console.keycloak.example.com
 #        secretName: ""
 
-## Network policy configuration
+# -- Network policy configuration
 # https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicy:
-  # If true, the Network policies are deployed
+  # -- If true, the Network policies are deployed
   enabled: false
 
-  # Additional Network policy labels
+  # -- Additional Network policy labels
   labels: {}
 
-  # Define all other external allowed source
+  # -- Define all other external allowed source
   # See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#networkpolicypeer-v1-networking-k8s-io
   extraFrom: []
 
-  # Define egress networkpolicies for the Keycloak pods (external database for example)
+  # -- Define egress networkpolicies for the Keycloak pods (external database for example)
   # See https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#networkpolicyegressrule-v1-networking-k8s-io
-  # egress:
+  egress: []
   #   - to:
   #       - ipBlock:
   #           cidr: 192.168.1.30/32
   #     ports:
   #       - protocol: TCP
   #         port: 3306
-  egress: []
 
 route:
-  # If `true`, an OpenShift Route is created
+  # -- If `true`, an OpenShift Route is created
   enabled: false
-  # Path for the Route
+  # -- Path for the Route
   path: /
-  # Route annotations
+  # -- Route annotations
   annotations: {}
-  # Additional Route labels
+  # -- Additional Route labels
   labels: {}
-  # Host name for the Route
+  # -- Host name for the Route
   host: ""
-  # TLS configuration
+  # -- TLS configuration
   tls:
-    # If `true`, TLS is enabled for the Route
+    # -- If `true`, TLS is enabled for the Route
     enabled: true
-    # Insecure edge termination policy of the Route. Can be `None`, `Redirect`, or `Allow`
+    # -- Insecure edge termination policy of the Route. Can be `None`, `Redirect`, or `Allow`
     insecureEdgeTerminationPolicy: Redirect
-    # TLS termination of the route. Can be `edge`, `passthrough`, or `reencrypt`
+    # -- TLS termination of the route. Can be `edge`, `passthrough`, or `reencrypt`
     termination: edge
 
 dbchecker:
+  # -- If `true`, the dbchecker init container is enabled
   enabled: true
   image:
-    # Docker image used to check Postgresql readiness at startup
+    # -- Docker image used to check Postgresql readiness at startup
     repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql-alpine
-    # Image tag for the pgchecker image
+    # -- Image tag for the pgchecker image
     tag: "15.10"
-    # Image pull policy for the dbchecker image
+    # -- Image pull policy for the dbchecker image
     pullPolicy: IfNotPresent
-  # SecurityContext for the dbchecker container
+  # -- SecurityContext for the dbchecker container
   securityContext:
     allowPrivilegeEscalation: false
     runAsUser: 1000
@@ -463,7 +466,7 @@ dbchecker:
     capabilities:
       drop:
         - ALL
-  # Resource requests and limits for the dbchecker container
+  # -- Resource requests and limits for the dbchecker container
   resources:
     requests:
       cpu: "250m"
@@ -472,19 +475,19 @@ dbchecker:
       memory: "256Mi"
 
 postgresql:
-  # If `true`, the Postgresql dependency is enabled
+  # -- If `true`, the Postgresql dependency is enabled
   enabled: true
-  # PostgreSQL User to create
-  # PostgreSQL Password for the new user
-  # PostgreSQL Database to create
   auth:
+    # -- PostgreSQL User to create
     username: keycloak
+    # -- PostgreSQL Password for the new user
     password: keycloak
+    # -- PostgreSQL Database to create
     database: keycloak
-  # PostgreSQL network policy configuration
+  # -- PostgreSQL network policy configuration
   networkPolicy:
     enabled: false
-  # Added by BigBang
+  # NOTE: Added by BigBang
   # change bitnami sub-chart upstream image to pull from registry1.dso.mil
   # this image is only used for dev and CI pipelines
   global:
@@ -512,22 +515,27 @@ postgresql:
         drop:
           - ALL
 
+# -- If the database is not managed by this chart, you can use these keys to configure the connection
 database:
-  # don't create secret for db password. Instead use existing k8s secret
-  # existingSecret: "my-existent-dbpass-secret"
-  # existingSecretKey: "password"
+  # -- name of the existing secret containing the database password
   existingSecret: ""
+  # -- key in the existing secret containing the database password
   existingSecretKey: ""
-  # E.g. dev-file, dev-mem, mariadb, mssql, mysql, oracle or postgres
+  # -- E.g. dev-file, dev-mem, mariadb, mssql, mysql, oracle or postgres
   vendor:
+  # -- The database host
   hostname:
+  # -- The database port
   port:
+  # -- The database name
   database:
+  # -- The database username
   username:
+  # -- The database password (ignored if existingSecret is set)
   password:
 
 cache:
-  # Use "custom" to disable automatic cache configuration
+  # -- Use "custom" to disable automatic cache configuration
   stack: default
 
 proxy:
@@ -543,67 +551,67 @@ health:
   enabled: true
 
 http:
-  # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
+  # -- For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
   relativePath: "/auth"
   internalPort: http-internal
   internalScheme: HTTP
 
 serviceMonitor:
-  # If `true`, a ServiceMonitor resource for the prometheus-operator is created
+  # -- If `true`, a ServiceMonitor resource for the prometheus-operator is created
   enabled: false
-  # Optionally sets a target namespace in which to deploy the ServiceMonitor resource
+  # -- Optionally sets a target namespace in which to deploy the ServiceMonitor resource
   namespace: ""
-  # Optionally sets a namespace for the ServiceMonitor
+  # -- Optionally sets a namespace for the ServiceMonitor
   namespaceSelector: {}
-  # Annotations for the ServiceMonitor
+  # -- Annotations for the ServiceMonitor
   annotations: {}
-  # Additional labels for the ServiceMonitor
+  # -- Additional labels for the ServiceMonitor
   labels: {}
-  # Interval at which Prometheus scrapes metrics
+  # -- Interval at which Prometheus scrapes metrics
   interval: 10s
-  # Timeout for scraping
+  # -- Timeout for scraping
   scrapeTimeout: 10s
-  # The path at which metrics are served
+  # -- The path at which metrics are served
   path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/metrics'
-  # The Service port at which metrics are served
+  # -- The Service port at which metrics are served
   port: "{{ .Values.http.internalPort }}"
-  # added by Big Bang to support Istio mTLS
+  # NOTE: added by Big Bang to support Istio mTLS
   scheme: ""
   tlsConfig: {}
 
 extraServiceMonitor:
-  # If `true`, a ServiceMonitor resource for the prometheus-operator is created
+  # -- If `true`, a ServiceMonitor resource for the prometheus-operator is created
   enabled: false
-  # Optionally sets a target namespace in which to deploy the ServiceMonitor resource
+  # -- Optionally sets a target namespace in which to deploy the ServiceMonitor resource
   namespace: ""
-  # Optionally sets a namespace for the ServiceMonitor
+  # -- Optionally sets a namespace for the ServiceMonitor
   namespaceSelector: {}
-  # Annotations for the ServiceMonitor
+  # -- Annotations for the ServiceMonitor
   annotations: {}
-  # Additional labels for the ServiceMonitor
+  # -- Additional labels for the ServiceMonitor
   labels: {}
-  # Interval at which Prometheus scrapes metrics
+  # -- Interval at which Prometheus scrapes metrics
   interval: 10s
-  # Timeout for scraping
+  # -- Timeout for scraping
   scrapeTimeout: 10s
-  # The path at which metrics are served
+  # -- The path at which metrics are served
   path: '{{ tpl .Values.http.relativePath $ | trimSuffix "/" }}/metrics'
-  # The Service port at which metrics are served
+  # -- The Service port at which metrics are served
   port: "{{ .Values.http.internalPort }}"
-  # added by Big Bang to support Istio mTLS
+  # NOTE: added by Big Bang to support Istio mTLS
   scheme: ""
   tlsConfig: {}
 
 prometheusRule:
-  # If `true`, a PrometheusRule resource for the prometheus-operator is created
+  # -- If `true`, a PrometheusRule resource for the prometheus-operator is created
   enabled: false
-  # Optionally sets a target namespace in which to deploy the ServiceMonitor resource
+  # -- Optionally sets a target namespace in which to deploy the ServiceMonitor resource
   namespace: ""
-  # Annotations for the PrometheusRule
+  # -- Annotations for the PrometheusRule
   annotations: {}
-  # Additional labels for the PrometheusRule
+  # -- Additional labels for the PrometheusRule
   labels: {}
-  # List of rules for Prometheus
+  # -- List of rules for Prometheus
   rules: []
   # - alert: keycloak-IngressHigh5xxRate
   #   annotations:
@@ -627,16 +635,16 @@ prometheusRule:
   #     severity: warning
 
 autoscaling:
-  # If `true`, an autoscaling/v2 HorizontalPodAutoscaler resource is created (requires Kubernetes 1.23 or above)
+  # -- If `true`, an autoscaling/v2 HorizontalPodAutoscaler resource is created (requires Kubernetes 1.23 or above)
   # Autoscaling seems to be most reliable when using KUBE_PING service discovery (see README for details)
   # This disables the `replicas` field in the StatefulSet
   enabled: false
-  # Additional HorizontalPodAutoscaler labels
+  # -- Additional HorizontalPodAutoscaler labels
   labels: {}
-  # The minimum and maximum number of replicas for the Keycloak StatefulSet
+  # -- The minimum and maximum number of replicas for the Keycloak StatefulSet
   minReplicas: 3
   maxReplicas: 10
-  # The metrics to use for scaling
+  # -- The metrics to use for scaling
   metrics:
     - type: Resource
       resource:
@@ -644,7 +652,7 @@ autoscaling:
         target:
           type: Utilization
           averageUtilization: 80
-  # The scaling policy to use. This will scale up quickly but only scale down a single Pod per 5 minutes.
+  # -- The scaling policy to use. This will scale up quickly but only scale down a single Pod per 5 minutes.
   # This is important because caches are usually only replicated to 2 Pods and if one of those Pods is terminated this will give the cluster time to recover.
   behavior:
     scaleDown:
@@ -655,32 +663,32 @@ autoscaling:
           periodSeconds: 300
 
 test:
-  # If `true`, test resources are created
+  # -- If `true`, test resources are created
   enabled: false
   image:
-    # The image for the test Pod
+    # -- The image for the test Pod
     repository: docker.io/seleniarm/standalone-chromium
-    # The tag for the test Pod image
+    # -- The tag for the test Pod image
     tag: "117.0"
-    # The image pull policy for the test Pod image
+    # -- The image pull policy for the test Pod image
     pullPolicy: IfNotPresent
-  # SecurityContext for the entire test Pod
+  # -- SecurityContext for the entire test Pod
   podSecurityContext:
     fsGroup: 1000
-  # SecurityContext for the test container
+  # -- SecurityContext for the test container
   securityContext:
     runAsUser: 1000
     runAsNonRoot: true
-  # See https://helm.sh/docs/topics/charts_hooks/#hook-deletion-policies
+  # -- See https://helm.sh/docs/topics/charts_hooks/#hook-deletion-policies
   deletionPolicy: before-hook-creation
 
-# Big Bang Additions
-## Your FQDN will be ${ .Values.subdomain }.${ .Values.domain }
+# NOTE: Big Bang Additions
+# -- Your FQDN will be ${ .Values.subdomain }.${ .Values.domain }
 domain: dev.bigbang.mil
 istio:
-  # Toggle istio integration
+  # -- Toggle istio integration
   enabled: false
-  # Toggle istio hardening
+  # -- Toggle istio hardening
   hardened:
     enabled: false
     customAuthorizationPolicies:
@@ -707,10 +715,10 @@ istio:
   injection: "disabled"
   mtls:
     # -- STRICT = Allow only mutual TLS traffic,
-    # PERMISSIVE = Allow both plain text and mutual TLS traffic
+    # -- PERMISSIVE = Allow both plain text and mutual TLS traffic
     mode: STRICT
   keycloak:
-    # Toggle vs creation
+    # -- Toggle vs creation
     enabled: false
     annotations: {}
     labels: {}
