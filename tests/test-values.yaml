@@ -1,24 +1,35 @@
-args:
-  - "start-dev"
-  - "--import-realm"
-
-secrets:
-  realm:
-    stringData:
-      realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
-
-extraVolumes: |-
-  - name: realm
-    secret:
-      secretName: {{ include "keycloak.fullname" . }}-realm
-
-extraVolumeMounts: |-
-  - name: realm
-    mountPath: /opt/keycloak/data/import/realm.json
-    subPath: realm.json
-
-bbtests:
-  enabled: true
-
-networkPolicies:
-  enabled: true
+#########################
+# Disable Core Packages #
+#########################
+monitoring:
+  enabled: false
+grafana:
+  enabled: false
+neuvector:
+  enabled: false
+loki:
+  enabled: false
+promtail:
+  enabled: false
+tempo:
+  enabled: false
+kyvernoReporter:
+  enabled: false
+kiali:
+  enabled: false
+addons:
+  minioOperator:
+    enabled: false
+########################
+# Required for package #
+########################
+  keycloak:
+    enabled: true
+kyvernoPolicies:
+  values:
+    bbtests:
+      enabled: false
+kyverno:
+  values:
+    bbtests:
+      enabled: false
