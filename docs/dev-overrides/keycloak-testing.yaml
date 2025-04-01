@@ -38,7 +38,7 @@ addons:
     # tag is higher precedence, and thus must be nulled to use a branch
     git:
       tag: null
-      branch: "233-update-chart-dependency"
+      branch: "headlamp-integration"
     # values:
     # extraInitContainers: |-
     #   - name: plugin
