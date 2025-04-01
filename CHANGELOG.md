@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.5.1-bb.7] - 2025-04-01
+
+### Added
+
+- Added headlamp client for development SSO to baby yoda realm
+
 ## [2.5.1-bb.6] - 2025-02-11
 
 ### Updated
