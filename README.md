@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 2.5.1-bb.7](https://img.shields.io/badge/Version-2.5.1--bb.7-informational?style=flat-square) ![AppVersion: 25.0.6](https://img.shields.io/badge/AppVersion-25.0.6-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.0.1-bb.0](https://img.shields.io/badge/Version-7.0.1--bb.0-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -48,8 +48,8 @@ helm install keycloak chart/
 | nameOverride | string | `""` | Optionally override the name |
 | replicas | int | `1` | The number of replicas to create (has no effect if autoscaling enabled) |
 | image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` | The Keycloak image repository |
-| image.tag | string | `"25.0.6"` | Overrides the Keycloak image tag; default is the chart appVersion |
-| image.digest | string | `""` | Overrides the Keycloak image tag with a specific digest |
+| image.tag | string | `"26.1.4"` |  |
+| image.digest | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` | The Keycloak image pull policy |
 | imagePullSecrets | list | `[{"name":"private-registry"}]` | Image pull secrets for the Pod |
 | hostAliases | list | `[]` | Mapping between IPs and hostnames that will be injected as entries in the Pod's hosts files |

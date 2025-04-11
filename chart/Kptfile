@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: c5b93d7a23720bc6b96942cfd8311fe9befe0177
+    commit: 0989bcf6c03e4f18ddb013cbecb5337be67de91a
     repo: https://github.com/codecentric/helm-charts.git
     directory: /charts/keycloakx
-    ref: keycloakx-2.5.1
+    ref: keycloakx-7.0.1
