@@ -10,9 +10,9 @@ replicas: 1
 image:
   # -- The Keycloak image repository
   repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
-  # -- Overrides the Keycloak image tag; default is the chart appVersion
-  tag: "25.0.6"
-  # -- Overrides the Keycloak image tag with a specific digest
+  # Overrides the Keycloak image tag whose default is the chart appVersion
+  tag: "26.1.4"
+  # Overrides the Keycloak image tag with a specific digest
   digest: ""
   # -- The Keycloak image pull policy
   pullPolicy: IfNotPresent
@@ -454,7 +454,7 @@ dbchecker:
     # -- Docker image used to check Postgresql readiness at startup
     repository: registry1.dso.mil/ironbank/opensource/postgres/postgresql-alpine
     # -- Image tag for the pgchecker image
-    tag: "15.10"
+    tag: "15.12"
     # -- Image pull policy for the dbchecker image
     pullPolicy: IfNotPresent
   # -- SecurityContext for the dbchecker container
