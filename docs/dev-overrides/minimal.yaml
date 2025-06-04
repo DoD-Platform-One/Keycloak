@@ -2,9 +2,6 @@
 # Notably, the following have not been disabled
 # - networkPolicies - not disabled due to ease of use when deploying via k3d_dev
 
-clusterAuditor:
-  enabled: false
-
 eckOperator:
   enabled: false
 
@@ -24,9 +21,6 @@ istio:
   enabled: false
 
 istioOperator:
-  enabled: false
-
-jaeger:
   enabled: false
 
 kiali:
