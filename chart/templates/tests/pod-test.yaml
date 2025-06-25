@@ -1,4 +1,4 @@
-{{- if .Values.test.enabled }}
+{{- if .Values.keycloakx.test.enabled }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -10,13 +10,16 @@ metadata:
   annotations:
     helm.sh/hook: test
     helm.sh/hook-delete-policy: {{ .Values.test.deletionPolicy }}
+    proxy.istio.io/config: |
+      proxyMetadata:
+        ISTIO_META_DNS_CAPTURE: "true"
 spec:
   securityContext:
     {{- toYaml .Values.test.podSecurityContext | nindent 4 }}
   containers:
     - name: keycloak-test
       image: "{{ .Values.test.image.repository }}{{- if (.Values.test.image.digest) -}}@{{ .Values.test.image.digest }}{{- else -}}:{{ .Values.test.image.tag }} {{- end }}"
-      imagePullPolicy: {{ .Values.test.image.pullPolicy }}
+      imagePullPolicy: {{ .Values.keycloakx.test.image.pullPolicy }}
       securityContext:
         {{- toYaml .Values.test.securityContext | nindent 8 }}
       command:

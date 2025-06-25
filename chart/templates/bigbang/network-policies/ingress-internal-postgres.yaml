@@ -1,4 +1,5 @@
 {{- if and .Values.networkPolicies.enabled .Values.postgresql.enabled }}
+{{- $postgresPort := dig "primary" "service" "ports" "postgresql" 5432 .Values.postgresql }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -13,8 +14,9 @@ spec:
     - from:
       - podSelector:
           matchLabels:
-            app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
+            app.kubernetes.io/instance: {{ .Release.Name }}
+            app.kubernetes.io/name: upstream
     - ports:
         - protocol: TCP
-          port: 5432
+          port: {{ $postgresPort }}
 {{- end }}

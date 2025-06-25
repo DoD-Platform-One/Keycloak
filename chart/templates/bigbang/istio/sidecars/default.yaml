@@ -1,0 +1,14 @@
+{{- /* Render Istio Sidecar */ -}}
+{{- if and .Values.istio.enabled .Values.istio.hardened.enabled -}}
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: {{ .Release.Name }}-sidecar
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: upstream
+spec:
+  outboundTrafficPolicy:
+    mode: {{ .Values.istio.hardened.outboundTrafficPolicyMode }}
+{{- end }}

@@ -8,12 +8,14 @@ spec:
     - Ingress
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: upstream
   ingress:
     - from:
       - podSelector:
           matchLabels:
-            app.kubernetes.io/name: {{ template "keycloak.fullname" . }}
+            app.kubernetes.io/instance: {{ .Release.Name }}
+            app.kubernetes.io/name: upstream
       ports:
         - protocol: TCP
           port: 7600

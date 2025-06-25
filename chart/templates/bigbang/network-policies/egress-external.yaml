@@ -1,0 +1,36 @@
+{{- if and .Values.networkPolicies.externalServices }}
+{{- range $name, $details := .Values.networkPolicies.externalServices }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-keycloak-egress-to-{{ $name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - ports:
+    {{- range $port := $details.ports }}
+    {{- with $port }}
+    - protocol: {{ default "TCP" .protocol }}
+      {{- $portNumber := int .port }}
+      {{- if lt $portNumber 1 }}
+      {{- fail (printf "Port for %s must be a number and cannot be 0 or negative" $name) }}
+      {{- else }}
+      port: {{ $portNumber }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+    to:
+    {{- range $cidr := $details.cidrs }}
+    - ipBlock:
+        cidr: {{ $cidr }}
+        {{- if eq $cidr "0.0.0.0/0" }}
+        except:
+          - 169.254.169.254/32 # Exclude link-local metadata endpoint on AWS and Azure
+        {{- end }}
+    {{- end }}
+{{- end }}
+{{- end }}

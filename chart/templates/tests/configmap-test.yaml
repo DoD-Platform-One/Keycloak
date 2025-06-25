@@ -1,4 +1,4 @@
-{{- if .Values.test.enabled }}
+{{- if .Values.keycloakx.test.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,6 +9,9 @@ metadata:
   annotations:
     helm.sh/hook: test
     helm.sh/hook-delete-policy: hook-succeeded
+    proxy.istio.io/config: |
+      proxyMetadata:
+        ISTIO_META_DNS_CAPTURE: "true"
 data:
   test.sh: |
     #!/usr/bin/env bash
@@ -46,7 +49,7 @@ data:
     chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=chrome_options)
 
-    base_url = 'http://{{ include "keycloak.fullname" . }}-http{{ if ne 80 (int .Values.service.httpPort) }}:{{ .Values.service.httpPort }}{{ end }}'
+    base_url = 'http://{{ include "keycloak.fullname" . }}-http:{{ .Values.keycloakx.service.httpPort }}'
 
     print('Opening Keycloak...')
     driver.get('{0}{{ tpl .Values.http.relativePath . | trimSuffix "/" }}/admin/'.format(base_url))

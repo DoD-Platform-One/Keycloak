@@ -1,0 +1,45 @@
+{{- if and .Values.istio.enabled .Values.istio.keycloak.enabled -}}
+{{- $serviceName := printf "%s-upstream-http" (include "keycloak.fullname" .) -}}
+{{- $httpPort := dig "service" "httpPort" 80 .Values.upstream }}
+{{- $httpsPort := dig "service" "httpsPort" 443 .Values.upstream }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ template "keycloak.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    helm.sh/chart: {{ include "keycloak.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: keycloak
+spec:
+  gateways:
+  {{- range .Values.istio.keycloak.gateways }}
+    - {{ . }}
+  {{- end }}
+    - mesh # makes keycloak hostname available to all services in the mesh
+  hosts:
+  {{- range .Values.istio.keycloak.hosts }}
+    - {{ tpl . $}}
+  {{- end }}
+  http:
+    - route:
+      - destination:
+          port:
+            number: {{ $httpPort }}
+          host: {{ $serviceName }}
+        weight: 100    
+  tls:
+  - match:
+    - port: 8443
+      sniHosts:
+      {{- range .Values.istio.keycloak.hosts }}
+      - {{ tpl . $}}
+      {{- end }}
+    route:
+    - destination:
+        host: {{ $serviceName }}
+        port:
+          number: {{ $httpsPort }}
+      weight: 100      
+{{- end }}
