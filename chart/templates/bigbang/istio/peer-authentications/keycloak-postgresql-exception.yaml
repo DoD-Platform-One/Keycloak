@@ -1,0 +1,17 @@
+{{ if and .Values.istio.enabled (eq .Values.istio.mtls.mode "STRICT") .Values.postgresql.enabled }}
+{{- $postgresPort := dig "primary" "service" "ports" "postgresql" 5432 .Values.postgresql }}
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: keycloak-postgresql-exception
+  namespace: {{ .Release.Namespace }}
+spec:
+  mtls:
+    mode: {{ .Values.istio.mtls.mode }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+  portLevelMtls:
+    "{{ $postgresPort }}":
+      mode: PERMISSIVE
+{{- end }}

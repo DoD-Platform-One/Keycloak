@@ -2,6 +2,7 @@
 .idea
 .vscode/
 .DS_Store
+.helm_ls_cache/
 
 # VIM Swap
 [._]*.s[a-v][a-z]

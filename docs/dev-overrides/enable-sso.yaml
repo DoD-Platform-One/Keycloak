@@ -1,0 +1,36 @@
+sso:
+  saml:
+    # curl -fsSL https://keycloak.dev.bigbang.mil/auth/realms/baby-yoda/protocol/saml/descriptor once keycloak is up for this value
+    # Only necessary for testing SAML-enabled apps like sonarqube
+    metadata: ''
+monitoring:
+  sso:
+    enabled: true
+grafana:
+  sso:
+    enabled: true
+kiali:
+  sso:
+    enabled: true
+  values:
+    upstream:
+      cr:
+        spec:
+          auth:
+            strategy: openid
+addons:
+  sonarqube:
+    enabled: true
+    sso:
+      enabled: true
+  mattermost:
+    enabled: true
+    sso:
+      enabled: true
+    values:
+      elasticsearch:
+        enabled: false
+      mattermostEnvs:
+        # required for KC >= 20.X to work with gitlab auth pointed to Keycloak
+        MM_GITLABSETTINGS_SCOPE: openid
+

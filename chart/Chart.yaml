@@ -1,35 +1,47 @@
 apiVersion: v2
 name: keycloak
-version: 7.0.1-bb.0
+version: 7.0.1-bb.1
 appVersion: 26.1.4
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:
-  - sso
-  - idm
-  - openid connect
-  - saml
-  - kerberos
-  - oauth
-  - ldap
-  - keycloakx
-  - quarkus
+- sso
+- idm
+- openid connect
+- saml
+- kerberos
+- oauth
+- ldap
+- keycloakx
+- quarkus
 home: https://www.keycloak.org/
 icon: https://www.keycloak.org/resources/images/keycloak_logo_200px.svg
 sources:
-  - https://github.com/codecentric/helm-charts
-  - https://github.com/keycloak/keycloak/tree/main/quarkus/container
-  - https://github.com/bitnami/charts/tree/master/bitnami/postgresql
-maintainers:
-  - name: thomasdarimont
-    email: thomas.darimont+github@gmail.com
+- https://github.com/codecentric/helm-charts
+- https://github.com/keycloak/keycloak/tree/main/quarkus/container
+- https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 dependencies:
-  - name: postgresql
-    version: 12.12.10
-    repository: file://./deps/postgresql
-    condition: postgresql.enabled
-  - name: gluon
-    version: "0.5.14"
-    repository: "oci://registry1.dso.mil/bigbang"
+- name: keycloakx
+  version: 7.0.1
+  repository: https://codecentric.github.io/helm-charts
+  alias: upstream
+  import-values:
+  - child: service
+    parent: keycloakx.service
+  - child: http
+    parent: keycloakx.http
+  - child: test
+    parent: keycloakx.test
+  - child: image
+    parent: keycloakx.image
+  - child: imagePullSecrets
+    parent: keycloakx.imagePullSecrets
+- name: postgresql
+  version: 16.7.11
+  repository: oci://registry-1.docker.io/bitnamicharts
+  condition: postgresql.enabled
+- name: gluon
+  version: 0.6.2
+  repository: oci://registry1.dso.mil/bigbang
 annotations:
   bigbang.dev/maintenanceTrack: bb_integrated
   bigbang.dev/applicationVersions: |
@@ -37,11 +49,12 @@ annotations:
   helm.sh/images: |
     - name: keycloak
       image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:26.1.4
-    - name: postgresl12
+    - name: postrgresql
       condition: postgresql.enabled
       image: registry1.dso.mil/ironbank/opensource/postgres/postgresql-alpine:15.12
     - name: base
       condition: bbtests.enabled
       image: registry1.dso.mil/ironbank/big-bang/base:2.1.0
   bigbang.dev/upstreamReleaseNotesMarkdown: |
-    - [Find upstream chart's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)
+    - [Find upstream chart's release notes and CHANGELOG here](https://github.com/codecentric/helm-charts/releases)
+    - [Find upstream keycloak project's release notes and CHANGELOG here](https://www.keycloak.org/docs/latest/release_notes/index.html)

@@ -1,9 +1,12 @@
 dependencies:
+- name: keycloakx
+  repository: https://codecentric.github.io/helm-charts
+  version: 7.0.1
 - name: postgresql
-  repository: file://./deps/postgresql
-  version: 12.12.10
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 16.7.11
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
-  version: 0.5.12
-digest: sha256:9906a9a319bf41821a2e72f4b3f529322b04ba9d8e126b9ee3baf5cf370f3dcd
-generated: "2025-01-15T09:51:25.652479-05:00"
+  version: 0.6.2
+digest: sha256:c643b0b1a09613b7555f017a12b698d3a6a5f0910a7aa379e128595bfbbf7a26
+generated: "2025-06-13T11:51:47.422443592-05:00"
