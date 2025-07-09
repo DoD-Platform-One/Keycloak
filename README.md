@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.0.1-bb.1](https://img.shields.io/badge/Version-7.0.1--bb.1-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.0.1-bb.2](https://img.shields.io/badge/Version-7.0.1--bb.2-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -56,7 +56,7 @@ helm install keycloak chart/
 | istio.keycloak.annotations | object | `{}` | Additional annotations to be added to the istio virtual service |
 | istio.keycloak.labels | object | `{}` | Additional labels to be added to the istio virtual service |
 | istio.keycloak.gateways | list | `["istio-system/main"]` | Specify the istio gateways to be used for keycloak |
-| istio.keycloak.hosts | list | `["keycloak.{{ .Values.domain }}"]` | Specify the hostnames from which keycloak will be accessible |
+| istio.keycloak.hosts | list | `["keycloak.dev.bigbang.mil"]` | Specify the hostnames from which keycloak will be accessible |
 | networkPolicies.enabled | bool | `false` | Enable or disable the bundled network policies |
 | networkPolicies.externalServices | object | `{}` | Configure external services that keycloak needs to access |
 | networkPolicies.ingressLabels | object | `{"app":"istio-ingressgateway","istio":"ingressgateway"}` | Configures labelSelectors for network policies allowing ingress from istio gateways |
@@ -83,8 +83,8 @@ helm install keycloak chart/
 | upstream.args | list | `["start"]` | Overrides the default args for the Keycloak container **arg: "start" needs to be set for the container to start up properly** |
 | upstream.extraEnvFrom | string | `"- secretRef:\n    name: '{{ include \"keycloak.fullname\" . }}-env'\n"` | Additional environment variables for Keycloak mapped from Secret or ConfigMap |
 | upstream.resources | object | `{"limits":{"memory":"1Gi"},"requests":{"cpu":"1","memory":"1Gi"}}` | Pod resource requests and limits |
-| upstream.secrets | object | `{"env":{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.{{ .Values.domain }}","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}}` | Configuration for secrets that should be created The secrets can also be independently created separate from this helm chart. for example with a gitops tool like flux with a kustomize overlay. NOTE: Secret values can be templated |
-| upstream.secrets.env | object | `{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.{{ .Values.domain }}","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}` | Environmental variables |
+| upstream.secrets | object | `{"env":{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.dev.bigbang.mil","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}}` | Configuration for secrets that should be created The secrets can also be independently created separate from this helm chart. for example with a gitops tool like flux with a kustomize overlay. NOTE: Secret values can be templated |
+| upstream.secrets.env | object | `{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.dev.bigbang.mil","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}` | Environmental variables |
 | upstream.secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-Dcom.redhat.fips=false"` | https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index |
 | upstream.secrets.env.stringData.KEYCLOAK_ADMIN | string | `"admin"` | default admin credentials. Override them for production deployments |
 | upstream.secrets.env.stringData.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless"` | https://www.keycloak.org/server/caching |

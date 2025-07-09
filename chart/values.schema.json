@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Big Bang Keycloak Helm Chart Values Schema",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "description": "The base domain"
+    },
+    "istio": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "description": "Enable or disable Istio" },
+        "injection": {
+          "type": "string",
+          "enum": ["enabled", "disabled"]
+        },
+        "hardened": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "description": "Enable or disable Istio's hardened mode" },
+            "customAuthorizationPolicies": {
+              "type": "array",
+              "description": "Custom authorization policies to be applied to the keycloak namespace",
+              "items": { "type": "object" }
+            },
+            "outboundTrafficPolicyMode": {
+              "type": "string",
+              "enum": ["REGISTRY_ONLY", "ALLOW_ANY"]
+            },
+            "customServiceEntries": {
+              "type": "array",
+              "description": "Custom service entries to be applied to the keycloak namespace",
+              "items": { "type": "object" }
+            }
+          },
+          "additionalProperties": false
+        },
+        "mtls": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": ["STRICT", "PERMISSIVE"],
+              "description": "Configure the default mTLS mode for keycloak's namespace"
+            }
+          },
+          "additionalProperties": false
+        },
+        "keycloak": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "description": "Enable or disable the istio virtual service for keycloak" },
+            "annotations": { "type": "object", "additionalProperties": { "type": "string" } },
+            "labels": { "type": "object", "additionalProperties": { "type": "string" } },
+            "gateways": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Specify the istio gateways to be used for keycloak"
+            },
+            "hosts": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Specify the hostnames from which keycloak will be accessible"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "networkPolicies": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "description": "Enable or disable the bundled network policies" },
+        "externalServices": { "type": "object", "description": "Configure external services that keycloak needs to access" },
+        "ingressLabels": { "type": "object" },
+        "additionalPolicies": { "type": "array", "items": { "type": "object" } },
+        "istioNamespaceSelector": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "bbtests": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "description": "Enables the Big Bang test hooks" },
+        "image": { "type": "string" },
+        "cypress": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "upstream": {
+      "type": "object",
+      "description": "Keycloak upstream configuration (targets KeycloakX dependent chart)",
+      "additionalProperties": true
+    },
+    "postgresql": {
+      "type": "object",
+      "description": "PostgreSQL configuration",
+      "additionalProperties": true
+    },
+    "gluon": {
+      "type": "object",
+      "description": "Gluon configuration",
+      "additionalProperties": true
+    },
+    "keycloakx": {
+      "type": "object",
+      "description": "KeycloakX configuration",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+} 
