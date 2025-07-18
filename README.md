@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.0.1-bb.2](https://img.shields.io/badge/Version-7.0.1--bb.2-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.0.1-bb.3](https://img.shields.io/badge/Version-7.0.1--bb.3-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -55,8 +55,8 @@ helm install keycloak chart/
 | istio.keycloak.enabled | bool | `false` | Enable or disable the istio virtual service for keycloak |
 | istio.keycloak.annotations | object | `{}` | Additional annotations to be added to the istio virtual service |
 | istio.keycloak.labels | object | `{}` | Additional labels to be added to the istio virtual service |
-| istio.keycloak.gateways | list | `["istio-system/main"]` | Specify the istio gateways to be used for keycloak |
-| istio.keycloak.hosts | list | `["keycloak.dev.bigbang.mil"]` | Specify the hostnames from which keycloak will be accessible |
+| istio.keycloak.gateways | list | `["istio-gateway/passthrough-ingressgateway"]` | Specify the istio gateways to be used for keycloak |
+| istio.keycloak.hosts | list | `["keycloak.{{ .Values.domain }}"]` | Specify the hostnames from which keycloak will be accessible |
 | networkPolicies.enabled | bool | `false` | Enable or disable the bundled network policies |
 | networkPolicies.externalServices | object | `{}` | Configure external services that keycloak needs to access |
 | networkPolicies.ingressLabels | object | `{"app":"istio-ingressgateway","istio":"ingressgateway"}` | Configures labelSelectors for network policies allowing ingress from istio gateways |
@@ -89,7 +89,7 @@ helm install keycloak chart/
 | upstream.secrets.env.stringData.KEYCLOAK_ADMIN | string | `"admin"` | default admin credentials. Override them for production deployments |
 | upstream.secrets.env.stringData.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless"` | https://www.keycloak.org/server/caching |
 | upstream.dbchecker.enabled | bool | `false` | If `true`, the dbchecker init container is enabled; this is incompatible with Big Bang and so is disabled by default. |
-| upstream.database | object | `{"database":"keycloak","existingSecret":"keycloak-postgresql","existingSecretKey":"password","hostname":"keycloak-postgresql","port":5432,"username":"keycloak","vendor":"postgres"}` | Configures the database connection; can be configured here and/or via environment variables with `upstream.secrets.env` |
+| upstream.database | object | `{"database":"keycloak","hostname":"keycloak-postgresql","password":"keycloak","port":5432,"username":"keycloak","vendor":"postgres"}` | Configures the database connection; can be configured here and/or via environment variables with `upstream.secrets.env` |
 | upstream.database.hostname | string | `"keycloak-postgresql"` | you will need to change the hostname to match the release name: %release-name%-postgresql |
 | postgresql.enabled | bool | `true` | If `true`, the Postgresql dependency is enabled |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
