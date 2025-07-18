@@ -45,10 +45,10 @@ istio:
     labels: {}
     # -- Specify the istio gateways to be used for keycloak
     gateways:
-      - istio-system/main
+      - istio-gateway/passthrough-ingressgateway
     # -- Specify the hostnames from which keycloak will be accessible
     hosts:
-      - keycloak.dev.bigbang.mil
+      - keycloak.{{ .Values.domain }}
 
 networkPolicies:
   # -- Enable or disable the bundled network policies
@@ -172,8 +172,6 @@ upstream:
     enabled: false
   # -- Configures the database connection; can be configured here and/or via environment variables with `upstream.secrets.env`
   database:
-    existingSecret: keycloak-postgresql
-    existingSecretKey: password
     vendor: postgres
     # -- NOTE: If you change the release name from keycloak to something else,
     # -- you will need to change the hostname to match the release name: %release-name%-postgresql
@@ -181,6 +179,7 @@ upstream:
     port: 5432
     database: keycloak
     username: keycloak
+    password: keycloak
 
 postgresql:
   # -- If `true`, the Postgresql dependency is enabled
