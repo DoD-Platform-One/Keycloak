@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 7.0.1-bb.3
+version: 7.0.1-bb.4
 appVersion: 26.1.4
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:

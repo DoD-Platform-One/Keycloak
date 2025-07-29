@@ -13,5 +13,5 @@ spec:
   ingress:
     - ports:
         - protocol: TCP
-          port: {{ .Values.keycloakx.service.httpsPort }}
+          port: 8443
 {{- end }}

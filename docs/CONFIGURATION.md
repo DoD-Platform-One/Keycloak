@@ -240,7 +240,7 @@ postgresql:
 
 networkPolicies:
   enabled: true
-  external:
+  externalServices:
     database:
       cidrs:
         # Add your database CIDRs here

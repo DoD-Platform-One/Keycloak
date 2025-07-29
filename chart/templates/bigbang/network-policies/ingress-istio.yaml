@@ -1,5 +1,4 @@
 {{- if and .Values.networkPolicies.enabled .Values.istio.enabled }}
-{{- $httpsPort := dig "service" "httpsPort" 8443 .Values.upstream }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -22,6 +21,6 @@ spec:
         matchLabels:
           {{- toYaml .Values.networkPolicies.ingressLabels | nindent 10}}
     ports:
-    - port: {{ $httpsPort }}
+    - port: 8443
       protocol: TCP
 {{- end }}
