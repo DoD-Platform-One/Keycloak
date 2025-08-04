@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: {{ $.Release.Name }}
-      app.kubernetes.io/name: upstream
+      app.kubernetes.io/name: {{ $.Values.upstream.nameOverride }}
   action: ALLOW
   rules:
   - from:

@@ -1,5 +1,6 @@
 {{- if and .Values.istio.enabled .Values.istio.keycloak.enabled -}}
-{{- $serviceName := printf "%s-upstream-http" (include "keycloak.fullname" .) -}}
+{{- $upstreamContext := dict "Values" .Values.upstream "Release" .Release "Chart" (dict "Name" "keycloakx") -}}
+{{- $serviceName := printf "%s-http" (include "keycloak.fullname" $upstreamContext) -}}
 {{- $httpPort := dig "service" "httpPort" 80 .Values.upstream }}
 {{- $httpsPort := dig "service" "httpsPort" 443 .Values.upstream }}
 apiVersion: networking.istio.io/v1beta1

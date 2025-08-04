@@ -1,8 +1,9 @@
 {{- if .Values.keycloakx.test.enabled }}
+{{- $upstreamContext := dict "Values" .Values.upstream "Release" .Release "Chart" (dict "Name" "keycloakx") -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "keycloak.fullname" . }}-test
+  name: {{ include "keycloak.fullname" $upstreamContext }}-test
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
@@ -49,7 +50,7 @@ data:
     chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=chrome_options)
 
-    base_url = 'http://{{ include "keycloak.fullname" . }}-http:{{ .Values.keycloakx.service.httpPort }}'
+    base_url = 'http://{{ include "keycloak.fullname" $upstreamContext }}-http:{{ .Values.keycloakx.service.httpPort }}'
 
     print('Opening Keycloak...')
     driver.get('{0}{{ tpl .Values.http.relativePath . | trimSuffix "/" }}/admin/'.format(base_url))

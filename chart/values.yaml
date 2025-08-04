@@ -91,7 +91,7 @@ bbtests:
   cypress:
     artifacts: true
     envs:
-      cypress_url: "http://keycloak-upstream-http.keycloak.svc.cluster.local"
+      cypress_url: "http://keycloak-keycloak-http.keycloak.svc.cluster.local"
       cypress_username: "admin"
       cypress_password: "password"
       cypress_tnr_username: "cypress"
@@ -103,6 +103,9 @@ bbtests:
       tnr_email: "cypress@tnr.mil"
 
 upstream:
+  fullnameOverride: "keycloak-keycloak"
+  nameOverride: "keycloak"
+
   podAnnotations:
     proxy.istio.io/config: |
       proxyMetadata:
@@ -173,9 +176,9 @@ upstream:
   # -- Configures the database connection; can be configured here and/or via environment variables with `upstream.secrets.env`
   database:
     vendor: postgres
-    # -- NOTE: If you change the release name from keycloak to something else,
-    # -- you will need to change the hostname to match the release name: %release-name%-postgresql
-    hostname: keycloak-postgresql
+    # -- NOTE: If you change fullnameOverride to something else,
+    # -- you will need to change the hostname to match : %fullnameOverride%-postgresql
+    hostname: keycloak-keycloak-postgresql
     port: 5432
     database: keycloak
     username: keycloak

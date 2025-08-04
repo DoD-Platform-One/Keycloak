@@ -1,8 +1,9 @@
 {{- if .Values.keycloakx.test.enabled }}
+{{- $upstreamContext := dict "Values" .Values.upstream "Release" .Release "Chart" (dict "Name" "keycloakx") -}}
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ include "keycloak.fullname" . }}-test
+  name: {{ include "keycloak.fullname" $upstreamContext }}-test
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
@@ -30,12 +31,12 @@ spec:
         - name: KEYCLOAK_USER
           valueFrom:
             secretKeyRef:
-              name: {{ include "keycloak.fullname" . }}-admin-creds
+              name: {{ include "keycloak.fullname" $upstreamContext }}-admin-creds
               key: user
         - name: KEYCLOAK_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ include "keycloak.fullname" . }}-admin-creds
+              name: {{ include "keycloak.fullname" $upstreamContext }}-admin-creds
               key: password
       volumeMounts:
         - name: tests
@@ -43,6 +44,6 @@ spec:
   volumes:
     - name: tests
       configMap:
-        name: {{ include "keycloak.fullname" . }}-test
+        name: {{ include "keycloak.fullname" $upstreamContext }}-test
   restartPolicy: Never
 {{- end }}

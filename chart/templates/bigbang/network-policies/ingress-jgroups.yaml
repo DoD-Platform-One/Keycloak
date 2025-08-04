@@ -9,13 +9,13 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/name: upstream
+      app.kubernetes.io/name: {{ .Values.upstream.nameOverride }}
   ingress:
     - from:
       - podSelector:
           matchLabels:
             app.kubernetes.io/instance: {{ .Release.Name }}
-            app.kubernetes.io/name: upstream
+            app.kubernetes.io/name: {{ .Values.upstream.nameOverride }}
       ports:
         - protocol: TCP
           port: 7600

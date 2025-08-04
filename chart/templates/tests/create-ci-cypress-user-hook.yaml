@@ -51,7 +51,7 @@ spec:
           # create_keycloak_cypress_user()
           default_admin_user="{{ default "admin" .Values.upstream.secrets.env.stringData.KEYCLOAK_ADMIN }}"
           default_admin_password="{{ default "password" .Values.upstream.secrets.env.stringData.KEYCLOAK_ADMIN_PASSWORD }}"
-          base_url="http://keycloak-upstream-http.keycloak.svc.cluster.local"
+          base_url="http://keycloak-keycloak-http.keycloak.svc.cluster.local"
           access_token=""
           realm="baby-yoda"
 
