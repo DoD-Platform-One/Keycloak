@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.0.1-bb.4](https://img.shields.io/badge/Version-7.0.1--bb.4-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.0.1-bb.5](https://img.shields.io/badge/Version-7.0.1--bb.5-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -64,7 +64,7 @@ helm install keycloak chart/
 | bbtests.enabled | bool | `false` | Enables the Big Bang test hooks |
 | bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
-| bbtests.cypress.envs.cypress_url | string | `"http://keycloak-upstream-http.keycloak.svc.cluster.local"` |  |
+| bbtests.cypress.envs.cypress_url | string | `"http://keycloak-keycloak-http.keycloak.svc.cluster.local"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |
 | bbtests.cypress.envs.cypress_password | string | `"password"` |  |
 | bbtests.cypress.envs.cypress_tnr_username | string | `"cypress"` |  |
@@ -74,6 +74,8 @@ helm install keycloak chart/
 | bbtests.cypress.envs.tnr_firstName | string | `"Cypress"` |  |
 | bbtests.cypress.envs.tnr_lastName | string | `"TNR"` |  |
 | bbtests.cypress.envs.tnr_email | string | `"cypress@tnr.mil"` |  |
+| upstream.fullnameOverride | string | `"keycloak-keycloak"` |  |
+| upstream.nameOverride | string | `"keycloak"` |  |
 | upstream.podAnnotations."proxy.istio.io/config" | string | `"proxyMetadata:\n  ISTIO_META_DNS_CAPTURE: \"true\"\n"` |  |
 | upstream.replicas | int | `1` |  |
 | upstream.image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` | The Keycloak image repository |
@@ -89,8 +91,8 @@ helm install keycloak chart/
 | upstream.secrets.env.stringData.KEYCLOAK_ADMIN | string | `"admin"` | default admin credentials. Override them for production deployments |
 | upstream.secrets.env.stringData.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless"` | https://www.keycloak.org/server/caching |
 | upstream.dbchecker.enabled | bool | `false` | If `true`, the dbchecker init container is enabled; this is incompatible with Big Bang and so is disabled by default. |
-| upstream.database | object | `{"database":"keycloak","hostname":"keycloak-postgresql","password":"keycloak","port":5432,"username":"keycloak","vendor":"postgres"}` | Configures the database connection; can be configured here and/or via environment variables with `upstream.secrets.env` |
-| upstream.database.hostname | string | `"keycloak-postgresql"` | you will need to change the hostname to match the release name: %release-name%-postgresql |
+| upstream.database | object | `{"database":"keycloak","hostname":"keycloak-keycloak-postgresql","password":"keycloak","port":5432,"username":"keycloak","vendor":"postgres"}` | Configures the database connection; can be configured here and/or via environment variables with `upstream.secrets.env` |
+| upstream.database.hostname | string | `"keycloak-keycloak-postgresql"` | you will need to change the hostname to match : %fullnameOverride%-postgresql |
 | postgresql.enabled | bool | `true` | If `true`, the Postgresql dependency is enabled |
 | postgresql.image.registry | string | `"registry1.dso.mil"` |  |
 | postgresql.image.repository | string | `"ironbank/bitnami/postgres"` |  |
