@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.0.1-bb.5](https://img.shields.io/badge/Version-7.0.1--bb.5-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.0.1-bb.6](https://img.shields.io/badge/Version-7.0.1--bb.6-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -76,6 +76,7 @@ helm install keycloak chart/
 | bbtests.cypress.envs.tnr_email | string | `"cypress@tnr.mil"` |  |
 | upstream.fullnameOverride | string | `"keycloak-keycloak"` |  |
 | upstream.nameOverride | string | `"keycloak"` |  |
+| upstream.podAnnotations."traffic.sidecar.istio.io/excludeInboundPorts" | string | `"9000"` |  |
 | upstream.podAnnotations."proxy.istio.io/config" | string | `"proxyMetadata:\n  ISTIO_META_DNS_CAPTURE: \"true\"\n"` |  |
 | upstream.replicas | int | `1` |  |
 | upstream.image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` | The Keycloak image repository |
