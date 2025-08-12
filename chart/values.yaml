@@ -107,6 +107,7 @@ upstream:
   nameOverride: "keycloak"
 
   podAnnotations:
+    traffic.sidecar.istio.io/excludeInboundPorts: "9000"
     proxy.istio.io/config: |
       proxyMetadata:
         ISTIO_META_DNS_CAPTURE: "true"
