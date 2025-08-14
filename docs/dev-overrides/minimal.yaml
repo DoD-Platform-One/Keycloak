@@ -17,12 +17,6 @@ gatekeeper:
 grafana:
   enabled: false
 
-istio:
-  enabled: false
-
-istioOperator:
-  enabled: false
-
 kiali:
   enabled: false
 
@@ -42,9 +36,6 @@ monitoring:
   enabled: false
 
 neuvector:
-  enabled: false
-
-promtail:
   enabled: false
 
 tempo:
