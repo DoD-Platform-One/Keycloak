@@ -1,23 +1,55 @@
 {
-  "baseBranches": ["main"],
-  "dependencyDashboard": "true",
+  "baseBranches": [
+    "main"
+  ],
+  "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
-  "draftPR": "true",
-  "labels": ["keycloak","Package Sustainment","kind::maintenance"],
-  "enabledManagers": ["regex", "helmv3"],
+  "draftPR": true,
+  "labels": [
+    "keycloak",
+    "Package Sustainment",
+    "kind::maintenance"
+  ],
+  "enabledManagers": [
+    "custom.regex",
+    "helmv3"
+  ],
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
+      "matchDatasources": [
+        "docker"
+      ],
       "groupName": "Ironbank"
     }
   ],
-  "separateMajorMinor": "false",
-  "postUpdateOptions": ["helmUpdateSubChartArchives"],
-  "ignoreDeps": ["docker.io/unguiculus/docker-python3-phantomjs-selenium", "org.keycloak:keycloak-core", "org.powermock:powermock-module-junit4", "org.powermock:powermock-api-mockito2", "org.mockito:mockito-core", "junit:junit", "org.yaml:snakeyaml", "org.keycloak:keycloak-services", "org.keycloak:keycloak-server-spi", "org.keycloak:keycloak-server-spi-private", "io.freefair.lombok", "com.github.johnrengelman.shadow", "gradle"],
-  "ignorePaths": ["**/development/plugin"],
-  "regexManagers": [
+  "separateMajorMinor": false,
+  "postUpdateOptions": [
+    "helmUpdateSubChartArchives"
+  ],
+  "ignoreDeps": [
+    "docker.io/unguiculus/docker-python3-phantomjs-selenium",
+    "org.keycloak:keycloak-core",
+    "org.powermock:powermock-module-junit4",
+    "org.powermock:powermock-api-mockito2",
+    "org.mockito:mockito-core",
+    "junit:junit",
+    "org.yaml:snakeyaml",
+    "org.keycloak:keycloak-services",
+    "org.keycloak:keycloak-server-spi",
+    "org.keycloak:keycloak-server-spi-private",
+    "io.freefair.lombok",
+    "com.github.johnrengelman.shadow",
+    "gradle"
+  ],
+  "ignorePaths": [
+    "**/development/plugin"
+  ],
+  "customManagers": [
     {
-      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": [
+        "^chart/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)"
       ],
@@ -26,7 +58,10 @@
       "datasourceTemplate": "docker"
     },
     {
-      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": [
+        "^chart/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "- Keycloak:\\s+(?<currentValue>.+)"
       ],
@@ -35,14 +70,20 @@
       "datasourceTemplate": "docker"
     },
     {
-      "fileMatch": ["^chart/Chart\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": [
+        "^chart/Chart\\.yaml$"
+      ],
       "matchStrings": [
         "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
       ],
       "datasourceTemplate": "docker"
     },
     {
-      "fileMatch": ["^chart/values\\.yaml$"],
+      "customType": "regex",
+      "fileMatch": [
+        "^chart/values\\.yaml$"
+      ],
       "matchStrings": [
         "image:\\s+registry1.dso.mil/ironbank/big-bang/base:(?<currentValue>.+)"
       ],
