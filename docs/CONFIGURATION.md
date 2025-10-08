@@ -340,4 +340,4 @@ upstream:
 
 - [Keycloak Configuration](https://www.keycloak.org/server/all-config)
 - [Keycloak Helm Chart Settings](https://github.com/codecentric/helm-charts/tree/master/charts/keycloakx#readme)
-- [Keycloak Documentation](https://www.keycloak.org/documentationmerged)
+- [Keycloak Documentation](https://www.keycloak.org/documentation)

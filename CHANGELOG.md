@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [7.1.4-bb.0] - 2025-10-6
+
+### Changed
+
+- Added test to verify High Availability is functioning as expected
+- Removed legacy code for non native istio sidecars
+- Updated logic for default peer authentication
+- Removed imagePullSecrets from import-values in chart.yaml
+- Updated Gluon and Keycloak helm chart dependencies
+
 ## [7.0.1-bb.6] - 2025-08-11
 
 ### Changed

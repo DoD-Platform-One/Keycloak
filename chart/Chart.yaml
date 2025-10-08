@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 7.0.1-bb.6
+version: 7.1.4-bb.0
 appVersion: 26.1.4
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:
@@ -21,7 +21,7 @@ sources:
 - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 dependencies:
 - name: keycloakx
-  version: 7.0.1
+  version: 7.1.4
   repository: https://codecentric.github.io/helm-charts
   alias: upstream
   import-values:
@@ -33,14 +33,12 @@ dependencies:
     parent: keycloakx.test
   - child: image
     parent: keycloakx.image
-  - child: imagePullSecrets
-    parent: keycloakx.imagePullSecrets
 - name: postgresql
   version: 16.7.11
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: postgresql.enabled
 - name: gluon
-  version: 0.6.2
+  version: 0.9.2
   repository: oci://registry1.dso.mil/bigbang
 annotations:
   bigbang.dev/maintenanceTrack: bb_integrated
@@ -51,7 +49,7 @@ annotations:
       image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:26.1.4
     - name: postrgresql
       condition: postgresql.enabled
-      image: registry1.dso.mil/ironbank/opensource/postgres/postgresql-alpine:15.12
+      image: registry1.dso.mil/ironbank/bitnami/postgres:17.4.0
     - name: base
       condition: bbtests.enabled
       image: registry1.dso.mil/ironbank/big-bang/base:2.1.0

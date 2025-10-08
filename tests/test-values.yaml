@@ -23,6 +23,9 @@ addons:
 ########################
   keycloak:
     enabled: true
+    values:
+      upstream:
+        replicas: 2
 kyvernoPolicies:
   values:
     bbtests:
