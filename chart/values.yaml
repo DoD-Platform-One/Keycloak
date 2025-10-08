@@ -101,6 +101,11 @@ bbtests:
       tnr_firstName: "Cypress"
       tnr_lastName: "TNR"
       tnr_email: "cypress@tnr.mil"
+  scripts:
+    envs:
+      HEADLESS_SERVICE: "keycloak-keycloak-headless.keycloak.svc.cluster.local"
+      PORT: "7800"
+      TIMEOUT: "10"
 
 upstream:
   fullnameOverride: "keycloak-keycloak"

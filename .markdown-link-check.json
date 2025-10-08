@@ -1,0 +1,13 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "https://keycloak"
+    },
+    {
+      "pattern": "\\.il4\\.dso\\.mil"
+    },
+    {
+      "pattern": "\\.cyber\\.mil"
+    }
+  ]
+}

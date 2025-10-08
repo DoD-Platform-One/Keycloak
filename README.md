@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.0.1-bb.6](https://img.shields.io/badge/Version-7.0.1--bb.6-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.1.4-bb.0](https://img.shields.io/badge/Version-7.1.4--bb.0-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -19,7 +19,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 ## Learn More
 
-- [Application Overview](docs/overview.md)
+- [Application Overview](docs/CONFIGURATION.md)
 - [Other Documentation](docs/)
 
 ## Pre-Requisites
@@ -74,6 +74,9 @@ helm install keycloak chart/
 | bbtests.cypress.envs.tnr_firstName | string | `"Cypress"` |  |
 | bbtests.cypress.envs.tnr_lastName | string | `"TNR"` |  |
 | bbtests.cypress.envs.tnr_email | string | `"cypress@tnr.mil"` |  |
+| bbtests.scripts.envs.HEADLESS_SERVICE | string | `"keycloak-keycloak-headless.keycloak.svc.cluster.local"` |  |
+| bbtests.scripts.envs.PORT | string | `"7800"` |  |
+| bbtests.scripts.envs.TIMEOUT | string | `"10"` |  |
 | upstream.fullnameOverride | string | `"keycloak-keycloak"` |  |
 | upstream.nameOverride | string | `"keycloak"` |  |
 | upstream.podAnnotations."traffic.sidecar.istio.io/excludeInboundPorts" | string | `"9000"` |  |
@@ -88,7 +91,7 @@ helm install keycloak chart/
 | upstream.resources | object | `{"limits":{"memory":"1Gi"},"requests":{"cpu":"1","memory":"1Gi"}}` | Pod resource requests and limits |
 | upstream.secrets | object | `{"env":{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.dev.bigbang.mil","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}}` | Configuration for secrets that should be created The secrets can also be independently created separate from this helm chart. for example with a gitops tool like flux with a kustomize overlay. NOTE: Secret values can be templated |
 | upstream.secrets.env | object | `{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.dev.bigbang.mil","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}` | Environmental variables |
-| upstream.secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-Dcom.redhat.fips=false"` | https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index |
+| upstream.secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-Dcom.redhat.fips=false"` | https://docs.redhat.com/en/documentation/red_hat_build_of_openjdk/17/html-single/configuring_red_hat_build_of_openjdk_17_on_rhel_with_fips/index |
 | upstream.secrets.env.stringData.KEYCLOAK_ADMIN | string | `"admin"` | default admin credentials. Override them for production deployments |
 | upstream.secrets.env.stringData.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless"` | https://www.keycloak.org/server/caching |
 | upstream.dbchecker.enabled | bool | `false` | If `true`, the dbchecker init container is enabled; this is incompatible with Big Bang and so is disabled by default. |

@@ -88,6 +88,10 @@
         "cypress": {
           "type": "object",
           "additionalProperties": true
+        },
+        "scripts": {
+          "type": "object",
+          "additionalProperties": true
         }
       },
       "additionalProperties": false
