@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.1.4-bb.0](https://img.shields.io/badge/Version-7.1.4--bb.0-informational?style=flat-square) ![AppVersion: 26.1.4](https://img.shields.io/badge/AppVersion-26.1.4-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.1.4-bb.1](https://img.shields.io/badge/Version-7.1.4--bb.1-informational?style=flat-square) ![AppVersion: 26.4.1](https://img.shields.io/badge/AppVersion-26.4.1-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -83,7 +83,7 @@ helm install keycloak chart/
 | upstream.podAnnotations."proxy.istio.io/config" | string | `"proxyMetadata:\n  ISTIO_META_DNS_CAPTURE: \"true\"\n"` |  |
 | upstream.replicas | int | `1` |  |
 | upstream.image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` | The Keycloak image repository |
-| upstream.image.tag | string | `"26.1.4"` |  |
+| upstream.image.tag | string | `"26.4.1"` |  |
 | upstream.podSecurityContext | object | `{"fsGroup":2000,"runAsGroup":2000,"runAsNonRoot":true,"runAsUser":2000}` | SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this) |
 | upstream.securityContext | object | `{"capabilities":{"drop":["ALL"]},"runAsGroup":2000,"runAsNonRoot":true,"runAsUser":2000}` | SecurityContext for the Keycloak container |
 | upstream.args | list | `["start"]` | Overrides the default args for the Keycloak container **arg: "start" needs to be set for the container to start up properly** |
@@ -91,7 +91,7 @@ helm install keycloak chart/
 | upstream.resources | object | `{"limits":{"memory":"1Gi"},"requests":{"cpu":"1","memory":"1Gi"}}` | Pod resource requests and limits |
 | upstream.secrets | object | `{"env":{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.dev.bigbang.mil","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}}` | Configuration for secrets that should be created The secrets can also be independently created separate from this helm chart. for example with a gitops tool like flux with a kustomize overlay. NOTE: Secret values can be templated |
 | upstream.secrets.env | object | `{"stringData":{"JAVA_OPTS_APPEND":"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless","JAVA_TOOL_OPTIONS":"-Dcom.redhat.fips=false","KC_HOSTNAME":"keycloak.dev.bigbang.mil","KEYCLOAK_ADMIN":"admin","KEYCLOAK_ADMIN_PASSWORD":"password"}}` | Environmental variables |
-| upstream.secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-Dcom.redhat.fips=false"` | https://docs.redhat.com/en/documentation/red_hat_build_of_openjdk/17/html-single/configuring_red_hat_build_of_openjdk_17_on_rhel_with_fips/index |
+| upstream.secrets.env.stringData.JAVA_TOOL_OPTIONS | string | `"-Dcom.redhat.fips=false"` | https://docs.redhat.com/en/documentation/red_hat_build_of_openjdk/11/html-single/configuring_red_hat_build_of_openjdk_11_on_rhel_with_fips/index |
 | upstream.secrets.env.stringData.KEYCLOAK_ADMIN | string | `"admin"` | default admin credentials. Override them for production deployments |
 | upstream.secrets.env.stringData.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless"` | https://www.keycloak.org/server/caching |
 | upstream.dbchecker.enabled | bool | `false` | If `true`, the dbchecker init container is enabled; this is incompatible with Big Bang and so is disabled by default. |
