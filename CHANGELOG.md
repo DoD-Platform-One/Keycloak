@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [7.1.4-bb.1] - 2025-10-6
+
+### Updated
+
+- Updated Keycloak to 26.4.1
+- Updated Postgresql chart to 16.7.19
+
 ## [7.1.4-bb.0] - 2025-10-6
 
 ### Changed

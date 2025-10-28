@@ -121,7 +121,7 @@ upstream:
     # -- The Keycloak image repository
     repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
     # Overrides the Keycloak image tag whose default is the chart appVersion
-    tag: "26.1.4"
+    tag: "26.4.1"
 
   # -- SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
   podSecurityContext:
@@ -165,7 +165,7 @@ upstream:
     # -- Environmental variables
     env:
       stringData:
-        # -- https://access.redhat.com/documentation/en-us/openjdk/11/html-single/configuring_openjdk_11_on_rhel_with_fips/index
+        # -- https://docs.redhat.com/en/documentation/red_hat_build_of_openjdk/11/html-single/configuring_red_hat_build_of_openjdk_11_on_rhel_with_fips/index
         JAVA_TOOL_OPTIONS: "-Dcom.redhat.fips=false"
         # -- default admin credentials. Override them for production deployments
         KEYCLOAK_ADMIN: "admin"
