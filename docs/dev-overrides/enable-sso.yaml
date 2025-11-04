@@ -19,6 +19,8 @@ kiali:
           auth:
             strategy: openid
 addons:
+  authservice:
+    enabled: true
   sonarqube:
     enabled: true
     sso:

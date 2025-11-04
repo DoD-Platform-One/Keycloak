@@ -28,7 +28,7 @@ describe("Keycloak", function () {
       cy.visit(
         Cypress.env("url") + "/auth/admin/master/console/#/baby-yoda/users",
       );
-      cy.wait(2000);
+      cy.wait(5000);
       cy.get("body").should("contain", "Cypress");
 
       if (Cypress.env("keycloak_test_enable")) {

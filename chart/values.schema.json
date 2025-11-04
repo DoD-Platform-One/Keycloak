@@ -10,28 +10,44 @@
     "istio": {
       "type": "object",
       "properties": {
-        "enabled": { "type": "boolean", "description": "Enable or disable Istio" },
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable or disable Istio"
+        },
         "injection": {
           "type": "string",
-          "enum": ["enabled", "disabled"]
+          "enum": [
+            "enabled",
+            "disabled"
+          ]
         },
         "hardened": {
           "type": "object",
           "properties": {
-            "enabled": { "type": "boolean", "description": "Enable or disable Istio's hardened mode" },
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable or disable Istio's hardened mode"
+            },
             "customAuthorizationPolicies": {
               "type": "array",
               "description": "Custom authorization policies to be applied to the keycloak namespace",
-              "items": { "type": "object" }
+              "items": {
+                "type": "object"
+              }
             },
             "outboundTrafficPolicyMode": {
               "type": "string",
-              "enum": ["REGISTRY_ONLY", "ALLOW_ANY"]
+              "enum": [
+                "REGISTRY_ONLY",
+                "ALLOW_ANY"
+              ]
             },
             "customServiceEntries": {
               "type": "array",
               "description": "Custom service entries to be applied to the keycloak namespace",
-              "items": { "type": "object" }
+              "items": {
+                "type": "object"
+              }
             }
           },
           "additionalProperties": false
@@ -41,7 +57,10 @@
           "properties": {
             "mode": {
               "type": "string",
-              "enum": ["STRICT", "PERMISSIVE"],
+              "enum": [
+                "STRICT",
+                "PERMISSIVE"
+              ],
               "description": "Configure the default mTLS mode for keycloak's namespace"
             }
           },
@@ -50,17 +69,34 @@
         "keycloak": {
           "type": "object",
           "properties": {
-            "enabled": { "type": "boolean", "description": "Enable or disable the istio virtual service for keycloak" },
-            "annotations": { "type": "object", "additionalProperties": { "type": "string" } },
-            "labels": { "type": "object", "additionalProperties": { "type": "string" } },
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable or disable the istio virtual service for keycloak"
+            },
+            "annotations": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "labels": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
             "gateways": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "Specify the istio gateways to be used for keycloak"
             },
             "hosts": {
               "type": "array",
-              "items": { "type": "string" },
+              "items": {
+                "type": "string"
+              },
               "description": "Specify the hostnames from which keycloak will be accessible"
             }
           },
@@ -71,20 +107,791 @@
     },
     "networkPolicies": {
       "type": "object",
+      "description": "Network policies configuration for the application",
       "properties": {
-        "enabled": { "type": "boolean", "description": "Enable or disable the bundled network policies" },
-        "externalServices": { "type": "object", "description": "Configure external services that keycloak needs to access" },
-        "ingressLabels": { "type": "object" },
-        "additionalPolicies": { "type": "array", "items": { "type": "object" } },
-        "istioNamespaceSelector": { "type": "object" }
-      },
-      "additionalProperties": false
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable network policies",
+          "default": false
+        },
+        "prependReleaseName": {
+          "type": "boolean",
+          "description": "Prepend release name to network policy names",
+          "default": false
+        },
+        "defaultsAsHooks": {
+          "type": "object",
+          "description": "Create hook versions of default policies in addition to regular versions",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable hook creation for default policies (creates both regular and hook versions)",
+              "default": false
+            },
+            "hooks": {
+              "type": "array",
+              "description": "Helm hook types",
+              "default": [
+                "pre-install",
+                "pre-upgrade",
+                "post-delete"
+              ],
+              "items": {
+                "type": "string",
+                "enum": [
+                  "pre-install",
+                  "post-install",
+                  "pre-delete",
+                  "post-delete",
+                  "pre-upgrade",
+                  "post-upgrade",
+                  "pre-rollback",
+                  "post-rollback",
+                  "test"
+                ]
+              }
+            },
+            "weight": {
+              "type": "integer",
+              "description": "Helm hook weight for execution order",
+              "default": -5
+            },
+            "deletePolicies": {
+              "type": "array",
+              "description": "Helm hook delete policies",
+              "default": [
+                "hook-succeeded",
+                "before-hook-creation"
+              ],
+              "items": {
+                "type": "string",
+                "enum": [
+                  "before-hook-creation",
+                  "hook-succeeded",
+                  "hook-failed"
+                ]
+              }
+            }
+          }
+        },
+        "egress": {
+          "type": "object",
+          "description": "Egress network policy configuration",
+          "properties": {
+            "excludeCIDRs": {
+              "type": "array",
+              "description": "CIDRs to exclude from all ipBlock egress policies (except literals)",
+              "default": [
+                "169.254.169.254/32"
+              ],
+              "items": {
+                "type": "string",
+                "pattern": "^((\\d+\\.){3}\\d+/\\d+)$"
+              }
+            },
+            "defaults": {
+              "type": "object",
+              "description": "Default egress policies",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable all default egress policies",
+                  "default": true
+                },
+                "denyAll": {
+                  "type": "object",
+                  "description": "Deny all egress by default",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                },
+                "allowInNamespace": {
+                  "type": "object",
+                  "description": "Allow egress within the same namespace",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                },
+                "allowKubeDns": {
+                  "type": "object",
+                  "description": "Allow DNS resolution (TCP/UDP port 53)",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                },
+                "allowIstiod": {
+                  "type": "object",
+                  "description": "Allow Istio control plane communication (TCP port 15012)",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "definitions": {
+              "type": "object",
+              "description": "Custom egress rule definitions that can be referenced",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "array",
+                    "description": "List of egress destinations",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "namespaceSelector": {
+                          "type": "object",
+                          "description": "Kubernetes namespace selector"
+                        },
+                        "podSelector": {
+                          "type": "object",
+                          "description": "Kubernetes pod selector"
+                        },
+                        "ipBlock": {
+                          "type": "object",
+                          "description": "IP CIDR block",
+                          "properties": {
+                            "cidr": {
+                              "type": "string",
+                              "pattern": "^((\\d+\\.){3}\\d+/\\d+)$"
+                            },
+                            "except": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "pattern": "^((\\d+\\.){3}\\d+/\\d+)$"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ports": {
+                    "type": "array",
+                    "description": "List of ports",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "port": {
+                          "oneOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "endPort": {
+                          "type": "integer",
+                          "description": "End port for port range specifications"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "TCP",
+                            "UDP",
+                            "SCTP"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "from": {
+              "type": "object",
+              "description": "Egress rules from local pods",
+              "patternProperties": {
+                "^[\\w-]+$|^\\*$": {
+                  "type": "object",
+                  "description": "Pod name or wildcard (*) for all pods",
+                  "properties": {
+                    "podSelector": {
+                      "type": "object",
+                      "description": "Pod selector for the source pods"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "description": "Metadata for generated network policies",
+                      "properties": {
+                        "labels": {
+                          "type": "object",
+                          "description": "Additional labels for generated network policies",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "annotations": {
+                          "type": "object",
+                          "description": "Annotations for generated network policies",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "to": {
+                      "type": "object",
+                      "description": "Egress destinations",
+                      "properties": {
+                        "k8s": {
+                          "type": "object",
+                          "description": "Kubernetes pod/namespace destinations",
+                          "patternProperties": {
+                            "^((tcp|udp)://)?([A-Za-z0-9-]+|\\*)(/([A-Za-z0-9-]+|\\*))?(:(\\d+|\\d+-\\d+|\\[?\\d+(,\\d+)*\\]?))?$": {
+                              "oneOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "enabled": {
+                                      "type": "boolean"
+                                    },
+                                    "metadata": {
+                                      "type": "object",
+                                      "description": "Metadata for generated network policies",
+                                      "properties": {
+                                        "labels": {
+                                          "type": "object",
+                                          "description": "Additional labels for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "annotations": {
+                                          "type": "object",
+                                          "description": "Annotations for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "podSelector": {
+                                      "type": "object",
+                                      "description": "Override pod selector for the destination"
+                                    },
+                                    "namespaceSelector": {
+                                      "type": "object",
+                                      "description": "Override namespace selector for the destination"
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": "K8s shorthand: [protocol://]<namespace>[/<pod>][:port-spec]"
+                            }
+                          }
+                        },
+                        "cidr": {
+                          "type": "object",
+                          "description": "CIDR block destinations",
+                          "patternProperties": {
+                            "^((tcp|udp)://)?((\\d+\\.){3}\\d+/\\d+)(:(\\d+|\\d+-\\d+|\\[?\\d+(,\\d+)*\\]?))?$": {
+                              "oneOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "enabled": {
+                                      "type": "boolean"
+                                    },
+                                    "metadata": {
+                                      "type": "object",
+                                      "description": "Metadata for generated network policies",
+                                      "properties": {
+                                        "labels": {
+                                          "type": "object",
+                                          "description": "Additional labels for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "annotations": {
+                                          "type": "object",
+                                          "description": "Annotations for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": "CIDR shorthand: [protocol://]<cidr>[:port-spec]"
+                            }
+                          }
+                        },
+                        "definition": {
+                          "type": "object",
+                          "description": "Reference to defined rules",
+                          "patternProperties": {
+                            "^[\\w-]+$": {
+                              "oneOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "enabled": {
+                                      "type": "boolean"
+                                    },
+                                    "metadata": {
+                                      "type": "object",
+                                      "description": "Metadata for generated network policies",
+                                      "properties": {
+                                        "labels": {
+                                          "type": "object",
+                                          "description": "Additional labels for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "annotations": {
+                                          "type": "object",
+                                          "description": "Annotations for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": "Definition name"
+                            }
+                          }
+                        },
+                        "literal": {
+                          "type": "object",
+                          "description": "Raw NetworkPolicy egress spec",
+                          "patternProperties": {
+                            "^[\\w-]+$": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean"
+                                },
+                                "labels": {
+                                  "type": "object",
+                                  "description": "Additional labels for generated network policies",
+                                  "additionalProperties": {
+                                    "type": "string"
+                                  }
+                                },
+                                "annotations": {
+                                  "type": "object",
+                                  "description": "Annotations for generated network policies",
+                                  "additionalProperties": {
+                                    "type": "string"
+                                  }
+                                },
+                                "spec": {
+                                  "type": "array",
+                                  "description": "Raw NetworkPolicy egress spec",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ingress": {
+          "type": "object",
+          "description": "Ingress network policy configuration",
+          "properties": {
+            "generateAuthorizationPolicies": {
+              "type": "boolean",
+              "description": "Generate Istio AuthorizationPolicies for SPIFFE-based identity verification when service account identities are specified",
+              "default": false
+            },
+            "defaults": {
+              "type": "object",
+              "description": "Default ingress policies",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable all default ingress policies",
+                  "default": true
+                },
+                "denyAll": {
+                  "type": "object",
+                  "description": "Deny all ingress by default",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                },
+                "allowInNamespace": {
+                  "type": "object",
+                  "description": "Allow ingress from same namespace",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                },
+                "allowPrometheusToIstioSidecar": {
+                  "type": "object",
+                  "description": "Allow ingress from Prometheus in monitoring namespace (TCP port 15020)",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "definitions": {
+              "type": "object",
+              "description": "Custom ingress rule definitions that can be referenced",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "array",
+                    "description": "List of ingress sources",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "namespaceSelector": {
+                          "type": "object",
+                          "description": "Kubernetes namespace selector"
+                        },
+                        "podSelector": {
+                          "type": "object",
+                          "description": "Kubernetes pod selector"
+                        },
+                        "ipBlock": {
+                          "type": "object",
+                          "description": "IP CIDR block",
+                          "properties": {
+                            "cidr": {
+                              "type": "string",
+                              "pattern": "^((\\d+\\.){3}\\d+/\\d+)$"
+                            },
+                            "except": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "pattern": "^((\\d+\\.){3}\\d+/\\d+)$"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ports": {
+                    "type": "array",
+                    "description": "List of ports",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "port": {
+                          "oneOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "endPort": {
+                          "type": "integer",
+                          "description": "End port for port range specifications"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "TCP",
+                            "UDP",
+                            "SCTP"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "to": {
+              "type": "object",
+              "description": "Ingress rules to local pods",
+              "patternProperties": {
+                "^((tcp|udp)://)?[\\w-]+(:(\\[?\\d+(,\\d+)*\\]?|\\d+|\\d+-\\d+))?$": {
+                  "type": "object",
+                  "description": "Local pod specification: [protocol://]<pod-name>[:port-spec]",
+                  "properties": {
+                    "podSelector": {
+                      "type": "object",
+                      "description": "Pod selector for the destination pods"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "description": "Metadata for generated network policies",
+                      "properties": {
+                        "labels": {
+                          "type": "object",
+                          "description": "Additional labels for generated network policies",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "annotations": {
+                          "type": "object",
+                          "description": "Annotations for generated network policies",
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "from": {
+                      "type": "object",
+                      "description": "Ingress sources",
+                      "properties": {
+                        "k8s": {
+                          "type": "object",
+                          "description": "Kubernetes pod/namespace sources",
+                          "patternProperties": {
+                            "^([A-Za-z0-9-]+@)?([A-Za-z0-9-]+|\\*)(/([A-Za-z0-9-]+|\\*))?$": {
+                              "oneOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "enabled": {
+                                      "type": "boolean"
+                                    },
+                                    "metadata": {
+                                      "type": "object",
+                                      "description": "Metadata for generated network policies",
+                                      "properties": {
+                                        "labels": {
+                                          "type": "object",
+                                          "description": "Additional labels for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "annotations": {
+                                          "type": "object",
+                                          "description": "Annotations for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "podSelector": {
+                                      "type": "object",
+                                      "description": "Override pod selector for the source"
+                                    },
+                                    "namespaceSelector": {
+                                      "type": "object",
+                                      "description": "Override namespace selector for the source"
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": "K8s shorthand: [<identity>@]<namespace>[/<pod>]"
+                            }
+                          }
+                        },
+                        "cidr": {
+                          "type": "object",
+                          "description": "CIDR block sources",
+                          "patternProperties": {
+                            "^((\\d+\\.){3}\\d+/\\d+)$": {
+                              "oneOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "enabled": {
+                                      "type": "boolean"
+                                    },
+                                    "metadata": {
+                                      "type": "object",
+                                      "description": "Metadata for generated network policies",
+                                      "properties": {
+                                        "labels": {
+                                          "type": "object",
+                                          "description": "Additional labels for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "annotations": {
+                                          "type": "object",
+                                          "description": "Annotations for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": "CIDR shorthand: <cidr>"
+                            }
+                          }
+                        },
+                        "definition": {
+                          "type": "object",
+                          "description": "Reference to defined rules",
+                          "patternProperties": {
+                            "^[\\w-]+$": {
+                              "oneOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "enabled": {
+                                      "type": "boolean"
+                                    },
+                                    "metadata": {
+                                      "type": "object",
+                                      "description": "Metadata for generated network policies",
+                                      "properties": {
+                                        "labels": {
+                                          "type": "object",
+                                          "description": "Additional labels for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "annotations": {
+                                          "type": "object",
+                                          "description": "Annotations for generated network policies",
+                                          "additionalProperties": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ],
+                              "description": "Definition name"
+                            }
+                          }
+                        },
+                        "literal": {
+                          "type": "object",
+                          "description": "Raw NetworkPolicy ingress spec",
+                          "patternProperties": {
+                            "^[\\w-]+$": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean"
+                                },
+                                "labels": {
+                                  "type": "object",
+                                  "description": "Additional labels for generated network policies",
+                                  "additionalProperties": {
+                                    "type": "string"
+                                  }
+                                },
+                                "annotations": {
+                                  "type": "object",
+                                  "description": "Annotations for generated network policies",
+                                  "additionalProperties": {
+                                    "type": "string"
+                                  }
+                                },
+                                "spec": {
+                                  "type": "array",
+                                  "description": "Raw NetworkPolicy ingress spec",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "additionalPolicies": {
+          "type": "array",
+          "description": "Additional raw network policies (also accepts 'additional' for backwards compatibility)",
+          "items": {
+            "$ref": "#/$defs/additionalPolicy"
+          }
+        },
+        "additional": {
+          "type": "array",
+          "description": "Additional raw network policies (also accepts 'additional' for backwards compatibility)",
+          "items": {
+            "$ref": "#/$defs/additionalPolicy"
+          }
+        }
+      }
     },
     "bbtests": {
       "type": "object",
       "properties": {
-        "enabled": { "type": "boolean", "description": "Enables the Big Bang test hooks" },
-        "image": { "type": "string" },
+        "enabled": {
+          "type": "boolean",
+          "description": "Enables the Big Bang test hooks"
+        },
+        "image": {
+          "type": "string"
+        },
         "cypress": {
           "type": "object",
           "additionalProperties": true
@@ -106,6 +913,11 @@
       "description": "PostgreSQL configuration",
       "additionalProperties": true
     },
+    "bb-common": {
+      "description": "Values used by the bb-common subchart.",
+      "type": "object",
+      "additionalProperties": true
+    },
     "gluon": {
       "type": "object",
       "description": "Gluon configuration",
@@ -117,5 +929,39 @@
       "additionalProperties": true
     }
   },
-  "additionalProperties": false
-} 
+  "additionalProperties": false,
+  "$defs": {
+    "additionalPolicy": {
+      "type": "object",
+      "required": [
+        "name",
+        "spec"
+      ],
+      "description": "Additional raw network policy (also accepts 'additional' for backwards compatibility)",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the network policy"
+        },
+        "labels": {
+          "type": "object",
+          "description": "Additional labels for the network policy",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "annotations": {
+          "type": "object",
+          "description": "Annotations for the network policy",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "spec": {
+          "type": "object",
+          "description": "Raw NetworkPolicy spec"
+        }
+      }
+    }
+  }
+}

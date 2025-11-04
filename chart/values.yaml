@@ -52,36 +52,24 @@ istio:
 
 networkPolicies:
   # -- Enable or disable the bundled network policies
-  enabled: false
-  # -- Configure external services that keycloak needs to access
-  externalServices: {}
-  # externalServices:
-  #   database:
-  #     cidrs:
-  #       - 10.0.8.0/24
-  #       - 10.0.9.0/24
-  #     ports:
-  #       - protocol: TCP
-  #         port: 5432
-  #   ldap:
-  #     cidrs:
-  #       - 10.0.10.0/24
-  #       - 10.0.11.0/24
-  #     ports:
-  #       - protocol: TCP
-  #         port: 636
-  #   smtp:
-  #     cidrs:
-  #       - 10.0.12.0/24
-  #       - 10.0.13.0/24
-  #     ports:
-  #       - protocol: TCP
-  #         port: 587
+  enabled: true
   # -- Configures labelSelectors for network policies allowing ingress from istio gateways
   ingressLabels:
     app: istio-ingressgateway
     istio: ingressgateway
-  # -- Configures additional network policies beyond the ones bundled with the chart
+  # -- Configures additional network policies beyond the ones bundled with the chart, using the bb-common shorthand
+  ingress:
+    to:
+      keycloak:
+        from:
+          definition:
+            gateway: true
+  egress:
+    from:
+      "*":
+        to:
+          definition:
+            kubeAPI: true
   additionalPolicies: []
 
 bbtests:
@@ -197,7 +185,7 @@ postgresql:
     registry: registry1.dso.mil
     repository: ironbank/bitnami/postgres
     tag: 17.4.0
-  global:
+  global:  
     security:
       # -- Allow registry1.dso.mil in lieu of the default bitnami registry
       allowInsecureImages: true
