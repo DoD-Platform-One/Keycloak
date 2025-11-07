@@ -53,6 +53,7 @@ annotations:
     - name: postgresql
       condition: postgresql.enabled
       image: registry1.dso.mil/ironbank/bitnami/postgres:17.4.0
+    - name: base 
       condition: bbtests.enabled
       image: registry1.dso.mil/ironbank/big-bang/base:2.1.0
   bigbang.dev/upstreamReleaseNotesMarkdown: |
