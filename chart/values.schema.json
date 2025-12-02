@@ -3,6 +3,10 @@
   "title": "Big Bang Keycloak Helm Chart Values Schema",
   "type": "object",
   "properties": {
+    "global": {
+      "type": "object",
+      "description": "Global object to support Keycloak chart as Helm dependency"
+    },
     "domain": {
       "type": "string",
       "description": "The base domain"
