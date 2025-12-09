@@ -1,6 +1,6 @@
 apiVersion: v2
 name: keycloak
-version: 7.1.4-bb.4
+version: 7.1.4-bb.5
 appVersion: 26.4.2
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:
@@ -53,7 +53,7 @@ annotations:
     - name: postgresql
       condition: postgresql.enabled
       image: registry1.dso.mil/ironbank/bitnami/postgres:17.4.0
-    - name: base 
+    - name: base
       condition: bbtests.enabled
       image: registry1.dso.mil/ironbank/big-bang/base:2.1.0
   bigbang.dev/upstreamReleaseNotesMarkdown: |
