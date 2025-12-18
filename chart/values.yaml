@@ -108,7 +108,7 @@ upstream:
     # -- The Keycloak image repository
     repository: registry1.dso.mil/ironbank/opensource/keycloak/keycloak
     # Overrides the Keycloak image tag whose default is the chart appVersion
-    tag: "26.4.2"
+    tag: "26.4.7"
 
   # -- SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
   podSecurityContext:
