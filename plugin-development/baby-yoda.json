@@ -1881,6 +1881,7 @@
       "redirectUris": [
         "https://vault.bigbang.dev/ui/vault/auth/oidc/oidc/callback",
         "https://vault.bigbang.dev/oidc/callback",
+        "https://vault.dev.bigbang.mil/ui/vault/auth/oidc/oidc/callback",
         "https://vault.dev.bigbang.mil/oidc/callback"
       ],
       "webOrigins": [],
