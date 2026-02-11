@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [7.1.7-bb.0] - 2026-02-11
+
+### Updated
+
+- Updated registry1.dso.mil/ironbank/opensource/keycloak/keycloak from 26.4.7 -> 26.5.3
+- Updated bb-common chart from 0.11.0 -> 0.14.0
+- Updated gluon chart from 0.9.7 -> 0.9.8
+- Updated keycloakx chart from 7.1.5 -> 7.1.7
+- Updated postgresql chart from 18.1.3 -> 18.2.6
+
 ## [7.1.5-bb.0] - 2025-12-18
 
 ### Updated
@@ -11,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [7.1.4-bb.6] - 2025-12-08
 
-### Changed 
+### Changed
 
 - Remove extra postgres subchart from local git repo
 

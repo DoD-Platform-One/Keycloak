@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.1.5-bb.0](https://img.shields.io/badge/Version-7.1.5--bb.0-informational?style=flat-square) ![AppVersion: 26.4.7](https://img.shields.io/badge/AppVersion-26.4.7-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.1.7-bb.0](https://img.shields.io/badge/Version-7.1.7--bb.0-informational?style=flat-square) ![AppVersion: 26.5.3](https://img.shields.io/badge/AppVersion-26.5.3-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -83,7 +83,7 @@ helm install keycloak chart/
 | upstream.podAnnotations."proxy.istio.io/config" | string | `"proxyMetadata:\n  ISTIO_META_DNS_CAPTURE: \"true\"\n"` |  |
 | upstream.replicas | int | `1` |  |
 | upstream.image.repository | string | `"registry1.dso.mil/ironbank/opensource/keycloak/keycloak"` | The Keycloak image repository |
-| upstream.image.tag | string | `"26.4.7"` |  |
+| upstream.image.tag | string | `"26.5.3"` |  |
 | upstream.podSecurityContext | object | `{"fsGroup":2000,"runAsGroup":2000,"runAsNonRoot":true,"runAsUser":2000}` | SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this) |
 | upstream.securityContext | object | `{"capabilities":{"drop":["ALL"]},"runAsGroup":2000,"runAsNonRoot":true,"runAsUser":2000}` | SecurityContext for the Keycloak container |
 | upstream.args | list | `["start"]` | Overrides the default args for the Keycloak container **arg: "start" needs to be set for the container to start up properly** |
