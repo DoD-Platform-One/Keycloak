@@ -13,95 +13,572 @@
     },
     "istio": {
       "type": "object",
+      "description": "Istio service mesh configuration",
       "properties": {
         "enabled": {
           "type": "boolean",
-          "description": "Enable or disable Istio"
+          "description": "Enable Istio integration",
+          "default": false
+        },
+        "ambient": {
+          "type": "object",
+          "description": "Istio ambient configuration",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable ambient mode settings",
+              "default": false
+            }
+          }
         },
         "injection": {
           "type": "string",
-          "enum": [
-            "enabled",
-            "disabled"
-          ]
-        },
-        "hardened": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean",
-              "description": "Enable or disable Istio's hardened mode"
-            },
-            "customAuthorizationPolicies": {
-              "type": "array",
-              "description": "Custom authorization policies to be applied to the keycloak namespace",
-              "items": {
-                "type": "object"
-              }
-            },
-            "outboundTrafficPolicyMode": {
-              "type": "string",
-              "enum": [
-                "REGISTRY_ONLY",
-                "ALLOW_ANY"
-              ]
-            },
-            "customServiceEntries": {
-              "type": "array",
-              "description": "Custom service entries to be applied to the keycloak namespace",
-              "items": {
-                "type": "object"
-              }
-            }
-          },
-          "additionalProperties": false
+          "description": "Istio sidecar injection mode (enabled, disabled, or empty for no label)",
+          "enum": ["enabled", "disabled", ""]
         },
         "mtls": {
           "type": "object",
+          "description": "Mutual TLS configuration",
           "properties": {
             "mode": {
               "type": "string",
-              "enum": [
-                "STRICT",
-                "PERMISSIVE"
-              ],
-              "description": "Configure the default mTLS mode for keycloak's namespace"
+              "description": "mTLS mode (STRICT, PERMISSIVE, or DISABLE)",
+              "enum": ["STRICT", "PERMISSIVE", "DISABLE"],
+              "default": "STRICT"
             }
           },
           "additionalProperties": false
         },
-        "keycloak": {
+        "sidecar": {
           "type": "object",
+          "description": "Istio Sidecar resource configuration for outbound traffic control",
           "properties": {
             "enabled": {
               "type": "boolean",
-              "description": "Enable or disable the istio virtual service for keycloak"
+              "description": "Enable Istio Sidecar resource (restricts outbound traffic)",
+              "default": false
             },
-            "annotations": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
+            "outboundTrafficPolicyMode": {
+              "type": "string",
+              "description": "Outbound traffic policy mode (REGISTRY_ONLY or ALLOW_ANY)",
+              "enum": ["REGISTRY_ONLY", "ALLOW_ANY"],
+              "default": "REGISTRY_ONLY"
+            }
+          },
+          "additionalProperties": false
+        },
+        "serviceEntries": {
+          "type": "object",
+          "description": "Istio ServiceEntry resources configuration",
+          "properties": {
+            "custom": {
+              "type": "array",
+              "description": "List of custom Istio ServiceEntry resources",
+              "items": {
+                "type": "object",
+                "required": ["name", "spec"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the ServiceEntry"
+                  },
+                  "labels": {
+                    "type": "object",
+                    "description": "Additional labels for the ServiceEntry",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the ServiceEntry",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "spec": {
+                    "type": "object",
+                    "description": "Istio ServiceEntry spec"
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "authorizationPolicies": {
+          "type": "object",
+          "description": "Istio AuthorizationPolicies configuration for service mesh security",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable generation of Istio AuthorizationPolicies",
+              "default": false
+            },
+            "generateFromNetpol": {
+              "type": "boolean",
+              "description": "Generate Istio AuthorizationPolicies from NetworkPolicy configurations with SPIFFE-based identity verification when service account identities are specified",
+              "default": false
+            },
+            "custom": {
+              "type": "array",
+              "description": "List of custom Istio AuthorizationPolicy resources",
+              "items": {
+                "type": "object",
+                "required": ["name", "spec"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the AuthorizationPolicy"
+                  },
+                  "labels": {
+                    "type": "object",
+                    "description": "Additional labels for the AuthorizationPolicy",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the AuthorizationPolicy",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "spec": {
+                    "type": "object",
+                    "description": "Istio AuthorizationPolicy spec"
+                  }
+                }
               }
             },
-            "labels": {
+            "defaults": {
               "type": "object",
+              "description": "Default authorization policies",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable all default authorization policies",
+                  "default": true
+                },
+                "denyAll": {
+                  "type": "object",
+                  "description": "Deny all ingress by default (allow-nothing policy)",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                },
+                "allowInNamespace": {
+                  "type": "object",
+                  "description": "Allow ingress from same namespace",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "additionalPolicies": {
+              "type": "object",
+              "description": "Additional custom Istio AuthorizationPolicies (map structure to avoid override issues)",
               "additionalProperties": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable this authorization policy",
+                    "default": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the authorization policy (optional, defaults to map key)"
+                  },
+                  "namespace": {
+                    "type": "string",
+                    "description": "Namespace for the authorization policy (optional)"
+                  },
+                  "labels": {
+                    "type": "object",
+                    "description": "Additional labels for the authorization policy",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "annotations": {
+                    "type": "object",
+                    "description": "Annotations for the authorization policy",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "spec": {
+                    "type": "object",
+                    "description": "Istio AuthorizationPolicy spec",
+                    "properties": {
+                      "selector": {
+                        "type": "object",
+                        "description": "Pod selector for the authorization policy"
+                      },
+                      "action": {
+                        "type": "string",
+                        "description": "Action to take when rules match",
+                        "enum": ["ALLOW", "DENY", "AUDIT", "CUSTOM"]
+                      },
+                      "rules": {
+                        "type": "array",
+                        "description": "List of authorization rules",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["spec"]
               }
-            },
-            "gateways": {
-              "type": "array",
-              "items": {
-                "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "routes": {
+      "type": "object",
+      "description": "Istio VirtualService and gateway configuration for routing traffic to applications",
+      "properties": {
+        "outbound": {
+          "type": "object",
+          "description": "Outbound routes configuration",
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9_-]*$": {
+              "type": "object",
+              "description": "Named route configuration",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable this route",
+                  "default": true
+                },
+                "hosts": {
+                  "type": "array",
+                  "description": "List of host/domain names for this route. Supports templating.",
+                  "items": {
+                    "type": "string",
+                    "description": "Hostname or domain. Can use Helm templating (e.g., '{{ .Values.domain }}')"
+                  },
+                  "minItems": 1
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Location to expose the route (e.g., MESH_EXTERNAL, MESH_INTERNAL)",
+                  "enum": [
+                    "MESH_EXTERNAL",
+                    "MESH_INTERNAL"
+                  ],
+                  "default": "MESH_EXTERNAL"
+                },
+                "resolution": {
+                  "type": "string",
+                  "description": "DNS resolution strategy for the route",
+                  "enum": [
+                    "DNS",
+                    "STATIC",
+                    "DNS_ROUND_ROBIN",
+                    "DYNAMIC_DNS",
+                    "NONE"
+                  ],
+                  "default": "DNS"
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "Metadata applied to all generated resources",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "description": "Additional labels for all generated resources",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "annotations": {
+                      "type": "object",
+                      "description": "Additional annotations for all generated resources",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "ports": {
+                  "type": "array",
+                  "description": "List of ports to expose for this route",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "number": {
+                        "oneOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "string"
+                          }
+                        ],
+                        "description": "Port number"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Port name"
+                      },
+                      "protocol": {
+                        "type": "string",
+                        "description": "Port protocol (e.g., HTTP, HTTPS, TCP)"
+                      }
+                    },
+                    "required": [
+                      "number",
+                      "name",
+                      "protocol"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
               },
-              "description": "Specify the istio gateways to be used for keycloak"
-            },
-            "hosts": {
-              "type": "array",
-              "items": {
-                "type": "string"
+              "required": [
+                "enabled",
+                "hosts"
+              ]
+            }
+          }
+        },
+        "inbound": {
+          "type": "object",
+          "description": "Inbound routes configuration",
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9_-]*$": {
+              "type": "object",
+              "description": "Named route configuration",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable this route",
+                  "default": true
+                },
+                "gateways": {
+                  "type": "array",
+                  "description": "List of Istio gateways to bind this VirtualService to",
+                  "items": {
+                    "type": "string",
+                    "description": "Gateway reference in format 'namespace/gateway-name'"
+                  },
+                  "minItems": 1
+                },
+                "hosts": {
+                  "type": "array",
+                  "description": "List of host/domain names for this route. Supports templating.",
+                  "items": {
+                    "type": "string",
+                    "description": "Hostname or domain. Can use Helm templating (e.g., '{{ .Values.domain }}')"
+                  },
+                  "minItems": 1
+                },
+                "service": {
+                  "type": "string",
+                  "description": "Target Kubernetes service name or FQDN. Supports templating."
+                },
+                "port": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "Target service port number. Supports templating for string values."
+                },
+                "containerPort": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "Target container/pod port number. Used for NetworkPolicy when different from service port. When omitted, defaults to port value. Supports templating for string values."
+                },
+                "passthrough": {
+                  "type": "object",
+                  "description": "Section used when virtual service is using a passthrough gateway",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Configures the virtual service to use tls section with route underneath"
+                    },
+                    "gatewayPort": {
+                      "type": "integer",
+                      "description": "Set to https port of passthrough gateway; Defaults to port 8443 if left empty"
+                    }
+                  }
+                },
+                "metadata": {
+                  "type": "object",
+                  "description": "Metadata applied to all generated resources",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "description": "Additional labels for all generated resources",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "annotations": {
+                      "type": "object",
+                      "description": "Additional annotations for all generated resources",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "selector": {
+                  "type": "object",
+                  "description": "Pod selector for generating NetworkPolicy and AuthorizationPolicy resources. When provided, automatic ingress policies will be created.",
+                  "properties": {
+                    "matchLabels": {
+                      "type": "object",
+                      "description": "Label selector for target pods",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "matchExpressions": {
+                      "type": "array",
+                      "description": "Expression-based label selector",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "operator": {
+                            "type": "string",
+                            "enum": [
+                              "In",
+                              "NotIn",
+                              "Exists",
+                              "DoesNotExist"
+                            ]
+                          },
+                          "values": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "http": {
+                  "type": "array",
+                  "description": "Advanced HTTP routing rules. When not specified, simple routing to service:port is used.",
+                  "items": {
+                    "type": "object",
+                    "description": "Istio HTTPRoute configuration",
+                    "properties": {
+                      "match": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      },
+                      "route": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      },
+                      "redirect": {
+                        "type": "object"
+                      },
+                      "rewrite": {
+                        "type": "object"
+                      },
+                      "timeout": {
+                        "type": "string"
+                      },
+                      "retries": {
+                        "type": "object"
+                      },
+                      "fault": {
+                        "type": "object"
+                      },
+                      "mirror": {
+                        "type": "object"
+                      },
+                      "corsPolicy": {
+                        "type": "object"
+                      },
+                      "headers": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
               },
-              "description": "Specify the hostnames from which keycloak will be accessible"
+              "required": [
+                "enabled",
+                "gateways",
+                "hosts"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "enabled": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "then": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "http"
+                        ],
+                        "description": "Advanced routing with custom http configuration"
+                      },
+                      {
+                        "required": [
+                          "service",
+                          "port"
+                        ],
+                        "not": {
+                          "required": [
+                            "http"
+                          ]
+                        },
+                        "description": "Simple routing requires service and port when http is not provided"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

@@ -31,8 +31,21 @@ describe("Keycloak", function () {
     it("should allow enabling the test user", function () {
       cy.env(["url", "keycloak_test_enable", "tnr_username", "tnr_password"]).then(
         ({ url, keycloak_test_enable, tnr_username, tnr_password }) => {
-          cy.visit(url + "/auth/admin/master/console/#/baby-yoda/users");
-          cy.wait(5000);
+
+          cy.get('[data-testid="nav-item-realms"]')
+            .should("be.visible")
+            .click();
+          
+          cy.contains('[data-ouia-component-type="PF5/TableRow"]', "baby-yoda")
+            .should("be.visible")
+            .within(() => {
+              cy.contains("baby-yoda").click({ force: true });
+            });
+          
+          cy.get('[data-testid="nav-item-users"]')
+            .should("be.visible")
+            .click();
+
           cy.get("body").should("contain", "Cypress");
 
           if (keycloak_test_enable) {
