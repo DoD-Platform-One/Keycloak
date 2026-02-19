@@ -1,75 +1,82 @@
 # -- The base domain for all Big Bang components.
 # Keycloak will be available at keycloak.%domain%
 domain: dev.bigbang.mil
+
 istio:
-  # -- Enable or disable Istio
   enabled: false
-  hardened:
-    # -- Enable or disable istio's hardened mode
+
+  sidecar:
     enabled: false
-    # -- Custom authorization policies to be applied to the keycloak namespace
-    customAuthorizationPolicies:
-      []
-      # - name: "allow-nothing"
-      #   enabled: true
-      #   spec: {}
-    # -- Specify the Istio outbound traffic policy mode
     outboundTrafficPolicyMode: "REGISTRY_ONLY"
-    # -- Custom service entries to be applied to the keycloak namespace
-    customServiceEntries:
-      []
-      # - name: "allow-google"
-      #   enabled: true
-      #   spec:
-      #     exportTo:
-      #       - "."
-      #     hosts:
-      #       - google.com
-      #     location: MESH_EXTERNAL
-      #     ports:
-      #       - number: 443
-      #         protocol: TLS
-      #         name: https
-      #     resolution: DNS
-  mtls:
-    # -- Configure the default mTLS mode for keycloak's namespace
-    # -- STRICT = Allow only mutual TLS traffic,
-    # -- PERMISSIVE = Allow both plain text and mutual TLS traffic
-    mode: STRICT
-  keycloak:
-    # -- Enable or disable the istio virtual service for keycloak
+
+  serviceEntries:
+    custom: []
+
+  authorizationPolicies:
     enabled: false
-    # -- Additional annotations to be added to the istio virtual service
-    annotations: {}
-    # -- Additional labels to be added to the istio virtual service
-    labels: {}
-    # -- Specify the istio gateways to be used for keycloak
-    gateways:
-      - istio-gateway/passthrough-ingressgateway
-    # -- Specify the hostnames from which keycloak will be accessible
-    hosts:
-      - keycloak.{{ .Values.domain }}
+    custom: []
+
+  # Default peer authentication
+  mtls:
+    # STRICT = Allow only mutual TLS traffic
+    # PERMISSIVE = Allow both plain text and mutual TLS traffic
+    mode: STRICT
+
+routes:
+  inbound:
+    keycloak:
+      enabled: true
+      gateways:
+        - istio-gateway/passthrough-ingressgateway
+      hosts:
+        - keycloak.{{ .Values.domain }}
+      service: keycloak-keycloak-http.keycloak.svc.cluster.local
+      port: 8443
+      passthrough:
+        enabled: true
 
 networkPolicies:
   # -- Enable or disable the bundled network policies
-  enabled: true
-  # -- Configures labelSelectors for network policies allowing ingress from istio gateways
-  ingressLabels:
-    app: istio-ingressgateway
-    istio: ingressgateway
+  enabled: false
   # -- Configures additional network policies beyond the ones bundled with the chart, using the bb-common shorthand
   ingress:
     to:
-      keycloak:
+      keycloak:9000:
         from:
-          definition:
-            gateway: true
+          k8s:
+            monitoring-monitoring-kube-prometheus@monitoring/prometheus: false
   egress:
-    from:
-      "*":
+    definitions:
+      smtp-subnets:
         to:
+          - ipBlock:
+              cidr: 192.168.0.0/16
+          - ipBlock:
+              cidr: 172.16.0.0/12
+          - ipBlock:
+              cidr: 10.0.0.0/8
+        ports:
+        - port: 587
+          protocol: TCP
+      ldap-subnets:
+        to:
+          - ipBlock:
+              cidr: 192.168.0.0/16
+          - ipBlock:
+              cidr: 172.16.0.0/12
+          - ipBlock:
+              cidr: 10.0.0.0/8
+        ports:
+        - port: 636
+          protocol: TCP
+    from:
+      keycloak:
+        to:
+          k8s:
+            tempo/tempo:9411: false
           definition:
-            kubeAPI: true
+            ldap-subnets: false
+            smtp-subnets: false
   additionalPolicies: []
 
 bbtests:
@@ -79,6 +86,8 @@ bbtests:
   cypress:
     artifacts: true
     envs:
+      cypress_viewport_width: "1920"
+      cypress_viewport_height: "1080"
       cypress_url: "http://keycloak-keycloak-http.keycloak.svc.cluster.local"
       cypress_username: "admin"
       cypress_password: "password"

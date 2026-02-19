@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # keycloak
 
-![Version: 7.1.7-bb.0](https://img.shields.io/badge/Version-7.1.7--bb.0-informational?style=flat-square) ![AppVersion: 26.5.3](https://img.shields.io/badge/AppVersion-26.5.3-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 7.1.7-bb.1](https://img.shields.io/badge/Version-7.1.7--bb.1-informational?style=flat-square) ![AppVersion: 26.5.3](https://img.shields.io/badge/AppVersion-26.5.3-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -46,25 +46,40 @@ helm install keycloak chart/
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | domain | string | `"dev.bigbang.mil"` | The base domain for all Big Bang components. Keycloak will be available at keycloak.%domain% |
-| istio.enabled | bool | `false` | Enable or disable Istio |
-| istio.hardened.enabled | bool | `false` | Enable or disable istio's hardened mode |
-| istio.hardened.customAuthorizationPolicies | list | `[]` | Custom authorization policies to be applied to the keycloak namespace |
-| istio.hardened.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` | Specify the Istio outbound traffic policy mode |
-| istio.hardened.customServiceEntries | list | `[]` | Custom service entries to be applied to the keycloak namespace |
-| istio.mtls.mode | string | `"STRICT"` | PERMISSIVE = Allow both plain text and mutual TLS traffic |
-| istio.keycloak.enabled | bool | `false` | Enable or disable the istio virtual service for keycloak |
-| istio.keycloak.annotations | object | `{}` | Additional annotations to be added to the istio virtual service |
-| istio.keycloak.labels | object | `{}` | Additional labels to be added to the istio virtual service |
-| istio.keycloak.gateways | list | `["istio-gateway/passthrough-ingressgateway"]` | Specify the istio gateways to be used for keycloak |
-| istio.keycloak.hosts | list | `["keycloak.{{ .Values.domain }}"]` | Specify the hostnames from which keycloak will be accessible |
-| networkPolicies.enabled | bool | `true` | Enable or disable the bundled network policies |
-| networkPolicies.ingressLabels | object | `{"app":"istio-ingressgateway","istio":"ingressgateway"}` | Configures labelSelectors for network policies allowing ingress from istio gateways |
-| networkPolicies.ingress | object | `{"to":{"keycloak":{"from":{"definition":{"gateway":true}}}}}` | Configures additional network policies beyond the ones bundled with the chart, using the bb-common shorthand |
-| networkPolicies.egress.from.*.to.definition.kubeAPI | bool | `true` |  |
+| istio.enabled | bool | `false` |  |
+| istio.sidecar.enabled | bool | `false` |  |
+| istio.sidecar.outboundTrafficPolicyMode | string | `"REGISTRY_ONLY"` |  |
+| istio.serviceEntries.custom | list | `[]` |  |
+| istio.authorizationPolicies.enabled | bool | `false` |  |
+| istio.authorizationPolicies.custom | list | `[]` |  |
+| istio.mtls.mode | string | `"STRICT"` |  |
+| routes.inbound.keycloak.enabled | bool | `true` |  |
+| routes.inbound.keycloak.gateways[0] | string | `"istio-gateway/passthrough-ingressgateway"` |  |
+| routes.inbound.keycloak.hosts[0] | string | `"keycloak.{{ .Values.domain }}"` |  |
+| routes.inbound.keycloak.service | string | `"keycloak-keycloak-http.keycloak.svc.cluster.local"` |  |
+| routes.inbound.keycloak.port | int | `8443` |  |
+| routes.inbound.keycloak.passthrough.enabled | bool | `true` |  |
+| networkPolicies.enabled | bool | `false` | Enable or disable the bundled network policies |
+| networkPolicies.ingress | object | `{"to":{"keycloak:9000":{"from":{"k8s":{"monitoring-monitoring-kube-prometheus@monitoring/prometheus":false}}}}}` | Configures additional network policies beyond the ones bundled with the chart, using the bb-common shorthand |
+| networkPolicies.egress.definitions.smtp-subnets.to[0].ipBlock.cidr | string | `"192.168.0.0/16"` |  |
+| networkPolicies.egress.definitions.smtp-subnets.to[1].ipBlock.cidr | string | `"172.16.0.0/12"` |  |
+| networkPolicies.egress.definitions.smtp-subnets.to[2].ipBlock.cidr | string | `"10.0.0.0/8"` |  |
+| networkPolicies.egress.definitions.smtp-subnets.ports[0].port | int | `587` |  |
+| networkPolicies.egress.definitions.smtp-subnets.ports[0].protocol | string | `"TCP"` |  |
+| networkPolicies.egress.definitions.ldap-subnets.to[0].ipBlock.cidr | string | `"192.168.0.0/16"` |  |
+| networkPolicies.egress.definitions.ldap-subnets.to[1].ipBlock.cidr | string | `"172.16.0.0/12"` |  |
+| networkPolicies.egress.definitions.ldap-subnets.to[2].ipBlock.cidr | string | `"10.0.0.0/8"` |  |
+| networkPolicies.egress.definitions.ldap-subnets.ports[0].port | int | `636` |  |
+| networkPolicies.egress.definitions.ldap-subnets.ports[0].protocol | string | `"TCP"` |  |
+| networkPolicies.egress.from.keycloak.to.k8s.tempo/tempo:9411 | bool | `false` |  |
+| networkPolicies.egress.from.keycloak.to.definition.ldap-subnets | bool | `false` |  |
+| networkPolicies.egress.from.keycloak.to.definition.smtp-subnets | bool | `false` |  |
 | networkPolicies.additionalPolicies | list | `[]` |  |
 | bbtests.enabled | bool | `false` | Enables the Big Bang test hooks |
 | bbtests.image | string | `"registry1.dso.mil/ironbank/big-bang/base:2.1.0"` |  |
 | bbtests.cypress.artifacts | bool | `true` |  |
+| bbtests.cypress.envs.cypress_viewport_width | string | `"1920"` |  |
+| bbtests.cypress.envs.cypress_viewport_height | string | `"1080"` |  |
 | bbtests.cypress.envs.cypress_url | string | `"http://keycloak-keycloak-http.keycloak.svc.cluster.local"` |  |
 | bbtests.cypress.envs.cypress_username | string | `"admin"` |  |
 | bbtests.cypress.envs.cypress_password | string | `"password"` |  |
