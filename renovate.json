@@ -118,6 +118,19 @@
     },
     {
       "customType": "regex",
+      "description": "Update Keycloak image tag in plugin-development docker-compose",
+      "managerFilePatterns": [
+        "/^plugin-development/docker-compose\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+['\"]?registry1.dso.mil/ironbank/opensource/keycloak/keycloak:(?<currentValue>[^'\"\\s]+)"
+      ],
+      "registryUrlTemplate": "https://registry1.dso.mil",
+      "depNameTemplate": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
       "description": "Update PostgreSQL image tag in values.yaml",
       "managerFilePatterns": [
         "/^chart/values\\.yaml$/"
