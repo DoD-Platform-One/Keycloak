@@ -3,10 +3,11 @@
     "main"
   ],
   "dependencyDashboard": true,
-  "dependencyDashboardTitle": "Renovate: Upgrade Keycloak Package Dependencies",
+  "dependencyDashboardTitle": "Renovate: Update Keycloak Package Dependencies",
   "draftPR": true,
   "labels": [
     "keycloak",
+    "renovate",
     "Package Sustainment",
     "kind::maintenance"
   ],
@@ -17,36 +18,47 @@
   "packageRules": [
     {
       "matchDatasources": [
-        "docker"
+        "docker",
+        "helm"
       ],
-      "groupName": "Ironbank"
+      "groupName": "Keycloak",
+      "postUpgradeTasks": {
+        "commands": [
+          "bump-chart-yaml",
+          "bump-changelog '{{#each upgrades}}- {{depName}} {{currentVersion}} -> {{newVersion}}\\n{{/each}}'",
+          "regenerate-helm-docs"
+        ],
+        "fileFilters": [
+          "chart/Chart.yaml",
+          "README.md",
+          "CHANGELOG.md"
+        ],
+        "executionMode": "branch"
+      }
     }
   ],
   "separateMajorMinor": false,
   "postUpdateOptions": [
     "helmUpdateSubChartArchives"
   ],
-  "ignoreDeps": [
-    "docker.io/unguiculus/docker-python3-phantomjs-selenium",
-    "org.keycloak:keycloak-core",
-    "org.powermock:powermock-module-junit4",
-    "org.powermock:powermock-api-mockito2",
-    "org.mockito:mockito-core",
-    "junit:junit",
-    "org.yaml:snakeyaml",
-    "org.keycloak:keycloak-services",
-    "org.keycloak:keycloak-server-spi",
-    "org.keycloak:keycloak-server-spi-private",
-    "io.freefair.lombok",
-    "com.github.johnrengelman.shadow",
-    "gradle"
-  ],
-  "ignorePaths": [
-    "**/development/plugin"
-  ],
   "customManagers": [
     {
       "customType": "regex",
+      "description": "Update chart version to match upstream chart",
+      "managerFilePatterns": [
+        "/^chart/Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "version:\\s+(?<currentValue>.+)-bb\\.\\d+"
+      ],
+      "autoReplaceStringTemplate": "version: {{{newValue}}}-bb.0",
+      "depNameTemplate": "keycloakx",
+      "datasourceTemplate": "helm",
+      "registryUrlTemplate": "https://codecentric.github.io/helm-charts"
+    },
+    {
+      "customType": "regex",
+      "description": "Update chart's appVersion to match the latest available keycloak image",
       "managerFilePatterns": [
         "/^chart/Chart\\.yaml$/"
       ],
@@ -54,7 +66,7 @@
         "appVersion:[^\\S\\r\\n]+(?<currentValue>.+)"
       ],
       "registryUrlTemplate": "https://registry1.dso.mil",
-      "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
+      "depNameTemplate": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak",
       "datasourceTemplate": "docker"
     },
     {
@@ -66,7 +78,7 @@
         "- Keycloak:\\s+(?<currentValue>.+)"
       ],
       "registryUrlTemplate": "https://registry1.dso.mil",
-      "depNameTemplate": "ironbank/opensource/keycloak/keycloak",
+      "depNameTemplate": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak",
       "datasourceTemplate": "docker"
     },
     {
@@ -81,14 +93,40 @@
     },
     {
       "customType": "regex",
+      "description": "Update Keycloak image tag in values.yaml",
       "managerFilePatterns": [
         "/^chart/values\\.yaml$/"
       ],
       "matchStrings": [
-        "image:\\s+registry1.dso.mil/ironbank/big-bang/base:(?<currentValue>.+)"
+        "repository:\\s+registry1.dso.mil/ironbank/opensource/keycloak/keycloak\\s+.*\\s+tag:\\s+\"?(?<currentValue>[^\"\\s]+)"
       ],
       "registryUrlTemplate": "https://registry1.dso.mil",
-      "depNameTemplate": "ironbank/big-bang/base",
+      "depNameTemplate": "registry1.dso.mil/ironbank/opensource/keycloak/keycloak",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^chart/values\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+\"?registry1.dso.mil/ironbank/big-bang/base:(?<currentValue>[^\"\\s]+)"
+      ],
+      "registryUrlTemplate": "https://registry1.dso.mil",
+      "depNameTemplate": "registry1.dso.mil/ironbank/big-bang/base",
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Update PostgreSQL image tag in values.yaml",
+      "managerFilePatterns": [
+        "/^chart/values\\.yaml$/"
+      ],
+      "matchStrings": [
+        "repository:\\s+ironbank/bitnami/postgres\\s+tag:\\s+\"?(?<currentValue>[^\"\\s]+)"
+      ],
+      "registryUrlTemplate": "https://registry1.dso.mil",
+      "depNameTemplate": "registry1.dso.mil/ironbank/bitnami/postgres",
       "datasourceTemplate": "docker"
     }
   ]
