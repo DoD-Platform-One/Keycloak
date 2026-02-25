@@ -22,7 +22,7 @@ services:
     depends_on:
       - postgresql
 
-    image: 'registry1.dso.mil/ironbank/opensource/keycloak/keycloak:26.5.3'
+    image: 'registry1.dso.mil/ironbank/opensource/keycloak/keycloak:26.5.4'
 
     networks:
       - keycloak-tier
