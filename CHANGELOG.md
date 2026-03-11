@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [7.1.8-bb.1] (2026-03-10)
+### Changed
+- postgresql 18.4.0 -> 18.5.5
+- registry1.dso.mil/ironbank/opensource/keycloak/keycloak 26.5.4 -> 26.5.5
+- Updated podSecurityContext and securityContext uids and gids to reflect those in the new Iron Bank image.
+
 ## [7.1.8-bb.0] - 2026-02-24
 
 ### Updated
