@@ -111,7 +111,7 @@ SSO enabled.
      keycloak:
        git:
          tag: null
-         branch: "renovate/ironbank" # Example branch
+         branch: "renovate/keycloak" # Example branch
    ```
 
 2. **Plugin Image**:
@@ -122,7 +122,7 @@ SSO enabled.
          upstream:
            extraInitContainers: |-
              - name: plugin
-               image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.5.7
+               image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.6.10
    ```
    Alternatively, you can modify `enable-sso.yaml` to specify the plugin you're
    testing.

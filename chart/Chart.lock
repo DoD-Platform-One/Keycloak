@@ -4,12 +4,12 @@ dependencies:
   version: 7.1.8
 - name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 18.4.0
+  version: 18.5.5
 - name: gluon
   repository: oci://registry1.dso.mil/bigbang
   version: 0.9.8
 - name: bb-common
   repository: oci://registry1.dso.mil/bigbang
   version: 0.14.1
-digest: sha256:b0cd4a96ed6bbc0a7e6787917feb06ed6110ad48b7837f3af43578672b42126b
-generated: "2026-02-24T11:56:37.934775-05:00"
+digest: sha256:4080b07e1ef11568e5c61e5df8ef95403ba274299ac80fdb84fcbc13acafea68
+generated: "2026-03-08T07:30:54.04726382Z"
