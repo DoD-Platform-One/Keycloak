@@ -1,7 +1,7 @@
 apiVersion: v2
 name: keycloak
-version: 7.1.8-bb.1
-appVersion: 26.5.5
+version: 7.1.9-bb.0
+appVersion: 26.5.6
 description: Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 keywords:
 - sso
@@ -21,7 +21,7 @@ sources:
 - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
 dependencies:
 - name: keycloakx
-  version: 7.1.8
+  version: 7.1.9
   repository: https://codecentric.github.io/helm-charts
   alias: upstream
   import-values:
@@ -34,7 +34,7 @@ dependencies:
   - child: image
     parent: keycloakx.image
 - name: postgresql
-  version: 18.5.5
+  version: 18.5.11
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: postgresql.enabled
 - name: gluon
@@ -46,10 +46,10 @@ dependencies:
 annotations:
   bigbang.dev/maintenanceTrack: bb_integrated
   bigbang.dev/applicationVersions: |
-    - Keycloak: 26.5.5
+    - Keycloak: 26.5.6
   helm.sh/images: |
     - name: keycloak
-      image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:26.5.5
+      image: registry1.dso.mil/ironbank/opensource/keycloak/keycloak:26.5.6
     - name: postgresql
       condition: postgresql.enabled
       image: registry1.dso.mil/ironbank/bitnami/postgres:17.4.0
