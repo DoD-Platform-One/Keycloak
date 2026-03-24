@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [7.1.9-bb.0] (2026-03-21)
+### Changed
+- keycloakx 7.1.8 -> 7.1.9
+- postgresql 18.5.5 -> 18.5.11
+- registry1.dso.mil/ironbank/opensource/keycloak/keycloak 26.5.5 -> 26.5.6
+
 ## [7.1.8-bb.1] (2026-03-10)
 ### Changed
 - postgresql 18.4.0 -> 18.5.5
